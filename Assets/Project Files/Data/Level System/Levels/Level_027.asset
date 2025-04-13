@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9db0f09d1f3092648b37916ad329c920, type: 3}
+  m_Name: Level_027
+  m_EditorClassIdentifier: 
+  startPoint: {x: 0, y: 0, z: 0}
+  charactersList:
+  - itemSave:
+      type: 1
+      position: {x: -6, y: 0, z: 10}
+      rotation: {x: 0, y: 0, z: 0}
+      scale: {x: 1, y: 1, z: 1}
+    waitingPercentage: 1
+  - itemSave:
+      type: 1
+      position: {x: 0, y: 0, z: 15}
+      rotation: {x: 0, y: 0, z: 0}
+      scale: {x: 1, y: 1, z: 1}
+    waitingPercentage: 0.242
+  - itemSave:
+      type: 1
+      position: {x: 6, y: 0, z: 10}
+      rotation: {x: 0, y: 0, z: 0}
+      scale: {x: 1, y: 1, z: 1}
+    waitingPercentage: 0.532
+  movingObstaclesList:
+  - type: 1
+    movementSpeed: 15
+    linearMovementStartPosition: {x: 0, y: 0, z: 0}
+    linearMovementFinishPosition: {x: 0, y: 0, z: 0}
+    circlarMovementCenter: {x: 0, y: 0, z: 10}
+    circlarMovementRadius: 3.19
+    loopedMovement: 1
+    inverseDirection: 0
+  itemsList:
+  - type: 50
+    position: {x: -6, y: 0, z: 5}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 50
+    position: {x: 6, y: 0, z: 5}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 50
+    position: {x: -6, y: 0, z: 15}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 50
+    position: {x: 6, y: 0, z: 15}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  maxWaitingDuration: 12

@@ -1,0 +1,114 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34b796d4f76ccb5488f711694f61a821, type: 3}
+  m_Name: Monetization Settings
+  m_EditorClassIdentifier: 
+  iapSettings: {fileID: 1569315140361065267}
+  adsSettings: {fileID: 1338303973460554233}
+  isModuleActive: 1
+  verboseLogging: 0
+  debugMode: 0
+  testDevices:
+  - 91687A6357C9E0169C1471C98D0237EB
+  privacyLink: https://mywebsite.com/privacy
+  termsOfUseLink: https://mywebsite.com/terms
+--- !u!114 &1338303973460554233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15ddb41bf72d53a48a6bdc593d706f94, type: 3}
+  m_Name: Ads Settings
+  m_EditorClassIdentifier: 
+  bannerType: 1
+  interstitialType: 1
+  rewardedVideoType: 1
+  loadAdsOnStart: 1
+  interstitialFirstStartDelay: 40
+  interstitialStartDelay: 40
+  interstitialShowingDelay: 30
+  autoShowInterstitial: 0
+  isUMPEnabled: 0
+  umpTagForUnderAgeOfConsent: 0
+  umpDebugMode: 1
+  umpDebugGeography: 1
+  isIDFAEnabled: 0
+  trackingDescription: Your data will be used to deliver personalized ads to you.
+  adMobContainer:
+    androidAppId: ca-app-pub-3940256099942544~3347511713
+    iosAppId: ca-app-pub-3940256099942544~3347511713
+    androidBannerID: ca-app-pub-3940256099942544/6300978111
+    iOSBannerID: ca-app-pub-3940256099942544/2934735716
+    androidInterstitialID: ca-app-pub-3940256099942544/1033173712
+    iOSInterstitialID: ca-app-pub-3940256099942544/4411468910
+    androidRewardedVideoID: ca-app-pub-3940256099942544/5224354917
+    iOSRewardedVideoID: ca-app-pub-3940256099942544/1712485313
+    useAppOpenAd: 1
+    androidAppOpenAdID: ca-app-pub-3940256099942544/9257395921
+    iOSAppOpenAdID: ca-app-pub-3940256099942544/5575463023
+    appOpenAdExpirationHoursTime: 4
+    bannerType: 0
+    bannerPosition: 0
+  unityAdsContainer:
+    androidAppID: 5717128
+    iOSAppID: 5717129
+    androidBannerID: Banner_Android
+    iOSBannerID: Banner_iOS
+    androidInterstitialID: Interstitial_Android
+    iOSInterstitialID: Interstitial_iOS
+    androidRewardedVideoID: Rewarded_Android
+    iOSRewardedVideoID: Rewarded_iOS
+    bannerPosition: 4
+  levelPlayContainer:
+    androidAppKey: 85460dcd
+    iOSAppKey: 8545d445
+    bannerPosition: 0
+    bannerType: 0
+  dummyContainer:
+    bannerPosition: 0
+--- !u!114 &1569315140361065267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f28faf74e3de2b4bb5f8724582e5ceb, type: 3}
+  m_Name: IAP Settings
+  m_EditorClassIdentifier: 
+  storeItems:
+  - androidID: com.example.game.noads
+    iOSID: com.example.game.noads
+    productKeyType: 0
+    productType: 1
+  - androidID: com.example.game.pack
+    iOSID: com.example.game.pack
+    productKeyType: 1
+    productType: 1
+  - androidID: com.example.game.gold.small
+    iOSID: com.example.game.gold.small
+    productKeyType: 2
+    productType: 0
+  - androidID: com.example.game.gold.medium
+    iOSID: com.example.game.gold.medium
+    productKeyType: 3
+    productType: 0
+  - androidID: com.example.game.gold.big
+    iOSID: com.example.game.gold.big
+    productKeyType: 4
+    productType: 0

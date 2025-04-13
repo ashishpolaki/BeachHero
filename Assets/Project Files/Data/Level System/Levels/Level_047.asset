@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9db0f09d1f3092648b37916ad329c920, type: 3}
+  m_Name: Level_047
+  m_EditorClassIdentifier: 
+  startPoint: {x: 0, y: 0, z: 10}
+  charactersList:
+  - itemSave:
+      type: 1
+      position: {x: -3.4202013, y: 0, z: 0.6030741}
+      rotation: {x: 0, y: 0, z: 0}
+      scale: {x: 1, y: 1, z: 1}
+    waitingPercentage: 1
+  - itemSave:
+      type: 1
+      position: {x: 3.4202013, y: 0, z: 19.396927}
+      rotation: {x: 0, y: 0, z: 0}
+      scale: {x: 1, y: 1, z: 1}
+    waitingPercentage: 1
+  movingObstaclesList:
+  - type: 1
+    movementSpeed: 15
+    linearMovementStartPosition: {x: 0, y: 0, z: 0}
+    linearMovementFinishPosition: {x: 0, y: 0, z: 0}
+    circlarMovementCenter: {x: 0, y: 0, z: 10}
+    circlarMovementRadius: 5
+    loopedMovement: 1
+    inverseDirection: 0
+  itemsList:
+  - type: 3
+    position: {x: -2.565151, y: 0, z: 2.9523053}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: -2.0521207, y: 0, z: 4.361844}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: -1.5390905, y: 0, z: 5.7713833}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: -1.0260603, y: 0, z: 7.180922}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: 1.0260603, y: 0, z: 12.819078}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: 1.5390905, y: 0, z: 14.228617}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: 2.0521207, y: 0, z: 15.638156}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: 2.565151, y: 0, z: 17.047695}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  maxWaitingDuration: 8

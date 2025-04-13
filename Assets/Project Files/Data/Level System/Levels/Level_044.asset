@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9db0f09d1f3092648b37916ad329c920, type: 3}
+  m_Name: Level_044
+  m_EditorClassIdentifier: 
+  startPoint: {x: 0, y: 0, z: 0}
+  charactersList:
+  - itemSave:
+      type: 1
+      position: {x: -6, y: 0, z: 10}
+      rotation: {x: 0, y: 0, z: 0}
+      scale: {x: 1, y: 1, z: 1}
+    waitingPercentage: 0.52
+  - itemSave:
+      type: 1
+      position: {x: 0, y: 0, z: 15}
+      rotation: {x: 0, y: 0, z: 0}
+      scale: {x: 1, y: 1, z: 1}
+    waitingPercentage: 1
+  - itemSave:
+      type: 1
+      position: {x: 6, y: 0, z: 22}
+      rotation: {x: 0, y: 0, z: 0}
+      scale: {x: 1, y: 1, z: 1}
+    waitingPercentage: 0.504
+  movingObstaclesList: []
+  itemsList:
+  - type: 3
+    position: {x: -3.79, y: 0, z: 12.09}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: -2.75, y: 0, z: 12.91}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: 2.31, y: 0, z: 17.73}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: -3.18, y: 0, z: 18.14}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: 3.35, y: 0, z: 18.7}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: -4.3, y: 0, z: 19.03}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: -5.23, y: 0, z: 19.97}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 50
+    position: {x: -6, y: 0, z: 5}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 50
+    position: {x: 6, y: 0, z: 15}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 50
+    position: {x: -6, y: 0, z: 15}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 50
+    position: {x: 0, y: 0, z: 22}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  maxWaitingDuration: 8

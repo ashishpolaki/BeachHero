@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9db0f09d1f3092648b37916ad329c920, type: 3}
+  m_Name: Level_006
+  m_EditorClassIdentifier: 
+  startPoint: {x: 0, y: 0, z: 0}
+  charactersList:
+  - itemSave:
+      type: 1
+      position: {x: -6.63, y: 0, z: 8.43}
+      rotation: {x: 0, y: 0, z: 0}
+      scale: {x: 1, y: 1, z: 1}
+    waitingPercentage: 0.318
+  - itemSave:
+      type: 1
+      position: {x: 6.63, y: 0, z: 19.66}
+      rotation: {x: 0, y: 0, z: 0}
+      scale: {x: 1, y: 1, z: 1}
+    waitingPercentage: 1
+  movingObstaclesList: []
+  itemsList:
+  - type: 3
+    position: {x: 0.4000001, y: 0, z: 10.07}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: 1.4000001, y: 0, z: 11.07}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: 2.4, y: 0, z: 12.07}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: 3.4, y: 0, z: 13.07}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: 4.4, y: 0, z: 14.07}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: -4.3900003, y: 0, z: 14.5}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: -3.3900006, y: 0, z: 15.5}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: -2.3900006, y: 0, z: 16.5}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: -1.39, y: 0, z: 17.5}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: -0.39000058, y: 0, z: 18.5}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  maxWaitingDuration: 7

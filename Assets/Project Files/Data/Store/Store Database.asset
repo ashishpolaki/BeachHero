@@ -1,0 +1,119 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7849743226bbdfc4b94365052ad63b65, type: 3}
+  m_Name: Store Database
+  m_EditorClassIdentifier: 
+  tabs:
+  - uniqueId: 3/15/2023 10:21:25 AM_564758
+    name: Boats
+    isActive: 1
+    type: 0
+    previewType: 0
+    previewPrefab: {fileID: 6525351895120036520, guid: b88637bb2254f9847b8fea75af201ebb,
+      type: 3}
+    backgroundImage: {fileID: 21300000, guid: bcb3485bc794e8040b3f9475cb8f8c7d, type: 3}
+    backgroundColor: {r: 1, g: 1, b: 1, a: 0.9607843}
+    panelColor: {r: 0.4, g: 0.8980392, b: 0.58431375, a: 1}
+    tabActiveColor: {r: 0.4, g: 0.8980392, b: 0.58431375, a: 1}
+    tabDisabledColor: {r: 0.6698113, g: 0.28944325, b: 0.2748754, a: 1}
+    productBackgroundColor: {r: 0.24313726, g: 0.5294118, b: 0.34901962, a: 1}
+  products:
+  - uniqueId: 3/15/2023 10:21:25 AM_885953
+    isExpanded: 1
+    id: 0
+    tabId: 0
+    isDummy: 0
+    name: Boat 1
+    openedSprite: {fileID: 21300000, guid: d59f5a334d2dfe44b934d3a21d9e546d, type: 3}
+    lockedSprite: {fileID: 21300000, guid: d59f5a334d2dfe44b934d3a21d9e546d, type: 3}
+    preview2DSprite: {fileID: 21300000, guid: d59f5a334d2dfe44b934d3a21d9e546d, type: 3}
+    skinId: 77f5d5fc-075f-42bd-aff7-7bef67c5147b
+    previewPrefab: {fileID: 8995052309315393794, guid: 5b09ecd13fbf90d42ae32b4fa19b7f46,
+      type: 3}
+    purchaseType: 0
+    currency: 0
+    cost: 0
+  - uniqueId: 3/15/2023 10:21:25 AM_976638
+    isExpanded: 0
+    id: 1
+    tabId: 0
+    isDummy: 0
+    name: Boat 2
+    openedSprite: {fileID: 21300000, guid: 32cc9521430f83643b32981334a739c3, type: 3}
+    lockedSprite: {fileID: 21300000, guid: 32cc9521430f83643b32981334a739c3, type: 3}
+    preview2DSprite: {fileID: 21300000, guid: 32cc9521430f83643b32981334a739c3, type: 3}
+    skinId: cc941775-6066-45c8-a334-991e99db19c1
+    previewPrefab: {fileID: 7583077936307463105, guid: 0f607201f5ee3884f88bf9b1c76d19f0,
+      type: 3}
+    purchaseType: 0
+    currency: 0
+    cost: 250
+  - uniqueId: 3/15/2023 10:21:25 AM_225686
+    isExpanded: 0
+    id: 2
+    tabId: 0
+    isDummy: 0
+    name: Boat 3
+    openedSprite: {fileID: 21300000, guid: ab2054102a240414689a2d933d25c9e5, type: 3}
+    lockedSprite: {fileID: 21300000, guid: ab2054102a240414689a2d933d25c9e5, type: 3}
+    preview2DSprite: {fileID: 21300000, guid: ab2054102a240414689a2d933d25c9e5, type: 3}
+    skinId: 793a716a-8be4-4928-94e1-02b4bdc9ab8e
+    previewPrefab: {fileID: 8995052309315393794, guid: b80d290543acae64c94a9f79aeaf8652,
+      type: 3}
+    purchaseType: 0
+    currency: 0
+    cost: 1000
+  - uniqueId: 3/15/2023 10:21:25 AM_196704
+    isExpanded: 0
+    id: 3
+    tabId: 0
+    isDummy: 1
+    name: Dummy Boat Noob 3
+    openedSprite: {fileID: 21300000, guid: d088c4549ad829e46ab72337d1794a0b, type: 3}
+    lockedSprite: {fileID: 21300000, guid: d088c4549ad829e46ab72337d1794a0b, type: 3}
+    preview2DSprite: {fileID: 0}
+    skinId: 
+    previewPrefab: {fileID: 0}
+    purchaseType: 0
+    currency: 0
+    cost: 0
+  - uniqueId: 3/15/2023 10:21:25 AM_791518
+    isExpanded: 0
+    id: 4
+    tabId: 0
+    isDummy: 1
+    name: Dummy Boat Noob 4
+    openedSprite: {fileID: 21300000, guid: d088c4549ad829e46ab72337d1794a0b, type: 3}
+    lockedSprite: {fileID: 21300000, guid: d088c4549ad829e46ab72337d1794a0b, type: 3}
+    preview2DSprite: {fileID: 0}
+    skinId: 
+    previewPrefab: {fileID: 0}
+    purchaseType: 0
+    currency: 0
+    cost: 0
+  - uniqueId: 3/15/2023 10:21:25 AM_587816
+    isExpanded: 0
+    id: 5
+    tabId: 0
+    isDummy: 1
+    name: Dummy Boat Noob 5
+    openedSprite: {fileID: 21300000, guid: d088c4549ad829e46ab72337d1794a0b, type: 3}
+    lockedSprite: {fileID: 21300000, guid: d088c4549ad829e46ab72337d1794a0b, type: 3}
+    preview2DSprite: {fileID: 0}
+    skinId: 
+    previewPrefab: {fileID: 0}
+    purchaseType: 0
+    currency: 0
+    cost: 0
+  coinsForAdsAmount: 150
+  currencyForAds: 0
+  TabTypes: 00000000

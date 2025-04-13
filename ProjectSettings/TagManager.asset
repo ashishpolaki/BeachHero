@@ -3,7 +3,14 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Ground
+  - Coin
+  - Obstacle
+  - Character
+  - ShoalZone
+  - Key
+  - Boat
   layers:
   - Default
   - TransparentFX
@@ -13,10 +20,10 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
+  - Touch
+  - StartPoint
+  - Boat
+  - Interactable
   - 
   - 
   - 
@@ -41,36 +48,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  m_RenderingLayers:
-  - Default
-  - Light Layer 1
-  - Light Layer 2
-  - Light Layer 3
-  - Light Layer 4
-  - Light Layer 5
-  - Light Layer 6
-  - Light Layer 7
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - name: Additional
+    uniqueID: 2841216989
+    locked: 0

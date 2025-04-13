@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9db0f09d1f3092648b37916ad329c920, type: 3}
+  m_Name: Level_036
+  m_EditorClassIdentifier: 
+  startPoint: {x: 5, y: 0, z: 0}
+  charactersList:
+  - itemSave:
+      type: 1
+      position: {x: 5, y: 0, z: 15}
+      rotation: {x: 0, y: 0, z: 0}
+      scale: {x: 1, y: 1, z: 1}
+    waitingPercentage: 0.493
+  - itemSave:
+      type: 1
+      position: {x: -5, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+      scale: {x: 1, y: 1, z: 1}
+    waitingPercentage: 0.854
+  - itemSave:
+      type: 1
+      position: {x: -5, y: 0, z: 15}
+      rotation: {x: 0, y: 0, z: 0}
+      scale: {x: 1, y: 1, z: 1}
+    waitingPercentage: 0.493
+  movingObstaclesList:
+  - type: 0
+    movementSpeed: 15
+    linearMovementStartPosition: {x: -8.308709, y: 0, z: 9.661521}
+    linearMovementFinishPosition: {x: 8.06572, y: 0, z: 9.871457}
+    circlarMovementCenter: {x: 0, y: 0, z: 0}
+    circlarMovementRadius: 1
+    loopedMovement: 0
+    inverseDirection: 0
+  itemsList:
+  - type: 3
+    position: {x: 5, y: 0, z: 5}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: -5, y: 0, z: 5}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: 5, y: 0, z: 7}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: -5, y: 0, z: 7}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: -5, y: 0, z: 9}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: 5, y: 0, z: 9}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: -5, y: 0, z: 11}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: 5, y: 0, z: 11}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: -5, y: 0, z: 13}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: 5, y: 0, z: 13}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: -1, y: 0, z: 15}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: -3, y: 0, z: 15}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: 3, y: 0, z: 15}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  - type: 3
+    position: {x: 1, y: 0, z: 15}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  maxWaitingDuration: 7
