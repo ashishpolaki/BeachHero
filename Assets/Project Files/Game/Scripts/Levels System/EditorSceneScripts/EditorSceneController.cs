@@ -156,7 +156,7 @@ namespace Watermelon
 
         public ItemSave[] GetLevelItems()
         {
-            SavableItem[] savableItems = FindObjectsOfType<SavableItem>();
+            SavableItem[] savableItems = FindObjectsByType<SavableItem>(FindObjectsSortMode.None);
             List<ItemSave> result = new List<ItemSave>();
 
             for (int i = 0; i < savableItems.Length; i++)
