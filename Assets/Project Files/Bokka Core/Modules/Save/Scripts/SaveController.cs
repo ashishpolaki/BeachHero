@@ -115,7 +115,7 @@ namespace Bokka
                 BaseSaveWrapper.ActiveWrapper.Save(globalSave, SAVE_FILE_NAME);
             }
 
-            Debug.Log("[Save Controller]: Game is saved!");
+           ($"[Save Controller]: Game is saved! : {SAVE_FILE_NAME}").Log();
 
             isSaveRequired = false;
         }

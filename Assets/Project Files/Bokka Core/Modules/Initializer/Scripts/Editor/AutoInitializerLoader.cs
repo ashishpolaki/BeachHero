@@ -13,26 +13,28 @@ namespace Bokka
             if (!CustomCoreSettings.AutoLoadInitializer) return;
 
             Scene currentScene = SceneManager.GetActiveScene();
-            if (currentScene != null)
+            if (currentScene.name != "Init")
             {
-                if (currentScene.name != CustomCoreSettings.InitSceneName)
+                ("If You want to Play BeachHero Game, Please open Scene \"Init\" and Hit Play ").LogError();
+                return;
+            }
+            if (currentScene.name != CustomCoreSettings.InitSceneName)
+            {
+                Initializer initializer = Object.FindObjectOfType<Initializer>();
+                if (initializer == null)
                 {
-                    Initializer initializer = Object.FindObjectOfType<Initializer>();
-                    if (initializer == null)
+                    GameObject initializerPrefab = EditorUtils.GetAsset<GameObject>("Initializer");
+                    if (initializerPrefab != null)
                     {
-                        GameObject initializerPrefab = EditorUtils.GetAsset<GameObject>("Initializer");
-                        if (initializerPrefab != null)
-                        {
-                            GameObject InitializerObject = Object.Instantiate(initializerPrefab);
+                        GameObject InitializerObject = Object.Instantiate(initializerPrefab);
 
-                            initializer = InitializerObject.GetComponent<Initializer>();
-                            initializer.Awake();
-                            initializer.Init(false);
-                        }
-                        else
-                        {
-                            Debug.LogError("[Game]: Initializer prefab is missing!");
-                        }
+                        initializer = InitializerObject.GetComponent<Initializer>();
+                        initializer.Awake();
+                        initializer.Init(false);
+                    }
+                    else
+                    {
+                        Debug.LogError("[Game]: Initializer prefab is missing!");
                     }
                 }
             }
