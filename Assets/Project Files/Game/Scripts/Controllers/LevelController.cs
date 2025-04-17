@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Watermelon.SkinStore;
+using Bokka.SkinStore;
 
-namespace Watermelon.BeachRescue
+namespace Bokka.BeachRescue
 {
     public class LevelController : MonoBehaviour
     {

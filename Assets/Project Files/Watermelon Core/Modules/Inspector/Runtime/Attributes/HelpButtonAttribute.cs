@@ -1,6 +1,6 @@
 using System;
 
-namespace Watermelon
+namespace Bokka
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
     public class HelpButtonAttribute : Attribute

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Watermelon.List
+namespace Bokka.List
 {
     [CreateAssetMenu(fileName = "StylesDatabase", menuName = "Data/Core/Editor/List Styles Database", order = 2)]
     public class ListStylesDatabase : ScriptableObject

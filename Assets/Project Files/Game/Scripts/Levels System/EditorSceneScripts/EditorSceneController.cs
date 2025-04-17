@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using Watermelon.BeachRescue;
+using Bokka.BeachRescue;
 
-namespace Watermelon
+namespace Bokka
 {
     public class EditorSceneController : MonoBehaviour
     {

@@ -2,7 +2,7 @@
 using UnityEngine.Purchasing;
 #endif
 
-namespace Watermelon
+namespace Bokka
 {
     public class ProductData
     {

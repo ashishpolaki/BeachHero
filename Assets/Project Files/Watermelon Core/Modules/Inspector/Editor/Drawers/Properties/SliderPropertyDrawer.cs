@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 
-namespace Watermelon
+namespace Bokka
 {
     [CustomPropertyDrawer(typeof(SliderAttribute))]
     public class SliderPropertyDrawer : PropertyDrawer

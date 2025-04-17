@@ -2,7 +2,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Watermelon.IAPStore
+namespace Bokka.IAPStore
 {
     public class UIStore : UIPage
     {

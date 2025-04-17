@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-namespace Watermelon.SkinStore
+namespace Bokka.SkinStore
 {
     public class UISkinStore : UIPage
     {

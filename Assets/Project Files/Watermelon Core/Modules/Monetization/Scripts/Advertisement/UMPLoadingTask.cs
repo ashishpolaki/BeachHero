@@ -4,7 +4,7 @@
 using GoogleMobileAds.Ump.Api;
 #endif
 
-namespace Watermelon
+namespace Bokka
 {
     public sealed class UMPLoadingTask : LoadingTask
     {

@@ -2,7 +2,7 @@
 using System.Reflection;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     public sealed class MethodGUIRenderer : GUIRenderer
     {

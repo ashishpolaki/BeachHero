@@ -1,6 +1,6 @@
 using UnityEditor;
 
-namespace Watermelon
+namespace Bokka
 {
     [CustomEditor(typeof(MonetizationInitModule))]
     public class MonetizationInitModuleEditor : InitModuleEditor

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Watermelon.SkinStore
+namespace Bokka.SkinStore
 {
     public class UISkinItemsGrid : MonoBehaviour
     {

@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using System;
 
-namespace Watermelon
+namespace Bokka
 {
     public class AudioSettingsEditorWindow : EditorWindow
     {

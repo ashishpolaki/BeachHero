@@ -9,13 +9,13 @@ using System.Linq;
 using UnityEngine.SceneManagement;
 using UnityEditor.SceneManagement;
 
-namespace Watermelon
+namespace Bokka
 {
     [UnityEditor.Overlays.Overlay(typeof(SceneView), "Scene Overlay", false)]
     [Icon(ICON_ASSET_PATH)]
     public class SceneOverlay : UnityEditor.Overlays.Overlay
     {
-        private const string ICON_ASSET_PATH = "Assets/Project Files/Watermelon Core/Extended Editor/Icons/icon_settings.png";
+        private const string ICON_ASSET_PATH = "Assets/Project Files/Bokka Core/Extended Editor/Icons/icon_settings.png";
         private const string PREFERABLE_DATABASE_PATH = "Assets/Project Files/Data/Core/Editor/Scene Overlay Database.asset";
         private const string TOGGLE_INTERFACE_SAVE_PREFIX = "overlay_t_i_";
         private const string GAMEOBJECT_PICABILITY_SAVE_PREFIX = "overlay_p_";

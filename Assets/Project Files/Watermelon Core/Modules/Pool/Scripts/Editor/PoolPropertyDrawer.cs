@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [CustomPropertyDrawer(typeof(Pool))]
     public class PoolPropertyDrawer : UnityEditor.PropertyDrawer

@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [System.Serializable]
     public class AudioCase

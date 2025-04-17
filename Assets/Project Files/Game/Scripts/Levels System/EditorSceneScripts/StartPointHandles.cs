@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using Watermelon;
+using Bokka;
 
-namespace Watermelon.BeachRescue
+namespace Bokka.BeachRescue
 {
     public class StartPointHandles : MonoBehaviour
     {

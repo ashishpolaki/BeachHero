@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [RequireComponent(typeof(TextMeshProUGUI))]
     public class UILevelNumberText : MonoBehaviour

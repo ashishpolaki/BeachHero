@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
-namespace Watermelon
+namespace Bokka
 {
     public static class SceneLoadingActionsMenu
     {

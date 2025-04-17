@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [CustomPropertyDrawer(typeof(OnOffAttribute))]
     public class OnOffPropertyDrawer : PropertyDrawer

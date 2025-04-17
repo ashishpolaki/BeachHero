@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Watermelon
+namespace Bokka
 {
     public static class PropertyUtility
     {

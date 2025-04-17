@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [System.Serializable]
     public abstract class WeightedList<T> where T : class

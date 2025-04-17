@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-namespace Watermelon
+namespace Bokka
 {
     public class EditorAdMobContainer : EditorAdsContainer
     {
@@ -182,26 +182,26 @@ namespace Watermelon
         private void DrawAddUnitsSection()
         {
             EditorGUILayout.LabelField("Banner ID", groupStyle);
-            DrawIdProperty(androidBannerIdProperty, Watermelon.AdMobContainer.ANDROID_BANNER_TEST_ID);
-            DrawIdProperty(iOSBannerIdProperty, Watermelon.AdMobContainer.IOS_BANNER_TEST_ID);
+            DrawIdProperty(androidBannerIdProperty, Bokka.AdMobContainer.ANDROID_BANNER_TEST_ID);
+            DrawIdProperty(iOSBannerIdProperty, Bokka.AdMobContainer.IOS_BANNER_TEST_ID);
 
             EditorGUILayout.PropertyField(bannerTypeProperty);
             EditorGUILayout.PropertyField(bannerPositionProperty);
 
             EditorGUILayout.LabelField("Interstitial ID", groupStyle);
-            DrawIdProperty(androidInterstitialIdProperty, Watermelon.AdMobContainer.ANDROID_INTERSTITIAL_TEST_ID);
-            DrawIdProperty(iOSInterstitialIdProperty, Watermelon.AdMobContainer.IOS_INTERSTITIAL_TEST_ID);
+            DrawIdProperty(androidInterstitialIdProperty, Bokka.AdMobContainer.ANDROID_INTERSTITIAL_TEST_ID);
+            DrawIdProperty(iOSInterstitialIdProperty, Bokka.AdMobContainer.IOS_INTERSTITIAL_TEST_ID);
 
             EditorGUILayout.LabelField("Rewarded Video ID", groupStyle);
-            DrawIdProperty(androidRewardedVideoIdProperty, Watermelon.AdMobContainer.ANDROID_REWARDED_VIDEO_TEST_ID);
-            DrawIdProperty(iOSRewardedVideoIdProperty, Watermelon.AdMobContainer.IOS_REWARDED_VIDEO_TEST_ID);
+            DrawIdProperty(androidRewardedVideoIdProperty, Bokka.AdMobContainer.ANDROID_REWARDED_VIDEO_TEST_ID);
+            DrawIdProperty(iOSRewardedVideoIdProperty, Bokka.AdMobContainer.IOS_REWARDED_VIDEO_TEST_ID);
 
             EditorGUILayout.LabelField("App Open AD", groupStyle);
             EditorGUILayout.PropertyField(useAppOpenAdProperty);
             if (useAppOpenAdProperty.boolValue)
             {
-                DrawIdProperty(androidAppOpenAdIDProperty, Watermelon.AdMobContainer.ANDROID_OPEN_TEST_ID);
-                DrawIdProperty(iosAppOpenAdIDProperty, Watermelon.AdMobContainer.IOS_OPEN_TEST_ID);
+                DrawIdProperty(androidAppOpenAdIDProperty, Bokka.AdMobContainer.ANDROID_OPEN_TEST_ID);
+                DrawIdProperty(iosAppOpenAdIDProperty, Bokka.AdMobContainer.IOS_OPEN_TEST_ID);
             }
 
             EditorGUILayout.LabelField("Debug", EditorCustomStyles.labelMediumBold);
@@ -222,17 +222,17 @@ namespace Watermelon
 
             if (GUILayout.Button("Set test ids", EditorCustomStyles.button))
             {
-                androidBannerIdProperty.stringValue = Watermelon.AdMobContainer.ANDROID_BANNER_TEST_ID;
-                iOSBannerIdProperty.stringValue = Watermelon.AdMobContainer.IOS_BANNER_TEST_ID;
+                androidBannerIdProperty.stringValue = Bokka.AdMobContainer.ANDROID_BANNER_TEST_ID;
+                iOSBannerIdProperty.stringValue = Bokka.AdMobContainer.IOS_BANNER_TEST_ID;
 
-                androidInterstitialIdProperty.stringValue = Watermelon.AdMobContainer.ANDROID_INTERSTITIAL_TEST_ID;
-                iOSInterstitialIdProperty.stringValue = Watermelon.AdMobContainer.IOS_INTERSTITIAL_TEST_ID;
+                androidInterstitialIdProperty.stringValue = Bokka.AdMobContainer.ANDROID_INTERSTITIAL_TEST_ID;
+                iOSInterstitialIdProperty.stringValue = Bokka.AdMobContainer.IOS_INTERSTITIAL_TEST_ID;
 
-                androidRewardedVideoIdProperty.stringValue = Watermelon.AdMobContainer.ANDROID_REWARDED_VIDEO_TEST_ID;
-                iOSRewardedVideoIdProperty.stringValue = Watermelon.AdMobContainer.IOS_REWARDED_VIDEO_TEST_ID;
+                androidRewardedVideoIdProperty.stringValue = Bokka.AdMobContainer.ANDROID_REWARDED_VIDEO_TEST_ID;
+                iOSRewardedVideoIdProperty.stringValue = Bokka.AdMobContainer.IOS_REWARDED_VIDEO_TEST_ID;
 
-                androidAppOpenAdIDProperty.stringValue = Watermelon.AdMobContainer.ANDROID_OPEN_TEST_ID;
-                iosAppOpenAdIDProperty.stringValue = Watermelon.AdMobContainer.IOS_OPEN_TEST_ID;
+                androidAppOpenAdIDProperty.stringValue = Bokka.AdMobContainer.ANDROID_OPEN_TEST_ID;
+                iosAppOpenAdIDProperty.stringValue = Bokka.AdMobContainer.IOS_OPEN_TEST_ID;
             }
         }
 

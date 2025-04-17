@@ -1,7 +1,7 @@
 ﻿#pragma warning disable 649
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [System.Serializable] // this is needed to survive acembly reload;
     public sealed class WindowConfiguration

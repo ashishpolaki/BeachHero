@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Watermelon
+namespace Bokka
 {
     [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false, Inherited = true)]
     public class LabelAttribute : Attribute

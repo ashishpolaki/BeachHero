@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Watermelon
+namespace Bokka
 {
     public static class GraphicTweenCases 
     {

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Watermelon.SkinStore
+namespace Bokka.SkinStore
 {
     [CreateAssetMenu(fileName = "Skin Store Database", menuName = "Data/Skins/Store Database")]
     public class SkinStoreDatabase : ScriptableObject

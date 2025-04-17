@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-namespace Watermelon
+namespace Bokka
 {
     [HideScriptField]
     [CreateAssetMenu(fileName = "Editor Data", menuName = "Data/Core/Editor/Editor Data")]

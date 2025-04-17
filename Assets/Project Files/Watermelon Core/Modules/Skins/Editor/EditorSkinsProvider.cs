@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEditor;
 using Object = UnityEngine.Object;
 
-namespace Watermelon
+namespace Bokka
 {
     [InitializeOnLoad]
     public static class EditorSkinsProvider

@@ -1,6 +1,6 @@
 ﻿using UnityEngine.UI;
 
-namespace Watermelon
+namespace Bokka
 {
     public static class ImageTweenCases
     {

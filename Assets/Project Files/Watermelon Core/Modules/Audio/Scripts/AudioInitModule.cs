@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [RegisterModule("Audio Controller", core: true)]
     public class AudioInitModule : InitModule

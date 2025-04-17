@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Watermelon
+namespace Bokka
 {
     public sealed class UnwrapNestedGUIRenderer : GUIRenderer
     {

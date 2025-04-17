@@ -6,7 +6,7 @@ using System.IO;
 using UnityEditor.iOS.Xcode;
 #endif
 
-namespace Watermelon
+namespace Bokka
 {
     public class AdsPostBuild
     {

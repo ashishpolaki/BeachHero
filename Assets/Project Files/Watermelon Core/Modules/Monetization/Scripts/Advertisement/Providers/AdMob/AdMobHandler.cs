@@ -7,7 +7,7 @@ using GoogleMobileAds.Api;
 using GoogleMobileAds.Common;
 #endif
 
-namespace Watermelon
+namespace Bokka
 {
 #if MODULE_ADMOB
     /// <summary>

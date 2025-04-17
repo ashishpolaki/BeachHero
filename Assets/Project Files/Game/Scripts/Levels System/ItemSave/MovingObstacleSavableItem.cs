@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using Watermelon.BeachRescue;
+using Bokka.BeachRescue;
 
-namespace Watermelon
+namespace Bokka
 {
     public class MovingObstacleSavableItem : MonoBehaviour
     {

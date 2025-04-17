@@ -3,7 +3,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     public static class Serializer
     {
@@ -22,7 +22,7 @@ namespace Watermelon
         public static T Deserialize<T>(string fileName, bool logIfFileNotExists = false) where T : new()
         {
             string absolutePath = persistentDataPath + "/" + fileName;
-
+            Debug.Log($"Checking Saved File path: {absolutePath}");
             if (FileExistsAtPath(absolutePath))
             {
                 BinaryFormatter bf = new BinaryFormatter();
@@ -48,8 +48,9 @@ namespace Watermelon
             {
                 if (logIfFileNotExists)
                 {
-                    Debug.LogWarning("File at path : \"" + absolutePath + "\" does not exist.");
+                    Debug.LogError("File at path : \"" + absolutePath + "\" does not exist.");
                 }
+
                 return new T();
             }
         }

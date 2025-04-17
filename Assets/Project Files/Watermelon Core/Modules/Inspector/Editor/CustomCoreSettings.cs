@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     public static class CustomCoreSettings
     {
@@ -17,7 +17,7 @@ namespace Watermelon
         public static Color AdsDummyBackgroundColor { get; private set; } = new Color(0.1f, 0.2f, 0.35f, 1.0f);
         public static Color AdsDummyMainColor { get; private set; } = new Color(0.15f, 0.37f, 0.6f, 1.0f);
 
-        public static bool ShowWatermelonPromotions { get; private set; } = true;
+        public static bool ShowBokkaPromotions { get; private set; } = true;
 
         // Define a static constructor to load saved preferences when the script is loaded
         static CustomCoreSettings()
@@ -30,10 +30,10 @@ namespace Watermelon
         public static SettingsProvider CustomPreferencesMenu()
         {
             // Create a new SettingsProvider with a path in the Preferences window
-            var provider = new SettingsProvider("Preferences/Watermelon Core", SettingsScope.User)
+            var provider = new SettingsProvider("Preferences/Bokka Core", SettingsScope.User)
             {
                 // Label of the preferences page
-                label = "Watermelon Core",
+                label = "Bokka Core",
 
                 // This method is called to draw the GUI
                 guiHandler = (searchContext) =>
@@ -63,7 +63,7 @@ namespace Watermelon
 
                     GUILayout.Space(8);
                     EditorGUILayout.LabelField("Promotions", EditorStyles.boldLabel);
-                    ShowWatermelonPromotions = EditorGUILayout.Toggle("Show Watermelon Promotions", ShowWatermelonPromotions);
+                    ShowBokkaPromotions = EditorGUILayout.Toggle("Show Bokka Promotions", ShowBokkaPromotions);
 
                     EditorGUILayout.EndVertical();
                     EditorGUILayout.EndHorizontal();
@@ -75,7 +75,7 @@ namespace Watermelon
                 },
 
                 // Define the keywords to be used in the search bar
-                keywords = new string[] { "Custom", "Preferences", "Watermelon Core", "Core" }
+                keywords = new string[] { "Custom", "Preferences", "Bokka Core", "Core" }
             };
 
             return provider;
@@ -93,7 +93,7 @@ namespace Watermelon
             EditorPrefs.SetString("AdsDummyBackgroundColor", AdsDummyBackgroundColor.ToHex());
             EditorPrefs.SetString("AdsDummyMainColor", AdsDummyMainColor.ToHex());
 
-            EditorPrefs.SetBool("ShowWatermelonPromotions", ShowWatermelonPromotions);
+            EditorPrefs.SetBool("ShowBokkaPromotions", ShowBokkaPromotions);
 
             if (!UseHierarchyIcons)
                 EditorCustomHierarchy.Disable();
@@ -118,7 +118,7 @@ namespace Watermelon
                 AdsDummyMainColor = mainColor;
             }
 
-            ShowWatermelonPromotions = EditorPrefs.GetBool("ShowWatermelonPromotions", true);
+            ShowBokkaPromotions = EditorPrefs.GetBool("ShowBokkaPromotions", true);
         }
     }
 }

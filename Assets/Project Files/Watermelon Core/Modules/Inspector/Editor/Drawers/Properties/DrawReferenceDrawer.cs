@@ -2,7 +2,7 @@
 using UnityEditor;
 using System.Collections.Generic;
 
-namespace Watermelon
+namespace Bokka
 {
     [CustomPropertyDrawer(typeof(DrawReferenceAttribute), true)]
     public class DrawReferenceDrawer : UnityEditor.PropertyDrawer

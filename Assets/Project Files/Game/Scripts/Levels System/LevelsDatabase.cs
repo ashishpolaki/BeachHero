@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Watermelon.BeachRescue
+namespace Bokka.BeachRescue
 {
     [CreateAssetMenu(fileName = "Levels Database", menuName = "Data/Levels Database", order = 1)]
     public class LevelsDatabase : ScriptableObject

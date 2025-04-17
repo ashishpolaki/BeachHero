@@ -7,7 +7,7 @@ using System.Text;
 using System.Collections.Generic;
 using UnityEditor.SceneManagement;
 
-namespace Watermelon.BeachRescue
+namespace Bokka.BeachRescue
 {
     public class LevelEditorWindow : LevelEditorBase
     {

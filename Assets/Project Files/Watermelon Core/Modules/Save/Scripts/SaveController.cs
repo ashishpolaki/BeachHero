@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using System.Threading;
 
-namespace Watermelon
+namespace Bokka
 {
     public static class SaveController
     {

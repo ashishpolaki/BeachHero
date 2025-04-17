@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [PropertyGrouper(typeof(BoxGroupAttribute))]
     public class BoxGroupPropertyGrouper : PropertyGrouper

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Watermelon
+namespace Bokka
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class RegisterModuleAttribute : Attribute

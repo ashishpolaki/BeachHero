@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-using Watermelon;
+using Bokka;
 
-namespace Watermelon.BeachRescue
+namespace Bokka.BeachRescue
 {
     [CustomEditor(typeof(MovingObstacleSavableItem))]
     public class MovingObstacleSavableItemEditor : Editor

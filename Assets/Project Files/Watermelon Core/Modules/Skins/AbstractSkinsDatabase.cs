@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     public abstract class AbstractSkinsDatabase : ScriptableObject
     {

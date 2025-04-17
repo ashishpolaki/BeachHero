@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 
-namespace Watermelon
+namespace Bokka
 {
     [CustomEditor(typeof(CurrencyInitModule))]
     public class CurrencyInitModuleEditor : InitModuleEditor

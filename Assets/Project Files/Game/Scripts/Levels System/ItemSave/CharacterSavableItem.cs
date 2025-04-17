@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using Watermelon.BeachRescue;
+using Bokka.BeachRescue;
 
-namespace Watermelon
+namespace Bokka
 {
     [ExecuteInEditMode]
     public class CharacterSavableItem : MonoBehaviour

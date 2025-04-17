@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace Watermelon
+namespace Bokka
 {
     [CustomPropertyDrawer(typeof(UIFadeAnimation))]
     public class UIFadeAnimationPropertyDrawer : PropertyDrawer

@@ -1,7 +1,7 @@
 ﻿#pragma warning disable 0649
 #pragma warning disable 0162
 
-namespace Watermelon
+namespace Bokka
 {
     public enum AuthorizationTrackingStatus
     {

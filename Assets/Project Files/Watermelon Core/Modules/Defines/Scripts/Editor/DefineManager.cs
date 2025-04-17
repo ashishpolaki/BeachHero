@@ -4,7 +4,7 @@ using System;
 using System.Reflection;
 using System.Collections.Generic;
 
-namespace Watermelon
+namespace Bokka
 {
     public static class DefineManager
     {

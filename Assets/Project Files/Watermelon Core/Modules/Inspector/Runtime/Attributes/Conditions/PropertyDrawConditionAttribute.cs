@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Watermelon
+namespace Bokka
 {
     public class PropertyConditionAttribute : BaseAttribute
     {

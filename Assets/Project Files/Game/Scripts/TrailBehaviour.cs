@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Watermelon;
+using Bokka;
 using System.Linq;
 
-namespace Watermelon.BeachRescue
+namespace Bokka.BeachRescue
 {
     public class TrailBehaviour : MonoBehaviour
     {

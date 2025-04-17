@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     public abstract class TweenBehavior<C, T> : MonoBehaviour where C : Component
     {

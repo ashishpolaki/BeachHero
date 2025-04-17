@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [RequireComponent(typeof(RectTransform))]
     public class AnchoredPositionTweenBehavior : TweenBehavior<RectTransform, Vector3>

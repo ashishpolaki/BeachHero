@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Watermelon.BeachRescue
+namespace Bokka.BeachRescue
 {
     public class Level : ScriptableObject
     {

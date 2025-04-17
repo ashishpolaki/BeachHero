@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace Watermelon.SkinStore
+namespace Bokka.SkinStore
 {
     public static class SkinStoreHelper
     {

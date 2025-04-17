@@ -7,7 +7,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using static System.Linq.Expressions.Expression;
 
-namespace Watermelon
+namespace Bokka
 {
     public class Hierarchy
     {

@@ -2,7 +2,7 @@
 using UnityEditor;
 using System.Collections.Generic;
 
-namespace Watermelon
+namespace Bokka
 {
 
     public class AboutWindow : EditorWindow
@@ -40,7 +40,7 @@ namespace Watermelon
         private string documentationUrl;
         private float defaultLength;
 
-        [MenuItem("Window/Watermelon Core/About")]
+        [MenuItem("Window/Bokka Core/About")]
         static void ShowWindow()
         {
             AboutWindow tempWindow = (AboutWindow)GetWindow(typeof(AboutWindow), true, WINDOW_TITLE);

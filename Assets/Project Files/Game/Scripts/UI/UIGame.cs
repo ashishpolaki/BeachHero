@@ -2,9 +2,9 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Watermelon.BeachRescue;
+using Bokka.BeachRescue;
 
-namespace Watermelon
+namespace Bokka
 {
     public class UIGame : UIPage
     {

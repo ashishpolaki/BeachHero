@@ -8,7 +8,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 using System.Reflection;
 
-namespace Watermelon
+namespace Bokka
 {
     [CustomEditor(typeof(PoolManager))]
     sealed internal class PoolManagerEditor : Editor
@@ -93,14 +93,14 @@ namespace Watermelon
             multiListLablesStyle.fontSize = 8;
             multiListLablesStyle.normal.textColor = labelColor;
 
-            Texture warningIconTexture = EditorCustomStyles.GetIcon("icon_warning");// AssetDatabase.LoadAssetAtPath<Texture>(@"Assets\Project Name\Watermelon Core\Plugins\Editor\Resources\UI\Sprites\Icons\icon_warning.png");
+            Texture warningIconTexture = EditorCustomStyles.GetIcon("icon_warning");// AssetDatabase.LoadAssetAtPath<Texture>(@"Assets\Project Name\Bokka Core\Plugins\Editor\Resources\UI\Sprites\Icons\icon_warning.png");
             warningIconGUIContent = new GUIContent(warningIconTexture);
 
 
-            Texture lockedTexture = EditorCustomStyles.GetIcon("icon_locked"); // AssetDatabase.LoadAssetAtPath<Texture>(@"Assets\Project Name\Watermelon Core\Plugins\Editor\Resources\UI\Sprites\Icons\icon_locked.png");
+            Texture lockedTexture = EditorCustomStyles.GetIcon("icon_locked"); // AssetDatabase.LoadAssetAtPath<Texture>(@"Assets\Project Name\Bokka Core\Plugins\Editor\Resources\UI\Sprites\Icons\icon_locked.png");
             lockedIconGUIContent = new GUIContent(lockedTexture);
 
-            Texture unlockedTexture = EditorCustomStyles.GetIcon("icon_unlocked");//AssetDatabase.LoadAssetAtPath<Texture>(@"Assets\Project Name\Watermelon Core\Plugins\Editor\Resources\UI\Sprites\Icons\icon_unlocked.png");
+            Texture unlockedTexture = EditorCustomStyles.GetIcon("icon_unlocked");//AssetDatabase.LoadAssetAtPath<Texture>(@"Assets\Project Name\Bokka Core\Plugins\Editor\Resources\UI\Sprites\Icons\icon_unlocked.png");
             unlockedIconGUIContent = new GUIContent(unlockedTexture);
 
 

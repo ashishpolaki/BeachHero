@@ -9,7 +9,7 @@ using Unity.Services.Core;
 using Unity.Services.Core.Environments;
 #endif
 
-namespace Watermelon
+namespace Bokka
 {
     public class UnityIAPWrapper : IAPWrapper
 #if MODULE_IAP
@@ -133,7 +133,7 @@ namespace Watermelon
             IAPItem item = IAPManager.GetIAPItem(product.definition.id);
             if (item != null)
             {
-                IAPManager.OnPurchaseFailed(item.ProductKeyType, (Watermelon.PurchaseFailureReason)failureReason);
+                IAPManager.OnPurchaseFailed(item.ProductKeyType, (Bokka.PurchaseFailureReason)failureReason);
             }
             else
             {
@@ -156,7 +156,7 @@ namespace Watermelon
             IAPItem item = IAPManager.GetIAPItem(product.definition.id);
             if (item != null)
             {
-                IAPManager.OnPurchaseFailed(item.ProductKeyType, (Watermelon.PurchaseFailureReason)failureDescription.reason);
+                IAPManager.OnPurchaseFailed(item.ProductKeyType, (Bokka.PurchaseFailureReason)failureDescription.reason);
             }
             else
             {

@@ -1,4 +1,4 @@
-﻿namespace Watermelon
+﻿namespace Bokka
 {
     public abstract class BaseSaveWrapper
     {

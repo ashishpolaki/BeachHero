@@ -8,7 +8,7 @@ using System.Text;
 using System.IO;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     public class EnumObjectsList
     {
@@ -453,7 +453,7 @@ namespace Watermelon
         private void UpdateEnumFile()
         {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.Append("namespace Watermelon");
+            stringBuilder.Append("namespace Bokka");
             stringBuilder.AppendLine();
             stringBuilder.Append("{");
             stringBuilder.AppendLine();

@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [CustomPropertyDrawer(typeof(CurrencyPrice))]
     public class CurrencyPricePropertyDrawer : UnityEditor.PropertyDrawer

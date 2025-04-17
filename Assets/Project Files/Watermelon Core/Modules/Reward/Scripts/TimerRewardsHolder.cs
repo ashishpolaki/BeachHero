@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Watermelon.IAPStore
+namespace Bokka.IAPStore
 {
     public sealed class TimerRewardsHolder : RewardsHolder
     {

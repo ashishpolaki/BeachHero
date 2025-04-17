@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     public static class TextureExtensions
     {

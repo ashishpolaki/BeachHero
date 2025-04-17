@@ -1,8 +1,8 @@
 using UnityEngine;
-using Watermelon;
+using Bokka;
 using UnityEditor;
 
-namespace Watermelon
+namespace Bokka
 {
     public static class SaveActionsMenu
     {

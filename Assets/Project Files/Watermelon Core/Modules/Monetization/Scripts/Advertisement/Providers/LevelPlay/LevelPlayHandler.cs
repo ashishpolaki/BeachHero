@@ -3,7 +3,7 @@
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
 #if MODULE_LEVELPLAY
     public class LevelPlayHandler : AdProviderHandler

@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [CustomEditor(typeof(IAPSettings))]
     public class IAPSettingsEditor : CustomInspector
@@ -324,7 +324,7 @@ namespace Watermelon
             private void RegenerateEnum()
             {
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                sb.AppendLine("namespace Watermelon");
+                sb.AppendLine("namespace Bokka");
                 sb.AppendLine("{");
                 sb.AppendLine("    public enum ProductKeyType");
                 sb.AppendLine("    {");

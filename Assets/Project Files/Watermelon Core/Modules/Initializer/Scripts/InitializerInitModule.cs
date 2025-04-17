@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [RegisterModule("Initializer Settings", true, order: 999)]
     public class InitializerInitModule : InitModule

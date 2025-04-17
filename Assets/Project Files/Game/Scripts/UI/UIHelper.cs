@@ -1,7 +1,7 @@
 using UnityEngine;
-using Watermelon;
+using Bokka;
 
-namespace Watermelon.BeachRescue
+namespace Bokka.BeachRescue
 {
     public static class UIHelper
     {

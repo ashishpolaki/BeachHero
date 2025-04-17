@@ -1,4 +1,4 @@
-﻿namespace Watermelon
+﻿namespace Bokka
 {
     [System.Serializable]
     public class SkinGlobalSave : ISaveObject

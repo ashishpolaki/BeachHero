@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [CreateAssetMenu(fileName = "Currencies Database", menuName = "Data/Core/Currencies Database")]
     public class CurrenciesDatabase : ScriptableObject

@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     public sealed class HelpButtonGUIRenderer : GUIRenderer
     {

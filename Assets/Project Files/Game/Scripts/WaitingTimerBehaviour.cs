@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-namespace Watermelon.BeachRescue
+namespace Bokka.BeachRescue
 {
     public class WaitingTimerBehaviour : MonoBehaviour
     {

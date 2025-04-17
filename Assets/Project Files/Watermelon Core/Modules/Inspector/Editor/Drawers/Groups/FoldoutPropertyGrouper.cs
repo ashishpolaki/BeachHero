@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
 
-namespace Watermelon
+namespace Bokka
 {
     [PropertyGrouper(typeof(FoldoutAttribute))]
     public class FoldoutPropertyGrouper : PropertyGrouper

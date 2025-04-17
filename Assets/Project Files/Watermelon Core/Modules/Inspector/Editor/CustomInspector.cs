@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using Editor = UnityEditor.Editor;
 
-namespace Watermelon
+namespace Bokka
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(MonoBehaviour), true)]

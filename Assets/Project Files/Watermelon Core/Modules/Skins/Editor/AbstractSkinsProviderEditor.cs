@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [CustomEditor(typeof(AbstractSkinsDatabase), true)]
     public class AbstractSkinsProviderEditor : CustomInspector

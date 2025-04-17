@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-namespace Watermelon
+namespace Bokka
 {
     [RequireComponent(typeof(Button), typeof(BoxCollider))]
     public class WorldSpaceButton : MonoBehaviour

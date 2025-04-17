@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     /// <example>
     /// [CreateAssetMenu(fileName = "Type Skins Database", menuName = "Data/Skins/Type Skins Database")]

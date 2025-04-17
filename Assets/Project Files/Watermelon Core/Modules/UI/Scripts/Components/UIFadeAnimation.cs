@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Watermelon
+namespace Bokka
 {
     [System.Serializable]
     public class UIFadeAnimation

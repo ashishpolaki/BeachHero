@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Watermelon
+namespace Bokka
 {
     [RequireComponent(typeof(Canvas), typeof(CanvasScaler))]
     public class SystemMessage : MonoBehaviour

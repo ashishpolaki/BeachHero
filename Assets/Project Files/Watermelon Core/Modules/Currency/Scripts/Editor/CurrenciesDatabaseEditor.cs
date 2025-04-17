@@ -12,7 +12,7 @@ using UnityEngine.U2D;
 using TMPro;
 #endif
 
-namespace Watermelon
+namespace Bokka
 {
     [CustomEditor(typeof(CurrenciesDatabase))]
     public class CurrenciesDatabaseEditor : CustomInspector

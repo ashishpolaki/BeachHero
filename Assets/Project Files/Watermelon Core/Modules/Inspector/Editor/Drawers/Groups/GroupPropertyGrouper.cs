@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
 
-namespace Watermelon
+namespace Bokka
 {
     [PropertyGrouper(typeof(GroupAttribute))]
     public class GroupPropertyGrouper : PropertyGrouper

@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Advertisements;
 #endif
 
-namespace Watermelon
+namespace Bokka
 {
 #if MODULE_UNITYADS
     /// <summary>

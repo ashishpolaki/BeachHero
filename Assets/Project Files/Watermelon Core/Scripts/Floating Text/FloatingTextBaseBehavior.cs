@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     public abstract class FloatingTextBaseBehavior : MonoBehaviour
     {

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Watermelon
+namespace Bokka
 {
     [RequireComponent(typeof(Graphic))]
     public class ColorTweenBehavior : TweenBehavior<Graphic, Color>

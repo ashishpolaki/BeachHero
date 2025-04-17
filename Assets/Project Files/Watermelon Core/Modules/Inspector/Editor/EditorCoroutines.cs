@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 
-namespace Watermelon
+namespace Bokka
 {
     public static class EditorCoroutines
     {

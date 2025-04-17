@@ -4,7 +4,7 @@ using System.Reflection;
 using System;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     public static class DefinesSettings
     {
@@ -25,11 +25,11 @@ namespace Watermelon
             new RegisteredDefine("MODULE_IDFA", "Unity.Advertisement.IosSupport.ATTrackingStatusBinding", new string[] { "Packages/com.unity.ads.ios-support/Runtime/iOSTransparency/ATTrackingStatusBinding.cs" }),
 
             // Core
-            new RegisteredDefine("MODULE_MONETIZATION", "Watermelon.Monetization", new string[] { Project.PROJECT_MODULES + "Monetization/Scripts/Monetization.cs" }),
+            new RegisteredDefine("MODULE_MONETIZATION", "Bokka.Monetization", new string[] { Project.PROJECT_MODULES + "Monetization/Scripts/Monetization.cs" }),
             new RegisteredDefine("MODULE_IAP", "UnityEngine.Purchasing.UnityPurchasing", new string[] { "Packages/com.unity.purchasing/Runtime/Purchasing/UnityPurchasing.cs" }),
-            new RegisteredDefine("MODULE_POWERUPS", "Watermelon.PUController", new string[] { Project.PROJECT_MODULES + "Power Ups System/Scripts/PUController.cs" }),
-            new RegisteredDefine("MODULE_HAPTIC", "Watermelon.Haptic", new string[] { Project.PROJECT_MODULES + "Haptic/Scripts/Haptic.cs" }),
-            new RegisteredDefine("MODULE_CURVE", "Watermelon.CurvatureManager", new string[] { Project.PROJECT_MODULES + "Curve/CurvatureManager.cs" }),
+            new RegisteredDefine("MODULE_POWERUPS", "Bokka.PUController", new string[] { Project.PROJECT_MODULES + "Power Ups System/Scripts/PUController.cs" }),
+            new RegisteredDefine("MODULE_HAPTIC", "Bokka.Haptic", new string[] { Project.PROJECT_MODULES + "Haptic/Scripts/Haptic.cs" }),
+            new RegisteredDefine("MODULE_CURVE", "Bokka.CurvatureManager", new string[] { Project.PROJECT_MODULES + "Curve/CurvatureManager.cs" }),
         };
 
         public static List<RegisteredDefine> GetDynamicDefines()

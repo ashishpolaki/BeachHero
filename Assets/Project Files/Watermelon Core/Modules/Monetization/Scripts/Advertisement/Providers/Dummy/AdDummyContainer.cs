@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [System.Serializable]
     public class AdDummyContainer

@@ -3,7 +3,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Watermelon.BeachRescue
+namespace Bokka.BeachRescue
 {
 
     // UI Module v0.9.0

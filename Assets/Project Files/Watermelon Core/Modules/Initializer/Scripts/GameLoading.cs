@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 using System;
 
-namespace Watermelon
+namespace Bokka
 {
     public static class GameLoading
     {

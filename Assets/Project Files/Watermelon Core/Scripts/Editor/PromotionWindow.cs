@@ -6,7 +6,7 @@ using System.Runtime.Serialization.Json;
 using System.Xml.Linq;
 using System.Xml.XPath;
 
-namespace Watermelon
+namespace Bokka
 {
     public class PromotionWindow : EditorWindow
     {
@@ -29,7 +29,7 @@ namespace Watermelon
         [InitializeOnLoadMethod]
         public static void StartupCheck()
         {
-            if (!CustomCoreSettings.ShowWatermelonPromotions) return;
+            if (!CustomCoreSettings.ShowBokkaPromotions) return;
 
             string storedMD5 = EditorPrefs.GetString(PREFS_KEY, "");
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     public class ParticlesController : MonoBehaviour
     {

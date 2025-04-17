@@ -1,4 +1,4 @@
-﻿namespace Watermelon
+﻿namespace Bokka
 {
     public enum ProductKeyType
     {

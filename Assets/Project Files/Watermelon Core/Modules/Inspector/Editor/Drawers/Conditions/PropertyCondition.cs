@@ -2,7 +2,7 @@
 using System.Reflection;
 using System;
 
-namespace Watermelon
+namespace Bokka
 {
     public abstract class PropertyCondition
     {

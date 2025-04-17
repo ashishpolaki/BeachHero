@@ -6,10 +6,10 @@ using UnityEditor.Overlays;
 using UnityEditor.Toolbars;
 using System.IO;
 
-namespace Watermelon
+namespace Bokka
 {
     [Overlay(typeof(SceneView), "Scenes Toolbar")]
-    [Icon("Assets/Project Files/Watermelon Core/Extended Editor/Icons/icon_settings.png")]
+    [Icon("Assets/Project Files/Bokka Core/Extended Editor/Icons/icon_settings.png")]
     public class EditorScenesToolbar : ToolbarOverlay
     {
         EditorScenesToolbar() : base(ScenesDropwdown.id)

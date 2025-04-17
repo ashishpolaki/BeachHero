@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     /// <summary>
     /// ParticleCase is responsible for managing individual particle instances, controlling their lifecycle,

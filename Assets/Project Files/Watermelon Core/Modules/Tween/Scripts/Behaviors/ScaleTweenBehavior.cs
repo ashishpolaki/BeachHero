@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [RequireComponent(typeof(Transform))]
     public class ScaleTweenBehavior : TweenBehavior<Transform, Vector3>

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Watermelon.BeachRescue
+namespace Bokka.BeachRescue
 {
     [System.Serializable]
     public class MovingObstacleSave

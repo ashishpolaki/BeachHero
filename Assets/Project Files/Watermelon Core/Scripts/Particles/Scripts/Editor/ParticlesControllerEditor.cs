@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [CustomEditor(typeof(ParticlesController))]
     public class ParticlesControllerEditor : CustomInspector

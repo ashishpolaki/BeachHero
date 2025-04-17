@@ -4,7 +4,7 @@ using UnityEditor;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Watermelon
+namespace Bokka
 {
     public sealed class SerializedArrayGUIRenderer : SerializedPropertyGUIRenderer
     {

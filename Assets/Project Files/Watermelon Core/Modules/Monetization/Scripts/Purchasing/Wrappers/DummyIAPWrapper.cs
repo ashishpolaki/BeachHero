@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     public class DummyIAPWrapper : IAPWrapper
     {

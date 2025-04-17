@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-namespace Watermelon
+namespace Bokka
 {
     [System.Serializable]
     public class FloatingCloud

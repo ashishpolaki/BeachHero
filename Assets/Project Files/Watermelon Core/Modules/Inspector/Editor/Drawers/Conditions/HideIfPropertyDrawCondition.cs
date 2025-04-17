@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace Watermelon
+namespace Bokka
 {
     [PropertyCondition(typeof(HideIfAttribute))]
     public class HideIfPropertyDrawCondition : PropertyCondition

@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [InitializeOnLoad]
     public static class EditorCustomHierarchy

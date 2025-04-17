@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace Watermelon
+namespace Bokka
 {
     public class SerializedPropertyGUIRenderer : GUIRenderer
     {

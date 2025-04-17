@@ -7,7 +7,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Watermelon
+namespace Bokka
 {
     [InitializeOnLoad]
     public static class SceneSavingHandler

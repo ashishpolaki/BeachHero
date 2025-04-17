@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace Watermelon
+namespace Bokka
 {
     [System.Serializable]
     public class NotchSaveArea

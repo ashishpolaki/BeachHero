@@ -4,7 +4,7 @@ using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Watermelon
+namespace Bokka
 {
     [DefaultExecutionOrder(-999)]
     public class Initializer : MonoBehaviour

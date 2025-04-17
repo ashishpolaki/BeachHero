@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace Watermelon
+namespace Bokka
 {
     public static class CorePreparationTool
     {
@@ -30,7 +30,7 @@ namespace Watermelon
             "/Game/Textures"
         };
 
-        [MenuItem("Window/Watermelon Core/Prepare Project", priority = 900)]
+        [MenuItem("Window/Bokka Core/Prepare Project", priority = 900)]
         private static void CreateStructure()
         {
             try

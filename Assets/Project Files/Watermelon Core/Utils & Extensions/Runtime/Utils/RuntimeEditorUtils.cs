@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEditorInternal;
 #endif
 
-namespace Watermelon
+namespace Bokka
 {
     public static class RuntimeEditorUtils
     {

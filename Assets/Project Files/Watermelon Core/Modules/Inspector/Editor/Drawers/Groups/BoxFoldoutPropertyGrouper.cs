@@ -1,4 +1,4 @@
-﻿namespace Watermelon
+﻿namespace Bokka
 {
     [PropertyGrouper(typeof(BoxFoldoutAttribute))]
     public class BoxFoldoutPropertyGrouper : PropertyGrouper

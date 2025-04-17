@@ -4,7 +4,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [PropertyCondition(typeof(ShowIfAttribute))]
     public class ShowIfPropertyDrawCondition : PropertyCondition

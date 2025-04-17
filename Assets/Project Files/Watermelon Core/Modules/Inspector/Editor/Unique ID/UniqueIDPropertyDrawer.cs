@@ -2,7 +2,7 @@
 using UnityEditor.SceneManagement;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
 
     [CustomPropertyDrawer(typeof(UniqueIDAttribute), true)]

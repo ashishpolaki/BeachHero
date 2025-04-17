@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [RequireComponent(typeof(AudioSource))]
     public class MusicSource : MonoBehaviour

@@ -4,9 +4,9 @@ using System.Collections;
 using System;
 using System.Collections.Generic;
 using TMPro;
-using Watermelon.BeachRescue;
+using Bokka.BeachRescue;
 
-namespace Watermelon
+namespace Bokka
 {
     public class UIComplete : UIPage
     {

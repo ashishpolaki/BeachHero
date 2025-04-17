@@ -1,10 +1,10 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Watermelon.BeachRescue;
-using Watermelon.IAPStore;
-using Watermelon.SkinStore;
+using Bokka.BeachRescue;
+using Bokka.IAPStore;
+using Bokka.SkinStore;
 
-namespace Watermelon
+namespace Bokka
 {
     public class UIMainMenu : UIPage, IPointerDownHandler
     {

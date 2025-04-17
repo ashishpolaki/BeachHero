@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [RegisterModule("Monetization")]
     public class MonetizationInitModule : InitModule

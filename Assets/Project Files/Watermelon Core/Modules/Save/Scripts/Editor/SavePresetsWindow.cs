@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEditorInternal;
 using System.Linq;
 
-namespace Watermelon
+namespace Bokka
 {
     public class SavePresetsWindow : EditorWindow
     {

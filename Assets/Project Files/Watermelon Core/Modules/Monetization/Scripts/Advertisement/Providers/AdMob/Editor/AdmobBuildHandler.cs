@@ -5,7 +5,7 @@ using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     public class AdmobBuildHandler : IPreprocessBuildWithReport
     {

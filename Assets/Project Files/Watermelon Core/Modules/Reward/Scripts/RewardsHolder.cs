@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-namespace Watermelon
+namespace Bokka
 {
     public abstract class RewardsHolder : MonoBehaviour
     {

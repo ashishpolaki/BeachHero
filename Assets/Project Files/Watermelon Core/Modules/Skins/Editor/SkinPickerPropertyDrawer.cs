@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Watermelon
+namespace Bokka
 {
     [CustomPropertyDrawer(typeof(SkinPickerAttribute))]
     public class SkinPickerPropertyDrawer : PropertyDrawer, System.IDisposable

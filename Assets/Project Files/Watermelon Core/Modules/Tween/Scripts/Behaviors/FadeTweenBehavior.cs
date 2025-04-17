@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [RequireComponent(typeof(CanvasGroup))]
     public class FadeTweenBehavior : TweenBehavior<CanvasGroup, float>

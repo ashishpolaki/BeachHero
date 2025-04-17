@@ -2,7 +2,7 @@ using System;
 using UnityEditor;
 using UnityEngine;
 
-namespace Watermelon.List
+namespace Bokka.List
 {
     [Serializable]
     public class CustomListStyle

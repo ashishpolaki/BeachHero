@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 
-namespace Watermelon
+namespace Bokka
 {
     [Define("MODULE_ADMOB", "GoogleMobileAds.Api.MobileAds", new string[] { "Assets/GoogleMobileAds/GoogleMobileAds.dll" })]
     [Define("MODULE_UNITYADS", "UnityEngine.Advertisements.Advertisement", new string[] { "Packages/com.unity.ads/Runtime/Advertisement/Advertisement.cs" })]

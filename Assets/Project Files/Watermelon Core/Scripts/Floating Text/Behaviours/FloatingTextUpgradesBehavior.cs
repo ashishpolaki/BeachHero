@@ -3,7 +3,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Watermelon
+namespace Bokka
 {
     public class FloatingTextUpgradesBehavior : FloatingTextBaseBehavior
     {

@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [CustomPropertyDrawer(typeof(ToggleAttribute))]
     public class TogglePropertyDrawer : PropertyDrawer

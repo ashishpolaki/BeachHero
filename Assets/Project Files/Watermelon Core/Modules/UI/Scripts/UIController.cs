@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Watermelon
+namespace Bokka
 {
     public class UIController : MonoBehaviour
     {
@@ -220,11 +220,11 @@ namespace Watermelon
 
 // Changelog
 // v 1.2.1
-// • Added Editor script that automatically configure CanvasScaler
+// ï¿½ Added Editor script that automatically configure CanvasScaler
 // v 1.2
-// • Added global overlay
+// ï¿½ Added global overlay
 // v 1.1
-// • Added popup callbacks and methods to handle when a custom window is opened
-// • RectTransform can be added to NotchSaveArea using NotchSaveArea.RegisterRectTransform method
+// ï¿½ Added popup callbacks and methods to handle when a custom window is opened
+// ï¿½ RectTransform can be added to NotchSaveArea using NotchSaveArea.RegisterRectTransform method
 // v 1.0
-// • Basic logic
+// ï¿½ Basic logic

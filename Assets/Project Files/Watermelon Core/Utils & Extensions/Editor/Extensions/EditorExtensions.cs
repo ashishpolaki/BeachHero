@@ -8,7 +8,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Watermelon
+namespace Bokka
 {
     public static class EditorExtensions
     {

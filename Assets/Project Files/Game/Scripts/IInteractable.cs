@@ -1,4 +1,4 @@
-namespace Watermelon.BeachRescue
+namespace Bokka.BeachRescue
 {
     public interface IInteractable
     {

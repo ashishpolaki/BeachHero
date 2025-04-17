@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Collections;
 
-namespace Watermelon
+namespace Bokka
 {
     public class DefinesWindow : EditorWindow
     {      

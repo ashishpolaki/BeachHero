@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [RegisterModule("Currencies", false)]
     public class CurrencyInitModule : InitModule

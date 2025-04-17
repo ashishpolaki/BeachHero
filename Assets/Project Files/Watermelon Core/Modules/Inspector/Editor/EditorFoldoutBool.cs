@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
 
-namespace Watermelon
+namespace Bokka
 {
     public class EditorFoldoutBool
     {

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public class ToggleAttribute : PropertyAttribute

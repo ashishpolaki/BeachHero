@@ -3,7 +3,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     public class FloatingTextBehavior : FloatingTextBaseBehavior
     {

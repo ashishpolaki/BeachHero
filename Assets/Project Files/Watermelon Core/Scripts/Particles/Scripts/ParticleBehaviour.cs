@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     /// <summary>
     /// Base class for defining custom behavior for particles.

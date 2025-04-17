@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using static Watermelon.BeachRescue.BoatCollisionDetector;
 
-namespace Watermelon.BeachRescue
+namespace Bokka.BeachRescue
 {
     public class MovingObstacleBehaviour : MonoBehaviour, IInteractable
     {

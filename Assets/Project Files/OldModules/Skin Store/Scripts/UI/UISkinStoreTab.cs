@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Watermelon.SkinStore
+namespace Bokka.SkinStore
 {
     [RequireComponent(typeof(Button))]
     public class UISkinStoreTab : MonoBehaviour

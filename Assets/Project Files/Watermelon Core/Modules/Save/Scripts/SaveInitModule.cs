@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Watermelon
+namespace Bokka
 {
     [RegisterModule("Save Controller", core: true, order: 900)]
     public class SaveInitModule : InitModule

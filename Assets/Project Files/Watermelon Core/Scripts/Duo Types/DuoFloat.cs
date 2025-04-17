@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Runtime.CompilerServices;
 
-namespace Watermelon
+namespace Bokka
 {
     [System.Serializable]
     public class DuoFloat

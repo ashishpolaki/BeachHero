@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Watermelon
+namespace Bokka
 {
     public static class CustomAttributesDatabase
     {

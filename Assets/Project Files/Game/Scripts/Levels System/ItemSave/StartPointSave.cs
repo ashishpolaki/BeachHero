@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Watermelon;
+using Bokka;
 
-namespace Watermelon.BeachRescue
+namespace Bokka.BeachRescue
 {
     public class StartPointSave : MonoBehaviour
     {
