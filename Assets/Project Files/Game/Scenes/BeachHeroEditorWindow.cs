@@ -1,29 +1,40 @@
 ﻿using Bokka.BeachRescue;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class BeachHeroEditorWindow : EditorWindow
 {
-    private static EditorWindow window;
     private static BeachHeroEditorWindow instance;
-    private SerializedObject levelsDatabaseSerializedObject;
-    private SerializedProperty levelsList_SerializedProperty;
-    private SerializedProperty items_SerializedProperty;
+    private static EditorWindow window;
 
-    private static readonly int DEFAULT_WINDOW_MIN_SIZE = 200;
+    #region Editor Window 
+    private static readonly int DEFAULT_WINDOW_MIN_SIZE = 600;
     private string assetPath = "Assets/Project Files/Data/Level System/Levels Database.asset";
-    private const string LEVELS_PROPERTY_NAME = "levelsList";
-    private const string ITEMS_PROPERTY_NAME = "items";
-    private int selectedTab = 0;
-    private int selectedLevelIndex = 0;
+    #endregion
 
+    #region Tabs
+    private SerializedObject levelsDatabaseSerializedObject;
+    private int selectedTab = 0;
     private string[] tabTitles = { "Levels", "Items" };
     private GUIStyle tabStyle;
     private GUIStyle boxStyle;
+    #endregion
+
+    #region LevelsTab
+    private float levelsTab_DragAreaWidth = 5f; // Width of the drag area
+    private const string LEVELS_PROPERTY_NAME = "levelsList";
+    private SerializedProperty levelsList_SerializedProperty;
+    private int selectedLevelIndex = 0;
     private float levelsTab_LeftPanelWidth = 240f;
     private bool levelsTab_isResizing = false;
     private Vector2 levelsTab_LeftPanelscrollPos;
+    #endregion
+
+    #region ItemsTab
+    private SerializedProperty items_SerializedProperty;
+    private const string ITEMS_PROPERTY_NAME = "items";
+    #endregion
+
 
     [MenuItem("Tools/BeachHero LevelEditor Window")]
     private static void ShowWindow()
@@ -33,6 +44,7 @@ public class BeachHeroEditorWindow : EditorWindow
         window.Show();
     }
 
+    #region Unity methods
     protected virtual void OnEnable()
     {
         instance = this;
@@ -44,18 +56,14 @@ public class BeachHeroEditorWindow : EditorWindow
             ReadLevelDatabaseFields();
         }
     }
-
-    private void ReadLevelDatabaseFields()
-    {
-        levelsList_SerializedProperty = levelsDatabaseSerializedObject.FindProperty(LEVELS_PROPERTY_NAME);
-        items_SerializedProperty = levelsDatabaseSerializedObject.FindProperty(ITEMS_PROPERTY_NAME);
-    }
-
     private void OnGUI()
     {
-        DrawToolBar();
+        DrawTabs();
     }
-    private void DrawToolBar()
+    #endregion
+
+    #region Tab Methods
+    private void DrawTabs()
     {
         // Initialize styles
         tabStyle = new GUIStyle(EditorStyles.miniButtonMid); // Better than toolbarButton for height control
@@ -94,22 +102,14 @@ public class BeachHeroEditorWindow : EditorWindow
 
         EditorGUILayout.EndVertical();
     }
-
-    // Helper method to create a texture for the button background
-    private Texture2D MakeTex(int width, int height, Color color)
+    private void ReadLevelDatabaseFields()
     {
-        Texture2D texture = new Texture2D(width, height);
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
-            {
-                texture.SetPixel(x, y, color);
-            }
-        }
-        texture.Apply();
-        return texture;
+        levelsList_SerializedProperty = levelsDatabaseSerializedObject.FindProperty(LEVELS_PROPERTY_NAME);
+        items_SerializedProperty = levelsDatabaseSerializedObject.FindProperty(ITEMS_PROPERTY_NAME);
     }
-    private float dragAreaWidth = 5f; // Width of the drag area
+    #endregion
+
+    #region Level Tab
     private void DrawLevelsTab()
     {
         GUILayout.BeginHorizontal();
@@ -153,7 +153,7 @@ public class BeachHeroEditorWindow : EditorWindow
         // Calculate drag handler area height to match left panel height
         Rect lastRect = GUILayoutUtility.GetLastRect();
         float dragHeight = lastRect.yMax; // End of the left panel
-        Rect dragArea = new Rect(lastRect.xMax, lastRect.yMin, dragAreaWidth, dragHeight - lastRect.yMin);
+        Rect dragArea = new Rect(lastRect.xMax, lastRect.yMin, levelsTab_DragAreaWidth, dragHeight - lastRect.yMin);
         EditorGUIUtility.AddCursorRect(dragArea, MouseCursor.ResizeHorizontal);
         EditorGUI.DrawRect(dragArea, Color.black); // Dark gray (Optional)
 
@@ -185,7 +185,7 @@ public class BeachHeroEditorWindow : EditorWindow
         GUILayout.BeginVertical("box");
         float previewSize = 100f;
         float spacing = 10f;
-        float rightPanelContentWidth = EditorGUIUtility.currentViewWidth - levelsTab_LeftPanelWidth - dragAreaWidth; // Account for padding
+        float rightPanelContentWidth = EditorGUIUtility.currentViewWidth - levelsTab_LeftPanelWidth - levelsTab_DragAreaWidth; // Account for padding
         int itemsPerRow = Mathf.Max(1, Mathf.FloorToInt((rightPanelContentWidth + spacing) / (previewSize + spacing)));
 
         int count = items_SerializedProperty.arraySize;
@@ -226,9 +226,27 @@ public class BeachHeroEditorWindow : EditorWindow
 
         GUILayout.EndHorizontal();
     }
+    // Helper method to create a texture for the button background
+    private Texture2D MakeTex(int width, int height, Color color)
+    {
+        Texture2D texture = new Texture2D(width, height);
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                texture.SetPixel(x, y, color);
+            }
+        }
+        texture.Apply();
+        return texture;
+    }
 
+    #endregion
+
+    #region Item Tab
     private void DrawItemsTab()
     {
 
     }
+    #endregion
 }
