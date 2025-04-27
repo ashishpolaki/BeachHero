@@ -38,7 +38,7 @@ namespace Bokka
             this.cloudRadius = DEFAULT_RADIUS;
 
             GameObject tempPrefab = new GameObject(name);
-            tempPrefab.hideFlags = HideFlags.HideInHierarchy;
+            // tempPrefab.hideFlags = HideFlags.HideInHierarchy;
 
             GameObject.DontDestroyOnLoad(tempPrefab);
 

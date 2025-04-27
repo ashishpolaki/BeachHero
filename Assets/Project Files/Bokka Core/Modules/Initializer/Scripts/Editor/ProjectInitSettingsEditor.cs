@@ -385,7 +385,7 @@ namespace Bokka
 
             InitModule initModule = (InitModule)ScriptableObject.CreateInstance(moduleType);
             initModule.name = moduleType.ToString();
-            initModule.hideFlags = HideFlags.HideInHierarchy; 
+            // initModule.hideFlags = HideFlags.HideInHierarchy; 
             
             AssetDatabase.AddObjectToAsset(initModule, target);
 
@@ -457,7 +457,7 @@ namespace Bokka
                 // Create init module
                 InitModule initModule = (InitModule)ScriptableObject.CreateInstance(requiredModule.Type);
                 initModule.name = requiredModule.Type.ToString();
-                initModule.hideFlags = HideFlags.HideInHierarchy;
+                // initModule.hideFlags = HideFlags.HideInHierarchy;
 
                 AssetDatabase.AddObjectToAsset(initModule, projectInitSettings);
 

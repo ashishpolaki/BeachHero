@@ -27,7 +27,7 @@ namespace Bokka
             Serializer.Init();
 
             GameObject saveCallbackReciever = new GameObject("[SAVE CALLBACK RECIEVER]");
-            saveCallbackReciever.hideFlags = HideFlags.HideInHierarchy;
+            // saveCallbackReciever.hideFlags = HideFlags.HideInHierarchy;
 
             GameObject.DontDestroyOnLoad(saveCallbackReciever);
 
