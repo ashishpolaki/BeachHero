@@ -13,10 +13,14 @@ namespace BeachHero
     public class PoolManager : MonoBehaviour
     {
         public static PoolManager Instance { get; private set; }
-        [SerializeField] private PoolSettings[] poolSettings;
 
-        private Dictionary<Type, Queue<MonoBehaviour>> _pools = new Dictionary<Type, Queue<MonoBehaviour>>();
-        public bool isEnableCharacter;
+        #region Inspector Variables
+        [SerializeField] private PoolSettings[] poolSettings;
+        #endregion
+
+        #region Private Variables
+        private Dictionary<Type, Queue<MonoBehaviour>> _poolDictionary = new Dictionary<Type, Queue<MonoBehaviour>>();
+        #endregion
 
         #region Unity Methods
         private void Awake()
@@ -34,26 +38,7 @@ namespace BeachHero
         }
         private void Start()
         {
-            LoadObjects();
-        }
-        private void Update()
-        {
-            if (isEnableCharacter)
-            {
-                isEnableCharacter = false;
-
-                CharacterHero character = GetPoolObject<CharacterHero>();
-
-                if (character != null)
-                {
-                    character.gameObject.SetActive(true);
-                    Debug.Log("Got object from pool.");
-                }
-                else
-                {
-                    Debug.LogWarning("No available objects in the pool.");
-                }
-            }
+              LoadObjects();
         }
         #endregion
 
@@ -70,16 +55,15 @@ namespace BeachHero
         {
             var type = prefab.GetType();
 
-            if (!_pools.ContainsKey(type))
+            if (!_poolDictionary.ContainsKey(type))
             {
-                _pools[type] = new Queue<MonoBehaviour>();
-
-                for (int i = 0; i < count; i++)
-                {
-                    var obj = Instantiate(prefab, parent);
-                    obj.gameObject.SetActive(false);
-                    _pools[type].Enqueue(obj);
-                }
+                _poolDictionary[type] = new Queue<MonoBehaviour>();
+            }
+            for (int i = 0; i < count; i++)
+            {
+                var obj = Instantiate(prefab, parent);
+                obj.gameObject.SetActive(false);
+                _poolDictionary[type].Enqueue(obj);
             }
         }
 
@@ -88,13 +72,27 @@ namespace BeachHero
         {
             var type = typeof(T);
 
-            if (_pools.ContainsKey(type) && _pools[type].Count > 0)
+            if (!_poolDictionary.ContainsKey(type))
             {
-                var obj = (T)_pools[type].Dequeue();
+                _poolDictionary[type] = new Queue<MonoBehaviour>();
+            }
+            if (_poolDictionary[type].Count == 0)
+            {
+                foreach (var poolSetting in poolSettings)
+                {
+                    if (poolSetting.Prefab.GetComponent<T>().GetType() == typeof(T))
+                    {
+                        InitializePool(poolSetting.Prefab.GetComponent<MonoBehaviour>(), poolSetting.Count);
+                        break;
+                    }
+                }
+            }
+            if (_poolDictionary.ContainsKey(type) && _poolDictionary[type].Count > 0)
+            {
+                var obj = (T)_poolDictionary[type].Dequeue();
                 return obj;
             }
 
-            Debug.LogWarning($"No objects available in the pool for type {type.Name}.");
             return null;
         }
 
@@ -103,14 +101,14 @@ namespace BeachHero
         {
             var type = typeof(T);
 
-            if (!_pools.ContainsKey(type))
+            if (!_poolDictionary.ContainsKey(type))
             {
                 Debug.LogWarning($"No pool exists for type {type.Name}. Creating a new pool.");
-                _pools[type] = new Queue<MonoBehaviour>();
+                _poolDictionary[type] = new Queue<MonoBehaviour>();
             }
 
             obj.gameObject.SetActive(false);
-            _pools[type].Enqueue(obj);
+            _poolDictionary[type].Enqueue(obj);
         }
     }
 }
