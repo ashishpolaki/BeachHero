@@ -228,7 +228,7 @@ namespace Bokka
                 material.SetTexture(ShaderUtilities.ID_MainTex, spriteAsset.spriteSheet);
 
                 spriteAsset.material = material;
-                material.hideFlags = HideFlags.HideInHierarchy;
+                // material.hideFlags = HideFlags.HideInHierarchy;
                 AssetDatabase.AddObjectToAsset(material, spriteAsset);
             }
 

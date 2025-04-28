@@ -141,7 +141,7 @@ namespace Bokka
                 editors[i] = (CustomInspector)cachedEditor;
                 editors[i].SetScriptFieldState(false);
 
-                rewards[i].hideFlags = HideFlags.HideInInspector;
+                // rewards[i].hideFlags = HideFlags.HideInInspector;
             }
 
         }
@@ -290,7 +290,7 @@ namespace Bokka
             RewardsHolder rewardsHolder = (RewardsHolder)target;
 
             Component component = Undo.AddComponent(rewardsHolder.gameObject, componentType);
-            component.hideFlags = HideFlags.HideInInspector;
+            // component.hideFlags = HideFlags.HideInInspector;
 
             UpdateOffers();
 
