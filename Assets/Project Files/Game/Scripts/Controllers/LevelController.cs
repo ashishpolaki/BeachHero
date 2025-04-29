@@ -8,7 +8,11 @@ namespace Bokka.BeachRescue
     public class LevelController : MonoBehaviour
     {
         private static LevelController instance;
-        public static LevelController Instance { get => instance; }
+
+        public static LevelController Instance
+        {
+            get => instance;
+        }
 
         public static readonly int WAITING_LEVELS_AMOUNT = 5;
 
@@ -22,9 +26,13 @@ namespace Bokka.BeachRescue
         [SerializeField] LayerMask startPointLayer;
 
         public static Level CurrentLevel { get; private set; }
+
         public static float WaitingTimeLength => CurrentLevel.MaxWaitingDuration;
+
         public static int TotalCoinsPerLevel { get; private set; }
+
         public static int CoinsPickedAmount { get; private set; }
+
         public static bool IsPlaying { get; set; }
 
         private BoatBehaviour boatBehaviour;
@@ -59,6 +67,8 @@ namespace Bokka.BeachRescue
 
         private UISkinStore uiStore;
 
+        private InputManager inputManager;
+
         private int CharactersAmount => charactersList.Count;
 
         public void Init()
@@ -89,12 +99,75 @@ namespace Bokka.BeachRescue
             uiGame = UIController.GetPage<UIGame>();
             uiMainMenu = UIController.GetPage<UIMainMenu>();
 
+            inputManager = GetComponent<InputManager>();
+
+            inputManager.OnMouseClickDown += OnMouseClickDown;
+            inputManager.OnMouseClickUp += OnMouseClickUp;
+
             SkinsController.SkinSelected += OnSkinSelected;
         }
 
+        private bool mouseClicked = false;
+
+        private void OnMouseClickDown(Vector2 obj)
+        {
+            if (!IsPlaying)
+            {
+                return;
+            }
+            mouseClicked = true;
+            skipTouch = true;
+            simulateFirstTouch = false;
+            RaycastHit hit;
+            Ray ray = cameraRef.ScreenPointToRay(InputManager.MousePosition);
+
+            StartPointBehaviour startPoint = null;
+
+            if (Physics.Raycast(ray, out hit, 1000f, startPointLayer))
+            {
+                startPoint = hit.collider.GetComponent<StartPointBehaviour>();
+            }
+
+            if (startPoint == null && Physics.Raycast(ray, out hit, 1000f, boatLayer) && boatBehaviour.transform.position == CurrentLevel.StartPoint)
+            {
+                startPoint = this.startPoint;
+            }
+
+            if (startPoint != null)
+            {
+                resetTrail = true;
+                skipTouch = false;
+                lastStartPointPosition = hit.collider.gameObject.transform.position;
+
+                StopSimulation(true);
+
+                if (UIController.GetPage<UIMainMenu>().IsPageDisplayed)
+                {
+                    UIController.HidePage<UIMainMenu>();
+                }
+
+                uiGame.HideTutorial();
+            }
+        }
+
+        private void OnMouseClickUp(Vector2 obj)
+        {
+            if (!IsPlaying)
+            {
+                return;
+            }
+            mouseClicked = false;
+
+            if (!skipTouch)
+            {
+                OnPathDrawn();
+            }
+        }
+
+
         private void OnDestroy()
         {
-            if(itemsPoolsDict != null)
+            if (itemsPoolsDict != null)
             {
                 foreach (IPool item in itemsPoolsDict.Values)
                 {
@@ -104,6 +177,9 @@ namespace Bokka.BeachRescue
                     }
                 }
             }
+
+            inputManager.OnMouseClickDown -= OnMouseClickDown;
+            inputManager.OnMouseClickUp -= OnMouseClickUp;
         }
 
         public static void MultiplyReward(float multiplier)
@@ -232,6 +308,7 @@ namespace Bokka.BeachRescue
         {
             simulateFirstTouch = true;
             isInputActive = true;
+            IsPlaying = true;
         }
 
         private void Update()
@@ -242,46 +319,16 @@ namespace Bokka.BeachRescue
             if (uiStore.IsPageDisplayed)
                 return;
 
-            if (Input.GetMouseButtonDown(0) || simulateFirstTouch)
+            ///TODO: Before starting the game, set an UI Canvas behind the PLAY button
+            if (simulateFirstTouch)
             {
-                skipTouch = true;
-                simulateFirstTouch = false;
-                RaycastHit hit;
-                Ray ray = cameraRef.ScreenPointToRay(Input.mousePosition);
-
-                StartPointBehaviour startPoint = null;
-
-                if (Physics.Raycast(ray, out hit, 1000f, startPointLayer))
-                {
-                    startPoint = hit.collider.GetComponent<StartPointBehaviour>();
-                }
-
-                if (startPoint == null && Physics.Raycast(ray, out hit, 1000f, boatLayer) && boatBehaviour.transform.position == CurrentLevel.StartPoint)
-                {
-                    startPoint = this.startPoint;
-                }
-
-                if (startPoint != null)
-                {
-                    resetTrail = true;
-                    skipTouch = false;
-                    lastStartPointPosition = hit.collider.gameObject.transform.position;
-
-                    StopSimulation(true);
-
-                    if (UIController.GetPage<UIMainMenu>().IsPageDisplayed)
-                    {
-                        UIController.HidePage<UIMainMenu>();
-                    }
-
-                    uiGame.HideTutorial();
-                }
+                OnMouseClickDown(InputManager.MousePosition);
             }
 
-            if (!skipTouch && Input.GetMouseButton(0))
+            if (!skipTouch && mouseClicked)
             {
                 RaycastHit hit;
-                Ray ray = cameraRef.ScreenPointToRay(Input.mousePosition);
+                Ray ray = cameraRef.ScreenPointToRay(InputManager.MousePosition);
 
                 if (Physics.Raycast(ray, out hit, 1000f, touchLayer))
                 {
@@ -294,11 +341,6 @@ namespace Bokka.BeachRescue
                         UpdatePath(hit.point.SetY(0f));
                     }
                 }
-            }
-
-            if (!skipTouch && Input.GetMouseButtonUp(0))
-            {
-                OnPathDrawn();
             }
         }
 
@@ -332,7 +374,6 @@ namespace Bokka.BeachRescue
 
             if (pointsArray.Length > 12)
             {
-
                 Vector3[] smoothPathStart = MakeSmoothCurve(pointsArray.SubArray(0, 5), 1f);
 
                 smoothedPointsList.AddRange(smoothPathStart);
@@ -562,21 +603,23 @@ namespace Bokka.BeachRescue
 
         private void OnLevelComplete()
         {
-            Tween.DelayedCall(0.5f, () =>
-            {
-                AudioController.PlaySound(AudioController.AudioClips.complete);
+            Tween.DelayedCall(0.5f,
+                () =>
+                    {
+                        AudioController.PlaySound(AudioController.AudioClips.complete);
 
-                GameController.Instance.LevelComplete();
-            });
+                        GameController.Instance.LevelComplete();
+                    });
         }
 
         public void OnLevelFailed()
         {
-            Tween.DelayedCall(0.5f, () =>
-            {
-                AudioController.PlaySound(AudioController.AudioClips.failed);
-                GameController.Instance.LevelFailed();
-            });
+            Tween.DelayedCall(0.5f,
+                () =>
+                    {
+                        AudioController.PlaySound(AudioController.AudioClips.failed);
+                        GameController.Instance.LevelFailed();
+                    });
         }
 
         public void OnLevelBeingSkiped()
