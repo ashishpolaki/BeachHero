@@ -3,6 +3,7 @@ using UnityEditor;
 using System;
 using System.Reflection;
 using System.Collections.Generic;
+using UnityEditor.Build;
 
 namespace Bokka
 {
@@ -10,14 +11,14 @@ namespace Bokka
     {
         public static bool HasDefine(string define)
         {
-            string definesLine = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget));
+            string definesLine = PlayerSettings.GetScriptingDefineSymbols(NamedBuildTarget.FromBuildTargetGroup(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget)));
 
             return Array.FindIndex(definesLine.Split(';'), x => x == define) != -1;
         }
 
         public static void EnableDefine(string define)
         {
-            string defineLine = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget));
+            string defineLine = PlayerSettings.GetScriptingDefineSymbols(NamedBuildTarget.FromBuildTargetGroup(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget)));
 
             if (Array.FindIndex(defineLine.Split(';'), x => x == define) != -1)
             {
@@ -31,7 +32,7 @@ namespace Bokka
 
         public static void DisableDefine(string define)
         {
-            string defineLine = PlayerSettings.GetScriptingDefineSymbolsForGroup(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget));
+            string defineLine = PlayerSettings.GetScriptingDefineSymbols(NamedBuildTarget.FromBuildTargetGroup(BuildPipeline.GetBuildTargetGroup(EditorUserBuildSettings.activeBuildTarget)));
             string[] splitedDefines = defineLine.Split(';');
 
             int tempDefineIndex = Array.FindIndex(splitedDefines, x => x == define);

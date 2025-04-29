@@ -17,7 +17,7 @@ namespace Bokka
 
             EditorSkinsProvider.AddDatabase(database);
 
-            skinsController = GameObject.FindObjectOfType<SkinsController>();
+            skinsController = GameObject.FindFirstObjectByType<SkinsController>();
             if(skinsController != null && skinsController.Handler != null)
             {
                 isRegistered = skinsController.Handler.HasSkinsProvider(database);
