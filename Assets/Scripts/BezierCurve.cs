@@ -1,21 +1,22 @@
-using Codice.Client.BaseCommands.FastExport;
-using Codice.Client.Common.GameUI;
 using System.Collections.Generic;
-using System.IO;
 using UnityEditor;
 using UnityEngine;
 
 [System.Serializable]
 public class BezierKeyframe
 {
-    public Vector3 position; // Keyframe position (world position)
-    public Vector3 inTangentLocal; // Incoming tangent (local position relative to position)
+    public Vector3 position;         // Keyframe position (world position)
+    public Vector3 inTangentLocal;  // Incoming tangent (local position relative to position)
     public Vector3 outTangentLocal; // Outgoing tangent (local position relative to position)
 
-    // Property to calculate the world position of the inTangent
+    /// <summary>
+    /// Property to calculate the world position of the inTangent
+    /// </summary>
     public Vector3 InTangentWorld => position + inTangentLocal;
 
-    // Property to calculate the world position of the outTangent
+    /// <summary>
+    ///  Property to calculate the world position of the outTangent
+    /// </summary>
     public Vector3 OutTangentWorld => position + outTangentLocal;
 }
 
@@ -23,10 +24,130 @@ public class BezierCurve : MonoBehaviour
 {
     public BezierKeyframe[] keyframes; // Array of keyframes
     public List<Vector3> curvePoints = new List<Vector3>(); // List to store collected points
-    public int resolution = 20; // Resolution of the curve (number of segments per keyframe pair)
-
+    public int resolution = 20; // Resolution of the curve (number of segmentsPerLoop per keyframe pair)
+    public int circleSegments = 3;
+    public float radius;
     public bool isvalidate = false;
     public LineRenderer lineRenderer; // LineRenderer component to visualize the curve
+    public Vector3 offsetPositon;
+    public Vector3 offsetRotation;
+
+    public void CreateCircle(float radius, int segments)
+    {
+        keyframes = new BezierKeyframe[segments + 1]; // Add one more keyframe for the endpoint
+
+        float angleStep = 360f / segments; // Divide the circle into equal segmentsPerLoop
+
+        for (int i = 0; i < segments; i++)
+        {
+            float angle = Mathf.Deg2Rad * (i * angleStep); // Convert angle to radians
+
+            // Calculate the position of the keyframe on the circle
+            Vector3 position = new Vector3(Mathf.Cos(angle) * radius, 0, Mathf.Sin(angle) * radius);
+
+            // Calculate the direction of the tangent
+            Vector3 tangentDirection = new Vector3(-Mathf.Sin(angle), 0, Mathf.Cos(angle)).normalized;
+
+            // Calculate the tangents for smooth transitions
+            Vector3 inTangent = -tangentDirection * (radius / segments); // In tangent points backward
+            Vector3 outTangent = tangentDirection * (radius / segments); // Out tangent points forward
+
+            var rotationOffset = Quaternion.Euler(offsetRotation);
+            Vector3 positionWithOffset = rotationOffset * position + offsetPositon;
+            Vector3 inTangentWithOffset = rotationOffset * inTangent;
+            Vector3 outTangentWithOffset = rotationOffset * outTangent;
+
+            // Create the keyframe
+            keyframes[i] = new BezierKeyframe
+            {
+                position = positionWithOffset,
+                inTangentLocal = inTangentWithOffset,
+                outTangentLocal = outTangentWithOffset,
+            };
+        }
+
+        // Add the additional endpoint (duplicate the first keyframe)
+        keyframes[segments] = new BezierKeyframe
+        {
+            position = keyframes[0].position,
+            inTangentLocal = keyframes[0].inTangentLocal,
+            outTangentLocal = keyframes[0].outTangentLocal
+        };
+    }
+
+    public void CreateFigureEight(float radius, int segmentsPerLoop)
+    {
+        int totalSegments = segmentsPerLoop * 2; // Double the number of segmentsPerLoop for the figure-eight shape
+        keyframes = new BezierKeyframe[totalSegments + 1]; // Add one more keyframe for the endpoint
+
+        float angleStep = 360f / segmentsPerLoop; // Divide the circle into equal segmentsPerLoop
+
+        for (int i = 0; i < segmentsPerLoop; i++)
+        {
+            float angle = Mathf.Deg2Rad * (i * angleStep); // Convert angle to radians
+
+            // Calculate the position of the keyframe on the circle
+            Vector3 position = new Vector3(Mathf.Cos(angle) * radius - radius, 0, Mathf.Sin(angle) * radius);
+
+            // Calculate the direction of the tangent
+            Vector3 tangentDirection = new Vector3(-Mathf.Sin(angle), 0, Mathf.Cos(angle)).normalized;
+
+            // Calculate the tangents for smooth transitions
+            Vector3 inTangent = -tangentDirection * (radius / segmentsPerLoop); // In tangent points backward
+            Vector3 outTangent = tangentDirection * (radius / segmentsPerLoop); // Out tangent points forward
+
+            var rotationOffset = Quaternion.Euler(offsetRotation);
+            Vector3 positionWithOffset = rotationOffset * position + offsetPositon;
+            Vector3 inTangentWithOffset = rotationOffset * inTangent;
+            Vector3 outTangentWithOffset = rotationOffset * outTangent;
+
+            // Create the keyframe
+            keyframes[i] = new BezierKeyframe
+            {
+                position = positionWithOffset,
+                inTangentLocal = inTangentWithOffset,
+                outTangentLocal = outTangentWithOffset,
+            };
+        }
+
+        for (int i = 0; i < segmentsPerLoop; i++)
+        {
+            float angle = Mathf.Deg2Rad * (180f - i * angleStep); // Start at 180 degrees
+
+            // Calculate the position of the keyframe on the circle
+            Vector3 position = new Vector3(Mathf.Cos(angle) * radius + radius, 0, Mathf.Sin(angle) * radius);
+
+            // Calculate the direction of the tangent
+            Vector3 tangentDirection = new Vector3(-Mathf.Sin(angle), 0, Mathf.Cos(angle)).normalized;
+
+            // Calculate the tangents for smooth transitions
+            Vector3 inTangent = -tangentDirection * (radius / segmentsPerLoop); // In tangent points backward
+            Vector3 outTangent = tangentDirection * (radius / segmentsPerLoop); // Out tangent points forward
+
+            var rotationOffset = Quaternion.Euler(offsetRotation);
+            Vector3 positionWithOffset = rotationOffset * position + offsetPositon;
+            Vector3 inTangentWithOffset = rotationOffset * inTangent;
+            Vector3 outTangentWithOffset = rotationOffset * outTangent;
+
+            // Create the keyframe
+            keyframes[segmentsPerLoop + i] = new BezierKeyframe
+            {
+                position = positionWithOffset,
+                inTangentLocal = inTangentWithOffset,
+                outTangentLocal = outTangentWithOffset,
+            };
+        }
+
+
+        // Add the additional endpoint (duplicate the first keyframe)
+        keyframes[totalSegments] = new BezierKeyframe
+        {
+            position = keyframes[0].position,
+            inTangentLocal = keyframes[0].inTangentLocal,
+            outTangentLocal = keyframes[0].outTangentLocal
+        };
+    }
+
     private void OnValidate()
     {
         if (!isvalidate)
@@ -89,8 +210,8 @@ public class BezierCurveEditor : Editor
     private BezierCurve curve;
     private bool[] showTangents;
     private bool[] showHandles;
-    public static float KeyFramePositionSize = 0.2f; 
-    public static float KeyFramePositionPickUpSize = 1f; 
+    public static float KeyFramePositionSize = 0.2f;
+    public static float KeyFramePositionPickUpSize = 1f;
     public static float keyFrameTangetHandleSize = 0.5f;
     public static float keyFrameTangetCubeSize = 0.1f;
 
@@ -195,85 +316,6 @@ public class BezierCurveEditor : Editor
                 Handles.DrawLine(keyframe.position, keyframe.OutTangentWorld);
             }
         }
-
-        //for (int i = 0; i < curve.keyframes.Length; i++)
-        //{
-        //    BezierKeyframe keyframe = curve.keyframes[i];
-
-        //    // Editable keyframe position (Sphere Handle)
-        //    Handles.color = Color.gray;
-        //    EditorGUI.BeginChangeCheck();
-        ////    Vector3 newPosition = Handles.PositionHandle(keyframe.position, Quaternion.identity);
-        //    if (EditorGUI.EndChangeCheck())
-        //    {
-        //        Undo.RecordObject(curve, "Move Keyframe");
-
-        //        // Move the keyframe and its tangents by the same delta
-        //     //   keyframe.position = newPosition;
-
-        //        // Reset all tangent visibility flags
-        //        for (int j = 0; j < showTangents.Length; j++)
-        //        {
-        //            showTangents[j] = false;
-        //        }
-
-        //        // Enable tangent visibility for the current keyframe
-        //        showTangents[i] = true;
-
-        //        // Force the Scene view to repaint
-        //        SceneView.RepaintAll();
-        //    }
-
-
-        //    // Interactive Sphere Handle
-        //    if (Handles.Button(keyframe.position, Quaternion.identity, 0.4f, 0.4f, Handles.SphereHandleCap))
-        //    {
-        //        Handles.color = Color.green;
-        //        Debug.Log($"Clicked keyframe {i}");
-        //    }
-
-        //    // Draw sphere for keyframe position
-        //  //  Handles.SphereHandleCap(0, keyframe.position, Quaternion.identity, 0.2f, EventType.Repaint);
-
-        //    // Show tangent handlers only if the position handler was interacted with
-        //    if (showTangents[i])
-        //    {
-        //        // Editable inTangentLocal (Position Handle)
-        //        Handles.color = Color.yellow;
-        //        EditorGUI.BeginChangeCheck();
-        //        Vector3 newInTangentWorld = Handles.PositionHandle(keyframe.InTangentWorld, Quaternion.identity);
-        //        if (EditorGUI.EndChangeCheck())
-        //        {
-        //            Undo.RecordObject(curve, "Move In Tangent");
-
-        //            // Update the local position of the inTangent
-        //            keyframe.inTangentLocal = newInTangentWorld - keyframe.position;
-        //        }
-
-        //        // Draw cube for inTangent
-        //        Handles.CubeHandleCap(0, keyframe.InTangentWorld, Quaternion.identity, 0.1f, EventType.Repaint);
-
-        //        // Editable outTangentLocal (Position Handle)
-        //        Handles.color = Color.cyan;
-        //        EditorGUI.BeginChangeCheck();
-        //        Vector3 newOutTangentWorld = Handles.PositionHandle(keyframe.OutTangentWorld, Quaternion.identity);
-        //        if (EditorGUI.EndChangeCheck())
-        //        {
-        //            Undo.RecordObject(curve, "Move Out Tangent");
-
-        //            // Update the local position of the outTangent
-        //            keyframe.outTangentLocal = newOutTangentWorld - keyframe.position;
-        //        }
-
-        //        // Draw cube for outTangent
-        //        Handles.CubeHandleCap(0, keyframe.OutTangentWorld, Quaternion.identity, 0.1f, EventType.Repaint);
-
-        //        // Draw tangent lines
-        //        Handles.color = Color.white;
-        //        Handles.DrawLine(keyframe.position, keyframe.InTangentWorld);
-        //        Handles.DrawLine(keyframe.position, keyframe.OutTangentWorld);
-        //    }
-        //}
     }
 
     private Vector3 CustomPositionHandle(Vector3 position, Quaternion rotation, float handleSize, float rectangleToSliderRatio = 0.15f)
