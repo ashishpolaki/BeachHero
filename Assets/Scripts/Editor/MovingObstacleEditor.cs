@@ -23,7 +23,6 @@ namespace BeachHero
         #region Inspector Window
         public override void OnInspectorGUI()
         {
-            //  base.OnInspectorGUI();
             serializedObject.Update();
             EditorGUILayout.PropertyField(serializedObject.FindProperty("obstacleType"), new GUIContent("Obstacle Type"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("movementType"), new GUIContent("Movement Type"));
@@ -48,7 +47,8 @@ namespace BeachHero
 
             EditorGUILayout.PropertyField(serializedObject.FindProperty("loopedMovement"), new GUIContent("Looped Movement"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("inverseDirection"), new GUIContent("Inverse Direction"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("Keyframes"), new GUIContent("KeyFrames"), true);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("Keyframes"), new GUIContent("KeyFrames"));
+            movingObstacle.canEditKeyFramesInScene = GUILayout.Toggle(movingObstacle.canEditKeyFramesInScene, "Edit KeyFrames");
             if (GUILayout.Button("Add Keyframe"))
             {
                 AddKeyframe();
@@ -89,6 +89,9 @@ namespace BeachHero
         #region Scene Window
         private void OnSceneGUI()
         {
+            if (!movingObstacle.canEditKeyFramesInScene)
+                return;
+
             if (movingObstacle.Keyframes == null || movingObstacle.Keyframes.Length < 2)
                 return;
 

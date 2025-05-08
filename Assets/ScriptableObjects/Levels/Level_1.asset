@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelTime: 7
   startPoint:
-    Position: {x: 0, y: 0, z: 15}
+    Position: {x: -4.91, y: 0, z: 11.72}
     Rotation: {x: -0, y: 45.000004, z: -0}
   obstacles:
     staticObstacles:
@@ -25,140 +25,101 @@ MonoBehaviour:
     - type: 1
       movementType: 1
       bezierKeyframes:
-      - position: {x: 0, y: 0, z: 0}
-        inTangentLocal: {x: 0, y: -0, z: -0.17999999}
-        outTangentLocal: {x: -0, y: 0, z: 0.17999999}
-      - position: {x: -0.17619646, y: 0, z: 1.1124612}
-        inTangentLocal: {x: 0.05562306, y: -0, z: -0.17119017}
-        outTangentLocal: {x: -0.05562306, y: 0, z: 0.17119017}
-      - position: {x: -0.68753874, y: 0, z: 2.1160269}
-        inTangentLocal: {x: 0.10580134, y: -0, z: -0.14562306}
-        outTangentLocal: {x: -0.10580134, y: 0, z: 0.14562306}
-      - position: {x: -1.4839729, y: 0, z: 2.912461}
-        inTangentLocal: {x: 0.14562306, y: -0, z: -0.10580135}
-        outTangentLocal: {x: -0.14562306, y: 0, z: 0.10580135}
-      - position: {x: -2.4875388, y: 0, z: 3.4238036}
-        inTangentLocal: {x: 0.17119017, y: -0, z: -0.055623055}
-        outTangentLocal: {x: -0.17119017, y: 0, z: 0.055623055}
-      - position: {x: -3.6000001, y: 0, z: 3.6}
-        inTangentLocal: {x: 0.17999999, y: -0, z: 0.000000007868049}
-        outTangentLocal: {x: -0.17999999, y: 0, z: -0.000000007868049}
-      - position: {x: -4.712461, y: 0, z: 3.4238036}
-        inTangentLocal: {x: 0.17119017, y: -0, z: 0.055623047}
-        outTangentLocal: {x: -0.17119017, y: 0, z: -0.055623047}
-      - position: {x: -5.7160263, y: 0, z: 2.912461}
-        inTangentLocal: {x: 0.14562306, y: -0, z: 0.10580134}
-        outTangentLocal: {x: -0.14562306, y: 0, z: -0.10580134}
-      - position: {x: -6.512461, y: 0, z: 2.1160266}
-        inTangentLocal: {x: 0.10580133, y: -0, z: 0.14562306}
-        outTangentLocal: {x: -0.10580133, y: 0, z: -0.14562306}
-      - position: {x: -7.023803, y: 0, z: 1.1124613}
-        inTangentLocal: {x: 0.055623062, y: -0, z: 0.17119016}
-        outTangentLocal: {x: -0.055623062, y: 0, z: -0.17119016}
-      - position: {x: -7.2, y: 0, z: -0.000000314722}
-        inTangentLocal: {x: -0.000000015736099, y: -0, z: 0.17999999}
-        outTangentLocal: {x: 0.000000015736099, y: 0, z: -0.17999999}
-      - position: {x: -7.023803, y: 0, z: -1.1124611}
-        inTangentLocal: {x: -0.055623055, y: -0, z: 0.17119017}
-        outTangentLocal: {x: 0.055623055, y: 0, z: -0.17119017}
-      - position: {x: -6.512461, y: 0, z: -2.1160264}
-        inTangentLocal: {x: -0.10580132, y: -0, z: 0.14562306}
-        outTangentLocal: {x: 0.10580132, y: 0, z: -0.14562306}
-      - position: {x: -5.7160273, y: 0, z: -2.9124606}
-        inTangentLocal: {x: -0.14562303, y: -0, z: 0.10580138}
-        outTangentLocal: {x: 0.14562303, y: 0, z: -0.10580138}
-      - position: {x: -4.7124615, y: 0, z: -3.4238033}
-        inTangentLocal: {x: -0.17119016, y: -0, z: 0.055623073}
-        outTangentLocal: {x: 0.17119016, y: 0, z: -0.055623073}
-      - position: {x: -3.6, y: 0, z: -3.6}
-        inTangentLocal: {x: -0.17999999, y: -0, z: -0.0000000021464783}
-        outTangentLocal: {x: 0.17999999, y: 0, z: 0.0000000021464783}
-      - position: {x: -2.4875383, y: 0, z: -3.4238033}
-        inTangentLocal: {x: -0.17119016, y: -0, z: -0.05562308}
-        outTangentLocal: {x: 0.17119016, y: 0, z: 0.05562308}
-      - position: {x: -1.4839737, y: 0, z: -2.9124615}
-        inTangentLocal: {x: -0.14562307, y: -0, z: -0.10580131}
-        outTangentLocal: {x: 0.14562307, y: 0, z: 0.10580131}
-      - position: {x: -0.687539, y: 0, z: -2.116027}
-        inTangentLocal: {x: -0.10580135, y: -0, z: -0.14562304}
-        outTangentLocal: {x: 0.10580135, y: 0, z: 0.14562304}
-      - position: {x: -0.17619646, y: 0, z: -1.112461}
-        inTangentLocal: {x: -0.055623047, y: -0, z: -0.17119017}
-        outTangentLocal: {x: 0.055623047, y: 0, z: 0.17119017}
-      - position: {x: 0, y: 0, z: -0.000000314722}
-        inTangentLocal: {x: -0.000000015736099, y: -0, z: 0.17999999}
-        outTangentLocal: {x: 0.000000015736099, y: 0, z: -0.17999999}
-      - position: {x: 0.17619666, y: 0, z: 1.1124613}
-        inTangentLocal: {x: 0.055623062, y: -0, z: 0.17119016}
-        outTangentLocal: {x: -0.055623062, y: 0, z: -0.17119016}
-      - position: {x: 0.68753856, y: 0, z: 2.1160266}
-        inTangentLocal: {x: 0.10580133, y: -0, z: 0.14562306}
-        outTangentLocal: {x: -0.10580133, y: 0, z: -0.14562306}
-      - position: {x: 1.2536185, y: 0, z: 4.3856325}
-        inTangentLocal: {x: -0.94577676, y: 0, z: 0.4707036}
-        outTangentLocal: {x: 1.945904, y: -0.22205925, z: 2.4032083}
-      - position: {x: 2.487539, y: 0, z: 3.4238036}
-        inTangentLocal: {x: 0.17119017, y: -0, z: 0.055623047}
-        outTangentLocal: {x: -0.17119017, y: 0, z: -0.055623047}
-      - position: {x: 3.5999997, y: 0, z: 3.6}
-        inTangentLocal: {x: 0.17999999, y: -0, z: 0.000000007868049}
-        outTangentLocal: {x: -0.17999999, y: 0, z: -0.000000007868049}
-      - position: {x: 4.712461, y: 0, z: 3.4238036}
-        inTangentLocal: {x: 0.17119017, y: -0, z: -0.055623055}
-        outTangentLocal: {x: -0.17119017, y: 0, z: 0.055623055}
-      - position: {x: 5.716027, y: 0, z: 2.912461}
-        inTangentLocal: {x: 0.14562306, y: -0, z: -0.10580135}
-        outTangentLocal: {x: -0.14562306, y: 0, z: 0.10580135}
-      - position: {x: 6.512461, y: 0, z: 2.1160269}
-        inTangentLocal: {x: 0.10580134, y: -0, z: -0.14562306}
-        outTangentLocal: {x: -0.10580134, y: 0, z: 0.14562306}
-      - position: {x: 7.023803, y: 0, z: 1.1124612}
-        inTangentLocal: {x: 0.05562306, y: -0, z: -0.17119017}
-        outTangentLocal: {x: -0.05562306, y: 0, z: 0.17119017}
-      - position: {x: 7.2, y: 0, z: 0}
-        inTangentLocal: {x: 0, y: -0, z: -0.17999999}
-        outTangentLocal: {x: -0, y: 0, z: 0.17999999}
-      - position: {x: 7.023803, y: 0, z: -1.1124612}
-        inTangentLocal: {x: -0.05562306, y: -0, z: -0.17119017}
-        outTangentLocal: {x: 0.05562306, y: 0, z: 0.17119017}
-      - position: {x: 6.512461, y: 0, z: -2.1160269}
-        inTangentLocal: {x: -0.10580134, y: -0, z: -0.14562306}
-        outTangentLocal: {x: 0.10580134, y: 0, z: 0.14562306}
-      - position: {x: 5.716027, y: 0, z: -2.912461}
-        inTangentLocal: {x: -0.14562306, y: -0, z: -0.10580135}
-        outTangentLocal: {x: 0.14562306, y: 0, z: 0.10580135}
-      - position: {x: 4.712461, y: 0, z: -3.4238036}
-        inTangentLocal: {x: -0.17119017, y: -0, z: -0.055623055}
-        outTangentLocal: {x: 0.17119017, y: 0, z: 0.055623055}
-      - position: {x: 3.5999997, y: 0, z: -3.6}
-        inTangentLocal: {x: -0.17999999, y: -0, z: 0.000000007868049}
-        outTangentLocal: {x: 0.17999999, y: 0, z: -0.000000007868049}
-      - position: {x: 2.487539, y: 0, z: -3.4238036}
-        inTangentLocal: {x: -0.17119017, y: -0, z: 0.055623047}
-        outTangentLocal: {x: 0.17119017, y: 0, z: -0.055623047}
-      - position: {x: 1.4839733, y: 0, z: -2.912461}
-        inTangentLocal: {x: -0.14562306, y: -0, z: 0.10580134}
-        outTangentLocal: {x: 0.14562306, y: 0, z: -0.10580134}
-      - position: {x: 0.68753856, y: 0, z: -2.1160266}
-        inTangentLocal: {x: -0.10580133, y: -0, z: 0.14562306}
-        outTangentLocal: {x: 0.10580133, y: 0, z: -0.14562306}
-      - position: {x: 0.17619666, y: 0, z: -1.1124613}
-        inTangentLocal: {x: -0.055623062, y: -0, z: 0.17119016}
-        outTangentLocal: {x: 0.055623062, y: 0, z: -0.17119016}
-      - position: {x: 0, y: 0, z: 0}
-        inTangentLocal: {x: 0, y: -0, z: -0.17999999}
-        outTangentLocal: {x: -0, y: 0, z: 0.17999999}
-      resolution: 2.37
+      - position: {x: -3.9156847, y: 0, z: 1.2354307}
+        inTangentLocal: {x: 0.098508835, y: 0, z: 0.09579564}
+        outTangentLocal: {x: -0.098508835, y: 0, z: -0.09579564}
+      - position: {x: -4.4941797, y: 0, z: 0.60312104}
+        inTangentLocal: {x: 0.07376152, y: 0, z: 0.11593115}
+        outTangentLocal: {x: -0.07376152, y: 0, z: -0.11593115}
+      - position: {x: -4.869078, y: 0, z: -0.1724076}
+        inTangentLocal: {x: 0.04503771, y: 0, z: 0.12981679}
+        outTangentLocal: {x: -0.04503771, y: 0, z: -0.12981679}
+      - position: {x: -5.0550036, y: 0, z: -1.0134774}
+        inTangentLocal: {x: 0.0138859, y: 0, z: 0.13670397}
+        outTangentLocal: {x: -0.0138859, y: 0, z: -0.13670397}
+      - position: {x: -5.0419664, y: 0, z: -1.8747808}
+        inTangentLocal: {x: -0.018014502, y: 0, z: 0.13622141}
+        outTangentLocal: {x: 0.018014502, y: 0, z: -0.13622141}
+      - position: {x: -4.8306494, y: 0, z: -2.7098644}
+        inTangentLocal: {x: -0.048943724, y: 0, z: 0.12839511}
+        outTangentLocal: {x: 0.048943724, y: 0, z: -0.12839511}
+      - position: {x: -4.432453, y: 0, z: -3.4737203}
+        inTangentLocal: {x: -0.077234395, y: 0, z: 0.113647}
+        outTangentLocal: {x: 0.077234395, y: 0, z: -0.113647}
+      - position: {x: -3.8688269, y: 0, z: -4.1251454}
+        inTangentLocal: {x: -0.10136134, y: 0, z: 0.09277215}
+        outTangentLocal: {x: 0.10136134, y: 0, z: -0.09277215}
+      - position: {x: -3.1701722, y: 0, z: -4.62904}
+        inTangentLocal: {x: -0.12002386, y: 0, z: 0.06689595}
+        outTangentLocal: {x: 0.12002386, y: 0, z: -0.06689595}
+      - position: {x: -2.3741446, y: 0, z: -4.958227}
+        inTangentLocal: {x: -0.13221587, y: 0, z: 0.037413362}
+        outTangentLocal: {x: 0.13221587, y: 0, z: -0.037413362}
+      - position: {x: -1.5236634, y: 0, z: -5.094969}
+        inTangentLocal: {x: -0.13728009, y: 0, z: 0.0059137945}
+        outTangentLocal: {x: 0.13728009, y: 0, z: -0.0059137945}
+      - position: {x: -0.66459, y: 0, z: -5.031902}
+        inTangentLocal: {x: -0.1349435, y: 0, z: -0.025904585}
+        outTangentLocal: {x: 0.1349435, y: 0, z: 0.025904585}
+      - position: {x: 0.15678406, y: 0, z: -4.772408}
+        inTangentLocal: {x: -0.12533207, y: 0, z: -0.056326438}
+        outTangentLocal: {x: 0.12533207, y: 0, z: 0.056326438}
+      - position: {x: 0.89616084, y: 0, z: -4.330492}
+        inTangentLocal: {x: -0.10896395, y: 0, z: -0.08371171}
+        outTangentLocal: {x: 0.10896395, y: 0, z: 0.08371171}
+      - position: {x: 1.513705, y: 0, z: -3.7299528}
+        inTangentLocal: {x: -0.08672156, y: 0, z: -0.10658407}
+        outTangentLocal: {x: 0.08672156, y: 0, z: 0.10658407}
+      - position: {x: 1.9760969, y: 0, z: -3.003196}
+        inTangentLocal: {x: -0.059804015, y: 0, z: -0.123710446}
+        outTangentLocal: {x: 0.059804015, y: 0, z: 0.123710446}
+      - position: {x: 2.2584155, y: 0, z: -2.1893904}
+        inTangentLocal: {x: -0.029662393, y: 0, z: -0.13416757}
+        outTangentLocal: {x: 0.029662393, y: 0, z: 0.13416757}
+      - position: {x: 2.3454595, y: 0, z: -1.332398}
+        inTangentLocal: {x: 0.002078339, y: 0, z: -0.13739169}
+        outTangentLocal: {x: -0.002078339, y: 0, z: 0.13739169}
+      - position: {x: 2.232518, y: 0, z: -0.4784333}
+        inTangentLocal: {x: 0.033706993, y: 0, z: -0.13320898}
+        outTangentLocal: {x: -0.033706993, y: 0, z: 0.13320898}
+      - position: {x: 1.9256806, y: 0, z: 0.32647038}
+        inTangentLocal: {x: 0.06351856, y: 0, z: -0.12184494}
+        outTangentLocal: {x: -0.06351856, y: 0, z: 0.12184494}
+      - position: {x: 1.4414978, y: 0, z: 1.038923}
+        inTangentLocal: {x: 0.089905754, y: 0, z: -0.10391222}
+        outTangentLocal: {x: -0.089905754, y: 0, z: 0.10391222}
+      - position: {x: 0.80605525, y: 0, z: 1.6205068}
+        inTangentLocal: {x: 0.11144616, y: 0, z: -0.08037753}
+        outTangentLocal: {x: -0.11144616, y: 0, z: 0.08037753}
+      - position: {x: 0.053635836, y: 0, z: 2.03989}
+        inTangentLocal: {x: 0.12697844, y: 0, z: -0.052509706}
+        outTangentLocal: {x: -0.12697844, y: 0, z: 0.052509706}
+      - position: {x: -0.7752248, y: 0, z: 2.274438}
+        inTangentLocal: {x: 0.1356653, y: 0, z: -0.02181103}
+        outTangentLocal: {x: -0.1356653, y: 0, z: 0.02181103}
+      - position: {x: -1.6358234, y: 0, z: 2.3115225}
+        inTangentLocal: {x: 0.1370384, y: 0, z: 0.010063428}
+        outTangentLocal: {x: -0.1370384, y: 0, z: -0.010063428}
+      - position: {x: -2.4817753, y: 0, z: 2.1491375}
+        inTangentLocal: {x: 0.13102373, y: 0, z: 0.041395377}
+        outTangentLocal: {x: -0.13102373, y: 0, z: -0.041395377}
+      - position: {x: -3.2674685, y: 0, z: 1.7960439}
+        inTangentLocal: {x: 0.11794552, y: 0, z: 0.07049575}
+        outTangentLocal: {x: -0.11794552, y: 0, z: -0.07049575}
+      - position: {x: -3.9505424, y: 0, z: 1.2712755}
+        inTangentLocal: {x: 0.098508835, y: 0, z: 0.09579564}
+        outTangentLocal: {x: -0.098508835, y: 0, z: -0.09579564}
+      resolution: 3.49
       movementSpeed: 0
       offsetPosition: {x: 0, y: 0, z: 0}
       offsetRotation: {x: 0, y: 0, z: 0}
-      circleRadius: 3.6
-      circleSegments: 20
+      circleRadius: 3.71
+      circleSegments: 27
       loopedMovement: 1
       inverseDirection: 0
   savedCharacters:
   - position: {x: 2.5, y: 0, z: 6.66}
-    waitTimePercentage: 0.07
+    waitTimePercentage: 0.616
   collectables:
   - type: 1
     position: {x: -0.95, y: 0, z: 9.89}
