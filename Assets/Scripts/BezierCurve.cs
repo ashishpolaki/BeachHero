@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [System.Serializable]
 public class BezierKeyframe
@@ -138,7 +139,6 @@ public class BezierCurve : MonoBehaviour
             };
         }
 
-
         // Add the additional endpoint (duplicate the first keyframe)
         keyframes[totalSegments] = new BezierKeyframe
         {
@@ -150,10 +150,28 @@ public class BezierCurve : MonoBehaviour
 
     private void OnValidate()
     {
+        ApplyOffset();
         if (!isvalidate)
             return;
+        CreateFigureEight(radius, circleSegments);
         lineRenderer.positionCount = curvePoints.Count;
         lineRenderer.SetPositions(curvePoints.ToArray());
+    }
+
+    private void ApplyOffset()
+    {
+        for (int i = 0; i < keyframes.Length; i++)
+        {
+            var rotationOffset = Quaternion.Euler(offsetRotation);
+            Vector3 positionWithOffset = rotationOffset * keyframes[i].position + offsetPositon;
+            Vector3 inTangentWithOffset = rotationOffset * keyframes[i].inTangentLocal;
+            Vector3 outTangentWithOffset = rotationOffset * keyframes[i].outTangentLocal;
+
+            keyframes[i].position = positionWithOffset;
+            keyframes[i].inTangentLocal = inTangentWithOffset;
+            keyframes[i].outTangentLocal = outTangentWithOffset;
+        }
+
     }
 
     private void OnDrawGizmos()
@@ -178,7 +196,8 @@ public class BezierCurve : MonoBehaviour
             {
                 float t = j / (float)resolution; // Calculate t based on resolution
                 Vector3 point = CalculateBezierPoint(t, start.position, start.OutTangentWorld, end.InTangentWorld, end.position);
-                Gizmos.DrawLine(previousPoint, point);
+               // Gizmos.DrawLine(previousPoint, point);
+                Gizmos.DrawWireCube(point, Vector3.one * 0.1f); // Draw a small cube at the point
                 previousPoint = point;
 
                 curvePoints.Add(point); // Collect the point

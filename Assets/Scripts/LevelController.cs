@@ -19,6 +19,7 @@ namespace BeachHero
             SpawnPlayer(levelSO.StartPointData.Position, levelSO.StartPointData.Rotation);
             SpawnObstacles(levelSO.Obstacle);
             SpawnCollectables();
+            SpawnSavedCharacters(levelSO.LevelTime, levelSO.SavedCharacters);
         }
 
         #region Obstacles
@@ -57,21 +58,23 @@ namespace BeachHero
                         case ObstacleType.Eel:
                             break;
                         case ObstacleType.Shark:
+                            SpawnShark(movingObstacle);
                             break;
                         default:
                             break;
                     }
                 }
             }
-
         }
         private void SpawnEel()
         {
 
         }
-        private void SpawnShark()
+        private void SpawnShark(MovingObstacleData movingObstacleData)
         {
-
+            SharkObstacle shark = poolManager.SharkPool.GetObject().GetComponent<SharkObstacle>();
+            obstaclesDictionary[ObstacleType.Shark] = new List<IObstacle>() { shark };
+            shark.Init(movingObstacleData);
         }
         private void SpawnWaterHole()
         {
@@ -86,9 +89,14 @@ namespace BeachHero
         }
         #endregion
 
-        private void SpawnSavedCharacter()
+        private void SpawnSavedCharacters(float levelTime, SavedCharacterData[] savedCharacterDatas)
         {
-            var savedCharacter = poolManager.SavedCharacterPool.GetObject().GetComponent<SavedCharacter>();
+            foreach (var savedCharacterData in savedCharacterDatas)
+            {
+                var savedCharacter = poolManager.SavedCharacterPool.GetObject().GetComponent<SavedCharacter>();
+                savedCharacter.Init(savedCharacterData.Position, savedCharacterData.WaitTimePercentage, levelTime);
+                savedCharactersList.Add(savedCharacter);
+            }
         }
         private void SpawnCollectables()
         {

@@ -5,15 +5,35 @@ namespace BeachHero
     [CreateAssetMenu(fileName = "Level", menuName = "Scriptable Objects/Level")]
     public class LevelSO : ScriptableObject
     {
+        [SerializeField] private float levelTime;
         [SerializeField] private StartPointData startPoint;
         [SerializeField] private ObstacleData obstacles;
         [SerializeField] private SavedCharacterData[] savedCharacters;
+        [SerializeField] private CollectableData[] collectables;
 
         #region Properties
+        public float LevelTime => levelTime;
         public StartPointData StartPointData => startPoint;
         public ObstacleData Obstacle => obstacles;
         public SavedCharacterData[] SavedCharacters => savedCharacters;
+        public CollectableData[] Collectables => collectables;
         #endregion
+    }
+   
+    [System.Serializable]
+    public struct CollectableData
+    {
+        public CollectableType type;
+        public Vector3 position;
+    }
+
+    public enum CollectableType
+    {
+        None,
+        Coin,
+        Gem,
+        Magnet,
+        Speed,
     }
 
     [System.Serializable]
@@ -33,14 +53,19 @@ namespace BeachHero
     public enum MovingObstacleMovementType
     {
         None,
-        Linear,
-        Circular
+        Custom,
+        FigureEight,
+        Circular,
     }
     [System.Serializable]
     public struct SavedCharacterData
     {
         [SerializeField] private Vector3 position;
+        [Range(0,1f)]
         [SerializeField] private float waitTimePercentage;
+
+        public Vector3 Position => position;
+        public float WaitTimePercentage => waitTimePercentage;
     }
 
     [System.Serializable]
@@ -67,16 +92,36 @@ namespace BeachHero
         public ObstacleType type;
         public MovingObstacleMovementType movementType;
 
-        [Space]
-        public Vector3 linearMovementStartPosition;
-        public Vector3 linearMovementFinishPosition;
+        public BezierKeyframe[] bezierKeyframes;
+        public float resolution;
+        public float movementSpeed;
 
-        [Space]
-        public Vector3 circlarMovementCenter;
-        public float circlarMovementRadius;
+        public Vector3 offsetPosition;
+        public Vector3 offsetRotation;
+
+        public float circleRadius; // Circle Shape Radius
+        public float circleSegments; // Circle Shape Segments
 
         [Space]
         public bool loopedMovement;
         public bool inverseDirection;
+    }
+
+    [System.Serializable]
+    public struct BezierKeyframe
+    {
+        public Vector3 position;         // Keyframe position (world position)
+        public Vector3 inTangentLocal;  // Incoming tangent (local position relative to position)
+        public Vector3 outTangentLocal; // Outgoing tangent (local position relative to position)
+
+        /// <summary>
+        /// Property to calculate the world position of the inTangent
+        /// </summary>
+        public Vector3 InTangentWorld => position + inTangentLocal;
+
+        /// <summary>
+        ///  Property to calculate the world position of the outTangent
+        /// </summary>
+        public Vector3 OutTangentWorld => position + outTangentLocal;
     }
 }

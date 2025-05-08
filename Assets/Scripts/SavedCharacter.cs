@@ -4,16 +4,24 @@ namespace BeachHero
 {
     public class SavedCharacter : MonoBehaviour
     {
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        [SerializeField] private SavedCharacterUI savedCharacterUI;
+        [SerializeField] private float waitTimePercentage;
+        [SerializeField] private float waitTime;
+
+        public void Init(Vector3 _position, float _waitTimePercentage, float levelTime)
         {
-        
+            transform.position = _position;
+            waitTimePercentage = _waitTimePercentage;
+            waitTime = (levelTime * _waitTimePercentage) / 100f;
         }
 
-        // Update is called once per frame
-        void Update()
+        public void UpdateWaitTime(float deltaTime)
         {
-        
+            waitTime -= deltaTime;
+            if (waitTime <= 0)
+            {
+
+            }
         }
     }
 }

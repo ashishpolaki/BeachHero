@@ -12,3 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41ec7b45cdb520b4fb3b55ccaac3e1fc, type: 3}
   m_Name: Level_2
   m_EditorClassIdentifier: 
+  levelTime: 4
+  startPoint:
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+  obstacles:
+    staticObstacles: []
+    movingObstacles:
+    - type: 1
+      movementType: 0
+      bezierKeyframes: []
+      resolution: 0
+      movementSpeed: 0
+      offsetPosition: {x: 0, y: 0, z: 0}
+      offsetRotation: {x: 0, y: 0, z: 0}
+      circleRadius: 0
+      circleSegments: 0
+      loopedMovement: 0
+      inverseDirection: 0
+  savedCharacters: []

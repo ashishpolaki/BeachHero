@@ -2,7 +2,8 @@ using UnityEngine;
 
 namespace BeachHero
 {
-    public class RockObstacle : StaticObstacle
+    public class StaticObstacle : Obstacle
     {
+      
     }
 }
