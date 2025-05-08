@@ -6,17 +6,18 @@ namespace BeachHero
     public class LevelDatabaseSO : ScriptableObject
     {
         [SerializeField] private LevelSO[] levelsList;
-        [SerializeField] private SpawnItems spawnItems;
+        [SerializeField] private SpawnItem[] spawnItemsList;
 
         public LevelSO[] LevelsList
         {
             get { return levelsList; }
             private set { levelsList = value; }
         }
-        public SpawnItems SpawnItems
+      
+        public SpawnItem[] SpawnItemsList
         {
-            get { return spawnItems; }
-            private set { spawnItems = value; }
+            get { return spawnItemsList; }
+            private set { spawnItemsList = value; }
         }
 
         public int TotalLevelsCount
@@ -29,17 +30,11 @@ namespace BeachHero
             return levelsList[index % levelsList.Length];
         }
     }
+   
     [System.Serializable]
-    public struct SpawnItems
+    public struct  SpawnItem 
     {
-        [SerializeField] private GameObject[] staticObstacles;
-        [SerializeField] private GameObject[] movingObstacles;
-        [SerializeField] private GameObject[] collectables;
-        [SerializeField] private GameObject[] savedCharacters;
-
-        public GameObject[] StaticObstacles => staticObstacles;
-        public GameObject[] MovingObstacles => movingObstacles;
-        public GameObject[] Collectables => collectables;
-        public GameObject[] SavedCharacters => savedCharacters;
+        public SpawnItemType SpawnItemType;
+        public GameObject[] Prefab;
     }
 }

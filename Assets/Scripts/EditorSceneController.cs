@@ -28,11 +28,43 @@ public class EditorSceneController : MonoBehaviour
     }
 
     #region Spawn
+    public void SpawnPrefabItem(SpawnItemType spawnItemType,Object _object)
+    {
+        if(spawnItemType == SpawnItemType.SavedCharacter)
+        {
+            GameObject savedCharacterobject = (GameObject)PrefabUtility.InstantiatePrefab(_object);
+            SavedCharacterEditComponent savedCharacter = savedCharacterobject.AddComponent<SavedCharacterEditComponent>();
+            savedCharacterobject.transform.parent = container.transform;
+            savedCharacter.Init(Vector3.zero, 1, currentLevel.LevelTime);
+        }
+        if (spawnItemType == SpawnItemType.MovingObstacle)
+        {
+            GameObject movingObstacleObject = (GameObject)PrefabUtility.InstantiatePrefab(_object);
+            MovingObstacleEditComponent movingObstacle = movingObstacleObject.AddComponent<MovingObstacleEditComponent>();
+            movingObstacleObject.transform.parent = container.transform;
+            movingObstacle.Init(new MovingObstacleData());
+        }
+        if (spawnItemType == SpawnItemType.StaticObstacle)
+        {
+            GameObject staticObstacleObject = (GameObject)PrefabUtility.InstantiatePrefab(_object);
+            StaticObstacle staticObstacle = staticObstacleObject.AddComponent<StaticObstacle>();
+            staticObstacleObject.transform.parent = container.transform;
+            staticObstacle.Init(Vector3.zero);
+        }
+        if (spawnItemType == SpawnItemType.Collectable)
+        {
+            GameObject collectableObject = (GameObject)PrefabUtility.InstantiatePrefab(_object);
+            Collectable collectable = collectableObject.GetComponent<Collectable>();
+            collectableObject.transform.parent = container.transform;
+            collectable.Init(new CollectableData());
+        }
+    }
+
     public void SpawnLevelData(LevelSO _levelSO)
     {
         currentLevel = _levelSO;
         SpawnStartPoint();
-        SpawnMovingObstacle();
+        SpawnMovingObstacles();
         SpawnStaticObstacles();
         SpawnCharacter();
         SpawnCollectable();
@@ -78,7 +110,7 @@ public class EditorSceneController : MonoBehaviour
         startPoint.transform.rotation = Quaternion.Euler(currentLevel.StartPointData.Rotation);
     }
 
-    private void SpawnMovingObstacle()
+    private void SpawnMovingObstacles()
     {
         string path = string.Empty;
         foreach (var item in currentLevel.Obstacle.MovingObstacles)
@@ -87,7 +119,7 @@ public class EditorSceneController : MonoBehaviour
             {
                 case ObstacleType.Shark:
                     path = "Assets/Prefabs/Shark.prefab";
-                    SharkObstacle sharkObstaclePrefab = AssetDatabase.LoadAssetAtPath<SharkObstacle>(path);
+                    MovingObstacle sharkObstaclePrefab = AssetDatabase.LoadAssetAtPath<MovingObstacle>(path);
                     GameObject sharkGameObject = (GameObject)PrefabUtility.InstantiatePrefab(sharkObstaclePrefab.gameObject);
                     MovingObstacleEditComponent movingObstacle = sharkGameObject.AddComponent<MovingObstacleEditComponent>();
                     movingObstacle.transform.parent = container.transform;
@@ -99,6 +131,7 @@ public class EditorSceneController : MonoBehaviour
             }
         }
     }
+
     private void SpawnCollectable()
     {
         string path = string.Empty;
