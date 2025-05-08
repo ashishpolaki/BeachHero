@@ -7,6 +7,7 @@ namespace BeachHero
     [CustomEditor(typeof(MovingObstacleEditComponent))]
     public class MovingObstacleEditor : Editor
     {
+        #region Variables
         private MovingObstacleEditComponent movingObstacle;
         private bool[] showTangents;
         private bool[] showHandles;
@@ -14,11 +15,14 @@ namespace BeachHero
         public static float KeyFramePositionPickUpSize = 1f;
         public static float keyFrameTangetHandleSize = 0.5f;
         public static float keyFrameTangetCubeSize = 0.1f;
+        #endregion
 
+        #region unity methods
         private void OnEnable()
         {
             movingObstacle = (MovingObstacleEditComponent)target;
         }
+        #endregion
 
         #region Inspector Window
         public override void OnInspectorGUI()
@@ -37,17 +41,20 @@ namespace BeachHero
                 EditorGUILayout.PropertyField(serializedObject.FindProperty("circleSegments"), new GUIContent("Circle Segments"));
                 if (movingObstacle.movementType == MovingObstacleMovementType.Circular)
                 {
-                    movingObstacle.Keyframes = BezierCurveUtils.CreateCircleShape(movingObstacle.circleRadius, (int)movingObstacle.circleSegments);
+                    var keyFrames = BezierCurveUtils.CreateCircleShape(movingObstacle.circleRadius, (int)movingObstacle.circleSegments);
+                    movingObstacle.SetKeyFrames(keyFrames);
                 }
                 else if (movingObstacle.movementType == MovingObstacleMovementType.FigureEight)
                 {
-                    movingObstacle.Keyframes = BezierCurveUtils.CreateFigureEightShape(movingObstacle.circleRadius, (int)movingObstacle.circleSegments);
+                    var keyFrames = BezierCurveUtils.CreateFigureEightShape(movingObstacle.circleRadius, (int)movingObstacle.circleSegments);
+                    movingObstacle.SetKeyFrames(keyFrames);
                 }
             }
 
             EditorGUILayout.PropertyField(serializedObject.FindProperty("loopedMovement"), new GUIContent("Looped Movement"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("inverseDirection"), new GUIContent("Inverse Direction"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("Keyframes"), new GUIContent("KeyFrames"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("Keyframes"), new GUIContent("Key Frames"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("pathPoints"), new GUIContent("Path Positions"),EditorStyles.miniBoldFont);
             movingObstacle.canEditKeyFramesInScene = GUILayout.Toggle(movingObstacle.canEditKeyFramesInScene, "Edit KeyFrames");
             if (GUILayout.Button("Add Keyframe"))
             {

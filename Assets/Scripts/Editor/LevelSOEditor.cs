@@ -78,17 +78,9 @@ namespace BeachHero
                         EditorGUILayout.PropertyField(element.FindPropertyRelative("movementType"), new GUIContent("Movement Type"));
                         EditorGUILayout.PropertyField(element.FindPropertyRelative("loopedMovement"), new GUIContent("Looped Movement"));
                         EditorGUILayout.PropertyField(element.FindPropertyRelative("inverseDirection"), new GUIContent("Inverse Direction"));
-                        EditorGUILayout.PropertyField(element.FindPropertyRelative("offsetPosition"), new GUIContent("Offset Position"));
-                        EditorGUILayout.PropertyField(element.FindPropertyRelative("offsetRotation"), new GUIContent("Offset Rotation"));
                         EditorGUILayout.PropertyField(element.FindPropertyRelative("movementSpeed"), new GUIContent("Movement Speed"));
                         EditorGUILayout.PropertyField(element.FindPropertyRelative("resolution"), new GUIContent("Resolution"));
 
-                        if (movingObstacleData.movementType == MovingObstacleMovementType.Circular ||
-                            movingObstacleData.movementType == MovingObstacleMovementType.FigureEight)
-                        {
-                            EditorGUILayout.PropertyField(element.FindPropertyRelative("circleRadius"), new GUIContent("Circle Radius"));
-                            EditorGUILayout.PropertyField(element.FindPropertyRelative("circleSegments"), new GUIContent("Circle Segments"));
-                        }
                         EditorGUILayout.PropertyField(element.FindPropertyRelative("bezierKeyframes"), new GUIContent("Bezier Keyframes"));
 
                         // Add a "Remove" button
@@ -111,7 +103,6 @@ namespace BeachHero
                 EditorGUI.indentLevel--;
             }
         }
-
     }
     // [CustomPropertyDrawer(typeof(MovingObstacleData))]
     // public class MovingObstacleDataDrawer : PropertyDrawer

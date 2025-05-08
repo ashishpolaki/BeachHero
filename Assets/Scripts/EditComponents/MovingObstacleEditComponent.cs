@@ -5,10 +5,11 @@ namespace BeachHero
 {
     public class MovingObstacleEditComponent : MonoBehaviour
     {
-        public Vector3[] pathPoints;
+        [ReadOnly] public Vector3[] pathPoints;
         public ObstacleType obstacleType;
         public MovingObstacleMovementType movementType;
         public BezierKeyframe[] Keyframes;
+        public BezierKeyframe[] TempKeyFrames;
         public float resolution;
         public float movementSpeed;
         public Vector3 offsetPosition;
@@ -17,7 +18,6 @@ namespace BeachHero
         public int circleSegments;
         public bool loopedMovement;
         public bool inverseDirection;
-        private BezierKeyframe[] TempKeyFrames;
         private LineRenderer pathRenderer;
         public bool canEditKeyFramesInScene;
 
@@ -50,6 +50,19 @@ namespace BeachHero
             ArrayUtility.Clear(ref Keyframes);
             ArrayUtility.Clear(ref TempKeyFrames);
         }
+        public void SetKeyFrames(BezierKeyframe[] _keyFrames)
+        {
+            if (_keyFrames == null)
+                return;
+
+            Keyframes = new BezierKeyframe[_keyFrames.Length];
+            TempKeyFrames = new BezierKeyframe[_keyFrames.Length];
+            for (int i = 0; i < _keyFrames.Length; i++)
+            {
+                Keyframes[i] = _keyFrames[i];
+                TempKeyFrames[i] = _keyFrames[i];
+            }
+        }
 
         private void OnValidate()
         {
@@ -58,7 +71,6 @@ namespace BeachHero
                 ApplyOffset();
             }
         }
-
         private void OnDrawGizmos()
         {
             if (Keyframes == null || Keyframes.Length < 2)
@@ -76,14 +88,14 @@ namespace BeachHero
             transform.position = pathPoints[0];
             transform.LookAt(pathPoints[1]);
         }
-        public void ApplyOffset()
+        private void ApplyOffset()
         {
-            if(Keyframes == null || Keyframes.Length < 2)
+            if (Keyframes == null || Keyframes.Length < 2)
                 return;
-            for (int i = 0;i < Keyframes.Length;i++)
+            for (int i = 0; i < Keyframes.Length; i++)
             {
                 var rotationOffset = Quaternion.Euler(offsetRotation);
-               
+
                 Vector3 positionWithOffset = rotationOffset * TempKeyFrames[i].position + offsetPosition;
                 Vector3 inTangentWithOffset = rotationOffset * TempKeyFrames[i].inTangentLocal;
                 Vector3 outTangentWithOffset = rotationOffset * TempKeyFrames[i].outTangentLocal;
@@ -93,40 +105,22 @@ namespace BeachHero
                 Keyframes[i].outTangentLocal = outTangentWithOffset;
             }
         }
-
         private void GetPathRenderer()
         {
             GameObject pathRendererPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/PathRenderer.prefab");
-            GameObject pathRendererObject = (GameObject)PrefabUtility.InstantiatePrefab(pathRendererPrefab,transform);
+            GameObject pathRendererObject = (GameObject)PrefabUtility.InstantiatePrefab(pathRendererPrefab, transform);
             pathRenderer = pathRendererObject.GetComponent<LineRenderer>();
         }
-
         public void Init(MovingObstacleData movingObstacleData)
         {
             obstacleType = movingObstacleData.type;
             movementType = movingObstacleData.movementType;
-
-            TempKeyFrames = new BezierKeyframe[movingObstacleData.bezierKeyframes.Length];
-            Keyframes = new BezierKeyframe[movingObstacleData.bezierKeyframes.Length];
-            for (int i = 0; i < movingObstacleData.bezierKeyframes.Length; i++)
-            {
-                TempKeyFrames[i] = movingObstacleData.bezierKeyframes[i];
-                Keyframes[i] = movingObstacleData.bezierKeyframes[i];
-            }
-
             resolution = movingObstacleData.resolution;
             movementSpeed = movingObstacleData.movementSpeed;
-            offsetPosition = movingObstacleData.offsetPosition;
-            offsetRotation = movingObstacleData.offsetRotation;
-            circleRadius = movingObstacleData.circleRadius;
-            circleSegments = (int)movingObstacleData.circleSegments;
             loopedMovement = movingObstacleData.loopedMovement;
             inverseDirection = movingObstacleData.inverseDirection;
-
+            SetKeyFrames(movingObstacleData.bezierKeyframes);
             GetPathRenderer();
-            if (Keyframes == null || Keyframes.Length < 2)
-                return;
-            pathPoints = BezierCurveUtils.GeneratePath(Keyframes, resolution);
         }
     }
 }

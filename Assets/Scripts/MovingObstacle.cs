@@ -50,7 +50,7 @@ namespace BeachHero
         {
             nextPointIndex = 1;
             keyframes = movingObstacleData.bezierKeyframes;
-            pointsList = GeneratePath(keyframes, movingObstacleData.circleSegments);
+            pointsList = GeneratePath(keyframes, movingObstacleData.resolution);
             transform.position = pointsList[0];
             transform.LookAt(pointsList[1]);
         }

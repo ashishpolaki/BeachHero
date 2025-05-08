@@ -96,12 +96,6 @@ namespace BeachHero
         public float resolution;
         public float movementSpeed;
 
-        public Vector3 offsetPosition;
-        public Vector3 offsetRotation;
-
-        public float circleRadius; // Circle Shape Radius
-        public float circleSegments; // Circle Shape Segments
-
         [Space]
         public bool loopedMovement;
         public bool inverseDirection;
