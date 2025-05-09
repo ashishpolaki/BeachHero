@@ -10,6 +10,7 @@ namespace BeachHero
         [ReadOnly][SerializeField] private float waitTime;
         private float levelTime;
         private SavedCharacterUI savedCharacterUI;
+        private bool canDrawGizmos;
 
         public void Init(Vector3 _position, float _waitTimePercentage, float _levelTime)
         {
@@ -18,9 +19,11 @@ namespace BeachHero
             levelTime = _levelTime;
             waitTime = (levelTime * waitTimePercentage * 100) / 100f;
             savedCharacterUI = GetComponent<SavedCharacterUI>();
+            canDrawGizmos = true;
         }
         private void OnDrawGizmos()
         {
+            if(!canDrawGizmos) return;
             waitTime = (levelTime * waitTimePercentage * 100) / 100f;
             savedCharacterUI.UpdateTimer(waitTimePercentage);
         }

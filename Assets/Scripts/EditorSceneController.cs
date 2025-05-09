@@ -28,9 +28,9 @@ public class EditorSceneController : MonoBehaviour
     }
 
     #region Spawn
-    public void SpawnPrefabItem(SpawnItemType spawnItemType,Object _object)
+    public void SpawnPrefabItem(SpawnItemType spawnItemType, Object _object)
     {
-        if(spawnItemType == SpawnItemType.SavedCharacter)
+        if (spawnItemType == SpawnItemType.SavedCharacter)
         {
             GameObject savedCharacterobject = (GameObject)PrefabUtility.InstantiatePrefab(_object);
             SavedCharacterEditComponent savedCharacter = savedCharacterobject.AddComponent<SavedCharacterEditComponent>();
@@ -40,14 +40,15 @@ public class EditorSceneController : MonoBehaviour
         if (spawnItemType == SpawnItemType.MovingObstacle)
         {
             GameObject movingObstacleObject = (GameObject)PrefabUtility.InstantiatePrefab(_object);
+            MovingObstacle movingObstacleComponent = movingObstacleObject.GetComponent<MovingObstacle>();
             MovingObstacleEditComponent movingObstacle = movingObstacleObject.AddComponent<MovingObstacleEditComponent>();
             movingObstacleObject.transform.parent = container.transform;
-            movingObstacle.Init(new MovingObstacleData());
+            movingObstacle.Init(new MovingObstacleData() { type = movingObstacleComponent.ObstacleType });
         }
         if (spawnItemType == SpawnItemType.StaticObstacle)
         {
             GameObject staticObstacleObject = (GameObject)PrefabUtility.InstantiatePrefab(_object);
-            StaticObstacle staticObstacle = staticObstacleObject.AddComponent<StaticObstacle>();
+            StaticObstacle staticObstacle = staticObstacleObject.GetComponent<StaticObstacle>();
             staticObstacleObject.transform.parent = container.transform;
             staticObstacle.Init(Vector3.zero);
         }
@@ -56,7 +57,7 @@ public class EditorSceneController : MonoBehaviour
             GameObject collectableObject = (GameObject)PrefabUtility.InstantiatePrefab(_object);
             Collectable collectable = collectableObject.GetComponent<Collectable>();
             collectableObject.transform.parent = container.transform;
-            collectable.Init(new CollectableData());
+            collectable.Init(new CollectableData() { });
         }
     }
 
@@ -134,7 +135,7 @@ public class EditorSceneController : MonoBehaviour
 
     private void SpawnCollectable()
     {
-        if(currentLevel.Collectables.Length == 0)
+        if (currentLevel.Collectables.Length == 0)
         {
             return;
         }

@@ -20,6 +20,7 @@ namespace BeachHero
         public bool inverseDirection;
         private LineRenderer pathRenderer;
         public bool canEditKeyFramesInScene;
+        private bool canDrawGizmos;
 
         public void AddKeyFrame(BezierKeyframe newKeyframe)
         {
@@ -73,6 +74,8 @@ namespace BeachHero
         }
         private void OnDrawGizmos()
         {
+            if (!canDrawGizmos) return;
+
             if (Keyframes == null || Keyframes.Length < 2)
                 return;
             pathPoints = BezierCurveUtils.GeneratePath(Keyframes, resolution);
@@ -122,6 +125,7 @@ namespace BeachHero
             inverseDirection = movingObstacleData.inverseDirection;
             SetKeyFrames(movingObstacleData.bezierKeyframes);
             GetPathRenderer();
+            canDrawGizmos = true;
         }
     }
 }

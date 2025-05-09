@@ -4,20 +4,8 @@ namespace BeachHero
 {
     public class Obstacle : MonoBehaviour, IObstacle
     {
-        [SerializeField] private SpawnItemType spawnItemType;
         [SerializeField] private ObstacleType obstacleType;
 
-        public SpawnItemType SpawnItemType
-        {
-            get
-            {
-                return spawnItemType;
-            }
-            set
-            {
-                spawnItemType = value;
-            }
-        }
         public ObstacleType ObstacleType
         {
             get
