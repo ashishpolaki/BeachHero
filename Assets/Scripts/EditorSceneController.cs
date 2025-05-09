@@ -134,6 +134,10 @@ public class EditorSceneController : MonoBehaviour
 
     private void SpawnCollectable()
     {
+        if(currentLevel.Collectables.Length == 0)
+        {
+            return;
+        }
         string path = string.Empty;
         foreach (var item in currentLevel.Collectables)
         {
