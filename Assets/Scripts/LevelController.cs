@@ -11,6 +11,7 @@ namespace BeachHero
         private Player player;
         private List<SavedCharacter> savedCharactersList = new List<SavedCharacter>();
         private Dictionary<ObstacleType, List<IObstacle>> obstaclesDictionary = new Dictionary<ObstacleType, List<IObstacle>>();
+        private Dictionary<CollectableType,List<ICollectable>> collectableDictionary = new Dictionary<CollectableType, List<ICollectable>>();
 
         public void StartState(LevelSO levelSO)
         {
@@ -18,7 +19,7 @@ namespace BeachHero
             SpawnStartPoint(levelSO.StartPointData.Position, levelSO.StartPointData.Rotation);
             SpawnPlayer(levelSO.StartPointData.Position, levelSO.StartPointData.Rotation);
             SpawnObstacles(levelSO.Obstacle);
-            SpawnCollectables();
+            SpawnCollectables(levelSO.Collectables);
             SpawnSavedCharacters(levelSO.LevelTime, levelSO.SavedCharacters);
         }
         public void UpdateState()
@@ -30,6 +31,11 @@ namespace BeachHero
                 {
                     obstacle.UpdateState();
                 }
+            }
+            //Update Characters
+            foreach (var savedCharacter in savedCharactersList)
+            {
+                savedCharacter.UpdateState(Time.deltaTime);
             }
         }
 
@@ -122,9 +128,30 @@ namespace BeachHero
                 savedCharactersList.Add(savedCharacter);
             }
         }
-        private void SpawnCollectables()
+        private void SpawnCollectables(CollectableData[] collectableDatas)
         {
-
+            foreach (var collectable in collectableDatas)
+            {
+                switch (collectable.type)
+                {
+                    case CollectableType.Coin:
+                        SpawnCoin(collectable);
+                        break;
+                    case CollectableType.Gem:
+                        break;
+                    case CollectableType.Magnet:
+                        break;
+                    case CollectableType.Speed:
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        private void SpawnCoin(CollectableData collectableData)
+        {
+            Collectable coin = poolManager.CoinsPool.GetObject().GetComponent<Collectable>();
+            coin.Init(collectableData);
         }
         private void SpawnStartPoint(Vector3 pos, Vector3 rot)
         {
