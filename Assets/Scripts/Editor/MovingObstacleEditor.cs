@@ -54,7 +54,7 @@ namespace BeachHero
             EditorGUILayout.PropertyField(serializedObject.FindProperty("loopedMovement"), new GUIContent("Looped Movement"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("inverseDirection"), new GUIContent("Inverse Direction"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("Keyframes"), new GUIContent("Key Frames"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("pathPoints"), new GUIContent("Path Positions"),EditorStyles.miniBoldFont);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("pathPoints"), new GUIContent("Path Positions"), EditorStyles.miniBoldFont);
             movingObstacle.canEditKeyFramesInScene = GUILayout.Toggle(movingObstacle.canEditKeyFramesInScene, "Edit KeyFrames");
             if (GUILayout.Button("Add Keyframe"))
             {
@@ -115,6 +115,14 @@ namespace BeachHero
 
             for (int i = 0; i < movingObstacle.Keyframes.Length; i++)
             {
+                // Display the index of the keyframe as a label in the scene
+                Handles.Label(movingObstacle.Keyframes[i].position + Vector3.up * 0.5f, $"Point {i}",
+                    new GUIStyle
+                    {
+                        fontSize = 15,
+                        normal = new GUIStyleState { textColor = Color.white }
+                    });
+
                 // Draw an interactive Sphere Handle
                 Handles.color = Color.green;
                 if (Handles.Button(movingObstacle.Keyframes[i].position, Quaternion.identity, KeyFramePositionSize, KeyFramePositionPickUpSize, Handles.SphereHandleCap))
