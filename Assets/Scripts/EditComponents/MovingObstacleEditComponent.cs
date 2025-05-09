@@ -81,7 +81,8 @@ namespace BeachHero
             //Draw lines between the collected points
             for (int i = 0; i < pathPoints.Length - 1; i++)
             {
-                Gizmos.DrawLine(pathPoints[i], pathPoints[i + 1]);
+                Gizmos.DrawSphere(pathPoints[i], 0.1f);
+               // Gizmos.DrawLine(pathPoints[i], pathPoints[i + 1]);
             }
             pathRenderer.positionCount = pathPoints.Length;
             pathRenderer.SetPositions(pathPoints);

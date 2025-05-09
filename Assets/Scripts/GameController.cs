@@ -28,6 +28,11 @@ namespace BeachHero
             }
         }
 
+        private void Update()
+        {
+            levelController.UpdateState();
+        }
+
         private void OnDestroy()
         {
             poolManager.Reset();
@@ -36,7 +41,7 @@ namespace BeachHero
         private void Start()
         {
             currentLevelIndex = 0;
-            levelController.LoadLevel(levelDatabaseSO.GetLevelByIndex(currentLevelIndex));
+            levelController.StartState(levelDatabaseSO.GetLevelByIndex(currentLevelIndex));
         }
 
     }

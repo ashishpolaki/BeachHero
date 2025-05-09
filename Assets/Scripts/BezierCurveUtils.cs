@@ -14,14 +14,35 @@ namespace BeachHero
                 BezierKeyframe end = bezierKeyframes[i + 1];
 
                 Vector3 previousPoint = start.position;
-                curvePoints.Add(previousPoint);
+
+                if (curvePoints.Contains(previousPoint)) // Avoid duplicates
+                {
+                    if (curvePoints[0] == previousPoint)
+                    {
+                        curvePoints.Add(previousPoint); // Collect the point
+                    }
+                }
+                else
+                {
+                    curvePoints.Add(previousPoint); // Collect the point
+                }
 
                 for (int j = 1; j <= resolution; j++)
                 {
                     float t = j / (float)resolution; // Calculate t based on resolution
                     Vector3 point = CalculateBezierPoint(t, start.position, start.OutTangentWorld, end.InTangentWorld, end.position);
 
-                    curvePoints.Add(point); // Collect the point
+                    if (curvePoints.Contains(point)) // Avoid duplicates
+                    {
+                        if (curvePoints[0] == point)
+                        {
+                            curvePoints.Add(point); // Collect the point
+                        }
+                    }
+                    else
+                    {
+                        curvePoints.Add(point); // Collect the point
+                    }
                 }
             }
             return curvePoints.ToArray();

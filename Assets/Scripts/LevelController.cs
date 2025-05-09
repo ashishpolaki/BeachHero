@@ -12,7 +12,7 @@ namespace BeachHero
         private List<SavedCharacter> savedCharactersList = new List<SavedCharacter>();
         private Dictionary<ObstacleType, List<IObstacle>> obstaclesDictionary = new Dictionary<ObstacleType, List<IObstacle>>();
 
-        public void LoadLevel(LevelSO levelSO)
+        public void StartState(LevelSO levelSO)
         {
             // Load the level data
             SpawnStartPoint(levelSO.StartPointData.Position, levelSO.StartPointData.Rotation);
@@ -21,6 +21,22 @@ namespace BeachHero
             SpawnCollectables();
             SpawnSavedCharacters(levelSO.LevelTime, levelSO.SavedCharacters);
         }
+        public void UpdateState()
+        {
+            //Update Obstacles
+            foreach (var obstacleList in obstaclesDictionary.Values)
+            {
+                foreach (var obstacle in obstacleList)
+                {
+                    obstacle.UpdateState();
+                }
+            }
+        }
+
+        public void ResetState()
+        {
+            player.Reset();
+        }
 
         #region Obstacles
         private void SpawnObstacles(ObstacleData obstacle)
@@ -28,6 +44,41 @@ namespace BeachHero
             SpawnStaticObstacles(obstacle);
             SpawnMoveableObstacles(obstacle);
         }
+       
+        #region Moving obstacle
+        private void SpawnMoveableObstacles(ObstacleData obstacle)
+        {
+            if (obstacle.MovingObstacles != null && obstacle.MovingObstacles.Length > 0)
+            {
+                foreach (var movingObstacle in obstacle.MovingObstacles)
+                {
+                    switch (movingObstacle.type)
+                    {
+                        case ObstacleType.Eel:
+                            SpawnEel();
+                            break;
+                        case ObstacleType.Shark:
+                            SpawnShark(movingObstacle);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+        private void SpawnShark(MovingObstacleData movingObstacleData)
+        {
+            SharkObstacle shark = poolManager.SharkPool.GetObject().GetComponent<SharkObstacle>();
+            obstaclesDictionary[ObstacleType.Shark] = new List<IObstacle>() { shark };
+            shark.Init(movingObstacleData);
+        }
+        private void SpawnEel()
+        {
+
+        }
+        #endregion
+
+        #region Static obstacle
         private void SpawnStaticObstacles(ObstacleData obstacle)
         {
             if (obstacle.StaticObstacles != null && obstacle.StaticObstacles.Length > 0)
@@ -47,39 +98,6 @@ namespace BeachHero
                 }
             }
         }
-        private void SpawnMoveableObstacles(ObstacleData obstacle)
-        {
-            if (obstacle.MovingObstacles != null && obstacle.MovingObstacles.Length > 0)
-            {
-                foreach (var movingObstacle in obstacle.MovingObstacles)
-                {
-                    switch (movingObstacle.type)
-                    {
-                        case ObstacleType.Eel:
-                            break;
-                        case ObstacleType.Shark:
-                            SpawnShark(movingObstacle);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-        }
-        private void SpawnEel()
-        {
-
-        }
-        private void SpawnShark(MovingObstacleData movingObstacleData)
-        {
-            SharkObstacle shark = poolManager.SharkPool.GetObject().GetComponent<SharkObstacle>();
-            obstaclesDictionary[ObstacleType.Shark] = new List<IObstacle>() { shark };
-            shark.Init(movingObstacleData);
-        }
-        private void SpawnWaterHole()
-        {
-
-        }
         private void SpawnRock(ObstacleType obstacleType, StaticObstacleData rockObstacle)
         {
             obstaclesDictionary[obstacleType] = new List<IObstacle>();
@@ -87,6 +105,12 @@ namespace BeachHero
             obstaclesDictionary[obstacleType].Add(rock);
             rock.transform.SetPositionAndRotation(rockObstacle.position, Quaternion.Euler(rockObstacle.rotation));
         }
+        private void SpawnWaterHole()
+        {
+
+        }
+        #endregion
+
         #endregion
 
         private void SpawnSavedCharacters(float levelTime, SavedCharacterData[] savedCharacterDatas)
