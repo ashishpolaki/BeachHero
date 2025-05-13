@@ -43,6 +43,7 @@ namespace BeachHero
         public void Play()
         {
             isGameStarted = true;
+            levelController.GameStart();
         }
     }
 }

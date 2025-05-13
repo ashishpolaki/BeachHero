@@ -15,6 +15,7 @@ namespace BeachHero
         [SerializeField] private ScriptableObjectPool coinParticlePool;
         [SerializeField] private ScriptableObjectPool magnetPowerupPool;
         [SerializeField] private ScriptableObjectPool speedPowerupPool;
+        [SerializeField] private ScriptableObjectPool pathTrailPool;
 
         public ScriptableObjectPool StartPointPool => startPointPool;
         public ScriptableObjectPool PlayerPool => playerPool;
@@ -27,6 +28,7 @@ namespace BeachHero
         public ScriptableObjectPool CoinParticlePool => coinParticlePool;
         public ScriptableObjectPool MagnetPowerupPool => magnetPowerupPool;
         public ScriptableObjectPool SpeedPowerupPool => speedPowerupPool;
+        public ScriptableObjectPool PathTrailPool => pathTrailPool;
 
         public void Reset()
         {
@@ -41,6 +43,7 @@ namespace BeachHero
             coinParticlePool.ResetState();
             magnetPowerupPool.ResetState();
             speedPowerupPool.ResetState();
+            pathTrailPool.ResetState();
         }
     }
 }

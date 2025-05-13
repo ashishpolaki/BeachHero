@@ -245,6 +245,7 @@ GameObject:
   - component: {fileID: 280235826}
   - component: {fileID: 280235828}
   - component: {fileID: 280235829}
+  - component: {fileID: 280235830}
   m_Layer: 0
   m_Name: ScriptsHolder
   m_TagString: Untagged
@@ -295,6 +296,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   poolManager: {fileID: 280235829}
+  inputManager: {fileID: 280235830}
+  startPointLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  touchLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  minTrailPointsDistance: 0.3
+  smoothingStep: 0.05
+  spacing: 0.5
 --- !u!114 &280235829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,6 +329,19 @@ MonoBehaviour:
   coinParticlePool: {fileID: 11400000, guid: 1d8c4f902f0146a45b3f89e63fd60603, type: 2}
   magnetPowerupPool: {fileID: 11400000, guid: c616e471ecd8e7546aa252bf068f3539, type: 2}
   speedPowerupPool: {fileID: 11400000, guid: 3d2793e30e44ebd44b6067c976de38a3, type: 2}
+  pathTrailPool: {fileID: 11400000, guid: 179f31904df6192418bf40f05521b375, type: 2}
+--- !u!114 &280235830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 280235824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 026e9bf6022a444e0a5b0d3bb455254d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &454842542
 GameObject:
   m_ObjectHideFlags: 0

@@ -22,6 +22,7 @@ namespace BeachHero
        
         private void OnPlayButtonClicked()
         {
+            Close();
             GameController.GetInstance.Play();
         }
     }
