@@ -2,47 +2,47 @@ using UnityEngine;
 
 namespace BeachHero
 {
-    public class GameController : MonoBehaviour
+    public class GameController : SingleTon<GameController>
     {
-        private static GameController instance;
-        public static GameController Instance { get => instance; }
-
         [SerializeField] private LevelController levelController;
         [SerializeField] private LevelDatabaseSO levelDatabaseSO;
         [SerializeField] private PoolManager poolManager;
 
         [Tooltip("The Index Starts from 0")]
         private int currentLevelIndex;
+        private bool isGameStarted = false;
 
-        private void Awake()
-        {
-            if (instance == null)
-            {
-                instance = this;
-                DontDestroyOnLoad(gameObject);
-            }
-            else
-            {
-                Destroy(gameObject);
-                return;
-            }
-        }
+        #region Properties
+        public int CurrentLevelIndex => currentLevelIndex;
+        #endregion
 
+        #region Unity Methods
         private void Update()
         {
-            levelController.UpdateState();
+            if (isGameStarted)
+            {
+                levelController.UpdateState();
+            }
         }
-
         private void OnDestroy()
         {
             poolManager.Reset();
         }
-
         private void Start()
         {
+            SpawnLevel();
+        }
+        #endregion
+
+        private void SpawnLevel()
+        {
             currentLevelIndex = 0;
+            UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
             levelController.StartState(levelDatabaseSO.GetLevelByIndex(currentLevelIndex));
         }
-
+        public void Play()
+        {
+            isGameStarted = true;
+        }
     }
 }
