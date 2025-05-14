@@ -14,6 +14,7 @@ namespace BeachHero
 
         #region Properties
         public int CurrentLevelIndex => currentLevelIndex;
+        public PoolManager PoolManager => poolManager;
         #endregion
 
         #region Unity Methods
@@ -44,6 +45,19 @@ namespace BeachHero
         {
             isGameStarted = true;
             levelController.GameStart();
+        }
+        public void OnCollectable(CollectableType collectableType)
+        {
+            switch (collectableType)
+            {
+                case CollectableType.Coin:
+
+                    break;
+                case CollectableType.Gem:
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

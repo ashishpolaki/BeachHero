@@ -34,6 +34,10 @@ namespace BeachHero
         private bool isPathDrawn = false;
         private bool canDrawPath = false;
         private bool isPlaying;
+        private int totalSavedCharacterInLevel;
+        [Tooltip("Number of characters saved by the player in current level")]
+        private int savedCharacterCounter;
+
         #endregion
 
         #region Unity Methods
@@ -79,6 +83,7 @@ namespace BeachHero
             }
         }
         #endregion
+
         private void UpdatePath(Vector3 newPosition)
         {
             if (Vector3.Distance(newPosition, lastTrailPoint) > minTrailPointsDistance)

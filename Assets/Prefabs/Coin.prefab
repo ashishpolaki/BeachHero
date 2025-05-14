@@ -28,8 +28,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0.2}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3865040562340570352}
+  m_Children: []
   m_Father: {fileID: 932363394992073193}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &932363394992073192
@@ -65,6 +64,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 932363394005804977}
+  - {fileID: 3865040562340570352}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &932363394992073194
@@ -123,6 +123,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collectableType: 1
+  coinGraphics: {fileID: 3865040562340935888}
+  coinParticle: {fileID: 0}
 --- !u!1 &3865040562340935888
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,11 +152,11 @@ Transform:
   m_GameObject: {fileID: 3865040562340935888}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: -0.5}
-  m_LocalScale: {x: 1, y: 5, z: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: -0.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 932363394005804977}
+  m_Father: {fileID: 932363394992073193}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!33 &3865040562343994576
 MeshFilter:

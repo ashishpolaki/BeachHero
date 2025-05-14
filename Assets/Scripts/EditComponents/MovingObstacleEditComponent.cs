@@ -111,7 +111,7 @@ namespace BeachHero
         }
         private void GetPathRenderer()
         {
-            GameObject pathRendererPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/PathRenderer.prefab");
+            GameObject pathRendererPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/PathLineRenderer.prefab");
             GameObject pathRendererObject = (GameObject)PrefabUtility.InstantiatePrefab(pathRendererPrefab, transform);
             pathRenderer = pathRendererObject.GetComponent<LineRenderer>();
         }

@@ -11,6 +11,7 @@ namespace BeachHero
         private int nextPointIndex;
         private bool canStartMovement;
 
+#if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             if (pointsList != null && pointsList.Length > 0)
@@ -22,6 +23,23 @@ namespace BeachHero
                 }
             }
         }
+#endif
+
+        private void OnTriggerEnter(Collider other)
+        {
+            ICollectable collectable = other.GetComponent<ICollectable>();
+            if (collectable != null)
+            {
+                collectable.Collect();
+            }
+            Debug.Log("Trigger Entered: " + other.name);
+            if (other.CompareTag("Obstacle"))
+            {
+               
+                // Start movement when the player enters the trigger
+                //   StartMovement(pointsList);
+            }
+        }
 
         public void StartMovement(Vector3[] pointsList)
         {
@@ -29,6 +47,8 @@ namespace BeachHero
             canStartMovement = true;
             this.pointsList = pointsList;
         }
+
+        #region States
         public void ResetState()
         {
 
@@ -52,6 +72,11 @@ namespace BeachHero
                     nextPoint,
                     movementSpeed * Time.deltaTime
                 );
+                // rigid.MovePosition(Vector3.MoveTowards(
+                //    transform.position,
+                //    nextPoint,
+                //    movementSpeed * Time.deltaTime
+                //)); // Use Rigidbody to move the object
 
                 // Rotate based on the direction between the previous and next points
                 if (directionBetweenPoints != Vector3.zero) // Avoid errors when direction is zero
@@ -76,5 +101,6 @@ namespace BeachHero
                 }
             }
         }
+        #endregion
     }
 }
