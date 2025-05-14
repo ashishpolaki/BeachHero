@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,9 +35,30 @@ namespace BeachHero
         private bool isPathDrawn = false;
         private bool canDrawPath = false;
         private bool isPlaying;
-        private int totalSavedCharacterInLevel;
+        private bool isLevelFinished;
+        private bool levelPassed;
+        private float levelTimer;
+        private int totalCharactersInLevel;
         [Tooltip("Number of characters saved by the player in current level")]
         private int savedCharacterCounter;
+        #endregion
+
+        #region Properties
+        public Camera Cam
+        {
+            get
+            {
+                if(cam == null)
+                {
+                    cam = Camera.main;
+                }
+                return cam;
+            }
+        }
+        #endregion
+
+        #region Actions
+        public Action<float> OnLevelTimerUpdate;
 
         #endregion
 
@@ -60,7 +82,7 @@ namespace BeachHero
             if (!isPathDrawn && isPlaying)
             {
                 playerPathDrawTrail.ResetTrail(player.transform.position);
-                ray = cam.ScreenPointToRay(InputManager.MousePosition);
+                ray = Cam.ScreenPointToRay(InputManager.MousePosition);
                 if (Physics.Raycast(ray, out raycastHit, 1000f, startPointLayer))
                 {
                     canDrawPath = true;
@@ -84,6 +106,7 @@ namespace BeachHero
         }
         #endregion
 
+        #region DrawPath
         private void UpdatePath(Vector3 newPosition)
         {
             if (Vector3.Distance(newPosition, lastTrailPoint) > minTrailPointsDistance)
@@ -113,6 +136,28 @@ namespace BeachHero
                 lastTrailPoint = newPosition;
             }
         }
+        private void DrawPath()
+        {
+            if (isPlaying && canDrawPath)
+            {
+                ray = Cam.ScreenPointToRay(InputManager.MousePosition);
+                if (Physics.Raycast(ray, out raycastHit, 1000f, touchLayer))
+                {
+                    if (raycastHit.collider.CompareTag("Ground"))
+                    {
+                        UpdatePath(raycastHit.point);
+                    }
+                    else
+                    {
+                        Vector3 hitpoint = raycastHit.point;
+                        hitpoint.y = 0f;
+                        UpdatePath(hitpoint);
+                    }
+                }
+            }
+        }
+        #endregion
+
         private void StartSimulation()
         {
             player.StartMovement(smoothedDrawnPoints.ToArray());
@@ -122,11 +167,22 @@ namespace BeachHero
         {
             isPlaying = true;
         }
+        private void UpdateLevelTimer()
+        {
+            levelTimer -= Time.deltaTime;
+            if(levelTimer <= 0)
+            {
+                levelTimer = 0;
+                isLevelFinished = true;
+            }
+            OnLevelTimerUpdate?.Invoke(levelTimer);
+        }
 
         #region States
         public void StartState(LevelSO levelSO)
         {
-            cam = Camera.main;
+            levelTimer = levelSO.LevelTime;
+            totalCharactersInLevel = levelSO.SavedCharacters.Length;
 
             // Load the level data
             SpawnStartPoint(levelSO.StartPointData.Position, levelSO.StartPointData.Rotation);
@@ -139,25 +195,12 @@ namespace BeachHero
 
         public void UpdateState()
         {
-            if (isPlaying && canDrawPath)
-            {
-                RaycastHit hit;
-                Ray ray = cam.ScreenPointToRay(InputManager.MousePosition);
-                if (Physics.Raycast(ray, out hit, 1000f, touchLayer))
-                {
-                    if (hit.collider.CompareTag("Ground"))
-                    {
-                        UpdatePath(hit.point);
-                    }
-                    else
-                    {
-                        Vector3 hitpoint = hit.point;
-                        hitpoint.y = 0f;
-                        UpdatePath(hitpoint);
-                    }
-                }
-            }
+            // Update level timer
+            UpdateLevelTimer();
 
+            // Update Path 
+            DrawPath();
+        
             //Update Obstacles
             foreach (var obstacleList in obstaclesDictionary.Values)
             {
@@ -176,6 +219,15 @@ namespace BeachHero
             if (player != null)
             {
                 player.UpdateState();
+            }
+
+            //Update Collectables
+            foreach (var collectableList in collectableDictionary.Values)
+            {
+                foreach (var collectable in collectableList)
+                {
+                   // collectable.UpdateState();
+                }
             }
         }
         public void ResetState()

@@ -15,6 +15,7 @@ namespace BeachHero
         #region Properties
         public int CurrentLevelIndex => currentLevelIndex;
         public PoolManager PoolManager => poolManager;
+        public LevelController LevelController => levelController;
         #endregion
 
         #region Unity Methods
@@ -45,6 +46,8 @@ namespace BeachHero
         {
             isGameStarted = true;
             levelController.GameStart();
+            UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Close);
+            UIController.GetInstance.ScreenEvent(ScreenType.Gameplay, UIScreenEvent.Open);
         }
         public void OnCollectable(CollectableType collectableType)
         {

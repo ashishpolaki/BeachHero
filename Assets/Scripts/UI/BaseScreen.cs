@@ -7,6 +7,7 @@ namespace BeachHero
     {
         None,
         MainMenu,
+        Gameplay,
     }
     public interface IScreen
     {
