@@ -8,6 +8,7 @@ namespace BeachHero
         [SerializeField] private float waitTimePercentage;
         [SerializeField] private ParticleSystem pickUpParticle;
         [SerializeField] private GameObject graphicsSkin;
+        [SerializeField] private GameObject graphicsUI;
 
         private float waitTime;
         private float levelTime;
@@ -43,7 +44,8 @@ namespace BeachHero
             pickUpParticle.gameObject.SetActive(true);
             pickUpParticle.Play();
             graphicsSkin.SetActive(false);
-            savedCharacterUI.gameObject.SetActive(false);
+            graphicsUI.SetActive(false);
+
             isPickedUp = true;
         }
     }

@@ -127,7 +127,7 @@ namespace BeachHero
                     nextPointIndex++;
                     if (nextPointIndex >= pointsList.Length)
                     {
-                        Debug.Log("Reached the end of the path.");
+                         Debug.Log("Reached the end of the path.");
                     }
                 }
             }
