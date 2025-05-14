@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace BeachHero
 {
-    public class PoolManager : MonoBehaviour
+    public class PoolController : MonoBehaviour
     {
         [SerializeField] private ScriptableObjectPool startPointPool;
         [SerializeField] private ScriptableObjectPool playerPool;

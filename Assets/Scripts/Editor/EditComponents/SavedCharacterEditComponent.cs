@@ -7,7 +7,8 @@ namespace BeachHero
     public class SavedCharacterEditComponent : MonoBehaviour
     {
         [Range(0, 1f)] public float waitTimePercentage;
-        [ReadOnly][SerializeField] private float waitTime;
+        [ReadOnly]
+        [SerializeField] private float waitTime;
         private float levelTime;
         private SavedCharacterUI savedCharacterUI;
         private bool canDrawGizmos;
@@ -23,7 +24,7 @@ namespace BeachHero
         }
         private void OnDrawGizmos()
         {
-            if(!canDrawGizmos) return;
+            if (!canDrawGizmos) return;
             waitTime = (levelTime * waitTimePercentage * 100) / 100f;
             savedCharacterUI.UpdateTimer(waitTimePercentage);
         }

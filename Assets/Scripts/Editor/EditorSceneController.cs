@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using BeachHero;
 using UnityEditor;
 using UnityEngine;
@@ -195,3 +196,4 @@ public class EditorSceneController : MonoBehaviour
     }
     #endregion
 }
+#endif

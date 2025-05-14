@@ -7,7 +7,7 @@ namespace BeachHero
     public class LevelController : MonoBehaviour
     {
         #region Inspector Variables
-        [SerializeField] private PoolManager poolManager;
+        [SerializeField] private PoolController poolManager;
         [SerializeField] private InputManager inputManager;
 
         [SerializeField] private LayerMask startPointLayer;
@@ -360,6 +360,7 @@ namespace BeachHero
         {
             player = poolManager.PlayerPool.GetObject().GetComponent<Player>();
             player.transform.SetPositionAndRotation(pos, Quaternion.Euler(rot));
+            player.StartState();
         }
         #endregion
 

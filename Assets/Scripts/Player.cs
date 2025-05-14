@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace BeachHero
@@ -7,9 +6,12 @@ namespace BeachHero
     {
         [SerializeField] private float movementSpeed;
         [SerializeField] private float rotationSpeed;
+        [SerializeField] private Animator animator;
         private Vector3[] pointsList;
-        private int nextPointIndex;
         private bool canStartMovement;
+        private int nextPointIndex;
+        private int sinkingAnimHash;
+        private int idleAnimHash;
 
 #if UNITY_EDITOR
         private void OnDrawGizmos()
@@ -24,21 +26,46 @@ namespace BeachHero
             }
         }
 #endif
+        #region Unity methods
+        private void Awake()
+        {
+            sinkingAnimHash = Animator.StringToHash("Sinking");
+            idleAnimHash = Animator.StringToHash("Idle");
+        }
 
         private void OnTriggerEnter(Collider other)
         {
+            if (other.CompareTag("Character"))
+            {
+                SavedCharacter savedCharacter = other.GetComponent<SavedCharacter>();
+                savedCharacter.OnPickUp();
+            }
             ICollectable collectable = other.GetComponent<ICollectable>();
             if (collectable != null)
             {
                 collectable.Collect();
             }
-            Debug.Log("Trigger Entered: " + other.name);
+
             if (other.CompareTag("Obstacle"))
             {
-               
-                // Start movement when the player enters the trigger
-                //   StartMovement(pointsList);
+                IObstacle obstacle = other.GetComponent<IObstacle>();
+                if (obstacle != null)
+                {
+                    obstacle.Hit();
+                }
+                OnBoatCollided();
+                StopMovement();
             }
+        }
+        #endregion
+
+        private void StopMovement()
+        {
+            canStartMovement = false;
+        }
+        private void OnBoatCollided()
+        {
+            animator.SetTrigger(sinkingAnimHash);
         }
 
         public void StartMovement(Vector3[] pointsList)
@@ -49,6 +76,10 @@ namespace BeachHero
         }
 
         #region States
+        public void StartState()
+        {
+            animator.Play(idleAnimHash, -1, Random.Range(0f, 1f));
+        }
         public void ResetState()
         {
 

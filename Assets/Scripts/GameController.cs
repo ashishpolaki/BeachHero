@@ -6,7 +6,7 @@ namespace BeachHero
     {
         [SerializeField] private LevelController levelController;
         [SerializeField] private LevelDatabaseSO levelDatabaseSO;
-        [SerializeField] private PoolManager poolManager;
+        [SerializeField] private PoolController poolManager;
 
         [Tooltip("The Index Starts from 0")]
         private int currentLevelIndex;
@@ -14,7 +14,7 @@ namespace BeachHero
 
         #region Properties
         public int CurrentLevelIndex => currentLevelIndex;
-        public PoolManager PoolManager => poolManager;
+        public PoolController PoolManager => poolManager;
         public LevelController LevelController => levelController;
         #endregion
 
@@ -54,7 +54,6 @@ namespace BeachHero
             switch (collectableType)
             {
                 case CollectableType.Coin:
-
                     break;
                 case CollectableType.Gem:
                     break;

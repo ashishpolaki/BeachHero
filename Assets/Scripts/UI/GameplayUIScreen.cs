@@ -13,7 +13,8 @@ namespace BeachHero
         }
         private void OnDisable()
         {
-            GameController.GetInstance.LevelController.OnLevelTimerUpdate -= UpdateTimer;
+            if (GameController.Exists)
+                GameController.GetInstance.LevelController.OnLevelTimerUpdate -= UpdateTimer;
         }
         private void UpdateTimer(float time)
         {

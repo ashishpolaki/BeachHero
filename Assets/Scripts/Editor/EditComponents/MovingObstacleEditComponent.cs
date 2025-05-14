@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 using UnityEditor;
 using UnityEngine;
 
@@ -5,7 +7,8 @@ namespace BeachHero
 {
     public class MovingObstacleEditComponent : MonoBehaviour
     {
-        [ReadOnly] public Vector3[] pathPoints;
+        [ReadOnly]
+        public Vector3[] pathPoints;
         public ObstacleType obstacleType;
         public MovingObstacleMovementType movementType;
         public BezierKeyframe[] Keyframes;
@@ -129,3 +132,4 @@ namespace BeachHero
         }
     }
 }
+#endif

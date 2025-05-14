@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace BeachHero
@@ -12,8 +14,10 @@ namespace BeachHero
         [SerializeField] private float movementSpeed = 5f;
         [SerializeField] private int nextPointIndex;
         [SerializeField] private Vector3[] pointsList;
+        [SerializeField] private float spacing = 0.5f; // Spacing between points
         private bool isLoopedMovement;
         private bool isInverseDirection;
+        private bool isMovementActive;
         #endregion
 
         #region Properties
@@ -32,11 +36,13 @@ namespace BeachHero
         #region Public Methods
         public virtual void Init(MovingObstacleData movingObstacleData)
         {
+            isMovementActive = true;
             nextPointIndex = 1;
             keyframes = movingObstacleData.bezierKeyframes;
             isLoopedMovement = movingObstacleData.loopedMovement;
             isInverseDirection = movingObstacleData.inverseDirection;
             pointsList = BezierCurveUtils.GeneratePath(keyframes, movingObstacleData.resolution);
+            pointsList =  GetEvenlySpacedPoints(pointsList.ToList(), spacing).ToArray();
             movementSpeed = movingObstacleData.movementSpeed;
             resolution = (int)movingObstacleData.resolution;
             if (isInverseDirection)
@@ -47,19 +53,10 @@ namespace BeachHero
             transform.LookAt(pointsList[1]);
         }
 
-        private void OnDrawGizmos()
-        {
-            if (pointsList != null && pointsList.Length > 0)
-            {
-                Gizmos.color = Color.red;
-                for (int i = 0; i < pointsList.Length; i++)
-                {
-                    Gizmos.DrawSphere(pointsList[i], 0.1f);
-                }
-            }
-        }
         public override void UpdateState()
         {
+            if (isMovementActive == false)
+                return; 
             base.UpdateState();
             if (nextPointIndex < pointsList.Length)
             {
@@ -109,5 +106,84 @@ namespace BeachHero
             transform.LookAt(pointsList[1]);
         }
         #endregion
+
+        public override void Hit()
+        {
+            base.Hit();
+            isMovementActive = false;
+        }
+
+        #region Spline
+
+        private Vector3 CatmullRom(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
+        {
+            // Catmull-Rom spline formula
+            float t2 = t * t;
+            float t3 = t2 * t;
+
+            return 0.5f * (
+                (2f * p1) +
+                (-p0 + p2) * t +
+                (2f * p0 - 5f * p1 + 4f * p2 - p3) * t2 +
+                (-p0 + 3f * p1 - 3f * p2 + p3) * t3
+            );
+        }
+
+        private List<Vector3> GetEvenlySpacedPoints(List<Vector3> pathPoints, float spacing)
+        {
+            List<Vector3> evenlySpacedPoints = new List<Vector3>();
+            float distanceSinceLastPoint = 0f;
+
+            evenlySpacedPoints.Add(pathPoints[0]); // Start with the first point
+
+            for (int i = 0; i < pathPoints.Count - 3; i++)
+            {
+                Vector3 previousPoint = pathPoints[i + 1]; // Start from the second control point
+
+                for (float t = 0; t <= 1; t += 0.01f) // High resolution for accurate arc length calculation
+                {
+                    Vector3 interpolatedPoint = CatmullRom(
+                        pathPoints[i],
+                        pathPoints[i + 1],
+                        pathPoints[i + 2],
+                        pathPoints[i + 3],
+                        t
+                    );
+
+                    // Accumulate distance between the previous point and the current interpolated point
+                    distanceSinceLastPoint += Vector3.Distance(previousPoint, interpolatedPoint);
+
+                    // If the accumulated distance exceeds the spacing, add a new point
+                    if (distanceSinceLastPoint >= spacing)
+                    {
+                        evenlySpacedPoints.Add(interpolatedPoint);
+                        distanceSinceLastPoint = 0f; // Reset the distance counter
+                    }
+
+                    previousPoint = interpolatedPoint; // Update the previous point
+                }
+            }
+
+            if (evenlySpacedPoints.Contains(pathPoints[pathPoints.Count - 1]) == false)
+                evenlySpacedPoints.Add(pathPoints[pathPoints.Count - 1]); // Add the last point if not already added
+
+            return evenlySpacedPoints;
+        }
+        #endregion
+
+#if UNITY_EDITOR
+        private void OnDrawGizmos()
+        {
+            if (pointsList != null && pointsList.Length > 0)
+            {
+                Gizmos.color = Color.red;
+                for (int i = 0; i < pointsList.Length; i++)
+                {
+                    Gizmos.DrawSphere(pointsList[i], 0.1f);
+                }
+            }
+        }
+#endif
+
     }
 }

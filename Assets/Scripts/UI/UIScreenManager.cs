@@ -20,6 +20,14 @@ namespace BeachHero
             }
         }
 
+        public void CloseAllScreens()
+        {
+            foreach (var screen in screenDictionary)
+            {
+                screen.Value.Close();
+            }
+        }
+
         public void ScreenEvent(ScreenType _screenType, UIScreenEvent uIEvent, ScreenTabType screenTabType)
         {
             switch (uIEvent)

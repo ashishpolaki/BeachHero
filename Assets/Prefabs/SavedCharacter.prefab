@@ -471,7 +471,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: a5ee1a6774151aa4695456be7eb96137, type: 2}
-  m_CullingMode: 0
+  m_CullingMode: 2
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
@@ -517,7 +517,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   savedCharacterUI: {fileID: 4519252882675288244}
   waitTimePercentage: 0
-  waitTime: 0
+  pickUpParticle: {fileID: 3492147418917219540}
+  graphicsSkin: {fileID: 4112018115558781028}
 --- !u!114 &4519252882675288244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1477,6 +1478,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81690abf1cf664341b7de9fa215aa2e4, type: 3}
+--- !u!198 &3492147418917219540 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 6168188585866743214, guid: 81690abf1cf664341b7de9fa215aa2e4,
+    type: 3}
+  m_PrefabInstance: {fileID: 7345185475020153210}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6594497674321951531 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4497701812403837521, guid: 81690abf1cf664341b7de9fa215aa2e4,

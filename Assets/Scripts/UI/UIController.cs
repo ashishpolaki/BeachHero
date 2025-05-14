@@ -27,6 +27,10 @@ namespace BeachHero
         {
             screenManager.ScreenEvent(screenType, uIScreenEvent, screenTabType);
         }
+        public void Close()
+        {
+            screenManager.CloseAllScreens();
+        }
         #endregion
     }
 }
