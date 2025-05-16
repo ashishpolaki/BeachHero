@@ -32,7 +32,7 @@ namespace BeachHero
             }
         }
 
-        public void Init(CollectableData collectableData)
+        public virtual void Init(CollectableData collectableData)
         {
             transform.position = collectableData.position;
             collectableType = collectableData.type;

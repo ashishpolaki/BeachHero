@@ -15,10 +15,25 @@ namespace BeachHero
 
         public bool CanMoveToTarget => canMoveToTarget;
 
+        private void OnDisable()
+        {
+            StopAllCoroutines();
+        }
         public void SetTarget(Transform target)
         {
             moveTarget = target;
             canMoveToTarget = true;
+        }
+        public override void Init(CollectableData collectableData)
+        {
+            base.Init(collectableData);
+            coinGraphics.SetActive(true);
+            if (coinParticle != null)
+            {
+                coinParticle.Stop();
+                GameController.GetInstance.PoolManager.CoinParticlePool.ReturnObject(coinParticle.gameObject);
+            }
+            canMoveToTarget = false;
         }
         public override void UpdateState()
         {

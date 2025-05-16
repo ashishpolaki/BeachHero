@@ -431,7 +431,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5957577468228825448}
-  - component: {fileID: 6321938610975301327}
   - component: {fileID: 6400043648232021423}
   - component: {fileID: 7834827969315238098}
   - component: {fileID: 4519252882675288244}
@@ -460,28 +459,6 @@ Transform:
   - {fileID: 3628496244418702046}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &6321938610975301327
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2348640673756777566}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: a5ee1a6774151aa4695456be7eb96137, type: 2}
-  m_CullingMode: 2
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!135 &6400043648232021423
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -516,10 +493,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   savedCharacterUI: {fileID: 4519252882675288244}
-  waitTimePercentage: 0
   pickUpParticle: {fileID: 3492147418917219540}
   graphicsSkin: {fileID: 4112018115558781028}
   graphicsUI: {fileID: 3623709195493922988}
+  animatorRef: {fileID: 7258446663383494820}
+  waitTimePercentage: 0
 --- !u!114 &4519252882675288244
 MonoBehaviour:
   m_ObjectHideFlags: 0

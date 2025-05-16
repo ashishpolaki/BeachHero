@@ -26,16 +26,12 @@ namespace BeachHero
         public virtual void UpdateState()
         {
         }
-        public virtual void ResetState()
-        {
-        }
     }
     public interface IObstacle
     {
         public ObstacleType ObstacleType { get; set; }
         public abstract void Hit();
         public abstract void UpdateState();
-        public abstract void ResetState();
     }
     public enum SpawnItemType
     {

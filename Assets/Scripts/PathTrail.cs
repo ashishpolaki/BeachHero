@@ -9,4 +9,8 @@ public class PathTrail : MonoBehaviour
         transform.position = position;
         trailRenderer.Clear();
     }
+    public void ClearRenderer()
+    {
+        trailRenderer.Clear();
+    }
 }

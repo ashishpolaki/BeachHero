@@ -26,6 +26,7 @@ namespace BeachHero
             transform.position = obstacleData.position;
             cycloneGraphics.transform.localScale = Vector3.one * obstacleData.scale;
             sphereCollider.radius = obstacleData.scale * 0.5f;
+            cycloneGraphics.SetActive(true);
         }
 
         public override void Hit()

@@ -22,7 +22,7 @@ namespace BeachHero
         private StartPointBehaviour startPointBehaviour;
         private Player player;
         private List<SavedCharacter> savedCharactersList = new List<SavedCharacter>();
-        private Dictionary<ObstacleType, List<IObstacle>> obstaclesDictionary = new Dictionary<ObstacleType, List<IObstacle>>();
+        private Dictionary<ObstacleType, List<Obstacle>> obstaclesDictionary = new Dictionary<ObstacleType, List<Obstacle>>();
         private Dictionary<CollectableType, List<Collectable>> collectableDictionary = new Dictionary<CollectableType, List<Collectable>>();
         private PathTrail playerPathDrawTrail;
         private PathTrail playerPathTransparentTrail;
@@ -38,7 +38,6 @@ namespace BeachHero
         private bool isPlaying;
         private bool coinMagnetActivated;
         private bool isLevelFinished;
-        private bool levelPassed;
         private float levelTimer;
         private int totalCharactersInLevel;
         [Tooltip("Number of characters saved by the player in current level")]
@@ -170,10 +169,19 @@ namespace BeachHero
         {
             player.StartMovement(smoothedDrawnPoints.ToArray());
         }
-
         public void GameStart()
         {
             isPlaying = true;
+        }
+        public void OnCharacterDrown()
+        {
+            isPlaying = false;
+            isLevelFinished = true;
+            StopSimulation();
+        }
+        private void StopSimulation()
+        {
+            player.StopMovement();
         }
         private void UpdateLevelTimer()
         {
@@ -184,6 +192,64 @@ namespace BeachHero
                 isLevelFinished = true;
             }
             OnLevelTimerUpdate?.Invoke(levelTimer);
+        }
+        private void ReturnToPoolEverything()
+        {
+            //StartPoint
+            if (startPointBehaviour != null)
+                poolManager.StartPointPool.ReturnObject(startPointBehaviour.gameObject);
+
+            //Player
+            if (player != null)
+                poolManager.PlayerPool.ReturnObject(player.gameObject);
+
+            //Collectables
+            foreach (var collectableList in collectableDictionary.Values)
+            {
+                foreach (var collectable in collectableList)
+                {
+                    if (collectable.CollectableType == CollectableType.Coin)
+                    {
+                        poolManager.CoinsPool.ReturnObject(collectable.gameObject);
+                    }
+                }
+            }
+
+            //Characters
+            foreach (var savedCharacter in savedCharactersList)
+            {
+                poolManager.SavedCharacterPool.ReturnObject(savedCharacter.gameObject);
+            }
+
+            //Trails
+            if (playerPathDrawTrail != null)
+            {
+                poolManager.PathTrailPool.ReturnObject(playerPathDrawTrail.gameObject);
+            }
+
+            //Obstacles
+            foreach (var obstacleList in obstaclesDictionary.Values)
+            {
+                foreach (var obstacle in obstacleList)
+                {
+                    if (obstacle.ObstacleType == ObstacleType.Shark)
+                    {
+                        poolManager.SharkPool.ReturnObject(obstacle.gameObject);
+                    }
+                    else if (obstacle.ObstacleType == ObstacleType.Eel)
+                    {
+                        poolManager.EelPool.ReturnObject(obstacle.gameObject);
+                    }
+                    else if (obstacle.ObstacleType == ObstacleType.WaterHole)
+                    {
+                        poolManager.WaterHolePool.ReturnObject(obstacle.gameObject);
+                    }
+                    else if (obstacle.ObstacleType == ObstacleType.Rock)
+                    {
+                        poolManager.RockPool.ReturnObject(obstacle.gameObject);
+                    }
+                }
+            }
         }
 
         #region Powerup
@@ -218,6 +284,7 @@ namespace BeachHero
         #region States
         public void StartState(LevelSO levelSO)
         {
+            ResetState();
             levelTimer = levelSO.LevelTime;
             totalCharactersInLevel = levelSO.SavedCharacters.Length;
 
@@ -232,6 +299,11 @@ namespace BeachHero
 
         public void UpdateState()
         {
+            if (isLevelFinished)
+            {
+                return;
+            }
+
             // Update level timer
             UpdateLevelTimer();
 
@@ -249,7 +321,7 @@ namespace BeachHero
             //Update Characters
             foreach (var savedCharacter in savedCharactersList)
             {
-                savedCharacter.UpdateState(Time.deltaTime);
+                savedCharacter.UpdateState();
             }
 
             //Update Player
@@ -264,13 +336,25 @@ namespace BeachHero
             {
                 foreach (var collectable in collectableList)
                 {
-                     collectable.UpdateState();
+                    collectable.UpdateState();
                 }
             }
         }
-        public void ResetState()
+        private void ResetState()
         {
-            player.ResetState();
+            ReturnToPoolEverything();
+            coinMagnetActivated = false;
+            isLevelFinished = false;
+            isPlaying = false;
+            isPathDrawn = false;
+            canDrawPath = false;
+            drawnPoints.Clear();
+            smoothedDrawnPoints.Clear();
+            lastTrailPoint = Vector3.zero;
+            savedCharacterCounter = 0;
+            savedCharactersList.Clear();
+            obstaclesDictionary.Clear();
+            collectableDictionary.Clear();
         }
         #endregion
 
@@ -289,6 +373,10 @@ namespace BeachHero
             {
                 foreach (var movingObstacle in obstacle.MovingObstacles)
                 {
+                    if (!obstaclesDictionary.ContainsKey(movingObstacle.type))
+                    {
+                        obstaclesDictionary[movingObstacle.type] = new List<Obstacle>();
+                    }
                     switch (movingObstacle.type)
                     {
                         case ObstacleType.Eel:
@@ -306,22 +394,14 @@ namespace BeachHero
         private void SpawnShark(MovingObstacleData movingObstacleData)
         {
             SharkObstacle shark = poolManager.SharkPool.GetObject().GetComponent<SharkObstacle>();
-            if (!obstaclesDictionary.ContainsKey(ObstacleType.Shark))
-            {
-                obstaclesDictionary[ObstacleType.Shark] = new List<IObstacle>();
-            }
-            obstaclesDictionary[ObstacleType.Shark].Add(shark);
             shark.Init(movingObstacleData);
+            obstaclesDictionary[ObstacleType.Shark].Add(shark);
         }
         private void SpawnEel(MovingObstacleData movingObstacleData)
         {
             Eel eel = poolManager.EelPool.GetObject().GetComponent<Eel>();
-            if (!obstaclesDictionary.ContainsKey(ObstacleType.Eel))
-            {
-                obstaclesDictionary[ObstacleType.Eel] = new List<IObstacle>();
-            }
-            obstaclesDictionary[ObstacleType.Eel].Add(eel);
             eel.Init(movingObstacleData);
+            obstaclesDictionary[ObstacleType.Eel].Add(eel);
         }
         #endregion
 
@@ -332,12 +412,14 @@ namespace BeachHero
             {
                 foreach (var staticObstacle in obstacle.StaticObstacles)
                 {
+                    if (!obstaclesDictionary.ContainsKey(staticObstacle.type))
+                    {
+                        obstaclesDictionary[staticObstacle.type] = new List<Obstacle>();
+                    }
                     switch (staticObstacle.type)
                     {
                         case ObstacleType.Rock:
                             SpawnRock(staticObstacle.type, staticObstacle);
-                            break;
-                        case ObstacleType.WaterHole:
                             break;
                         default:
                             break;
@@ -347,14 +429,9 @@ namespace BeachHero
         }
         private void SpawnRock(ObstacleType obstacleType, StaticObstacleData rockObstacle)
         {
-            obstaclesDictionary[obstacleType] = new List<IObstacle>();
             RockObstacle rock = poolManager.RockPool.GetObject().GetComponent<RockObstacle>();
-            obstaclesDictionary[obstacleType].Add(rock);
             rock.transform.SetPositionAndRotation(rockObstacle.position, Quaternion.Euler(rockObstacle.rotation));
-        }
-        private void SpawnWaterHole()
-        {
-
+            obstaclesDictionary[obstacleType].Add(rock);
         }
         #endregion
 
@@ -365,15 +442,17 @@ namespace BeachHero
             {
                 foreach (var waterHole in waterHoleObstacleData)
                 {
-                    obstaclesDictionary[ObstacleType.WaterHole] = new List<IObstacle>();
+                    if (!obstaclesDictionary.ContainsKey(ObstacleType.WaterHole))
+                    {
+                        obstaclesDictionary[ObstacleType.WaterHole] = new List<Obstacle>();
+                    }
                     WaterHoleObstacle waterHoleObstacle = poolManager.WaterHolePool.GetObject().GetComponent<WaterHoleObstacle>();
-                    obstaclesDictionary[ObstacleType.WaterHole].Add(waterHoleObstacle);
                     waterHoleObstacle.transform.position = waterHole.position;
                     waterHoleObstacle.Init(waterHole);
+                    obstaclesDictionary[ObstacleType.WaterHole].Add(waterHoleObstacle);
                 }
             }
         }
-
         #endregion
 
         #endregion
@@ -382,6 +461,7 @@ namespace BeachHero
         private void SpawnTrails()
         {
             playerPathDrawTrail = poolManager.PathTrailPool.GetObject().GetComponent<PathTrail>();
+            playerPathDrawTrail.ClearRenderer();
         }
         private void SpawnSavedCharacters(float levelTime, SavedCharacterData[] savedCharacterDatas)
         {
@@ -396,16 +476,14 @@ namespace BeachHero
         {
             foreach (var collectable in collectableDatas)
             {
+                if (!collectableDictionary.ContainsKey(collectable.type))
+                {
+                    collectableDictionary[collectable.type] = new List<Collectable>();
+                }
                 switch (collectable.type)
                 {
                     case CollectableType.Coin:
                         SpawnCoin(collectable);
-                        break;
-                    case CollectableType.Gem:
-                        break;
-                    case CollectableType.Magnet:
-                        break;
-                    case CollectableType.Speed:
                         break;
                     default:
                         break;
@@ -416,11 +494,7 @@ namespace BeachHero
         {
             Collectable collectable = poolManager.CoinsPool.GetObject().GetComponent<Collectable>();
             collectable.Init(collectableData);
-            if (!collectableDictionary.ContainsKey(collectableData.type))
-            {
-                collectableDictionary[collectableData.type] = new List<Collectable>();
-            }
-            collectableDictionary[CollectableType.Coin].Add(collectable); 
+            collectableDictionary[collectableData.type].Add(collectable);
         }
         private void SpawnStartPoint(Vector3 pos, Vector3 rot)
         {
@@ -431,7 +505,7 @@ namespace BeachHero
         {
             player = poolManager.PlayerPool.GetObject().GetComponent<Player>();
             player.transform.SetPositionAndRotation(pos, Quaternion.Euler(rot));
-            player.StartState();
+            player.Init();
         }
         #endregion
 

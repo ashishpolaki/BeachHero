@@ -8,6 +8,5 @@ namespace BeachHero
         {
             transform.position = position;
         }
-      
     }
 }

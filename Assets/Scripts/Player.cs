@@ -36,7 +36,7 @@ namespace BeachHero
 
         private void OnTriggerEnter(Collider other)
         {
-            if(canStartMovement == false)
+            if (canStartMovement == false)
             {
                 return;
             }
@@ -73,7 +73,7 @@ namespace BeachHero
         }
         #endregion
 
-        private void StopMovement()
+        public void StopMovement()
         {
             canStartMovement = false;
         }
@@ -81,27 +81,21 @@ namespace BeachHero
         {
             animator.SetTrigger(sinkingAnimHash);
         }
-
         public void ActivateSpeedPowerup()
         {
             movementSpeed *= speedMultiplier;
         }
-
         public void StartMovement(Vector3[] pointsList)
         {
-            nextPointIndex = 1;
             canStartMovement = true;
             this.pointsList = pointsList;
         }
-
-        #region States
-        public void StartState()
+        public void Init()
         {
             animator.Play(idleAnimHash, -1, Random.Range(0f, 1f));
-        }
-        public void ResetState()
-        {
-
+            canStartMovement = false;
+            nextPointIndex = 1;
+            pointsList = new Vector3[0];
         }
         public void UpdateState()
         {
@@ -151,6 +145,5 @@ namespace BeachHero
                 }
             }
         }
-        #endregion
     }
 }

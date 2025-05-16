@@ -8,7 +8,6 @@ namespace BeachHero
     public class MovingObstacle : Obstacle
     {
         #region Private Variables
-        [SerializeField] private int resolution;
         [SerializeField] private BezierKeyframe[] keyframes;
         [SerializeField] private float rotationSpeed = 0.3f;
         [SerializeField] private float movementSpeed = 5f;
@@ -33,18 +32,20 @@ namespace BeachHero
         }
         #endregion
 
+        
+
         #region Public Methods
         public virtual void Init(MovingObstacleData movingObstacleData)
         {
+            ResetState();
             isMovementActive = true;
             nextPointIndex = 1;
             keyframes = movingObstacleData.bezierKeyframes;
             isLoopedMovement = movingObstacleData.loopedMovement;
             isInverseDirection = movingObstacleData.inverseDirection;
             pointsList = BezierCurveUtils.GeneratePath(keyframes, movingObstacleData.resolution);
-            pointsList =  GetEvenlySpacedPoints(pointsList.ToList(), spacing).ToArray();
+            pointsList = GetEvenlySpacedPoints(pointsList.ToList(), spacing).ToArray();
             movementSpeed = movingObstacleData.movementSpeed;
-            resolution = (int)movingObstacleData.resolution;
             if (isInverseDirection)
             {
                 Array.Reverse(pointsList);
@@ -56,7 +57,7 @@ namespace BeachHero
         public override void UpdateState()
         {
             if (isMovementActive == false)
-                return; 
+                return;
             base.UpdateState();
             if (nextPointIndex < pointsList.Length)
             {
@@ -98,13 +99,7 @@ namespace BeachHero
                 }
             }
         }
-        public override void ResetState()
-        {
-            base.ResetState();
-            nextPointIndex = 1;
-            transform.position = pointsList[0];
-            transform.LookAt(pointsList[1]);
-        }
+
         #endregion
 
         public override void Hit()
@@ -112,7 +107,11 @@ namespace BeachHero
             base.Hit();
             isMovementActive = false;
         }
-
+        private void ResetState()
+        {
+            nextPointIndex = 1;
+            isMovementActive = false;
+        }
         #region Spline
 
         private Vector3 CatmullRom(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
@@ -184,6 +183,5 @@ namespace BeachHero
             }
         }
 #endif
-
     }
 }

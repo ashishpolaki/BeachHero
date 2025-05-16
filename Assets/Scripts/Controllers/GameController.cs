@@ -48,7 +48,11 @@ namespace BeachHero
             levelController.GameStart();
             UIController.GetInstance.ScreenEvent(ScreenType.Gameplay, UIScreenEvent.Open);
         }
-
+        public void RetryLevel()
+        {
+            deltaTime = Time.deltaTime;
+            SpawnLevel();
+        }
         public void OnMagnetPowerUpActivate()
         {
             levelController.ActivateCoinMagnetPowerup();
@@ -58,6 +62,11 @@ namespace BeachHero
         {
             levelController.ActivateSpeedPowerup();
         }
-
+        public void OnCharacterDrowned()
+        {
+            isGameStarted = false;
+            levelController.OnCharacterDrown();
+            UIController.GetInstance.ScreenEvent(ScreenType.GameLose, UIScreenEvent.Open);
+        }
     }
 }
