@@ -48,7 +48,7 @@ namespace BeachHero
         {
             get
             {
-                if(cam == null)
+                if (cam == null)
                 {
                     cam = Camera.main;
                 }
@@ -170,7 +170,7 @@ namespace BeachHero
         private void UpdateLevelTimer()
         {
             levelTimer -= Time.deltaTime;
-            if(levelTimer <= 0)
+            if (levelTimer <= 0)
             {
                 levelTimer = 0;
                 isLevelFinished = true;
@@ -200,7 +200,7 @@ namespace BeachHero
 
             // Update Path 
             DrawPath();
-        
+
             //Update Obstacles
             foreach (var obstacleList in obstaclesDictionary.Values)
             {
@@ -226,7 +226,7 @@ namespace BeachHero
             {
                 foreach (var collectable in collectableList)
                 {
-                   // collectable.UpdateState();
+                    // collectable.UpdateState();
                 }
             }
         }
@@ -241,6 +241,7 @@ namespace BeachHero
         {
             SpawnStaticObstacles(obstacle);
             SpawnMoveableObstacles(obstacle);
+            SpawnWaterHoleObstacle(obstacle.WaterHoleObstacles);
         }
 
         #region Moving obstacle
@@ -307,6 +308,24 @@ namespace BeachHero
         {
 
         }
+        #endregion
+
+        #region WaterHole Obstacle
+        private void SpawnWaterHoleObstacle(WaterHoleObstacleData[] waterHoleObstacleData)
+        {
+            if (waterHoleObstacleData != null && waterHoleObstacleData.Length > 0)
+            {
+                foreach (var waterHole in waterHoleObstacleData)
+                {
+                    obstaclesDictionary[ObstacleType.WaterHole] = new List<IObstacle>();
+                    WaterHoleObstacle waterHoleObstacle = poolManager.WaterHolePool.GetObject().GetComponent<WaterHoleObstacle>();
+                    obstaclesDictionary[ObstacleType.WaterHole].Add(waterHoleObstacle);
+                    waterHoleObstacle.transform.position = waterHole.position;
+                    waterHoleObstacle.Init(waterHole);
+                }
+            }
+        }
+
         #endregion
 
         #endregion

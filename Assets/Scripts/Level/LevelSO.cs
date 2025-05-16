@@ -73,9 +73,11 @@ namespace BeachHero
     {
         [SerializeField] private StaticObstacleData[] staticObstacles;
         [SerializeField] private MovingObstacleData[] movingObstacles;
+        [SerializeField] private WaterHoleObstacleData[] waterHoleObstacles;
 
         public StaticObstacleData[] StaticObstacles => staticObstacles;
         public MovingObstacleData[] MovingObstacles => movingObstacles;
+        public WaterHoleObstacleData[] WaterHoleObstacles => waterHoleObstacles;
     }
 
     [System.Serializable]
@@ -100,7 +102,12 @@ namespace BeachHero
         public bool loopedMovement;
         public bool inverseDirection;
     }
-
+    [System.Serializable]
+    public struct WaterHoleObstacleData
+    {
+        public Vector3 position;
+        public float scale;  
+    }
     [System.Serializable]
     public struct BezierKeyframe
     {

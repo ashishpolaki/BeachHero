@@ -36,6 +36,7 @@ public class BeachHeroEditorWindow : EditorWindow
         public SerializedProperty startPointProperty;
         public SerializedProperty moveObstaclesProperty;
         public SerializedProperty staticObstaclesProperty;
+        public SerializedProperty waterHoleObstaclesProperty;
         public SerializedProperty savedCharactersProperty;
         public SerializedProperty collectablesProperty;
 
@@ -56,6 +57,7 @@ public class BeachHeroEditorWindow : EditorWindow
             startPointProperty = serializedLevelObject.FindProperty("startPoint");
             moveObstaclesProperty = serializedLevelObject.FindProperty("obstacles").FindPropertyRelative("movingObstacles");
             staticObstaclesProperty = serializedLevelObject.FindProperty("obstacles").FindPropertyRelative("staticObstacles");
+            waterHoleObstaclesProperty = serializedLevelObject.FindProperty("obstacles").FindPropertyRelative("waterHoleObstacles");
             savedCharactersProperty = serializedLevelObject.FindProperty("savedCharacters");
             collectablesProperty = serializedLevelObject.FindProperty("collectables");
         }
@@ -397,6 +399,11 @@ public class BeachHeroEditorWindow : EditorWindow
                     EditorGUILayout.LabelField(" Moving Obstacles ", new GUIStyle(EditorStyles.boldLabel) { fontSize = 14 }, GUILayout.Height(10 + EditorGUIUtility.singleLineHeight));
                     SpawnPrefabItem(spawnItemsProperty.GetArrayElementAtIndex(i).FindPropertyRelative("Prefab"), itemsPerRow, previewSize, spawnItemType);
                     break;
+                case SpawnItemType.WaterHoleObstacle:
+                    EditorGUILayout.Space(5);
+                    EditorGUILayout.LabelField(" Cyclone Obstacle ", new GUIStyle(EditorStyles.boldLabel) { fontSize = 14 }, GUILayout.Height(10 + EditorGUIUtility.singleLineHeight));
+                    SpawnPrefabItem(spawnItemsProperty.GetArrayElementAtIndex(i).FindPropertyRelative("Prefab"), itemsPerRow, previewSize, spawnItemType);
+                    break;
                 case SpawnItemType.Collectable:
                     EditorGUILayout.Space(5);
                     EditorGUILayout.LabelField(" Collectables ", new GUIStyle(EditorStyles.boldLabel) { fontSize = 14 }, GUILayout.Height(10 + EditorGUIUtility.singleLineHeight));
@@ -485,10 +492,24 @@ public class BeachHeroEditorWindow : EditorWindow
         SaveStartPoint();
         SaveMovingObstacle();
         SaveStaticObstacles();
+        SaveWaterHoleObstacle();
         SaveCollectables();
         SaveSavedCharacters();
         levelRepresentation.ApplyModifiedProperties();
         AssetDatabase.SaveAssets();
+    }
+
+    private void SaveWaterHoleObstacle()
+    {
+        WaterHoleEditComponent[] waterHoleEditComponents = EditorSceneController.Instance.GetWaterHoleEditData();
+        levelRepresentation.waterHoleObstaclesProperty.arraySize = waterHoleEditComponents.Length;
+
+        for (int i = 0; i < waterHoleEditComponents.Length; i++)
+        {
+            SerializedProperty waterHoleProperty = levelRepresentation.waterHoleObstaclesProperty.GetArrayElementAtIndex(i);
+            waterHoleProperty.FindPropertyRelative("position").vector3Value = waterHoleEditComponents[i].transform.position;
+            waterHoleProperty.FindPropertyRelative("scale").floatValue = waterHoleEditComponents[i].cycloneRadius;
+        }
     }
 
     private void SaveStaticObstacles()

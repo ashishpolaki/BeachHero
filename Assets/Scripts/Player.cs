@@ -35,6 +35,10 @@ namespace BeachHero
 
         private void OnTriggerEnter(Collider other)
         {
+            if(canStartMovement == false)
+            {
+                return;
+            }
             if (other.CompareTag("Character"))
             {
                 SavedCharacter savedCharacter = other.GetComponent<SavedCharacter>();
@@ -51,10 +55,19 @@ namespace BeachHero
                 IObstacle obstacle = other.GetComponent<IObstacle>();
                 if (obstacle != null)
                 {
+                    StopMovement();
                     obstacle.Hit();
+                    if (obstacle.ObstacleType == ObstacleType.WaterHole)
+                    {
+                        animator.enabled = false;
+                        other.GetComponent<WaterHoleObstacle>().OnPlayerHit(transform);
+                    }
+                    else
+                    {
+                        OnBoatCollided();
+                    }
                 }
-                OnBoatCollided();
-                StopMovement();
+
             }
         }
         #endregion
@@ -127,7 +140,7 @@ namespace BeachHero
                     nextPointIndex++;
                     if (nextPointIndex >= pointsList.Length)
                     {
-                         Debug.Log("Reached the end of the path.");
+                        Debug.Log("Reached the end of the path.");
                     }
                 }
             }

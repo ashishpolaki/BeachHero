@@ -22,7 +22,7 @@ public class CycloneEffect : MonoBehaviour
         Vector3 offset = transform.position - cycloneCenter.position;
         angle = Mathf.Atan2(offset.z, offset.x) * Mathf.Rad2Deg;
 
-        radius = Mathf.Abs(cycloneCenter.position.x - transform.position.x);
+        radius = Vector3.Distance(cycloneCenter.position, transform.position);
     }
 
     void Update()
@@ -50,7 +50,8 @@ public class CycloneEffect : MonoBehaviour
         float tiltZ = Mathf.Cos(Time.time * tiltSpeed) * tiltIntensity; // Tilting side to side
 
         // Apply the rotation to the boat
-        transform.rotation = Quaternion.Euler(tiltX, angle, tiltZ);
+        Quaternion targetRotation = Quaternion.Euler(tiltX, angle, tiltZ);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * tiltSpeed);
     }
 
 }

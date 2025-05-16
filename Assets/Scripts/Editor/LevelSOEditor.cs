@@ -20,9 +20,10 @@ namespace BeachHero
             serializedObject.Update();
             EditorGUILayout.PropertyField(serializedObject.FindProperty("levelTime"), new GUIContent("Level Time"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("startPoint"), new GUIContent("Start Point"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("obstacles").FindPropertyRelative("staticObstacles"), new GUIContent("Static Obstacles"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("savedCharacters"), new GUIContent("Saved Characters"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("collectables"), new GUIContent("Collectables"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("obstacles").FindPropertyRelative("staticObstacles"), new GUIContent("Static Obstacles"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("obstacles").FindPropertyRelative("waterHoleObstacles"), new GUIContent("Cyclone Obstacles"));
             EditMovingObstacleProperty(serializedObject.FindProperty("obstacles").FindPropertyRelative("movingObstacles"));
             serializedObject.ApplyModifiedProperties();
         }

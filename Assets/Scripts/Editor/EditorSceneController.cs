@@ -53,6 +53,13 @@ public class EditorSceneController : MonoBehaviour
             staticObstacleObject.transform.parent = container.transform;
             staticObstacle.Init(Vector3.zero);
         }
+        if (spawnItemType == SpawnItemType.WaterHoleObstacle)
+        {
+            GameObject waterHoleObject = (GameObject)PrefabUtility.InstantiatePrefab(_object);
+            WaterHoleEditComponent waterHole = waterHoleObject.AddComponent<WaterHoleEditComponent>();
+            waterHoleObject.transform.parent = container.transform;
+            waterHole.Init(new WaterHoleObstacleData() { position = Vector3.zero, scale = 2 });
+        }
         if (spawnItemType == SpawnItemType.Collectable)
         {
             GameObject collectableObject = (GameObject)PrefabUtility.InstantiatePrefab(_object);
@@ -68,9 +75,24 @@ public class EditorSceneController : MonoBehaviour
         SpawnStartPoint();
         SpawnMovingObstacles();
         SpawnStaticObstacles();
+        SpawnWaterHoleObstacle();
         SpawnCharacter();
         SpawnCollectable();
     }
+
+    private void SpawnWaterHoleObstacle()
+    {
+        string path = "Assets/Prefabs/WaterHole.prefab";
+        foreach (var item in currentLevel.Obstacle.WaterHoleObstacles)
+        {
+            WaterHoleObstacle waterHolePrefab = AssetDatabase.LoadAssetAtPath<WaterHoleObstacle>(path);
+            GameObject waterHoleGameobject = PrefabUtility.InstantiatePrefab(waterHolePrefab.gameObject) as GameObject;
+            WaterHoleEditComponent waterHoleEditComponent = waterHoleGameobject.AddComponent<WaterHoleEditComponent>();
+            waterHoleGameobject.transform.parent = container.transform;
+            waterHoleEditComponent.Init(item);
+        }
+    }
+
     private void SpawnCharacter()
     {
         foreach (var characterItem in currentLevel.SavedCharacters)
@@ -97,6 +119,15 @@ public class EditorSceneController : MonoBehaviour
                     rockGameobject.transform.parent = container.transform;
                     rockGameobject.transform.position = item.position;
                     rockGameobject.transform.rotation = Quaternion.Euler(item.rotation);
+                    break;
+                case ObstacleType.WaterHole:
+                    path = "Assets/Prefabs/WaterHole.prefab";
+                    WaterHoleObstacle waterHoleObstaclePrefab = AssetDatabase.LoadAssetAtPath<WaterHoleObstacle>(path);
+                    GameObject waterHoleGameobject = (GameObject)PrefabUtility.InstantiatePrefab(waterHoleObstaclePrefab.gameObject);
+                    WaterHoleEditComponent waterHoleEditComponent = waterHoleGameobject.AddComponent<WaterHoleEditComponent>();
+                    waterHoleGameobject.transform.parent = container.transform;
+                    waterHoleGameobject.transform.position = item.position;
+                    waterHoleGameobject.transform.rotation = Quaternion.Euler(item.rotation);
                     break;
             }
         }
@@ -166,6 +197,13 @@ public class EditorSceneController : MonoBehaviour
 
 
     #region Get Edited Data
+
+    public WaterHoleEditComponent[] GetWaterHoleEditData()
+    {
+        WaterHoleEditComponent[] data = container.GetComponentsInChildren<WaterHoleEditComponent>();
+        return data;
+    }
+
     public StaticObstacle[] GetStaticObstacleEditData()
     {
         StaticObstacle[] data = container.GetComponentsInChildren<StaticObstacle>();
