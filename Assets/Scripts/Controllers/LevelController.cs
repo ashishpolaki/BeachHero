@@ -104,6 +104,12 @@ namespace BeachHero
                     smoothedDrawnPoints = GetEvenlySpacedPoints(drawnPoints, spacing);
                     StartSimulation();
                 }
+                else
+                {
+                    isPathDrawn = false;
+                    canDrawPath = false;
+                    drawnPoints.Clear();
+                }
             }
         }
         #endregion
