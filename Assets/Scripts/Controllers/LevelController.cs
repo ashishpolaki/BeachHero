@@ -15,6 +15,7 @@ namespace BeachHero
         [SerializeField] private float minTrailPointsDistance = 0.3f;
         [SerializeField] private float smoothingStep = 0.05f;
         [SerializeField] private float spacing = 0.5f;
+        [SerializeField] private float magnetRadius = 5f;
         #endregion
 
         #region Private Variables
@@ -22,7 +23,7 @@ namespace BeachHero
         private Player player;
         private List<SavedCharacter> savedCharactersList = new List<SavedCharacter>();
         private Dictionary<ObstacleType, List<IObstacle>> obstaclesDictionary = new Dictionary<ObstacleType, List<IObstacle>>();
-        private Dictionary<CollectableType, List<ICollectable>> collectableDictionary = new Dictionary<CollectableType, List<ICollectable>>();
+        private Dictionary<CollectableType, List<Collectable>> collectableDictionary = new Dictionary<CollectableType, List<Collectable>>();
         private PathTrail playerPathDrawTrail;
         private PathTrail playerPathTransparentTrail;
 
@@ -35,6 +36,7 @@ namespace BeachHero
         private bool isPathDrawn = false;
         private bool canDrawPath = false;
         private bool isPlaying;
+        private bool coinMagnetActivated;
         private bool isLevelFinished;
         private bool levelPassed;
         private float levelTimer;
@@ -178,6 +180,36 @@ namespace BeachHero
             OnLevelTimerUpdate?.Invoke(levelTimer);
         }
 
+        #region Powerup
+        public void ActivateCoinMagnetPowerup()
+        {
+            coinMagnetActivated = true;
+        }
+        public void ActivateSpeedPowerup()
+        {
+
+        }
+
+        private void OnCoinMagnetPowerup()
+        {
+            if (coinMagnetActivated)
+            {
+                foreach (var coinCollectable in collectableDictionary[CollectableType.Coin])
+                {
+                    float distance = Vector3.Distance(player.transform.position, coinCollectable.transform.position);
+                    Coin coin = (Coin)coinCollectable;
+                    if (!coin.CanMoveToTarget)
+                    {
+                        if (distance <= magnetRadius)
+                        {
+                            coin.SetTarget(player.transform);
+                        }
+                    }
+                }
+            }
+        }
+        #endregion
+
         #region States
         public void StartState(LevelSO levelSO)
         {
@@ -222,11 +254,12 @@ namespace BeachHero
             }
 
             //Update Collectables
+            OnCoinMagnetPowerup();
             foreach (var collectableList in collectableDictionary.Values)
             {
                 foreach (var collectable in collectableList)
                 {
-                    // collectable.UpdateState();
+                     collectable.UpdateState();
                 }
             }
         }
@@ -278,7 +311,7 @@ namespace BeachHero
         private void SpawnEel(MovingObstacleData movingObstacleData)
         {
             Eel eel = poolManager.EelPool.GetObject().GetComponent<Eel>();
-            if (obstaclesDictionary.ContainsKey(ObstacleType.Eel))
+            if (!obstaclesDictionary.ContainsKey(ObstacleType.Eel))
             {
                 obstaclesDictionary[ObstacleType.Eel] = new List<IObstacle>();
             }
@@ -376,9 +409,13 @@ namespace BeachHero
         }
         private void SpawnCoin(CollectableData collectableData)
         {
-            Collectable coin = poolManager.CoinsPool.GetObject().GetComponent<Collectable>();
-            coin.Init(collectableData);
-            collectableDictionary[CollectableType.Coin] = new List<ICollectable>() { coin };
+            Collectable collectable = poolManager.CoinsPool.GetObject().GetComponent<Collectable>();
+            collectable.Init(collectableData);
+            if (!collectableDictionary.ContainsKey(collectableData.type))
+            {
+                collectableDictionary[collectableData.type] = new List<Collectable>();
+            }
+            collectableDictionary[CollectableType.Coin].Add(collectable); 
         }
         private void SpawnStartPoint(Vector3 pos, Vector3 rot)
         {

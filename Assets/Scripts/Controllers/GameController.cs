@@ -46,20 +46,18 @@ namespace BeachHero
         {
             isGameStarted = true;
             levelController.GameStart();
-            UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Close);
             UIController.GetInstance.ScreenEvent(ScreenType.Gameplay, UIScreenEvent.Open);
         }
-        public void OnCollectable(CollectableType collectableType)
+
+        public void OnMagnetPowerUpActivate()
         {
-            switch (collectableType)
-            {
-                case CollectableType.Coin:
-                    break;
-                case CollectableType.Gem:
-                    break;
-                default:
-                    break;
-            }
+            levelController.ActivateCoinMagnetPowerup();
         }
+
+        public void OnSpeedPowerUpActivate()
+        {
+
+        }
+
     }
 }

@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 namespace BeachHero
@@ -7,12 +6,11 @@ namespace BeachHero
     {
         public CollectableType CollectableType { get; set; }
         public abstract void Collect();
+        public abstract void UpdateState();
     }
     public class Collectable : MonoBehaviour, ICollectable
     {
         [SerializeField] private CollectableType collectableType;
-        [SerializeField] private GameObject coinGraphics;
-        [SerializeField] private ParticleSystem coinParticle;
 
         public CollectableType CollectableType
         {
@@ -26,6 +24,14 @@ namespace BeachHero
             }
         }
 
+        public Vector3 Position
+        {
+            get
+            {
+                return transform.position;
+            }
+        }
+
         public void Init(CollectableData collectableData)
         {
             transform.position = collectableData.position;
@@ -34,19 +40,10 @@ namespace BeachHero
 
         public virtual void Collect()
         {
-            coinGraphics.SetActive(false);
-            coinParticle = GameController.GetInstance.PoolManager.CoinParticlePool.GetObject().GetComponent<ParticleSystem>();
-            coinParticle.transform.position = transform.position;
-            coinParticle.Play();
-            StartCoroutine(IEReturnToPool());
+           
         }
-
-        private IEnumerator IEReturnToPool()
+        public virtual void UpdateState()
         {
-            yield return new WaitForSeconds(5f);
-            coinParticle.Stop();
-            GameController.GetInstance.PoolManager.CoinParticlePool.ReturnObject(coinParticle.gameObject);
         }
-
     }
 }

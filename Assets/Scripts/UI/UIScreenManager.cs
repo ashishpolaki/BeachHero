@@ -33,6 +33,10 @@ namespace BeachHero
             switch (uIEvent)
             {
                 case UIScreenEvent.Open:
+                    if(currentActiveScreen != null && currentActiveScreen.IsScreenOpen)
+                    {
+                        CloseScreen(currentActiveScreen.ScreenType);
+                    }
                     OpenScreen(_screenType, screenTabType);
                     break;
                 case UIScreenEvent.Close:

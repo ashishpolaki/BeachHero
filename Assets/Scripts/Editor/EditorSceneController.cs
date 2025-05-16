@@ -15,13 +15,9 @@ public class EditorSceneController : MonoBehaviour
     {
         instance = this;
     }
-    private void OnDestroy()
-    {
-        Clear();
-    }
-
     public void Clear()
     {
+        if (container.transform != null)
         for (int i = container.transform.childCount - 1; i >= 0; i--)
         {
             DestroyImmediate(container.transform.GetChild(i).gameObject);
