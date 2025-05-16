@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace BeachHero
 {
-    public class SharkObstacle : MovingObstacle
+    public class Eel : MovingObstacle
     {
         [SerializeField] private LineRenderer pathRenderer;
 

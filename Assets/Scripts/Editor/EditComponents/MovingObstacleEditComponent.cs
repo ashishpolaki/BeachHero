@@ -31,6 +31,10 @@ namespace BeachHero
             {
                 Keyframes = new BezierKeyframe[0];
             }
+            if (TempKeyFrames == null)
+            {
+                TempKeyFrames = new BezierKeyframe[0];
+            }
 
             // Use ArrayUtility.Add with the backing field
             ArrayUtility.Add(ref Keyframes, newKeyframe);

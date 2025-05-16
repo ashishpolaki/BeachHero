@@ -254,7 +254,7 @@ namespace BeachHero
                     switch (movingObstacle.type)
                     {
                         case ObstacleType.Eel:
-                            SpawnEel();
+                            SpawnEel(movingObstacle);
                             break;
                         case ObstacleType.Shark:
                             SpawnShark(movingObstacle);
@@ -268,12 +268,22 @@ namespace BeachHero
         private void SpawnShark(MovingObstacleData movingObstacleData)
         {
             SharkObstacle shark = poolManager.SharkPool.GetObject().GetComponent<SharkObstacle>();
-            obstaclesDictionary[ObstacleType.Shark] = new List<IObstacle>() { shark };
+            if (!obstaclesDictionary.ContainsKey(ObstacleType.Shark))
+            {
+                obstaclesDictionary[ObstacleType.Shark] = new List<IObstacle>();
+            }
+            obstaclesDictionary[ObstacleType.Shark].Add(shark);
             shark.Init(movingObstacleData);
         }
-        private void SpawnEel()
+        private void SpawnEel(MovingObstacleData movingObstacleData)
         {
-
+            Eel eel = poolManager.EelPool.GetObject().GetComponent<Eel>();
+            if (obstaclesDictionary.ContainsKey(ObstacleType.Eel))
+            {
+                obstaclesDictionary[ObstacleType.Eel] = new List<IObstacle>();
+            }
+            obstaclesDictionary[ObstacleType.Eel].Add(eel);
+            eel.Init(movingObstacleData);
         }
         #endregion
 

@@ -152,16 +152,16 @@ public class EditorSceneController : MonoBehaviour
             {
                 case ObstacleType.Shark:
                     path = "Assets/Prefabs/Shark.prefab";
-                    MovingObstacle sharkObstaclePrefab = AssetDatabase.LoadAssetAtPath<MovingObstacle>(path);
-                    GameObject sharkGameObject = (GameObject)PrefabUtility.InstantiatePrefab(sharkObstaclePrefab.gameObject);
-                    MovingObstacleEditComponent movingObstacle = sharkGameObject.AddComponent<MovingObstacleEditComponent>();
-                    movingObstacle.transform.parent = container.transform;
-                    movingObstacle.Init(item);
                     break;
                 case ObstacleType.Eel:
                     path = "Assets/Prefabs/Eel.prefab";
                     break;
             }
+            MovingObstacle sharkObstaclePrefab = AssetDatabase.LoadAssetAtPath<MovingObstacle>(path);
+            GameObject sharkGameObject = (GameObject)PrefabUtility.InstantiatePrefab(sharkObstaclePrefab.gameObject);
+            MovingObstacleEditComponent movingObstacle = sharkGameObject.AddComponent<MovingObstacleEditComponent>();
+            movingObstacle.transform.parent = container.transform;
+            movingObstacle.Init(item);
         }
     }
 
