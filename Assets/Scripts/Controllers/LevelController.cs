@@ -187,9 +187,8 @@ namespace BeachHero
         }
         public void ActivateSpeedPowerup()
         {
-
+            player.ActivateSpeedPowerup();
         }
-
         private void OnCoinMagnetPowerup()
         {
             if (coinMagnetActivated)

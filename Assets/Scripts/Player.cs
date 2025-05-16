@@ -7,6 +7,7 @@ namespace BeachHero
         [SerializeField] private float movementSpeed;
         [SerializeField] private float rotationSpeed;
         [SerializeField] private Animator animator;
+        [SerializeField] private float speedMultiplier;
         private Vector3[] pointsList;
         private bool canStartMovement;
         private int nextPointIndex;
@@ -79,6 +80,11 @@ namespace BeachHero
         private void OnBoatCollided()
         {
             animator.SetTrigger(sinkingAnimHash);
+        }
+
+        public void ActivateSpeedPowerup()
+        {
+            movementSpeed *= speedMultiplier;
         }
 
         public void StartMovement(Vector3[] pointsList)

@@ -56,7 +56,7 @@ namespace BeachHero
 
         public void OnSpeedPowerUpActivate()
         {
-
+            levelController.ActivateSpeedPowerup();
         }
 
     }
