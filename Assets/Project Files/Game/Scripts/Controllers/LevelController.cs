@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Bokka.SkinStore;
+using BeachHero;
 
 namespace Bokka.BeachRescue
 {
