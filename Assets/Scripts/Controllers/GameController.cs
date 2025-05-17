@@ -50,7 +50,6 @@ namespace BeachHero
         }
         public void RetryLevel()
         {
-            deltaTime = Time.deltaTime;
             SpawnLevel();
         }
         public void OnMagnetPowerUpActivate()
