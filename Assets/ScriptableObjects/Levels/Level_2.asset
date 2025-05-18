@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41ec7b45cdb520b4fb3b55ccaac3e1fc, type: 3}
   m_Name: Level_2
   m_EditorClassIdentifier: 
-  levelTime: 4
+  levelTime: 6
   startPoint:
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
@@ -20,14 +20,33 @@ MonoBehaviour:
     staticObstacles: []
     movingObstacles:
     - type: 1
-      movementType: 0
-      bezierKeyframes: []
-      resolution: 0
-      movementSpeed: 0
-      offsetPosition: {x: 0, y: 0, z: 0}
-      offsetRotation: {x: 0, y: 0, z: 0}
-      circleRadius: 0
-      circleSegments: 0
-      loopedMovement: 0
-      inverseDirection: 0
-  savedCharacters: []
+      movementType: 1
+      bezierKeyframes:
+      - position: {x: 6.7631593, y: 0, z: 10.092867}
+        inTangentLocal: {x: -1, y: 0, z: 0}
+        outTangentLocal: {x: 1, y: 0, z: 0}
+      - position: {x: 6.9711366, y: 0, z: 4.053565}
+        inTangentLocal: {x: 1.191256, y: 0, z: 0.74499273}
+        outTangentLocal: {x: -0.46925688, y: 0, z: -0.81516325}
+      - position: {x: 2.8447483, y: 0, z: 2.684277}
+        inTangentLocal: {x: 0.72498727, y: 0, z: -0.42823362}
+        outTangentLocal: {x: -1.3166296, y: 0, z: 0.5959178}
+      - position: {x: -0.4427567, y: 0, z: 4.9618077}
+        inTangentLocal: {x: 0.3829167, y: 0, z: -1.527334}
+        outTangentLocal: {x: -0.3700921, y: 0, z: 0.3736093}
+      - position: {x: -0.98981255, y: 0, z: 8.288726}
+        inTangentLocal: {x: 0.27407634, y: 0, z: 1.3943558}
+        outTangentLocal: {x: -0.5305022, y: 0, z: -0.84204865}
+      resolution: 3.76
+      movementSpeed: 6
+      loopedMovement: 1
+      inverseDirection: 1
+    waterHoleObstacles:
+    - position: {x: -2.04, y: 0, z: 20.79}
+      scale: 3.44
+  savedCharacters:
+  - position: {x: -6.09, y: 0, z: 7.3}
+    waitTimePercentage: 0.698
+  - position: {x: -3.74, y: 0, z: 12.41}
+    waitTimePercentage: 0.794
+  collectables: []

@@ -20,14 +20,17 @@ namespace BeachHero
 
         public void Init(Vector3 _position, float _waitTimePercentage, float levelTime)
         {
+            pickUpParticle.Stop();
+            pickUpParticle.gameObject.SetActive(false);
+            graphicsUI.SetActive(true);
+            graphicsSkin.SetActive(true);
+            animatorRef.SetTrigger(IDLE_HASH);
             isPickedUp = false;
             isDrown = false;
             transform.position = _position;
             waitTimePercentage = _waitTimePercentage;
             this.levelTime = levelTime;
             waitTime = (levelTime * waitTimePercentage * 100) / 100f;
-            graphicsUI.SetActive(true);
-            animatorRef.SetTrigger(IDLE_HASH);
             savedCharacterUI.UpdateTimer(waitTimePercentage);
         }
 
@@ -60,6 +63,7 @@ namespace BeachHero
             graphicsSkin.SetActive(false);
             graphicsUI.SetActive(false);
             isPickedUp = true;
+            GameController.GetInstance.OnCharacterPickUp();
         }
     }
 }

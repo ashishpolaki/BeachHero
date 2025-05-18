@@ -84,6 +84,7 @@ namespace BeachHero
         public void ActivateSpeedPowerup()
         {
             movementSpeed *= speedMultiplier;
+            rotationSpeed *= speedMultiplier;
         }
         public void StartMovement(Vector3[] pointsList)
         {

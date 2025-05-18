@@ -38,7 +38,6 @@ namespace BeachHero
 
         private void SpawnLevel()
         {
-            currentLevelIndex = 0;
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
             levelController.StartState(levelDatabaseSO.GetLevelByIndex(currentLevelIndex));
         }
@@ -48,6 +47,11 @@ namespace BeachHero
             levelController.GameStart();
             UIController.GetInstance.ScreenEvent(ScreenType.Gameplay, UIScreenEvent.Open);
         }
+        public void OnLevelCompleted()
+        {
+            isGameStarted = false;
+            currentLevelIndex++;
+        }
         public void RetryLevel()
         {
             SpawnLevel();
@@ -56,7 +60,6 @@ namespace BeachHero
         {
             levelController.ActivateCoinMagnetPowerup();
         }
-
         public void OnSpeedPowerUpActivate()
         {
             levelController.ActivateSpeedPowerup();
@@ -66,6 +69,10 @@ namespace BeachHero
             isGameStarted = false;
             levelController.OnCharacterDrown();
             UIController.GetInstance.ScreenEvent(ScreenType.GameLose, UIScreenEvent.Open);
+        }
+        public void OnCharacterPickUp()
+        {
+            levelController.OnCharacterPickUp();
         }
     }
 }

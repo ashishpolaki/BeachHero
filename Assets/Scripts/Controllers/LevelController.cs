@@ -179,6 +179,17 @@ namespace BeachHero
             isLevelFinished = true;
             StopSimulation();
         }
+        public void OnCharacterPickUp()
+        {
+            savedCharacterCounter++;
+            if (savedCharacterCounter >= totalCharactersInLevel)
+            {
+                isPlaying = false;
+                isLevelFinished = true;
+                GameController.GetInstance.OnLevelCompleted();
+                UIController.GetInstance.ScreenEvent(ScreenType.GameWin, UIScreenEvent.Open);
+            }
+        }
         private void StopSimulation()
         {
             player.StopMovement();
@@ -299,6 +310,21 @@ namespace BeachHero
 
         public void UpdateState()
         {
+            //Update Player
+            if (player != null)
+            {
+                player.UpdateState();
+            }
+            //Update Collectables
+            OnCoinMagnetPowerup();
+            foreach (var collectableList in collectableDictionary.Values)
+            {
+                foreach (var collectable in collectableList)
+                {
+                    collectable.UpdateState();
+                }
+            }
+
             if (isLevelFinished)
             {
                 return;
@@ -322,22 +348,6 @@ namespace BeachHero
             foreach (var savedCharacter in savedCharactersList)
             {
                 savedCharacter.UpdateState();
-            }
-
-            //Update Player
-            if (player != null)
-            {
-                player.UpdateState();
-            }
-
-            //Update Collectables
-            OnCoinMagnetPowerup();
-            foreach (var collectableList in collectableDictionary.Values)
-            {
-                foreach (var collectable in collectableList)
-                {
-                    collectable.UpdateState();
-                }
             }
         }
         private void ResetState()
