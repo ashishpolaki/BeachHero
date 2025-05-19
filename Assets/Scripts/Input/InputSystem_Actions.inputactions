@@ -1048,6 +1048,15 @@
                     "processors": "",
                     "interactions": "Press(pressPoint=0.5,behavior=1)",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "TouchPosition",
+                    "type": "Value",
+                    "id": "44bd460d-e4f1-4316-9245-ad74994ee73c",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -1086,17 +1095,6 @@
                 },
                 {
                     "name": "",
-                    "id": "1179a76f-2ec0-4098-bfcc-bd89fc1bcd38",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "Click",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "52cbe91e-e462-4f6b-b753-6a1831d8f17f",
                     "path": "<Pen>/tip",
                     "interactions": "",
@@ -1109,10 +1107,10 @@
                 {
                     "name": "",
                     "id": "214be2b6-f455-456e-86e5-32de2ad6e8a5",
-                    "path": "<Touchscreen>/touch*/press",
+                    "path": "<Touchscreen>/Press",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Touch",
+                    "groups": "Touch;Keyboard&Mouse",
                     "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -1124,6 +1122,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "XR",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7a635799-acf6-4d4b-a427-76c9fc8abccc",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse;Touch",
                     "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -1191,6 +1200,17 @@
                     "processors": "",
                     "groups": "Touch",
                     "action": "Release",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2848f969-40ec-4fed-90c9-8a50e5a272db",
+                    "path": "<Touchscreen>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Touch",
+                    "action": "TouchPosition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

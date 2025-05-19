@@ -12,8 +12,8 @@ namespace BeachHero
 
         public event Action<Vector2> OnMouseClickUp;
 
-        public static Vector3 MousePosition => Mouse.current.position.ReadValue();
-
+       // public static Vector3 MousePosition => Mouse.current.position.ReadValue();
+        public static Vector3 MousePosition { get; private set; }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
@@ -23,23 +23,31 @@ namespace BeachHero
 
             inputSystemActions.Game.Click.performed += OnClickPerformed;
             inputSystemActions.Game.Release.performed += OnClickReleased;
+            inputSystemActions.Game.TouchPosition.performed += OnTouchPOsition;
         }
 
+        private void OnTouchPOsition(InputAction.CallbackContext obj)
+        {
+            MousePosition = inputSystemActions.Game.TouchPosition.ReadValue<Vector2>();
+        }
 
         private void OnClickPerformed(InputAction.CallbackContext obj)
         {
-            OnMouseClickDown?.Invoke(inputSystemActions.Game.Point.ReadValue<Vector2>());
+            MousePosition = inputSystemActions.Game.TouchPosition.ReadValue<Vector2>();
+            OnMouseClickDown?.Invoke(MousePosition);
         }
 
         private void OnClickReleased(InputAction.CallbackContext obj)
         {
-            OnMouseClickUp?.Invoke(inputSystemActions.Game.Point.ReadValue<Vector2>());
+            MousePosition = inputSystemActions.Game.TouchPosition.ReadValue<Vector2>();
+            OnMouseClickUp?.Invoke(MousePosition);
         }
 
         private void OnDestroy()
         {
             inputSystemActions.Game.Click.performed -= OnClickPerformed;
             inputSystemActions.Game.Click.canceled -= OnClickReleased;
+            inputSystemActions.Game.TouchPosition.performed -= OnTouchPOsition;
 
             inputSystemActions.Game.Disable();
         }

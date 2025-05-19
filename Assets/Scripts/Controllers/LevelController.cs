@@ -83,7 +83,7 @@ namespace BeachHero
             if (!isPathDrawn && isPlaying)
             {
                 playerPathDrawTrail.ResetTrail(player.transform.position);
-                ray = Cam.ScreenPointToRay(InputManager.MousePosition);
+                ray = Cam.ScreenPointToRay(position);
                 if (Physics.Raycast(ray, out raycastHit, 1000f, startPointLayer))
                 {
                     canDrawPath = true;

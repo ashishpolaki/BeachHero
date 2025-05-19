@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 namespace BeachHero
 {
+#if UNITY_EDITOR
+
     [InitializeOnLoad]
     public class InitSceneAutoLoader
     {
@@ -38,4 +40,5 @@ namespace BeachHero
             // }
         }
     }
+#endif
 }
