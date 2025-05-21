@@ -17,7 +17,7 @@ namespace BeachHero
                 float distance = Vector3.Distance(transform.position, coinTransform.transform.position);
 
                 // If the coin is within the magnet radius, attract it toward the player
-                Coin coin = coinTransform.GetComponent<Coin>();
+                CoinCollectable coin = coinTransform.GetComponent<CoinCollectable>();
                 if (distance <= magnetRadius)
                 {
                     if (!coin.CanMoveToTarget)

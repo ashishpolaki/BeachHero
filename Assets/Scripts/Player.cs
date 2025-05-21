@@ -33,7 +33,6 @@ namespace BeachHero
             sinkingAnimHash = Animator.StringToHash("Sinking");
             idleAnimHash = Animator.StringToHash("Idle");
         }
-
         private void OnTriggerEnter(Collider other)
         {
             if (canStartMovement == false)

@@ -3,13 +3,14 @@ using UnityEngine;
 
 namespace BeachHero
 {
-    public class Coin : Collectable
+    public class CoinCollectable : Collectable
     {
         [SerializeField] private GameObject coinGraphics;
-        [SerializeField] private ParticleSystem coinParticle;
+        [SerializeField] private float particleTime = 5f;
         [SerializeField] private float rotateSpeed = 200f;
         [SerializeField] private float moveSpeed = 10f;
 
+        private ParticleSystem coinParticle;
         private Transform moveTarget;
         private bool canMoveToTarget;
 
@@ -64,7 +65,7 @@ namespace BeachHero
 
         private IEnumerator IEReturnToPool()
         {
-            yield return new WaitForSeconds(5f);
+            yield return new WaitForSeconds(particleTime);
             coinParticle.Stop();
             GameController.GetInstance.PoolManager.CoinParticlePool.ReturnObject(coinParticle.gameObject);
         }

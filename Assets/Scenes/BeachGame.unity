@@ -246,6 +246,8 @@ GameObject:
   - component: {fileID: 280235828}
   - component: {fileID: 280235829}
   - component: {fileID: 280235830}
+  - component: {fileID: 280235831}
+  - component: {fileID: 280235832}
   m_Layer: 0
   m_Name: ScriptsHolder
   m_TagString: Untagged
@@ -283,6 +285,8 @@ MonoBehaviour:
   levelController: {fileID: 280235828}
   levelDatabaseSO: {fileID: 11400000, guid: ada4a019005cb594e8e48cbf998035ac, type: 2}
   poolManager: {fileID: 280235829}
+  saveController: {fileID: 280235831}
+  powerupController: {fileID: 280235832}
 --- !u!114 &280235828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -341,6 +345,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 026e9bf6022a444e0a5b0d3bb455254d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &280235831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 280235824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d74390975fc49834a95dec014367e199, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &280235832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 280235824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f9e8309a917e4c4b85c8b2205810b84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &454842542
@@ -624,13 +652,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1498169351}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.16761097, y: 0.6253885, z: -0.5727413, w: -0.50275564}
+  m_LocalRotation: {x: 0.5319327, y: -0.5592771, z: 0.622526, w: 0.12929896}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 62.24, y: 290.3, z: 51.845}
+  m_LocalEulerAnglesHint: {x: -236.5, y: 290.3, z: 51.845}
 --- !u!114 &1498169354
 MonoBehaviour:
   m_ObjectHideFlags: 0

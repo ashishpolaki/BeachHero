@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BeachHero
@@ -7,6 +8,8 @@ namespace BeachHero
         [SerializeField] private LevelController levelController;
         [SerializeField] private LevelDatabaseSO levelDatabaseSO;
         [SerializeField] private PoolController poolManager;
+        [SerializeField] private SaveController saveController;
+        [SerializeField] private PowerupController powerupController;
 
         [Tooltip("The Index Starts from 0")]
         private int currentLevelIndex;
@@ -16,6 +19,7 @@ namespace BeachHero
         public int CurrentLevelIndex => currentLevelIndex;
         public PoolController PoolManager => poolManager;
         public LevelController LevelController => levelController;
+        public PowerupController PowerupController => powerupController;
         #endregion
 
         #region Unity Methods
@@ -32,17 +36,27 @@ namespace BeachHero
         }
         private void Start()
         {
+            powerupController.LoadPowerups();
             SpawnLevel();
         }
         #endregion
 
         private void SpawnLevel()
         {
+            currentLevelIndex = SaveController.LoadInt(StringUtils.LEVELNUMBER, 0);
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
             levelController.StartState(levelDatabaseSO.GetLevelByIndex(currentLevelIndex));
         }
-        public void Play()
+        public void Play(List<PowerupType> powerupTypes)
         {
+            if (powerupTypes.Count > 0)
+            {
+                foreach (PowerupType powerupType in powerupTypes)
+                {
+                    powerupController.OnPowerupActivated(powerupType);
+                    levelController.OnActivatePowerup(powerupType);
+                }
+            }
             isGameStarted = true;
             levelController.GameStart();
             UIController.GetInstance.ScreenEvent(ScreenType.Gameplay, UIScreenEvent.Open);
@@ -51,18 +65,20 @@ namespace BeachHero
         {
             isGameStarted = false;
             currentLevelIndex++;
+            SaveController.SaveInt(StringUtils.LEVELNUMBER , currentLevelIndex);
         }
         public void RetryLevel()
         {
             SpawnLevel();
         }
-        public void OnMagnetPowerUpActivate()
+        public void OnPowerUpPickedUp(PowerupType powerupType)
         {
-            levelController.ActivateCoinMagnetPowerup();
+            powerupController.OnPowerupCollected(powerupType);
         }
-        public void OnSpeedPowerUpActivate()
+        public void OnPowerupActivated(PowerupType powerupType)
         {
-            levelController.ActivateSpeedPowerup();
+            levelController.OnActivatePowerup(powerupType);
+            powerupController.OnPowerupActivated(powerupType);
         }
         public void OnCharacterDrowned()
         {

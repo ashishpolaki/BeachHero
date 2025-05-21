@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,35 +9,42 @@ namespace BeachHero
     {
         [SerializeField] private Button playButton;
         [SerializeField] private TextMeshProUGUI levelNumberText;
-        [SerializeField] private Button magnetPowerupBtn;
-        [SerializeField] private Button speedPowerupBtn;
+        [SerializeField] private PowerupButton magnetPowerup;
+        [SerializeField] private PowerupButton speedPowerup;
+
+        private List<PowerupType> activatePowerupList = new List<PowerupType>();
 
         private void OnEnable()
         {
             playButton.onClick.AddListener(OnPlayButtonClicked);
-            levelNumberText.text = $"Level {(GameController.GetInstance.CurrentLevelIndex + 1).ToString()}";
-            magnetPowerupBtn.onClick.AddListener(OnMagnetPowerup);
-            speedPowerupBtn.onClick.AddListener(OnSpeedPowerup);
+            levelNumberText.text = $"Level {(GameController.GetInstance.CurrentLevelIndex + 1)}";
+            int magnetPowerupCount = GameController.GetInstance.PowerupController.GetPowerupCount(PowerupType.Magnet);
+            int speedPowerupCount = GameController.GetInstance.PowerupController.GetPowerupCount(PowerupType.Speed);
+            magnetPowerup.Init(PowerupType.Magnet, magnetPowerupCount, OnPowerupSelect);
+            speedPowerup.Init(PowerupType.Speed, speedPowerupCount, OnPowerupSelect);
         }
         private void OnDisable()
         {
             playButton.onClick.RemoveListener(OnPlayButtonClicked);
-            magnetPowerupBtn.onClick.RemoveListener(OnMagnetPowerup);
-            speedPowerupBtn.onClick.RemoveListener(OnSpeedPowerup);
+            magnetPowerup.DeInitialize();
+            speedPowerup.DeInitialize();
         }
-
-        private void OnMagnetPowerup()
+        private void OnPowerupSelect(PowerupType powerupType, bool isSelected)
         {
-            GameController.GetInstance.OnMagnetPowerUpActivate();
-        }
-        private void OnSpeedPowerup()
-        {
-            GameController.GetInstance.OnSpeedPowerUpActivate();
+            if (isSelected)
+            {
+                activatePowerupList.Add(powerupType);
+            }
+            else
+            {
+                activatePowerupList.Remove(powerupType);
+            }
         }
         private void OnPlayButtonClicked()
         {
+            GameController.GetInstance.Play(activatePowerupList);
+            activatePowerupList.Clear();
             Close();
-            GameController.GetInstance.Play();
         }
     }
 }

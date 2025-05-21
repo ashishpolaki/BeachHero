@@ -18,10 +18,10 @@ public class EditorSceneController : MonoBehaviour
     public void Clear()
     {
         if (container.transform != null)
-        for (int i = container.transform.childCount - 1; i >= 0; i--)
-        {
-            DestroyImmediate(container.transform.GetChild(i).gameObject);
-        }
+            for (int i = container.transform.childCount - 1; i >= 0; i--)
+            {
+                DestroyImmediate(container.transform.GetChild(i).gameObject);
+            }
     }
 
     #region Spawn
@@ -61,7 +61,7 @@ public class EditorSceneController : MonoBehaviour
             GameObject collectableObject = (GameObject)PrefabUtility.InstantiatePrefab(_object);
             Collectable collectable = collectableObject.GetComponent<Collectable>();
             collectableObject.transform.parent = container.transform;
-            collectable.Init(new CollectableData() { });
+            collectable.Init(new CollectableData() { type = collectable.CollectableType });
         }
     }
 
@@ -182,9 +182,19 @@ public class EditorSceneController : MonoBehaviour
                     break;
                 case CollectableType.Magnet:
                     path = "Assets/Prefabs/Magnet.prefab";
+                    Collectable magnetPrefab = AssetDatabase.LoadAssetAtPath<Collectable>(path);
+                    GameObject magnetGameobject = (GameObject)PrefabUtility.InstantiatePrefab(magnetPrefab.gameObject);
+                    Collectable magnet = magnetGameobject.GetComponent<Collectable>();
+                    magnetGameobject.transform.parent = container.transform;
+                    magnet.Init(item);
                     break;
                 case CollectableType.Speed:
-                    path = "Assets/Prefabs/Speed.prefab";
+                    path = "Assets/Prefabs/SpeedUp.prefab";
+                    Collectable speedPrefab = AssetDatabase.LoadAssetAtPath<Collectable>(path);
+                    GameObject speedGameobject = (GameObject)PrefabUtility.InstantiatePrefab(speedPrefab.gameObject);
+                    Collectable speed = speedGameobject.GetComponent<Collectable>();
+                    speedGameobject.transform.parent = container.transform;
+                    speed.Init(item);
                     break;
             }
         }

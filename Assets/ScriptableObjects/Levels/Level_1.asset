@@ -17,7 +17,10 @@ MonoBehaviour:
     Position: {x: -4.91, y: 0, z: 11.72}
     Rotation: {x: -0, y: 45.000004, z: -0}
   obstacles:
-    staticObstacles: []
+    staticObstacles:
+    - type: 4
+      position: {x: -7.71, y: 0, z: 17.18}
+      rotation: {x: 0, y: 0, z: 0}
     movingObstacles:
     - type: 1
       movementType: 1
@@ -50,7 +53,7 @@ MonoBehaviour:
   collectables:
   - type: 1
     position: {x: 5.07, y: 0, z: 16.62}
-  - type: 1
+  - type: 4
     position: {x: 0.92, y: 0, z: 11.84}
-  - type: 1
-    position: {x: 2.78, y: 0, z: 13.72}
+  - type: 3
+    position: {x: 5.45, y: 0, z: 12.78}

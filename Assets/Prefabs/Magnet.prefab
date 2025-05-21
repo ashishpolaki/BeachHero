@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 932363394992073193}
   - component: {fileID: 932363394992073194}
   - component: {fileID: 650311150616210649}
-  - component: {fileID: -7757076218396222291}
+  - component: {fileID: 4512404321306723749}
   m_Layer: 11
-  m_Name: Coin
+  m_Name: Magnet
   m_TagString: Coin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3865040562340570352}
+  - {fileID: 6554035819427842517}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &932363394992073194
@@ -78,7 +78,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.6, y: 2, z: 1.6}
   m_Center: {x: 0, y: 0.75, z: 0}
---- !u!114 &-7757076218396222291
+--- !u!114 &4512404321306723749
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,15 +87,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 932363394992073192}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb26f79a50abef0489308364b9e53dcc, type: 3}
+  m_Script: {fileID: 11500000, guid: 02e0ced21ebacbe42819bc1f34a34552, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectableType: 1
-  coinGraphics: {fileID: 3865040562340935888}
-  coinParticle: {fileID: 0}
-  rotateSpeed: 200
-  moveSpeed: 10
---- !u!1 &3865040562340935888
+  collectableType: 3
+  magnetGraphics: {fileID: 5890510910612476783}
+  particleTime: 5
+--- !u!1 &5890510910612476783
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -103,46 +101,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3865040562340570352}
-  - component: {fileID: 3865040562343994576}
-  - component: {fileID: 3865040562342864400}
+  - component: {fileID: 6554035819427842517}
+  - component: {fileID: 7879970378047669872}
+  - component: {fileID: 5386217223238005434}
   m_Layer: 0
-  m_Name: GoldCoin
+  m_Name: MagnetGraphics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3865040562340570352
+--- !u!4 &6554035819427842517
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3865040562340935888}
+  m_GameObject: {fileID: 5890510910612476783}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.5, z: -0.1}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.00000003774895, y: 0, z: -0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 932363394992073193}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!33 &3865040562343994576
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &7879970378047669872
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3865040562340935888}
-  m_Mesh: {fileID: 4300000, guid: 5f9ee1799e7f21548ba0dd65ac83ea7f, type: 3}
---- !u!23 &3865040562342864400
+  m_GameObject: {fileID: 5890510910612476783}
+  m_Mesh: {fileID: 1588110511326799053, guid: cf7ce557e1b40154ea5319e8e98b4479, type: 3}
+--- !u!23 &5386217223238005434
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3865040562340935888}
+  m_GameObject: {fileID: 5890510910612476783}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -150,7 +148,7 @@ MeshRenderer:
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 0
-  m_ReflectionProbeUsage: 0
+  m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
@@ -159,7 +157,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: beed944d40b93224c98e41fdcbd25400, type: 2}
+  - {fileID: 2100000, guid: 339c3b831684c2e41b1c4a73a8cefcd9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

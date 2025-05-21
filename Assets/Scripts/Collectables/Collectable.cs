@@ -24,14 +24,6 @@ namespace BeachHero
             }
         }
 
-        public Vector3 Position
-        {
-            get
-            {
-                return transform.position;
-            }
-        }
-
         public virtual void Init(CollectableData collectableData)
         {
             transform.position = collectableData.position;

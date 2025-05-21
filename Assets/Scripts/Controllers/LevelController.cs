@@ -223,6 +223,14 @@ namespace BeachHero
                     {
                         poolManager.CoinsPool.ReturnObject(collectable.gameObject);
                     }
+                    else if (collectable.CollectableType == CollectableType.Magnet)
+                    {
+                        poolManager.MagnetPowerupPool.ReturnObject(collectable.gameObject);
+                    }
+                    else if (collectable.CollectableType == CollectableType.Speed)
+                    {
+                        poolManager.SpeedPowerupPool.ReturnObject(collectable.gameObject);
+                    }
                 }
             }
 
@@ -264,6 +272,17 @@ namespace BeachHero
         }
 
         #region Powerup
+        public void OnActivatePowerup(PowerupType powerUpType)
+        {
+            if (powerUpType == PowerupType.Magnet)
+            {
+                ActivateCoinMagnetPowerup();
+            }
+            else if (powerUpType == PowerupType.Speed)
+            {
+                ActivateSpeedPowerup();
+            }
+        }
         public void ActivateCoinMagnetPowerup()
         {
             coinMagnetActivated = true;
@@ -279,7 +298,7 @@ namespace BeachHero
                 foreach (var coinCollectable in collectableDictionary[CollectableType.Coin])
                 {
                     float distance = Vector3.Distance(player.transform.position, coinCollectable.transform.position);
-                    Coin coin = (Coin)coinCollectable;
+                    CoinCollectable coin = (CoinCollectable)coinCollectable;
                     if (!coin.CanMoveToTarget)
                     {
                         if (distance <= magnetRadius)
@@ -495,10 +514,28 @@ namespace BeachHero
                     case CollectableType.Coin:
                         SpawnCoin(collectable);
                         break;
+                    case CollectableType.Magnet:
+                       SpawnMagnet(collectable);
+                        break;
+                    case CollectableType.Speed:
+                        SpawnSpeed(collectable);
+                        break;
                     default:
                         break;
                 }
             }
+        }
+        private void SpawnMagnet(CollectableData collectableData)
+        {
+            Collectable magnet = poolManager.MagnetPowerupPool.GetObject().GetComponent<Collectable>();
+            magnet.Init(collectableData);
+            collectableDictionary[collectableData.type].Add(magnet);
+        }
+        private void SpawnSpeed(CollectableData collectableData)
+        {
+            Collectable speed = poolManager.SpeedPowerupPool.GetObject().GetComponent<Collectable>();
+            speed.Init(collectableData);
+            collectableDictionary[collectableData.type].Add(speed);
         }
         private void SpawnCoin(CollectableData collectableData)
         {
