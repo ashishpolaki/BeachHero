@@ -23,23 +23,34 @@ MonoBehaviour:
     prettyPrint: 1
     bufferSize: 2048
     saveChildren: 1
+    postprocessRawCachedData: 0
+    storeCacheAtEndOfEveryFrame: 1
+    storeCacheOnApplicationQuit: 1
+    storeCacheOnApplicationPause: 1
     typeChecking: 1
     safeReflection: 1
     memberReferenceMode: 0
     referenceMode: 2
     serializationDepthLimit: 64
     assemblyNames:
-    - Assembly-CSharp-firstpass
     - Assembly-CSharp
-    - PPv2URPConverters
-    - Core.Inspector.Editor
+    - Assembly-CSharp-firstpass
+    - BeachHero
     - Core.Inspector
-    - Core.UE.Editor
     - Core.UE
+    - EasySave
+    - sc.stylizedwater2.runtime
+    - Unity.RenderPipelines.Core.Samples.Runtime
     showAdvancedSettings: 1
   addMgrToSceneAutomatically: 0
   autoUpdateReferences: 1
   addAllPrefabsToManager: 1
+  collectDependenciesDepth: 4
+  collectDependenciesTimeout: 10
+  updateReferencesWhenSceneChanges: 1
+  updateReferencesWhenSceneIsSaved: 1
+  updateReferencesWhenSceneIsOpened: 1
+  referenceFolders: []
   logDebugInfo: 0
   logWarnings: 1
   logErrors: 1
