@@ -116,14 +116,13 @@ public class EditorSceneController : MonoBehaviour
                     rockGameobject.transform.position = item.position;
                     rockGameobject.transform.rotation = Quaternion.Euler(item.rotation);
                     break;
-                case ObstacleType.WaterHole:
-                    path = "Assets/Prefabs/WaterHole.prefab";
-                    WaterHoleObstacle waterHoleObstaclePrefab = AssetDatabase.LoadAssetAtPath<WaterHoleObstacle>(path);
-                    GameObject waterHoleGameobject = (GameObject)PrefabUtility.InstantiatePrefab(waterHoleObstaclePrefab.gameObject);
-                    WaterHoleEditComponent waterHoleEditComponent = waterHoleGameobject.AddComponent<WaterHoleEditComponent>();
-                    waterHoleGameobject.transform.parent = container.transform;
-                    waterHoleGameobject.transform.position = item.position;
-                    waterHoleGameobject.transform.rotation = Quaternion.Euler(item.rotation);
+                case ObstacleType.Barrel:
+                    path = "Assets/Prefabs/Barrel.prefab";
+                    BarrelObstacle barrelObstaclePrefab = AssetDatabase.LoadAssetAtPath<BarrelObstacle>(path);
+                    GameObject barrelGameobject = (GameObject)PrefabUtility.InstantiatePrefab(barrelObstaclePrefab.gameObject);
+                    barrelGameobject.transform.parent = container.transform;
+                    barrelGameobject.transform.position = item.position;
+                    barrelGameobject.transform.rotation = Quaternion.Euler(item.rotation);
                     break;
             }
         }

@@ -30,8 +30,8 @@ namespace BeachHero
         #region Unity methods
         private void Awake()
         {
-            sinkingAnimHash = Animator.StringToHash("Sinking");
-            idleAnimHash = Animator.StringToHash("Idle");
+            sinkingAnimHash = Animator.StringToHash(StringUtils.SINKING_ANIM);
+            idleAnimHash = Animator.StringToHash(StringUtils.IDLE_ANIM);
         }
         private void OnTriggerEnter(Collider other)
         {
@@ -39,7 +39,7 @@ namespace BeachHero
             {
                 return;
             }
-            if (other.CompareTag("Character"))
+            if (other.CompareTag(StringUtils.CHARACTER_TAG))
             {
                 SavedCharacter savedCharacter = other.GetComponent<SavedCharacter>();
                 savedCharacter.OnPickUp();
@@ -50,7 +50,7 @@ namespace BeachHero
                 collectable.Collect();
             }
 
-            if (other.CompareTag("Obstacle"))
+            if (other.CompareTag(StringUtils.OBSTACLE_TAG))
             {
                 IObstacle obstacle = other.GetComponent<IObstacle>();
                 if (obstacle != null)

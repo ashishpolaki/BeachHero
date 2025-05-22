@@ -48,7 +48,8 @@ namespace BeachHero
         Shark,
         Eel,
         WaterHole,
-        Rock
+        Rock,
+        Barrel,
     }
     public enum MovingObstacleMovementType
     {

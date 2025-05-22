@@ -450,12 +450,22 @@ namespace BeachHero
                         case ObstacleType.Rock:
                             SpawnRock(staticObstacle.type, staticObstacle);
                             break;
+                        case ObstacleType.Barrel:
+                            SpawnBarrel(staticObstacle.type, staticObstacle);
+                            break;
                         default:
                             break;
                     }
                 }
             }
         }
+        private void SpawnBarrel(ObstacleType obstacleType, StaticObstacleData rockObstacle)
+        {
+            BarrelObstacle barrel = poolManager.BarrelPool.GetObject().GetComponent<BarrelObstacle>();
+            barrel.transform.SetPositionAndRotation(rockObstacle.position, Quaternion.Euler(rockObstacle.rotation));
+            obstaclesDictionary[obstacleType].Add(barrel);
+        }
+
         private void SpawnRock(ObstacleType obstacleType, StaticObstacleData rockObstacle)
         {
             RockObstacle rock = poolManager.RockPool.GetObject().GetComponent<RockObstacle>();
@@ -515,7 +525,7 @@ namespace BeachHero
                         SpawnCoin(collectable);
                         break;
                     case CollectableType.Magnet:
-                       SpawnMagnet(collectable);
+                        SpawnMagnet(collectable);
                         break;
                     case CollectableType.Speed:
                         SpawnSpeed(collectable);
