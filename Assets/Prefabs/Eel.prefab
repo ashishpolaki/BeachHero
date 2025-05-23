@@ -19618,7 +19618,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obstacleType: 2
-  resolution: 0
   keyframes: []
   rotationSpeed: 11.07
   movementSpeed: 5
@@ -19832,9 +19831,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3737055931751301277, guid: 588ea11a548de244490ca9b00af05273,
         type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3737055931751301277, guid: 588ea11a548de244490ca9b00af05273,
+        type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: e493e8068b1b24d478384022ad7d9c45, type: 2}
+    - target: {fileID: 3737055931751301277, guid: 588ea11a548de244490ca9b00af05273,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 9df55d9081c1e35468ccebfb00218c00, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
