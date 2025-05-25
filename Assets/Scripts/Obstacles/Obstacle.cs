@@ -20,7 +20,7 @@ namespace BeachHero
 
         public virtual void Hit()
         {
-
+            GameController.GetInstance.OnLevelFailed();
         }
 
         public virtual void UpdateState()

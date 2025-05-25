@@ -37,8 +37,8 @@ namespace BeachHero
         private bool canDrawPath = false;
         private bool isPlaying;
         private bool coinMagnetActivated;
-        private bool isLevelFinished;
-        private float levelTimer;
+        private bool isLevelCompleted;
+        private bool isLevelPassed;
         private int totalCharactersInLevel;
         [Tooltip("Number of characters saved by the player in current level")]
         private int savedCharacterCounter;
@@ -56,11 +56,6 @@ namespace BeachHero
                 return cam;
             }
         }
-        #endregion
-
-        #region Actions
-        public Action<float> OnLevelTimerUpdate;
-
         #endregion
 
         #region Unity Methods
@@ -176,8 +171,12 @@ namespace BeachHero
         public void OnCharacterDrown()
         {
             isPlaying = false;
-            isLevelFinished = true;
             StopSimulation();
+        }
+        public void OnLevelCompleted(bool _val)
+        {
+            isLevelCompleted = true;
+            isLevelPassed = _val;
         }
         public void OnCharacterPickUp()
         {
@@ -185,24 +184,13 @@ namespace BeachHero
             if (savedCharacterCounter >= totalCharactersInLevel)
             {
                 isPlaying = false;
-                isLevelFinished = true;
-                GameController.GetInstance.OnLevelCompleted();
+                GameController.GetInstance.OnLevelPass();
                 UIController.GetInstance.ScreenEvent(ScreenType.GameWin, UIScreenEvent.Open);
             }
         }
         private void StopSimulation()
         {
             player.StopMovement();
-        }
-        private void UpdateLevelTimer()
-        {
-            levelTimer -= Time.deltaTime;
-            if (levelTimer <= 0)
-            {
-                levelTimer = 0;
-                isLevelFinished = true;
-            }
-            OnLevelTimerUpdate?.Invoke(levelTimer);
         }
         private void ReturnToPoolEverything()
         {
@@ -315,7 +303,6 @@ namespace BeachHero
         public void StartState(LevelSO levelSO)
         {
             ResetState();
-            levelTimer = levelSO.LevelTime;
             totalCharactersInLevel = levelSO.SavedCharacters.Length;
 
             // Load the level data
@@ -344,13 +331,10 @@ namespace BeachHero
                 }
             }
 
-            if (isLevelFinished)
+            if (isLevelCompleted)
             {
                 return;
             }
-
-            // Update level timer
-            UpdateLevelTimer();
 
             // Update Path 
             DrawPath();
@@ -373,7 +357,8 @@ namespace BeachHero
         {
             ReturnToPoolEverything();
             coinMagnetActivated = false;
-            isLevelFinished = false;
+            isLevelCompleted = false;
+            isLevelPassed = false;
             isPlaying = false;
             isPathDrawn = false;
             canDrawPath = false;

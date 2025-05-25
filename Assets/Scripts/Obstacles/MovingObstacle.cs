@@ -32,8 +32,6 @@ namespace BeachHero
         }
         #endregion
 
-        
-
         #region Public Methods
         public virtual void Init(MovingObstacleData movingObstacleData)
         {

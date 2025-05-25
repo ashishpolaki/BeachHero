@@ -10,6 +10,7 @@ namespace BeachHero
         Gameplay,
         GameLose,
         GameWin,
+        Results,
     }
     public interface IScreen
     {

@@ -23,6 +23,10 @@ namespace BeachHero
             powerUpButton.image.color = normalColor;
             isSelected = false;
             powerUpButton.onClick.AddListener(OnPowerupButtonClicked);
+            if (powerUpCounter <= 0)
+            {
+                powerUpButton.interactable = false;
+            }
         }
         public void DeInitialize()
         {

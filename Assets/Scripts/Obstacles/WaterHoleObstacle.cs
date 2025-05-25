@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace BeachHero
@@ -19,9 +20,11 @@ namespace BeachHero
         private float radius;
         private float angle;
         private Transform targetTransform;
+        private Coroutine cycloneCoroutine;
 
         public void Init(WaterHoleObstacleData obstacleData)
         {
+            StopCycloneEffect();
             canStartCyclone = false;
             transform.position = obstacleData.position;
             cycloneGraphics.transform.localScale = Vector3.one * obstacleData.scale;
@@ -42,14 +45,55 @@ namespace BeachHero
             angle = Mathf.Atan2(offset.z, offset.x) * Mathf.Rad2Deg;
             radius = Vector3.Distance(transform.position, targetTransform.position);
             canStartCyclone = true;
+            StartCycloneEffect();
         }
-
-        public override void UpdateState()
+        private void StartCycloneEffect()
         {
-            base.UpdateState();
-            if(canStartCyclone)
+            if (cycloneCoroutine != null)
             {
-                CycloneEffect();
+                StopCoroutine(cycloneCoroutine);
+            }
+            cycloneCoroutine = StartCoroutine(CycloneEffectCoroutine());
+        }
+        private void StopCycloneEffect()
+        {
+            if (cycloneCoroutine != null)
+            {
+                StopCoroutine(cycloneCoroutine);
+                cycloneCoroutine = null;
+            }
+        }
+        private IEnumerator CycloneEffectCoroutine()
+        {
+            while (canStartCyclone)
+            {
+                // Gradually reduce the radius to simulate being pulled toward the center
+                radius = Mathf.Max(0, radius - pullToCenterSpeed * Time.deltaTime);
+
+                // Calculate the new position in a circular path
+                angle += rotationSpeed * Time.deltaTime;
+                float x = transform.position.x + Mathf.Cos(angle * Mathf.Deg2Rad) * Mathf.Max(radius, 0.1f);
+                float z = transform.position.z + Mathf.Sin(angle * Mathf.Deg2Rad) * Mathf.Max(radius, 0.1f);
+
+                // Gradually move the object toward the target depth
+                float y = Mathf.MoveTowards(targetTransform.position.y, depth, descendSpeed * Time.deltaTime);
+
+                // Add turbulence for a more dynamic effect
+                float turbulenceX = Mathf.PerlinNoise(Time.time * turbulenceFrequency, 0) * turbulenceIntensity;
+                float turbulenceZ = Mathf.PerlinNoise(0, Time.time * turbulenceFrequency) * turbulenceIntensity;
+
+                // Update the player's position with turbulence
+                targetTransform.position = new Vector3(x + turbulenceX, y, z + turbulenceZ);
+
+                // Add rotation changes to simulate the boat being tossed around
+                float tiltX = Mathf.Sin(Time.time * tiltSpeed) * tiltIntensity; // Tilting forward and backward
+                float tiltZ = Mathf.Cos(Time.time * tiltSpeed) * tiltIntensity; // Tilting side to side
+
+                // Apply the rotation to the boat
+                Quaternion targetRotation = Quaternion.Euler(tiltX, angle, tiltZ);
+                targetTransform.rotation = Quaternion.Slerp(targetTransform.rotation, targetRotation, Time.deltaTime * tiltSpeed);
+
+                yield return null; // Wait for the next frame
             }
         }
 
