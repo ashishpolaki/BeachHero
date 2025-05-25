@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -42,6 +41,7 @@ namespace BeachHero
         private int totalCharactersInLevel;
         [Tooltip("Number of characters saved by the player in current level")]
         private int savedCharacterCounter;
+
         #endregion
 
         #region Properties
@@ -183,10 +183,7 @@ namespace BeachHero
                 UIController.GetInstance.ScreenEvent(ScreenType.GameWin, UIScreenEvent.Open);
             }
         }
-        private void StopSimulation()
-        {
-            player.StopMovement();
-        }
+
         private void ReturnToPoolEverything()
         {
             //StartPoint
