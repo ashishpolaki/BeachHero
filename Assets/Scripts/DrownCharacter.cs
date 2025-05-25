@@ -2,10 +2,11 @@ using UnityEngine;
 
 namespace BeachHero
 {
-    public class SavedCharacter : MonoBehaviour
+    public class DrownCharacter : MonoBehaviour
     {
-        [SerializeField] private SavedCharacterUI savedCharacterUI;
+        [SerializeField] private DrownCharacterUI drownCharacterUI;
         [SerializeField] private ParticleSystem pickUpParticle;
+        [SerializeField] private ParticleSystem bloodParticle;
         [SerializeField] private GameObject graphicsSkin;
         [SerializeField] private GameObject graphicsUI;
         [SerializeField] private Animator animatorRef;
@@ -18,9 +19,29 @@ namespace BeachHero
         private int DRAWN_HASH = Animator.StringToHash("Drown");
         private int IDLE_HASH = Animator.StringToHash("Idle");
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Obstacle"))
+            {
+                OnMovingObstacleTrigger();
+            }
+        }
+
+        private void OnMovingObstacleTrigger()
+        {
+            graphicsSkin.SetActive(false);
+            bloodParticle.gameObject.SetActive(true);
+            bloodParticle.Play();
+            isDrown = true;
+            GameController.GetInstance.OnLevelFailed();
+            graphicsUI.SetActive(false);
+        }
+
         public void Init(Vector3 _position, float _waitTimePercentage, float levelTime)
         {
+            bloodParticle.Stop();
             pickUpParticle.Stop();
+            bloodParticle.gameObject.SetActive(false);
             pickUpParticle.gameObject.SetActive(false);
             graphicsUI.SetActive(true);
             graphicsSkin.SetActive(true);
@@ -31,7 +52,7 @@ namespace BeachHero
             waitTimePercentage = _waitTimePercentage;
             this.levelTime = levelTime;
             waitTime = (levelTime * waitTimePercentage * 100) / 100f;
-            savedCharacterUI.UpdateTimer(waitTimePercentage);
+            drownCharacterUI.UpdateTimer(waitTimePercentage);
         }
 
         public void UpdateState()
@@ -47,13 +68,13 @@ namespace BeachHero
                 OnTimeUp();
             }
             float waitPercentage = Mathf.Clamp01(waitTime / levelTime);
-            savedCharacterUI.UpdateTimer(waitPercentage);
+            drownCharacterUI.UpdateTimer(waitPercentage);
         }
         public void OnTimeUp()
         {
             isDrown = true;
             animatorRef.SetTrigger(DRAWN_HASH);
-            GameController.GetInstance.OnCharacterDrowned();
+            GameController.GetInstance.OnLevelFailed();
             graphicsUI.SetActive(false);
         }
         public void OnPickUp()

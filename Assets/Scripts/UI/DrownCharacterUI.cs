@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace BeachHero
 {
-    public class SavedCharacterUI : MonoBehaviour
+    public class DrownCharacterUI : MonoBehaviour
     {
         [SerializeField] private Image timerImage;
 

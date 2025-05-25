@@ -27,10 +27,10 @@ public class EditorSceneController : MonoBehaviour
     #region Spawn
     public void SpawnPrefabItem(SpawnItemType spawnItemType, Object _object)
     {
-        if (spawnItemType == SpawnItemType.SavedCharacter)
+        if (spawnItemType == SpawnItemType.DrownCharacter)
         {
             GameObject savedCharacterobject = (GameObject)PrefabUtility.InstantiatePrefab(_object);
-            SavedCharacterEditComponent savedCharacter = savedCharacterobject.AddComponent<SavedCharacterEditComponent>();
+            DrownCharacterEditComponent savedCharacter = savedCharacterobject.AddComponent<DrownCharacterEditComponent>();
             savedCharacterobject.transform.parent = container.transform;
             savedCharacter.Init(Vector3.zero, 1, currentLevel.LevelTime);
         }
@@ -91,14 +91,14 @@ public class EditorSceneController : MonoBehaviour
 
     private void SpawnCharacter()
     {
-        foreach (var characterItem in currentLevel.SavedCharacters)
+        foreach (var characterItem in currentLevel.DrownCharacters)
         {
-            string path = "Assets/Prefabs/SavedCharacter.prefab";
-            SavedCharacter savedCharacterPrefab = AssetDatabase.LoadAssetAtPath<SavedCharacter>(path);
-            GameObject savedCharacterobject = PrefabUtility.InstantiatePrefab(savedCharacterPrefab.gameObject) as GameObject;
-            SavedCharacterEditComponent savedCharacter = savedCharacterobject.AddComponent<SavedCharacterEditComponent>();
-            savedCharacterobject.transform.parent = container.transform;
-            savedCharacter.Init(characterItem.Position, characterItem.WaitTimePercentage, currentLevel.LevelTime);
+            string path = "Assets/Prefabs/DrownCharacter.prefab";
+            DrownCharacter drownCharacterPrefab = AssetDatabase.LoadAssetAtPath<DrownCharacter>(path);
+            GameObject drownCharacterobject = PrefabUtility.InstantiatePrefab(drownCharacterPrefab.gameObject) as GameObject;
+            DrownCharacterEditComponent drownCharacter = drownCharacterobject.AddComponent<DrownCharacterEditComponent>();
+            drownCharacterobject.transform.parent = container.transform;
+            drownCharacter.Init(characterItem.Position, characterItem.WaitTimePercentage, currentLevel.LevelTime);
         }
     }
     private void SpawnStaticObstacles()
@@ -227,9 +227,9 @@ public class EditorSceneController : MonoBehaviour
         MovingObstacleEditComponent[] data = container.GetComponentsInChildren<MovingObstacleEditComponent>();
         return data;
     }
-    public SavedCharacterEditComponent[] GetSavedCharacterEditData()
+    public DrownCharacterEditComponent[] GetSavedCharacterEditData()
     {
-        SavedCharacterEditComponent[] data = container.GetComponentsInChildren<SavedCharacterEditComponent>();
+        DrownCharacterEditComponent[] data = container.GetComponentsInChildren<DrownCharacterEditComponent>();
         return data;
     }
     public Collectable[] GetCollectableEditData()

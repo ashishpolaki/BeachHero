@@ -58,7 +58,7 @@ public class BeachHeroEditorWindow : EditorWindow
             moveObstaclesProperty = serializedLevelObject.FindProperty("obstacles").FindPropertyRelative("movingObstacles");
             staticObstaclesProperty = serializedLevelObject.FindProperty("obstacles").FindPropertyRelative("staticObstacles");
             waterHoleObstaclesProperty = serializedLevelObject.FindProperty("obstacles").FindPropertyRelative("waterHoleObstacles");
-            savedCharactersProperty = serializedLevelObject.FindProperty("savedCharacters");
+            savedCharactersProperty = serializedLevelObject.FindProperty("drownCharacters");
             collectablesProperty = serializedLevelObject.FindProperty("collectables");
         }
     }
@@ -409,7 +409,7 @@ public class BeachHeroEditorWindow : EditorWindow
                     EditorGUILayout.LabelField(" Collectables ", new GUIStyle(EditorStyles.boldLabel) { fontSize = 14 }, GUILayout.Height(10 + EditorGUIUtility.singleLineHeight));
                     SpawnPrefabItem(spawnItemsProperty.GetArrayElementAtIndex(i).FindPropertyRelative("Prefab"), itemsPerRow, previewSize, spawnItemType);
                     break;
-                case SpawnItemType.SavedCharacter:
+                case SpawnItemType.DrownCharacter:
                     EditorGUILayout.Space(5);
                     EditorGUILayout.LabelField(" Characters ", new GUIStyle(EditorStyles.boldLabel) { fontSize = 14 }, GUILayout.Height(10 + EditorGUIUtility.singleLineHeight));
                     SpawnPrefabItem(spawnItemsProperty.GetArrayElementAtIndex(i).FindPropertyRelative("Prefab"), itemsPerRow, previewSize, spawnItemType);
@@ -543,7 +543,7 @@ public class BeachHeroEditorWindow : EditorWindow
 
     private void SaveSavedCharacters()
     {
-        SavedCharacterEditComponent[] savedCharacters = EditorSceneController.Instance.GetSavedCharacterEditData();
+        DrownCharacterEditComponent[] savedCharacters = EditorSceneController.Instance.GetSavedCharacterEditData();
         levelRepresentation.savedCharactersProperty.arraySize = savedCharacters.Length;
 
         for (int i = 0; i < savedCharacters.Length; i++)

@@ -21,7 +21,7 @@ namespace BeachHero
         #region Private Variables
         private StartPointBehaviour startPointBehaviour;
         private Player player;
-        private List<SavedCharacter> savedCharactersList = new List<SavedCharacter>();
+        private List<DrownCharacter> savedCharactersList = new List<DrownCharacter>();
         private Dictionary<ObstacleType, List<Obstacle>> obstaclesDictionary = new Dictionary<ObstacleType, List<Obstacle>>();
         private Dictionary<CollectableType, List<Collectable>> collectableDictionary = new Dictionary<CollectableType, List<Collectable>>();
         private PathTrail playerPathDrawTrail;
@@ -168,11 +168,6 @@ namespace BeachHero
         {
             isPlaying = true;
         }
-        public void OnCharacterDrown()
-        {
-            isPlaying = false;
-            StopSimulation();
-        }
         public void OnLevelCompleted(bool _val)
         {
             isLevelCompleted = true;
@@ -303,14 +298,14 @@ namespace BeachHero
         public void StartState(LevelSO levelSO)
         {
             ResetState();
-            totalCharactersInLevel = levelSO.SavedCharacters.Length;
+            totalCharactersInLevel = levelSO.DrownCharacters.Length;
 
             // Load the level data
             SpawnStartPoint(levelSO.StartPointData.Position, levelSO.StartPointData.Rotation);
             SpawnPlayer(levelSO.StartPointData.Position, levelSO.StartPointData.Rotation);
             SpawnObstacles(levelSO.Obstacle);
             SpawnCollectables(levelSO.Collectables);
-            SpawnSavedCharacters(levelSO.LevelTime, levelSO.SavedCharacters);
+            SpawnSavedCharacters(levelSO.LevelTime, levelSO.DrownCharacters);
             SpawnTrails();
         }
 
@@ -487,11 +482,11 @@ namespace BeachHero
             playerPathDrawTrail = poolManager.PathTrailPool.GetObject().GetComponent<PathTrail>();
             playerPathDrawTrail.ClearRenderer();
         }
-        private void SpawnSavedCharacters(float levelTime, SavedCharacterData[] savedCharacterDatas)
+        private void SpawnSavedCharacters(float levelTime, DrownCharacterData[] savedCharacterDatas)
         {
             foreach (var savedCharacterData in savedCharacterDatas)
             {
-                var savedCharacter = poolManager.SavedCharacterPool.GetObject().GetComponent<SavedCharacter>();
+                var savedCharacter = poolManager.SavedCharacterPool.GetObject().GetComponent<DrownCharacter>();
                 savedCharacter.Init(savedCharacterData.Position, savedCharacterData.WaitTimePercentage, levelTime);
                 savedCharactersList.Add(savedCharacter);
             }

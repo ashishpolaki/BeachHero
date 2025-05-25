@@ -40,6 +40,6 @@ namespace BeachHero
         MovingObstacle,
         StaticObstacle,
         WaterHoleObstacle,
-        SavedCharacter,
+        DrownCharacter,
     }
 }

@@ -8,14 +8,14 @@ namespace BeachHero
         [SerializeField] private float levelTime;
         [SerializeField] private StartPointData startPoint;
         [SerializeField] private ObstacleData obstacles;
-        [SerializeField] private SavedCharacterData[] savedCharacters;
+        [SerializeField] private DrownCharacterData[] drownCharacters;
         [SerializeField] private CollectableData[] collectables;
 
         #region Properties
         public float LevelTime => levelTime;
         public StartPointData StartPointData => startPoint;
         public ObstacleData Obstacle => obstacles;
-        public SavedCharacterData[] SavedCharacters => savedCharacters;
+        public DrownCharacterData[] DrownCharacters => drownCharacters;
         public CollectableData[] Collectables => collectables;
         #endregion
     }
@@ -26,7 +26,6 @@ namespace BeachHero
         public CollectableType type;
         public Vector3 position;
     }
-
     public enum CollectableType
     {
         None,
@@ -59,7 +58,7 @@ namespace BeachHero
         Circular,
     }
     [System.Serializable]
-    public struct SavedCharacterData
+    public struct DrownCharacterData
     {
         [SerializeField] private Vector3 position;
         [Range(0,1f)]

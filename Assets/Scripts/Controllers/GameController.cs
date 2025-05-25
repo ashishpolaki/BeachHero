@@ -87,12 +87,6 @@ namespace BeachHero
             levelController.OnActivatePowerup(powerupType);
             powerupController.OnPowerupActivated(powerupType);
         }
-        public void OnCharacterDrowned()
-        {
-            isGameStarted = false;
-            levelController.OnCharacterDrown();
-            UIController.GetInstance.ScreenEvent(ScreenType.GameLose, UIScreenEvent.Open);
-        }
         public void OnCharacterPickUp()
         {
             levelController.OnCharacterPickUp();

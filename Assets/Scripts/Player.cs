@@ -41,8 +41,8 @@ namespace BeachHero
             }
             if (other.CompareTag(StringUtils.CHARACTER_TAG))
             {
-                SavedCharacter savedCharacter = other.GetComponent<SavedCharacter>();
-                savedCharacter.OnPickUp();
+                DrownCharacter drownCharacter = other.GetComponent<DrownCharacter>();
+                drownCharacter.OnPickUp();
             }
             ICollectable collectable = other.GetComponent<ICollectable>();
             if (collectable != null)
