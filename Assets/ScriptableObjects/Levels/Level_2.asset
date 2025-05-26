@@ -17,7 +17,13 @@ MonoBehaviour:
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
   obstacles:
-    staticObstacles: []
+    staticObstacles:
+    - type: 5
+      position: {x: -3.87, y: -0.94584924, z: 14.62}
+      rotation: {x: 9.55532, y: 22.685034, z: 37.26609}
+    - type: 5
+      position: {x: -6.43, y: -0.97, z: 16.43}
+      rotation: {x: 19.165533, y: 350.86508, z: 306.47934}
     movingObstacles:
     - type: 1
       movementType: 1
@@ -44,9 +50,9 @@ MonoBehaviour:
     waterHoleObstacles:
     - position: {x: -2.04, y: 0, z: 20.79}
       scale: 3.44
-  savedCharacters:
-  - position: {x: -6.09, y: 0, z: 7.3}
-    waitTimePercentage: 0.698
-  - position: {x: -3.74, y: 0, z: 12.41}
-    waitTimePercentage: 0.794
+  drownCharacters:
+  - position: {x: -6.09, y: 0, z: 10.01}
+    waitTimePercentage: 0.71
+  - position: {x: -6.44, y: 0, z: 4.91}
+    waitTimePercentage: 0.385
   collectables: []
