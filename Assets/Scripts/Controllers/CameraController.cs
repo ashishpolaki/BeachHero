@@ -1,17 +1,22 @@
 using UnityEngine;
 using System.Collections;
+using Unity.Cinemachine;
 
 namespace BeachHero
 {
     public class CameraController : MonoBehaviour
     {
-        private Transform mainCameraTransform;
+        [SerializeField] private CinemachineCamera gameViewCamera;
+        [SerializeField] private CinemachineCamera playerNearTargetCamera;
+        [SerializeField] private CinemachineCamera playerFarTargetCamera;
 
         [SerializeField] private float shakeDuration = 0.3f;
         [SerializeField] private float shakeMagnitude = 0.2f;
         [SerializeField] private float shakeFrequency = 25f;
+        [SerializeField] private float cameraBlendDuration = 0.1f;
 
         private Vector3 originalPos;
+        private Transform mainCameraTransform;
 
         private void Awake()
         {
@@ -19,6 +24,32 @@ namespace BeachHero
             mainCameraTransform = Camera.main.transform;
             originalPos = mainCameraTransform.position;
             GameController.GetInstance.CacheCameraController(this);
+            Init();
+        }
+
+        public void OnLevelPass(Transform playerTarget)
+        {
+            //Vector3 shoulderOffset = playerTarget.TransformPoint(playerTargetCameraSettings.Position);
+            //mainCameraTransform.position = shoulderOffset;
+            //mainCameraTransform.LookAt(playerTarget.position); 
+            //mainCameraTransform.rotation *= Quaternion.Euler(playerTargetCameraSettings.Rotation);
+            StartCoroutine(CameraBlend(playerTarget));
+        }
+        IEnumerator CameraBlend(Transform playerTarget)
+        {
+            playerFarTargetCamera.Priority = 1; // Set far camera to active
+            playerFarTargetCamera.Follow = playerTarget;
+            gameViewCamera.Priority = 0;
+            yield return new WaitForSeconds(cameraBlendDuration);
+            playerNearTargetCamera.Priority = 2;
+            playerNearTargetCamera.Follow = playerTarget;
+        }
+
+        public void Init()
+        {
+            gameViewCamera.Priority = 1;
+            playerNearTargetCamera.Priority = 0;
+            playerFarTargetCamera.Priority = 0;
         }
 
         public void StartShake()

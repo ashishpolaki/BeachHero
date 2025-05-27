@@ -43,34 +43,13 @@ namespace BeachHero
         #endregion
 
         #region Cache Component
-        public void CacheCameraController(CameraController cameraController)
+        public void CacheCameraController(CameraController _cameraController)
         {
-            this.cameraController = cameraController;
-            if (cameraController != null)
-            {
-                CacheComponent(out this.cameraController);
-            }
-            else
+            cameraController = _cameraController;
+            if (_cameraController == null)
             {
                 Debug.LogError("CameraController is null");
             }
-        }
-        private bool CacheComponent<T>(out T component) where T : Component
-        {
-            Component unboxedComponent = gameObject.GetComponent(typeof(T));
-
-            if (unboxedComponent != null)
-            {
-                component = (T)unboxedComponent;
-
-                return true;
-            }
-
-            Debug.LogError(string.Format("GameController does not able to cache {0}", typeof(T)));
-
-            component = null;
-
-            return false;
         }
         #endregion
 
@@ -80,6 +59,7 @@ namespace BeachHero
             currentLevelIndex = SaveController.LoadInt(StringUtils.LEVELNUMBER, 0);
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
             levelController.StartState(levelDatabaseSO.GetLevelByIndex(currentLevelIndex));
+            cameraController.Init();
         }
         public void Play(List<PowerupType> powerupTypes)
         {
@@ -110,6 +90,7 @@ namespace BeachHero
             currentLevelIndex++;
             SaveController.SaveInt(StringUtils.LEVELNUMBER, currentLevelIndex);
             levelController.OnLevelCompleted(true);
+            cameraController.OnLevelPass(levelController.PlayerTransform);
             UIController.GetInstance.ScreenEvent(ScreenType.GameWin, UIScreenEvent.Open);
         }
         public void OnLevelFailed()
@@ -117,7 +98,6 @@ namespace BeachHero
             levelController.OnLevelCompleted(false);
             UIController.GetInstance.ScreenEvent(ScreenType.GameLose, UIScreenEvent.Open);
         }
-
         #endregion
 
         #region Powerup

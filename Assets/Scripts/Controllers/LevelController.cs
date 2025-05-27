@@ -45,6 +45,7 @@ namespace BeachHero
         #endregion
 
         #region Properties
+        public Transform PlayerTransform => player != null ? player.transform : null;
         public Camera Cam
         {
             get
