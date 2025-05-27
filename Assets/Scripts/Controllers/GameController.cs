@@ -14,6 +14,7 @@ namespace BeachHero
         [Tooltip("The Index Starts from 0")]
         private int currentLevelIndex;
         private bool isGameStarted = false;
+        private CameraController cameraController;
 
         #region Properties
         public int CurrentLevelIndex => currentLevelIndex;
@@ -41,6 +42,38 @@ namespace BeachHero
         }
         #endregion
 
+        #region Cache Component
+        public void CacheCameraController(CameraController cameraController)
+        {
+            this.cameraController = cameraController;
+            if (cameraController != null)
+            {
+                CacheComponent(out this.cameraController);
+            }
+            else
+            {
+                Debug.LogError("CameraController is null");
+            }
+        }
+        private bool CacheComponent<T>(out T component) where T : Component
+        {
+            Component unboxedComponent = gameObject.GetComponent(typeof(T));
+
+            if (unboxedComponent != null)
+            {
+                component = (T)unboxedComponent;
+
+                return true;
+            }
+
+            Debug.LogError(string.Format("GameController does not able to cache {0}", typeof(T)));
+
+            component = null;
+
+            return false;
+        }
+        #endregion
+
         private void SpawnLevel()
         {
             isGameStarted = false;
@@ -62,10 +95,20 @@ namespace BeachHero
             levelController.GameStart();
             UIController.GetInstance.ScreenEvent(ScreenType.Gameplay, UIScreenEvent.Open);
         }
+        public void OnCharacterPickUp()
+        {
+            levelController.OnCharacterPickUp();
+        }
+        public void RetryLevel()
+        {
+            SpawnLevel();
+        }
+
+        #region Level Pass/Fail
         public void OnLevelPass()
         {
             currentLevelIndex++;
-            SaveController.SaveInt(StringUtils.LEVELNUMBER , currentLevelIndex);
+            SaveController.SaveInt(StringUtils.LEVELNUMBER, currentLevelIndex);
             levelController.OnLevelCompleted(true);
             UIController.GetInstance.ScreenEvent(ScreenType.GameWin, UIScreenEvent.Open);
         }
@@ -74,10 +117,10 @@ namespace BeachHero
             levelController.OnLevelCompleted(false);
             UIController.GetInstance.ScreenEvent(ScreenType.GameLose, UIScreenEvent.Open);
         }
-        public void RetryLevel()
-        {
-            SpawnLevel();
-        }
+
+        #endregion
+
+        #region Powerup
         public void OnPowerUpPickedUp(PowerupType powerupType)
         {
             powerupController.OnPowerupCollected(powerupType);
@@ -87,9 +130,14 @@ namespace BeachHero
             levelController.OnActivatePowerup(powerupType);
             powerupController.OnPowerupActivated(powerupType);
         }
-        public void OnCharacterPickUp()
+        #endregion
+
+        #region Camera
+        public void OnCameraShakeEffect()
         {
-            levelController.OnCharacterPickUp();
+            cameraController.StartShake();
         }
+        #endregion
+
     }
 }
