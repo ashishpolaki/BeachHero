@@ -79,6 +79,10 @@ public class EditorSceneController : MonoBehaviour
     private void SpawnWaterHoleObstacle()
     {
         string path = "Assets/Prefabs/WaterHole.prefab";
+        if (currentLevel.Obstacle.WaterHoleObstacles == null || currentLevel.Obstacle.WaterHoleObstacles.Length == 0)
+        {
+            return;
+        }
         foreach (var item in currentLevel.Obstacle.WaterHoleObstacles)
         {
             WaterHoleObstacle waterHolePrefab = AssetDatabase.LoadAssetAtPath<WaterHoleObstacle>(path);

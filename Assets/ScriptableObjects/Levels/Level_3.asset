@@ -17,6 +17,15 @@ MonoBehaviour:
     Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
   obstacles:
-    staticObstacles: []
+    staticObstacles:
+    - type: 5
+      position: {x: -4.3, y: 0, z: 10.76}
+      rotation: {x: 0, y: 0, z: 0}
     movingObstacles: []
-  savedCharacters: []
+    waterHoleObstacles: []
+  drownCharacters:
+  - position: {x: -2.84, y: 0, z: 7.67}
+    waitTimePercentage: 1
+  - position: {x: -4.64, y: 0, z: 13.84}
+    waitTimePercentage: 1
+  collectables: []
