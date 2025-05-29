@@ -14,6 +14,7 @@ namespace BeachHero
         [Tooltip("The Index Starts from 0")]
         private int currentLevelIndex;
         private bool isGameStarted = false;
+        private bool isLevelPass = false;
         private CameraController cameraController;
 
         #region Properties
@@ -56,6 +57,7 @@ namespace BeachHero
         private void SpawnLevel()
         {
             isGameStarted = false;
+            isLevelPass = false;
             currentLevelIndex = SaveController.LoadInt(StringUtils.LEVELNUMBER, 0);
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
             levelController.StartState(levelDatabaseSO.GetLevelByIndex(currentLevelIndex));
@@ -89,12 +91,13 @@ namespace BeachHero
         {
             currentLevelIndex++;
             SaveController.SaveInt(StringUtils.LEVELNUMBER, currentLevelIndex);
+            isLevelPass = true;
             levelController.OnLevelCompleted(true);
-            cameraController.OnLevelPass(levelController.PlayerTransform);
             UIController.GetInstance.ScreenEvent(ScreenType.GameWin, UIScreenEvent.Open);
         }
         public void OnLevelFailed()
         {
+            isLevelPass = false;
             levelController.OnLevelCompleted(false);
             UIController.GetInstance.ScreenEvent(ScreenType.GameLose, UIScreenEvent.Open);
         }
@@ -117,7 +120,13 @@ namespace BeachHero
         {
             cameraController.StartShake();
         }
+        public void OnLevelPassedCameraEffect()
+        {
+            if (isLevelPass)
+            {
+                cameraController.OnLevelPass(levelController.PlayerTransform);
+            }
+        }
         #endregion
-
     }
 }

@@ -6,13 +6,15 @@ namespace BeachHero
     {
         [SerializeField] private float movementSpeed;
         [SerializeField] private float rotationSpeed;
-        [SerializeField] private Animator animator;
+        [SerializeField] private Animator boatAnimator;
+        [SerializeField] private Animator characterAnimator;
         [SerializeField] private float speedMultiplier;
         private Vector3[] pointsList;
         private bool canStartMovement;
         private int nextPointIndex;
-        private int sinkingAnimHash;
-        private int idleAnimHash;
+        private int sinkingAnimHash = Animator.StringToHash(StringUtils.SINKING_ANIM);
+        private int idleAnimHash = Animator.StringToHash(StringUtils.SINKING_ANIM);
+        private int VICTORY_HASH = Animator.StringToHash(StringUtils.VICTORY_ANIM);
 
 #if UNITY_EDITOR
         private void OnDrawGizmos()
@@ -28,11 +30,6 @@ namespace BeachHero
         }
 #endif
         #region Unity methods
-        private void Awake()
-        {
-            sinkingAnimHash = Animator.StringToHash(StringUtils.SINKING_ANIM);
-            idleAnimHash = Animator.StringToHash(StringUtils.IDLE_ANIM);
-        }
         private void OnTriggerEnter(Collider other)
         {
             if (canStartMovement == false)
@@ -59,7 +56,7 @@ namespace BeachHero
                     obstacle.Hit();
                     if (obstacle.ObstacleType == ObstacleType.WaterHole)
                     {
-                        animator.enabled = false;
+                        boatAnimator.enabled = false;
                         other.GetComponent<WaterHoleObstacle>().OnPlayerHit(transform);
                     }
                     else
@@ -72,13 +69,17 @@ namespace BeachHero
         }
         #endregion
 
+        public void PlayVictoryAnimation()
+        {
+            characterAnimator.SetTrigger(VICTORY_HASH);
+        }
         public void StopMovement()
         {
             canStartMovement = false;
         }
         private void OnBoatCollided()
         {
-            animator.SetTrigger(sinkingAnimHash);
+            boatAnimator.SetTrigger(sinkingAnimHash);
         }
         public void ActivateSpeedPowerup()
         {
@@ -92,7 +93,8 @@ namespace BeachHero
         }
         public void Init()
         {
-            animator.Play(idleAnimHash, -1, Random.Range(0f, 1f));
+            boatAnimator.Play(idleAnimHash, -1, Random.Range(0f, 1f));
+            characterAnimator.Play(idleAnimHash, -1, Random.Range(0f, 1f));
             canStartMovement = false;
             nextPointIndex = 1;
             pointsList = new Vector3[0];
@@ -140,7 +142,11 @@ namespace BeachHero
                     nextPointIndex++;
                     if (nextPointIndex >= pointsList.Length)
                     {
-                        Debug.Log("Reached the end of the path.");
+                        if (GameController.GetInstance.LevelController.IsLevelPassed)
+                        {
+                            GameController.GetInstance.OnLevelPassedCameraEffect();
+                            PlayVictoryAnimation();
+                        }
                     }
                 }
             }

@@ -46,6 +46,7 @@ namespace BeachHero
 
         #region Properties
         public Transform PlayerTransform => player != null ? player.transform : null;
+        public bool IsLevelPassed => isLevelPassed;
         public Camera Cam
         {
             get
@@ -173,6 +174,11 @@ namespace BeachHero
         {
             isLevelCompleted = true;
             isLevelPassed = _val;
+
+            if(!isLevelPassed)
+            {
+                player.StopMovement();
+            }
         }
         public void OnCharacterPickUp()
         {
