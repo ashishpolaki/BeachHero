@@ -5,11 +5,12 @@ namespace BeachHero
 {
     public class GameController : SingleTon<GameController>
     {
-        [SerializeField] private LevelController levelController;
         [SerializeField] private LevelDatabaseSO levelDatabaseSO;
+        [SerializeField] private LevelController levelController;
         [SerializeField] private PoolController poolManager;
         [SerializeField] private SaveController saveController;
         [SerializeField] private PowerupController powerupController;
+        [SerializeField] private TutorialController tutorialController;
 
         [Tooltip("The Index Starts from 0")]
         private int currentLevelIndex;
@@ -38,6 +39,7 @@ namespace BeachHero
         }
         private void Start()
         {
+            Application.targetFrameRate = 30;
             powerupController.LoadPowerups();
             SpawnLevel();
         }
@@ -59,6 +61,10 @@ namespace BeachHero
             isGameStarted = false;
             isLevelPass = false;
             currentLevelIndex = SaveController.LoadInt(StringUtils.LEVELNUMBER, 0);
+            if (tutorialController.IsTutorialActive(currentLevelIndex + 1) == false)
+            {
+                tutorialController.ActivateTutorial(currentLevelIndex);
+            }
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
             levelController.StartState(levelDatabaseSO.GetLevelByIndex(currentLevelIndex));
             cameraController.Init();

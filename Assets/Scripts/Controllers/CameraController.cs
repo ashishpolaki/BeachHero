@@ -72,13 +72,13 @@ namespace BeachHero
                 float x = (Mathf.PerlinNoise(Time.time * shakeFrequency, 0.0f) - 0.5f) * 2.0f * shakeMagnitude * damper;
                 float y = (Mathf.PerlinNoise(0.0f, Time.time * shakeFrequency) - 0.5f) * 2.0f * shakeMagnitude * damper;
 
-                mainCameraTransform.localPosition = originalPos + new Vector3(x, y, 0);
+                gameViewCamera.transform.localPosition = originalPos + new Vector3(x, y, 0);
 
                 yield return null; // Wait for the next frame
             }
 
             // Reset position after shaking
-            mainCameraTransform.localPosition = originalPos;
+            gameViewCamera.transform.localPosition = originalPos;
         }
     }
 }
