@@ -516,6 +516,7 @@ public class BeachHeroEditorWindow : EditorWindow
             SerializedProperty waterHoleProperty = levelRepresentation.waterHoleObstaclesProperty.GetArrayElementAtIndex(i);
             waterHoleProperty.FindPropertyRelative("position").vector3Value = waterHoleEditComponents[i].transform.position;
             waterHoleProperty.FindPropertyRelative("scale").floatValue = waterHoleEditComponents[i].cycloneRadius;
+            waterHoleProperty.FindPropertyRelative("shaderPosition").vector2Value = waterHoleEditComponents[i].shaderPosition;
         }
     }
 

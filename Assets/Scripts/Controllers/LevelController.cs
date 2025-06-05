@@ -38,6 +38,7 @@ namespace BeachHero
         private bool coinMagnetActivated;
         private bool isLevelCompleted;
         private bool isLevelPassed;
+        private bool isSimulationStarted;
         private int totalCharactersInLevel;
         [Tooltip("Number of characters saved by the player in current level")]
         private int savedCharacterCounter;
@@ -165,6 +166,7 @@ namespace BeachHero
         private void StartSimulation()
         {
             player.StartMovement(smoothedDrawnPoints.ToArray());
+            isSimulationStarted = true;
         }
         public void GameStart()
         {
@@ -315,6 +317,15 @@ namespace BeachHero
 
         public void UpdateState()
         {
+            // Update Path 
+            DrawPath();
+
+            // Start the Simulation after the path is drawn
+            if (!isSimulationStarted)
+            {
+                return;
+            }
+
             //Update Player
             if (player != null)
             {
@@ -330,26 +341,21 @@ namespace BeachHero
                 }
             }
 
-            if (isLevelCompleted)
+            if (!isLevelCompleted)
             {
-                return;
-            }
-
-            // Update Path 
-            DrawPath();
-
-            //Update Obstacles
-            foreach (var obstacleList in obstaclesDictionary.Values)
-            {
-                foreach (var obstacle in obstacleList)
+                //Update Obstacles
+                foreach (var obstacleList in obstaclesDictionary.Values)
                 {
-                    obstacle.UpdateState();
+                    foreach (var obstacle in obstacleList)
+                    {
+                        obstacle.UpdateState();
+                    }
                 }
-            }
-            //Update Characters
-            foreach (var savedCharacter in savedCharactersList)
-            {
-                savedCharacter.UpdateState();
+                //Update Characters
+                foreach (var savedCharacter in savedCharactersList)
+                {
+                    savedCharacter.UpdateState();
+                }
             }
         }
         private void ResetState()
@@ -359,6 +365,7 @@ namespace BeachHero
             isLevelCompleted = false;
             isLevelPassed = false;
             isPlaying = false;
+            isSimulationStarted = false;
             isPathDrawn = false;
             canDrawPath = false;
             drawnPoints.Clear();

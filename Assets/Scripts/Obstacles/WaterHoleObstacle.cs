@@ -5,7 +5,7 @@ namespace BeachHero
 {
     public class WaterHoleObstacle : Obstacle
     {
-        [SerializeField] private GameObject cycloneGraphics;
+        [SerializeField] private Material waterMaterial;
         [SerializeField] private SphereCollider sphereCollider;
         [SerializeField] private float rotationSpeed = 300f; // Speed of rotation around the cyclone
         [SerializeField] private float pullToCenterSpeed = 1f; // Speed at which the object is pulled toward the center
@@ -15,27 +15,31 @@ namespace BeachHero
         [SerializeField] private float tiltSpeed = 2f; // Speed of tilt changes
         [SerializeField] private float depth = -10; // Target depth (y position) the object should reach
         [SerializeField] private float descendSpeed = 1; // Speed at which the object descends
+        [SerializeField] private float radiusMultiplier = 0.8f; // Multiplier for the radius of the cyclone effect
 
         private bool canStartCyclone = false; // Flag to check if the cyclone can start
         private float radius;
         private float angle;
         private Transform targetTransform;
         private Coroutine cycloneCoroutine;
+        private int whirlpoolDistanceID = Shader.PropertyToID("_WhirlpoolDistance");
+        private int whirlpoolPositionID = Shader.PropertyToID("_WhirlpoolPosition");
 
         public void Init(WaterHoleObstacleData obstacleData)
         {
             StopCycloneEffect();
             canStartCyclone = false;
             transform.position = obstacleData.position;
-            cycloneGraphics.transform.localScale = Vector3.one * obstacleData.scale;
-            sphereCollider.radius = obstacleData.scale * 0.5f;
-            cycloneGraphics.SetActive(true);
+            sphereCollider.radius = obstacleData.scale * radiusMultiplier;
+
+            //water Shader WhirlPool Data
+            waterMaterial.SetVector(whirlpoolPositionID, obstacleData.shaderPosition);
+            waterMaterial.SetFloat(whirlpoolDistanceID, obstacleData.scale / 20f);
         }
 
         public override void Hit()
         {
             base.Hit();
-            cycloneGraphics.SetActive(false);
         }
 
         public void OnPlayerHit(Transform playerTransform)

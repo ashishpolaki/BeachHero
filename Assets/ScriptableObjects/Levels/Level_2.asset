@@ -19,8 +19,8 @@ MonoBehaviour:
   obstacles:
     staticObstacles:
     - type: 5
-      position: {x: -3.87, y: -0.94584924, z: 14.62}
-      rotation: {x: 9.55532, y: 22.685034, z: 37.26609}
+      position: {x: -3.87, y: -0.55, z: 14.62}
+      rotation: {x: 9.555322, y: 22.685036, z: 37.26609}
     - type: 5
       position: {x: -6.43, y: -0.97, z: 16.43}
       rotation: {x: 19.165533, y: 350.86508, z: 306.47934}
@@ -48,8 +48,9 @@ MonoBehaviour:
       loopedMovement: 1
       inverseDirection: 1
     waterHoleObstacles:
-    - position: {x: -2.04, y: 0, z: 20.79}
-      scale: 3.44
+    - position: {x: 3.8, y: 0, z: 20.7}
+      shaderPosition: {x: 0.405, y: 0.32999998}
+      scale: 2.14
   drownCharacters:
   - position: {x: -6.09, y: 0, z: 10.01}
     waitTimePercentage: 0.71

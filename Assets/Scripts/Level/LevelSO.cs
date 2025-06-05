@@ -106,6 +106,7 @@ namespace BeachHero
     public struct WaterHoleObstacleData
     {
         public Vector3 position;
+        public Vector2 shaderPosition; // Position used for the shader effect
         public float scale;  
     }
     [System.Serializable]

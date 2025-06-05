@@ -1,3 +1,5 @@
+using UnityEditor;
+
 namespace BeachHero
 {
     public class StringUtils
