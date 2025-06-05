@@ -112,6 +112,7 @@ namespace BeachHero
         #endregion
 
         #region DrawPath
+        private List<Vector3> curvePoints = new List<Vector3>();
         private void UpdatePath(Vector3 newPosition)
         {
             if (Vector3.Distance(newPosition, lastTrailPoint) > minTrailPointsDistance)
@@ -131,6 +132,7 @@ namespace BeachHero
                             drawnPoints[drawnPoints.Count - 1], // P3
                             t
                         );
+                        curvePoints.Add(interpolatedPoint);
 
                         // Update the trail position to the interpolated point
                         playerPathDrawTrail.transform.position = interpolatedPoint;
@@ -177,7 +179,7 @@ namespace BeachHero
             isLevelCompleted = true;
             isLevelPassed = _val;
 
-            if(!isLevelPassed)
+            if (!isLevelPassed)
             {
                 player.StopMovement();
             }
@@ -369,6 +371,7 @@ namespace BeachHero
             isPathDrawn = false;
             canDrawPath = false;
             drawnPoints.Clear();
+            curvePoints.Clear();
             smoothedDrawnPoints.Clear();
             lastTrailPoint = Vector3.zero;
             savedCharacterCounter = 0;
