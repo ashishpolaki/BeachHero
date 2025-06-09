@@ -30,7 +30,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 3000
   stringTagMap: {}
   disabledShaderPasses:
   - MOTIONVECTORS
@@ -70,8 +70,20 @@ Material:
         m_Texture: {fileID: 2800000, guid: cabab79695814b24a9d6aaa043a9662d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2DLOD_5a26dfdd1c714a05ac608985f3753193_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 3dcf3cd8e8ea8064aaf58ac729b20b3a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_38bab29b918d46f490859bd56e717e0b_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 3dcf3cd8e8ea8064aaf58ac729b20b3a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_F4A554CE_Texture_1:
         m_Texture: {fileID: 2800000, guid: 7a1c7d3ba2430d54fad386edc560da6f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_dc6ae2c061c244b49f0fd3fcc9528977_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: cabab79695814b24a9d6aaa043a9662d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SinWaveSubshaderOptimizedOne_49B6F2A9_Texture2D7402FE35_2206581024:
@@ -170,11 +182,12 @@ Material:
     - _BumpScale: 1
     - _Cull: 2
     - _Cutoff: 0.5
-    - _Depth: 8
+    - _Depth: 1
     - _DepthMaxDistance: 2.42
     - _DstBlend: 0
     - _EnvironmentReflections: 1
     - _FoamDistance: 0.15
+    - _FractionSpeed: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -183,20 +196,25 @@ Material:
     - _Occlusion: 0.39
     - _OcclusionStrength: 1
     - _QueueControl: 1
-    - _QueueOffset: 0
+    - _QueueOffset: 50
     - _ReceiveShadows: 1
     - _ShadowIntensity: 0.327
     - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
+    - _Speed: 11.612658
     - _SrcBlend: 1
     - _Surface: 0
     - _SurfaceDistortionAmount: 1
     - _SurfaceNoiseCutoff: 1
+    - _TextureDepth: 30.35
     - _WavePower: 1
     - _WaveScale: 0.19
     - _WaveSpeed: 1
-    - _WhirlpoolDistance: 0.15
+    - _WhirlPoolColorLerp: 0.71
+    - _WhirlPoolDepth: 2
+    - _WhirlPoolQuality: 0
+    - _WhirlpoolDistance: 0.125
     - _WhirlpoolSpeed: 1
     - _WorkflowMode: 1
     - _ZWrite: 1
@@ -213,7 +231,8 @@ Material:
     - _ShallowColor: {r: 0, g: 1, b: 0.88817024, a: 0.7372549}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _WaveXZRotation: {r: -0.21, g: 1, b: 0, a: 0}
-    - _WhirlPoolColor: {r: 0.54147387, g: 0.6481017, b: 0.6792453, a: 1}
-    - _WhirlpoolPosition: {r: 0.554, g: 0.32, b: 0, a: 0}
+    - _WhirlPoolColor: {r: 0.12130654, g: 0.6691381, b: 0.8867924, a: 1}
+    - _WhirlPoolDepthColor: {r: 0.2269491, g: 0.368393, b: 0.6415094, a: 1}
+    - _WhirlpoolPosition: {r: 0.543, g: 0.30025, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
