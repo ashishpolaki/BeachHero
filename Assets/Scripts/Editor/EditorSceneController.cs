@@ -95,6 +95,10 @@ public class EditorSceneController : MonoBehaviour
 
     private void SpawnCharacter()
     {
+        if (currentLevel.DrownCharacters == null || currentLevel.DrownCharacters.Length == 0)
+        {
+            return;
+        }
         foreach (var characterItem in currentLevel.DrownCharacters)
         {
             string path = "Assets/Prefabs/DrownCharacter.prefab";

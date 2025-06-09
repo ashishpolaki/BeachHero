@@ -21,7 +21,8 @@ namespace BeachHero
                 Debug.LogError("Water Graphics object not found in the scene. Please ensure it exists before initializing WaterHoleObstacle.");
                 return;
             }
-
+            // Set the position of the water graphics object to match the water hole obstacle data
+            transform.position = new Vector3(waterHoleObstacleData.position.x, waterGraphicsObject.transform.position.y * 2f, waterHoleObstacleData.position.z);
             //WhirlPool Position
             Vector3 obstacleInversePosition = waterGraphicsObject.transform.InverseTransformPoint(waterHoleObstacleData.position);
             Vector3 whirlPoolPosition = new Vector3(0.5f, 0, 0.5f) - new Vector3(obstacleInversePosition.x, 0, obstacleInversePosition.z);
