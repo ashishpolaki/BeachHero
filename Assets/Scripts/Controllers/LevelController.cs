@@ -252,6 +252,7 @@ namespace BeachHero
                     }
                     else if (obstacle.ObstacleType == ObstacleType.WaterHole)
                     {
+                        obstacle.ResetObstacle();
                         poolManager.WaterHolePool.ReturnObject(obstacle.gameObject);
                     }
                     else if (obstacle.ObstacleType == ObstacleType.Rock)
@@ -277,6 +278,7 @@ namespace BeachHero
         public void ActivateCoinMagnetPowerup()
         {
             coinMagnetActivated = true;
+            player.ActivateCoinMagnetPowerup();
         }
         public void ActivateSpeedPowerup()
         {
