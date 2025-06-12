@@ -7,41 +7,70 @@ namespace BeachHero
 {
     public class PowerupButton : MonoBehaviour
     {
-        [SerializeField] private PowerupType powerUpType; 
-        [SerializeField] private Button powerUpButton;
+        [SerializeField] private PowerupType powerUpType;
+        [SerializeField] private Button activateButton;
+        [SerializeField] private Button addMoreButton;
         [SerializeField] private TextMeshProUGUI counterText;
-        [SerializeField] private Color normalColor;
-        [SerializeField] private Color selectedColor;
-        private Action<PowerupType,bool> OnPowerUpSelect;
-        private bool isSelected = false;
+        [SerializeField] private GameObject lockImageObject;
+        [SerializeField] private GameObject graphicsImageObject;
+        [SerializeField] private GameObject selectedImageObject;
 
-        public void Init(PowerupType _powerupType,int powerUpCounter, Action<PowerupType, bool> action)
+        private bool isSelected = false;
+        private bool isLocked = true;
+
+        public void Init(PowerupType _powerupType, int _powerUpCounter, bool _isLocked)
         {
             powerUpType = _powerupType;
-            OnPowerUpSelect = action;
-            SetCounterText(powerUpCounter);
-            powerUpButton.image.color = normalColor;
+            isLocked = _isLocked;
             isSelected = false;
-            powerUpButton.onClick.AddListener(OnPowerupButtonClicked);
-            if (powerUpCounter <= 0)
+            lockImageObject.gameObject.SetActive(_isLocked);
+            selectedImageObject.SetActive(false);
+            graphicsImageObject.SetActive(!_isLocked);
+            SetCountText(_powerUpCounter);
+            if (isLocked)
             {
-                powerUpButton.interactable = false;
+                activateButton.interactable = false;
+                addMoreButton.gameObject.SetActive(false);
+                counterText.gameObject.SetActive(false);
+            }
+            else
+            {
+                activateButton.interactable = _powerUpCounter > 0;
+                counterText.gameObject.SetActive(_powerUpCounter > 0);
+                addMoreButton.gameObject.SetActive(_powerUpCounter <= 0);
+                activateButton.onClick.AddListener(OnPowerupButtonClicked);
+                addMoreButton.onClick.AddListener(AddMorePowerup);
             }
         }
         public void DeInitialize()
         {
-            powerUpButton.onClick.RemoveListener(OnPowerupButtonClicked);
-            OnPowerUpSelect = null;
+            if (!isLocked)
+            {
+                activateButton.onClick.RemoveListener(OnPowerupButtonClicked);
+                addMoreButton.onClick.RemoveListener(AddMorePowerup);
+            }
         }
-        public void SetCounterText(int count)
+        private void SetCountText(int count)
         {
             counterText.text = count.ToString();
         }
         private void OnPowerupButtonClicked()
         {
             isSelected = !isSelected;
-            powerUpButton.image.color = isSelected ? selectedColor : normalColor;
-            OnPowerUpSelect?.Invoke(powerUpType, isSelected);
+            selectedImageObject.SetActive(isSelected);
+            if (isSelected)
+            {
+                GameController.GetInstance.PowerupController.AddPowerupInList(powerUpType);
+            }
+            else
+            {
+                GameController.GetInstance.PowerupController.RemovePowerupFromList(powerUpType);
+            }
+            GameController.GetInstance.TutorialController.OnPowerupPressed();
+        }
+        private void AddMorePowerup()
+        {
+
         }
     }
 }

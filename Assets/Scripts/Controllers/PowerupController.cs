@@ -6,13 +6,30 @@ namespace BeachHero
     public enum PowerupType
     {
         Magnet,
-        Speed
+        SpeedBoost
     }
     public class PowerupController : MonoBehaviour
     {
         private Dictionary<PowerupType, int> powerupCounts = new Dictionary<PowerupType, int>();
+        private List<PowerupType> currentActivePowerupList = new List<PowerupType>();
+
+        public List<PowerupType> CurrentActivePowerupList => currentActivePowerupList;
 
         #region Public Methods
+        public void AddPowerupInList(PowerupType powerupType)
+        {
+            if (!currentActivePowerupList.Contains(powerupType))
+            {
+                currentActivePowerupList.Add(powerupType);
+            }
+        }
+        public void RemovePowerupFromList(PowerupType powerupType)
+        {
+            if (currentActivePowerupList.Contains(powerupType))
+            {
+                currentActivePowerupList.Remove(powerupType);
+            }
+        }
         public void OnPowerupCollected(PowerupType powerupType)
         {
             IncrementPowerupCount(powerupType);
@@ -29,16 +46,26 @@ namespace BeachHero
         {
             return powerupCounts.TryGetValue(powerupType, out int count) ? count : 0;
         }
-        public void OnPowerupActivated(PowerupType powerupType)
+        public void ActivateSelectedPowerups()
         {
-            // Implement logic for when a powerup is used
-            // This could involve decrementing the count or applying the powerup effect
-            powerupCounts[powerupType]--;
-            SavePowerupCount(powerupType);
+            foreach (PowerupType powerupType in currentActivePowerupList)
+            {
+                if (powerupCounts.TryGetValue(powerupType, out int count) && count > 0)
+                {
+                    OnPowerupActivated(powerupType);
+                }
+            }   
+            currentActivePowerupList.Clear();
         }
         #endregion
 
         #region Private Methods
+        private void OnPowerupActivated(PowerupType powerupType)
+        {
+            // This could involve decrementing the count or applying the powerup effect
+            powerupCounts[powerupType]--;
+            SavePowerupCount(powerupType);
+        }
         private void IncrementPowerupCount(PowerupType powerupType)
         {
             if (!powerupCounts.ContainsKey(powerupType))

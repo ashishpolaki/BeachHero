@@ -5,6 +5,7 @@ namespace BeachHero
     public enum ScreenTabType
     {
         None,
+        Tutorial,
         LevelPass,
         LevelFail,
     }

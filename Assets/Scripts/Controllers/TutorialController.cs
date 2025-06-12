@@ -1,20 +1,51 @@
+using System;
 using UnityEngine;
 
 namespace BeachHero
 {
     public class TutorialController : MonoBehaviour
     {
-        private bool isTutorialCompleted = false;
-        private int tutorialLevelNumber = 0;
+        [Tooltip("First Time User Experience Level Number")]
+        private int ftueLevelNumber = 1;
+        private int magnetPowerup_UnlockLevel = 2;
+        private int speedBoost_UnlockLevel = 3;
+        public event Action OnFTUEPlayerTouchAction;
+        public event Action OnFTUEPathDrawnAction;
+        public event Action OnPowerupPressAction;
 
-        public void ActivateTutorial(int levelnumber)
+        public bool IsFTUE(int levelNumber)
         {
-          
+            return ftueLevelNumber == levelNumber;
         }
-
-        public bool IsTutorialActive(int levelNumber)
+        public void OnFTUEPlayerTouch()
         {
-            return tutorialLevelNumber == levelNumber;
+            OnFTUEPlayerTouchAction?.Invoke();
+        }
+        public void OnFTUEPathDrawn()
+        {
+            OnFTUEPathDrawnAction?.Invoke();
+        }
+        public void OnPowerupPressed()
+        {
+            OnPowerupPressAction?.Invoke();
+        }
+        public bool IsMagnetPowerupUnlocked()
+        {
+            bool isUnlocked = SaveController.LoadBool(StringUtils.MAGNET_POWERUP, false);
+            return isUnlocked;
+        }
+        public bool IsMagnetUnlockLevel(int levelNumber)
+        {
+            return levelNumber == magnetPowerup_UnlockLevel;
+        }
+        public bool IsSpeedBoostUnlockLevel(int levelNumber)
+        {
+            return levelNumber == speedBoost_UnlockLevel;
+        }
+        public bool IsSpeedBoostPowerupUnlocked()
+        {
+            bool isUnlocked = SaveController.LoadBool(StringUtils.SPEEDBOOST_POWERUP, false);
+            return isUnlocked;
         }
     }
 }

@@ -157,6 +157,10 @@ namespace BeachHero
                             GameController.GetInstance.OnLevelPassedCameraEffect();
                             PlayVictoryAnimation();
                         }
+                        else
+                        {
+                            GameController.GetInstance.OnLevelFailed();
+                        }
                     }
                 }
             }
