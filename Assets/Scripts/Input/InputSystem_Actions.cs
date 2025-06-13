@@ -1143,6 +1143,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Escape"",
+                    ""type"": ""Button"",
+                    ""id"": ""cc51f5e7-e486-4de3-8e9b-8b34fe7e2b4a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1299,6 +1308,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""TouchPosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eef449ff-a77a-44e8-a2f8-668343111dbb"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Escape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1398,6 +1418,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Game_ScrollWheel = m_Game.FindAction("ScrollWheel", throwIfNotFound: true);
         m_Game_Release = m_Game.FindAction("Release", throwIfNotFound: true);
         m_Game_TouchPosition = m_Game.FindAction("TouchPosition", throwIfNotFound: true);
+        m_Game_Escape = m_Game.FindAction("Escape", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
@@ -1866,6 +1887,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Game_ScrollWheel;
     private readonly InputAction m_Game_Release;
     private readonly InputAction m_Game_TouchPosition;
+    private readonly InputAction m_Game_Escape;
     /// <summary>
     /// Provides access to input actions defined in input action map "Game".
     /// </summary>
@@ -1905,6 +1927,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Game/TouchPosition".
         /// </summary>
         public InputAction @TouchPosition => m_Wrapper.m_Game_TouchPosition;
+        /// <summary>
+        /// Provides access to the underlying input action "Game/Escape".
+        /// </summary>
+        public InputAction @Escape => m_Wrapper.m_Game_Escape;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1952,6 +1978,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @TouchPosition.started += instance.OnTouchPosition;
             @TouchPosition.performed += instance.OnTouchPosition;
             @TouchPosition.canceled += instance.OnTouchPosition;
+            @Escape.started += instance.OnEscape;
+            @Escape.performed += instance.OnEscape;
+            @Escape.canceled += instance.OnEscape;
         }
 
         /// <summary>
@@ -1984,6 +2013,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @TouchPosition.started -= instance.OnTouchPosition;
             @TouchPosition.performed -= instance.OnTouchPosition;
             @TouchPosition.canceled -= instance.OnTouchPosition;
+            @Escape.started -= instance.OnEscape;
+            @Escape.performed -= instance.OnEscape;
+            @Escape.canceled -= instance.OnEscape;
         }
 
         /// <summary>
@@ -2287,5 +2319,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnTouchPosition(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Escape" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnEscape(InputAction.CallbackContext context);
     }
 }

@@ -9,8 +9,8 @@ namespace BeachHero
         private InputSystem_Actions inputSystemActions;
 
         public event Action<Vector2> OnMouseClickDown;
-
         public event Action<Vector2> OnMouseClickUp;
+        public event Action OnEscapePressed;
 
        // public static Vector3 MousePosition => Mouse.current.position.ReadValue();
         public static Vector3 MousePosition { get; private set; }
@@ -24,6 +24,12 @@ namespace BeachHero
             inputSystemActions.Game.Click.performed += OnClickPerformed;
             inputSystemActions.Game.Release.performed += OnClickReleased;
             inputSystemActions.Game.TouchPosition.performed += OnTouchPOsition;
+            inputSystemActions.Game.Escape.performed += OnEscape;
+        }
+
+        private void OnEscape(InputAction.CallbackContext obj)
+        {
+            OnEscapePressed?.Invoke();
         }
 
         private void OnTouchPOsition(InputAction.CallbackContext obj)
