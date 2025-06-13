@@ -66,7 +66,11 @@ namespace BeachHero
             {
                 GameController.GetInstance.PowerupController.RemovePowerupFromList(powerUpType);
             }
-            GameController.GetInstance.TutorialController.OnPowerupPressed();
+
+            if (!isLocked)
+            {
+                GameController.GetInstance.TutorialController.OnPowerupPressed();
+            }
         }
         private void AddMorePowerup()
         {
