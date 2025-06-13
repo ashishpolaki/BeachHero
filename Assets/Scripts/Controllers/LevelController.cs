@@ -43,13 +43,15 @@ namespace BeachHero
         private int totalCharactersInLevel;
         [Tooltip("Number of characters saved by the player in current level")]
         private int savedCharacterCounter;
-
         #endregion
 
         #region Properties
         public Transform PlayerTransform => player != null ? player.transform : null;
+
         public Transform DrownCharacter => savedCharactersList.Count > 0 ? savedCharactersList[0].transform : null;
+
         public bool IsLevelPassed => isLevelPassed;
+
         public Camera Cam
         {
             get
@@ -69,6 +71,7 @@ namespace BeachHero
             inputManager.OnMouseClickDown += OnMouseClickDown;
             inputManager.OnMouseClickUp += OnMouseClickUp;
         }
+
         private void OnDisable()
         {
             inputManager.OnMouseClickDown -= OnMouseClickDown;
@@ -87,7 +90,7 @@ namespace BeachHero
                 if (Physics.Raycast(ray, out raycastHit, 1000f, startPointLayer))
                 {
                     canDrawPath = true;
-                    if(isFTUE)
+                    if (isFTUE)
                     {
                         GameController.GetInstance.TutorialController.OnFTUEPlayerTouch();
                     }
@@ -96,6 +99,7 @@ namespace BeachHero
                 }
             }
         }
+
         private void OnMouseClickUp(Vector2 position)
         {
             if (isPlaying && !isPathDrawn)
@@ -104,7 +108,7 @@ namespace BeachHero
                 canDrawPath = false;
                 if (drawnPoints.Count >= 4)
                 {
-                    smoothedDrawnPoints = GetEvenlySpacedPoints(drawnPoints, spacing);
+                    smoothedDrawnPoints = CatmullSplineUtils.GetEvenlySpacedPoints(drawnPoints, spacing);
                     StartSimulation();
                 }
                 else
@@ -119,6 +123,7 @@ namespace BeachHero
 
         #region DrawPath
         private List<Vector3> curvePoints = new List<Vector3>();
+
         private void UpdatePath(Vector3 newPosition)
         {
             if (Vector3.Distance(newPosition, lastTrailPoint) > minTrailPointsDistance)
@@ -131,7 +136,7 @@ namespace BeachHero
                 {
                     for (float t = 0; t <= 1; t += 0.05f) // Adjust step size for smoother curves
                     {
-                        Vector3 interpolatedPoint = CatmullRom(
+                        Vector3 interpolatedPoint = CatmullSplineUtils.CatmullRom(
                             drawnPoints[drawnPoints.Count - 4], // P0
                             drawnPoints[drawnPoints.Count - 3], // P1
                             drawnPoints[drawnPoints.Count - 2], // P2
@@ -149,6 +154,7 @@ namespace BeachHero
                 lastTrailPoint = newPosition;
             }
         }
+
         private void DrawPath()
         {
             if (isPlaying && canDrawPath)
@@ -175,16 +181,18 @@ namespace BeachHero
         {
             player.StartMovement(smoothedDrawnPoints.ToArray());
             isSimulationStarted = true;
-            if(isFTUE)
+            if (isFTUE)
             {
                 GameController.GetInstance.TutorialController.OnFTUEPathDrawn();
             }
         }
+
         public void GameStart(bool isFTUE)
         {
             this.isFTUE = isFTUE;
             this.isPlaying = true;
         }
+
         public void OnLevelCompleted(bool _val)
         {
             isLevelCompleted = true;
@@ -195,6 +203,7 @@ namespace BeachHero
                 player.StopMovement();
             }
         }
+
         public void OnCharacterPickUp()
         {
             savedCharacterCounter++;
@@ -205,6 +214,7 @@ namespace BeachHero
                 UIController.GetInstance.ScreenEvent(ScreenType.GameWin, UIScreenEvent.Open);
             }
         }
+
         private void ReturnToPoolEverything()
         {
             //StartPoint
@@ -285,32 +295,35 @@ namespace BeachHero
                 ActivateSpeedPowerup();
             }
         }
+
         public void ActivateCoinMagnetPowerup()
         {
             coinMagnetActivated = true;
             player.ActivateCoinMagnetPowerup();
         }
+
         public void ActivateSpeedPowerup()
         {
             player.ActivateSpeedPowerup();
         }
+
         private void OnCoinMagnetPowerup()
         {
             if (coinMagnetActivated)
             {
-                if(collectableDictionary != null && collectableDictionary.ContainsKey(CollectableType.Coin))
-                foreach (var coinCollectable in collectableDictionary[CollectableType.Coin])
-                {
-                    float distance = Vector3.Distance(player.transform.position, coinCollectable.transform.position);
-                    CoinCollectable coin = (CoinCollectable)coinCollectable;
-                    if (!coin.CanMoveToTarget)
+                if (collectableDictionary != null && collectableDictionary.ContainsKey(CollectableType.Coin))
+                    foreach (var coinCollectable in collectableDictionary[CollectableType.Coin])
                     {
-                        if (distance <= magnetRadius)
+                        float distance = Vector3.Distance(player.transform.position, coinCollectable.transform.position);
+                        CoinCollectable coin = (CoinCollectable)coinCollectable;
+                        if (!coin.CanMoveToTarget)
                         {
-                            coin.SetTarget(player.transform);
+                            if (distance <= magnetRadius)
+                            {
+                                coin.SetTarget(player.transform);
+                            }
                         }
                     }
-                }
             }
         }
         #endregion
@@ -373,6 +386,7 @@ namespace BeachHero
                 }
             }
         }
+
         private void ResetState()
         {
             ReturnToPoolEverything();
@@ -427,12 +441,14 @@ namespace BeachHero
                 }
             }
         }
+
         private void SpawnShark(MovingObstacleData movingObstacleData)
         {
             SharkObstacle shark = poolManager.SharkPool.GetObject().GetComponent<SharkObstacle>();
             shark.Init(movingObstacleData);
             obstaclesDictionary[ObstacleType.Shark].Add(shark);
         }
+
         private void SpawnEel(MovingObstacleData movingObstacleData)
         {
             Eel eel = poolManager.EelPool.GetObject().GetComponent<Eel>();
@@ -466,6 +482,7 @@ namespace BeachHero
                 }
             }
         }
+
         private void SpawnBarrel(ObstacleType obstacleType, StaticObstacleData rockObstacle)
         {
             BarrelObstacle barrel = poolManager.BarrelPool.GetObject().GetComponent<BarrelObstacle>();
@@ -500,7 +517,6 @@ namespace BeachHero
             }
         }
         #endregion
-
         #endregion
 
         #region Spawn
@@ -509,6 +525,7 @@ namespace BeachHero
             playerPathDrawTrail = poolManager.PathTrailPool.GetObject().GetComponent<PathTrail>();
             playerPathDrawTrail.ClearRenderer();
         }
+
         private void SpawnSavedCharacters(float levelTime, DrownCharacterData[] savedCharacterDatas)
         {
             foreach (var savedCharacterData in savedCharacterDatas)
@@ -518,6 +535,7 @@ namespace BeachHero
                 savedCharactersList.Add(savedCharacter);
             }
         }
+
         private void SpawnCollectables(CollectableData[] collectableDatas)
         {
             foreach (var collectable in collectableDatas)
@@ -542,92 +560,39 @@ namespace BeachHero
                 }
             }
         }
+
         private void SpawnMagnet(CollectableData collectableData)
         {
             Collectable magnet = poolManager.MagnetPowerupPool.GetObject().GetComponent<Collectable>();
             magnet.Init(collectableData);
             collectableDictionary[collectableData.type].Add(magnet);
         }
+
         private void SpawnSpeed(CollectableData collectableData)
         {
             Collectable speed = poolManager.SpeedPowerupPool.GetObject().GetComponent<Collectable>();
             speed.Init(collectableData);
             collectableDictionary[collectableData.type].Add(speed);
         }
+
         private void SpawnCoin(CollectableData collectableData)
         {
             Collectable collectable = poolManager.CoinsPool.GetObject().GetComponent<Collectable>();
             collectable.Init(collectableData);
             collectableDictionary[collectableData.type].Add(collectable);
         }
+
         private void SpawnStartPoint(Vector3 pos, Vector3 rot)
         {
             startPointBehaviour = poolManager.StartPointPool.GetObject().GetComponent<StartPointBehaviour>();
             startPointBehaviour.transform.SetPositionAndRotation(pos, Quaternion.Euler(rot));
         }
+
         private void SpawnPlayer(Vector3 pos, Vector3 rot)
         {
             player = poolManager.PlayerPool.GetObject().GetComponent<Player>();
             player.transform.SetPositionAndRotation(pos, Quaternion.Euler(rot));
             player.Init();
-        }
-        #endregion
-
-        #region Spline
-
-        private Vector3 CatmullRom(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
-        {
-            // Catmull-Rom spline formula
-            float t2 = t * t;
-            float t3 = t2 * t;
-
-            return 0.5f * (
-                (2f * p1) +
-                (-p0 + p2) * t +
-                (2f * p0 - 5f * p1 + 4f * p2 - p3) * t2 +
-                (-p0 + 3f * p1 - 3f * p2 + p3) * t3
-            );
-        }
-
-        private List<Vector3> GetEvenlySpacedPoints(List<Vector3> pathPoints, float spacing)
-        {
-            List<Vector3> evenlySpacedPoints = new List<Vector3>();
-            float distanceSinceLastPoint = 0f;
-
-            evenlySpacedPoints.Add(pathPoints[0]); // Start with the first point
-
-            for (int i = 0; i < pathPoints.Count - 3; i++)
-            {
-                Vector3 previousPoint = pathPoints[i + 1]; // Start from the second control point
-
-                for (float t = 0; t <= 1; t += 0.01f) // High resolution for accurate arc length calculation
-                {
-                    Vector3 interpolatedPoint = CatmullRom(
-                        pathPoints[i],
-                        pathPoints[i + 1],
-                        pathPoints[i + 2],
-                        pathPoints[i + 3],
-                        t
-                    );
-
-                    // Accumulate distance between the previous point and the current interpolated point
-                    distanceSinceLastPoint += Vector3.Distance(previousPoint, interpolatedPoint);
-
-                    // If the accumulated distance exceeds the spacing, add a new point
-                    if (distanceSinceLastPoint >= spacing)
-                    {
-                        evenlySpacedPoints.Add(interpolatedPoint);
-                        distanceSinceLastPoint = 0f; // Reset the distance counter
-                    }
-
-                    previousPoint = interpolatedPoint; // Update the previous point
-                }
-            }
-
-            if (evenlySpacedPoints.Contains(pathPoints[pathPoints.Count - 1]) == false)
-                evenlySpacedPoints.Add(pathPoints[pathPoints.Count - 1]); // Add the last point if not already added
-
-            return evenlySpacedPoints;
         }
         #endregion
     }
