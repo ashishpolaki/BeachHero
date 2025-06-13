@@ -11,7 +11,6 @@ namespace BeachHero
         [SerializeField] private float rotationSpeed;
         [SerializeField] private float speedMultiplier;
 
-
         private Vector3[] pointsList;
         private bool canStartMovement;
         private int nextPointIndex;
@@ -103,6 +102,8 @@ namespace BeachHero
         }
         public void Init()
         {
+            magnetParticle.Stop();
+            magnetParticle.gameObject.SetActive(false);
             boatAnimator.Play(idleAnimHash, -1, Random.Range(0f, 1f));
             characterAnimator.Play(idleAnimHash, -1, Random.Range(0f, 1f));
             canStartMovement = false;

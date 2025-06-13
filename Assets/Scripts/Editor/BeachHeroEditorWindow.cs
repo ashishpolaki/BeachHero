@@ -180,7 +180,10 @@ public class BeachHeroEditorWindow : EditorWindow
 
     private void OnDestroy()
     {
-        EditorSceneController.Instance.Clear();
+        if (EditorSceneController.Instance)
+        {
+            EditorSceneController.Instance.Clear();
+        }
     }
 
     private void OnGUI()

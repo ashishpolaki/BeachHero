@@ -95,6 +95,10 @@ namespace BeachHero
         }
         public void OnLevelFailed()
         {
+            if(isLevelPass)
+            {
+                return; // If the level is already passed, do not allow to fail again.
+            }
             isLevelPass = false;
             levelController.OnLevelCompleted(false);
             UIController.GetInstance.ScreenEvent(ScreenType.GameLose, UIScreenEvent.Open);

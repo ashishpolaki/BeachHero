@@ -258,26 +258,29 @@ namespace BeachHero
             }
 
             //Obstacles
+            //Obstacles
             foreach (var obstacleList in obstaclesDictionary.Values)
             {
                 foreach (var obstacle in obstacleList)
                 {
-                    if (obstacle.ObstacleType == ObstacleType.Shark)
+                    switch (obstacle.ObstacleType)
                     {
-                        poolManager.SharkPool.ReturnObject(obstacle.gameObject);
-                    }
-                    else if (obstacle.ObstacleType == ObstacleType.Eel)
-                    {
-                        poolManager.EelPool.ReturnObject(obstacle.gameObject);
-                    }
-                    else if (obstacle.ObstacleType == ObstacleType.WaterHole)
-                    {
-                        obstacle.ResetObstacle();
-                        poolManager.WaterHolePool.ReturnObject(obstacle.gameObject);
-                    }
-                    else if (obstacle.ObstacleType == ObstacleType.Rock)
-                    {
-                        poolManager.RockPool.ReturnObject(obstacle.gameObject);
+                        case ObstacleType.Shark:
+                            poolManager.SharkPool.ReturnObject(obstacle.gameObject);
+                            break;
+                        case ObstacleType.Eel:
+                            poolManager.EelPool.ReturnObject(obstacle.gameObject);
+                            break;
+                        case ObstacleType.WaterHole:
+                            obstacle.ResetObstacle();
+                            poolManager.WaterHolePool.ReturnObject(obstacle.gameObject);
+                            break;
+                        case ObstacleType.Rock:
+                            poolManager.RockPool.ReturnObject(obstacle.gameObject);
+                            break;
+                        case ObstacleType.Barrel:
+                            poolManager.BarrelPool.ReturnObject(obstacle.gameObject);
+                            break;
                     }
                 }
             }
@@ -348,6 +351,15 @@ namespace BeachHero
             // Update Path 
             DrawPath();
 
+            //Update Obstacles
+            foreach (var obstacleList in obstaclesDictionary.Values)
+            {
+                foreach (var obstacle in obstacleList)
+                {
+                    obstacle.UpdateState();
+                }
+            }
+
             // Start the Simulation after the path is drawn
             if (!isSimulationStarted)
             {
@@ -371,14 +383,6 @@ namespace BeachHero
 
             if (!isLevelCompleted)
             {
-                //Update Obstacles
-                foreach (var obstacleList in obstaclesDictionary.Values)
-                {
-                    foreach (var obstacle in obstacleList)
-                    {
-                        obstacle.UpdateState();
-                    }
-                }
                 //Update Characters
                 foreach (var savedCharacter in savedCharactersList)
                 {
