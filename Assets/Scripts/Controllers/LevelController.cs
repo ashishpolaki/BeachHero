@@ -39,6 +39,7 @@ namespace BeachHero
         private bool isLevelCompleted;
         private bool isLevelPassed;
         private bool isSimulationStarted;
+        private bool isFTUE = false; // For First Time User Experience
         private int totalCharactersInLevel;
         [Tooltip("Number of characters saved by the player in current level")]
         private int savedCharacterCounter;
@@ -47,6 +48,7 @@ namespace BeachHero
 
         #region Properties
         public Transform PlayerTransform => player != null ? player.transform : null;
+        public Transform DrownCharacter => savedCharactersList.Count > 0 ? savedCharactersList[0].transform : null;
         public bool IsLevelPassed => isLevelPassed;
         public Camera Cam
         {
@@ -85,6 +87,10 @@ namespace BeachHero
                 if (Physics.Raycast(ray, out raycastHit, 1000f, startPointLayer))
                 {
                     canDrawPath = true;
+                    if(isFTUE)
+                    {
+                        GameController.GetInstance.TutorialController.OnFTUEPlayerTouch();
+                    }
                     //   raycastHit.collider.GetComponent<StartPointBehaviour>();
                     // lastStartPointPosition = raycastHit.collider.gameObject.transform.position;
                 }
@@ -169,10 +175,15 @@ namespace BeachHero
         {
             player.StartMovement(smoothedDrawnPoints.ToArray());
             isSimulationStarted = true;
+            if(isFTUE)
+            {
+                GameController.GetInstance.TutorialController.OnFTUEPathDrawn();
+            }
         }
-        public void GameStart()
+        public void GameStart(bool isFTUE)
         {
-            isPlaying = true;
+            this.isFTUE = isFTUE;
+            this.isPlaying = true;
         }
         public void OnLevelCompleted(bool _val)
         {
@@ -194,7 +205,6 @@ namespace BeachHero
                 UIController.GetInstance.ScreenEvent(ScreenType.GameWin, UIScreenEvent.Open);
             }
         }
-
         private void ReturnToPoolEverything()
         {
             //StartPoint
@@ -252,6 +262,7 @@ namespace BeachHero
                     }
                     else if (obstacle.ObstacleType == ObstacleType.WaterHole)
                     {
+                        obstacle.ResetObstacle();
                         poolManager.WaterHolePool.ReturnObject(obstacle.gameObject);
                     }
                     else if (obstacle.ObstacleType == ObstacleType.Rock)
@@ -269,7 +280,7 @@ namespace BeachHero
             {
                 ActivateCoinMagnetPowerup();
             }
-            else if (powerUpType == PowerupType.Speed)
+            else if (powerUpType == PowerupType.SpeedBoost)
             {
                 ActivateSpeedPowerup();
             }
@@ -277,6 +288,7 @@ namespace BeachHero
         public void ActivateCoinMagnetPowerup()
         {
             coinMagnetActivated = true;
+            player.ActivateCoinMagnetPowerup();
         }
         public void ActivateSpeedPowerup()
         {
@@ -286,6 +298,7 @@ namespace BeachHero
         {
             if (coinMagnetActivated)
             {
+                if(collectableDictionary != null && collectableDictionary.ContainsKey(CollectableType.Coin))
                 foreach (var coinCollectable in collectableDictionary[CollectableType.Coin])
                 {
                     float distance = Vector3.Distance(player.transform.position, coinCollectable.transform.position);

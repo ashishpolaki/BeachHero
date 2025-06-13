@@ -23,6 +23,7 @@ namespace BeachHero
         public PoolController PoolManager => poolManager;
         public LevelController LevelController => levelController;
         public PowerupController PowerupController => powerupController;
+        public TutorialController TutorialController => tutorialController;
         #endregion
 
         #region Unity Methods
@@ -61,27 +62,18 @@ namespace BeachHero
             isGameStarted = false;
             isLevelPass = false;
             currentLevelIndex = SaveController.LoadInt(StringUtils.LEVELNUMBER, 0);
-            if (tutorialController.IsTutorialActive(currentLevelIndex + 1) == false)
-            {
-                tutorialController.ActivateTutorial(currentLevelIndex);
-            }
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
             levelController.StartState(levelDatabaseSO.GetLevelByIndex(currentLevelIndex));
             cameraController.Init();
         }
-        public void Play(List<PowerupType> powerupTypes)
+        public void Play()
         {
-            if (powerupTypes.Count > 0)
-            {
-                foreach (PowerupType powerupType in powerupTypes)
-                {
-                    powerupController.OnPowerupActivated(powerupType);
-                    levelController.OnActivatePowerup(powerupType);
-                }
-            }
+            ActivatePowerups();
             isGameStarted = true;
-            levelController.GameStart();
-            UIController.GetInstance.ScreenEvent(ScreenType.Gameplay, UIScreenEvent.Open);
+            bool isFTUE = tutorialController.IsFTUE(currentLevelIndex + 1);
+            ScreenTabType screenTabType = isFTUE ? ScreenTabType.Tutorial : ScreenTabType.None;
+            levelController.GameStart(isFTUE);
+            UIController.GetInstance.ScreenEvent(ScreenType.Gameplay, UIScreenEvent.Open, screenTabType);
         }
         public void OnCharacterPickUp()
         {
@@ -114,10 +106,17 @@ namespace BeachHero
         {
             powerupController.OnPowerupCollected(powerupType);
         }
-        public void OnPowerupActivated(PowerupType powerupType)
+        private void ActivatePowerups()
         {
-            levelController.OnActivatePowerup(powerupType);
-            powerupController.OnPowerupActivated(powerupType);
+            if (powerupController.CurrentActivePowerupList.Count <= 0)
+            {
+                return;
+            }
+            foreach (PowerupType powerupType in powerupController.CurrentActivePowerupList)
+            {
+                levelController.OnActivatePowerup(powerupType);
+            }
+            powerupController.ActivateSelectedPowerups();
         }
         #endregion
 

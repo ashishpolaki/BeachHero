@@ -1,5 +1,4 @@
 using UnityEngine;
-
 namespace BeachHero
 {
     public class DrownCharacter : MonoBehaviour
@@ -23,7 +22,11 @@ namespace BeachHero
         {
             if (other.CompareTag("Obstacle"))
             {
-                OnMovingObstacleTrigger();
+                IObstacle obstacle = other.GetComponent<IObstacle>();
+                if (obstacle.ObstacleType == ObstacleType.Shark || obstacle.ObstacleType == ObstacleType.Eel)
+                {
+                    OnMovingObstacleTrigger();
+                }
             }
         }
 

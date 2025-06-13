@@ -14,50 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelTime: 8
   startPoint:
-    Position: {x: -4.91, y: 0, z: 11.72}
-    Rotation: {x: -0, y: 45.000004, z: -0}
+    Position: {x: -0.18, y: 0, z: -0.34}
+    Rotation: {x: -0, y: 0, z: 0}
   obstacles:
     staticObstacles:
     - type: 4
       position: {x: -7.71, y: 0, z: 17.18}
       rotation: {x: 0, y: 0, z: 0}
-    - type: 5
-      position: {x: -2.34, y: -0.74, z: 14.64}
-      rotation: {x: 40.880005, y: 43.129997, z: 48.140003}
-    movingObstacles:
-    - type: 2
-      movementType: 1
-      bezierKeyframes:
-      - position: {x: 3.0419607, y: 0, z: 1.8607897}
-        inTangentLocal: {x: -1, y: 0, z: 0}
-        outTangentLocal: {x: 1, y: 0, z: 0}
-      - position: {x: 1.1941918, y: 0, z: 4.6128106}
-        inTangentLocal: {x: 1.1625754, y: 0, z: -1.3063447}
-        outTangentLocal: {x: -0.2683735, y: 0, z: 0.9394388}
-      - position: {x: -2.8479729, y: 0, z: 7.7534027}
-        inTangentLocal: {x: -0.40294242, y: 0, z: -1.5477881}
-        outTangentLocal: {x: -0.20767546, y: 0, z: 2.2582712}
-      - position: {x: 2.6646976, y: 0, z: 8.1968355}
-        inTangentLocal: {x: 0.15365076, y: 0.008373827, z: 0.31260204}
-        outTangentLocal: {x: 0.61527085, y: -0.7899734, z: -0.6905284}
-      - position: {x: 7.5740294, y: 0, z: 10.728539}
-        inTangentLocal: {x: 0.75834227, y: -2.6044712, z: -1.3699379}
-        outTangentLocal: {x: 1.7323012, y: -1.7561073, z: -0.6144638}
-      resolution: 7
-      movementSpeed: 5
-      loopedMovement: 1
-      inverseDirection: 0
-    waterHoleObstacles:
-    - position: {x: -3.77, y: -0.88, z: 20.85}
-      shaderPosition: {x: 0.59425, y: 0.32624996}
-      scale: 2.5
+    movingObstacles: []
+    waterHoleObstacles: []
   drownCharacters:
-  - position: {x: -7.55, y: 0, z: 5.98}
+  - position: {x: -0.18, y: 0, z: 7.89}
     waitTimePercentage: 0.878
   collectables:
   - type: 1
-    position: {x: 5.07, y: 0, z: 16.62}
-  - type: 4
-    position: {x: 0.92, y: 0, z: 11.84}
-  - type: 3
-    position: {x: 5.45, y: 0, z: 12.78}
+    position: {x: -0.25, y: 0, z: 3.8}

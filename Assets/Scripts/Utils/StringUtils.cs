@@ -16,5 +16,9 @@ namespace BeachHero
         public const string SINKING_ANIM = "Sinking";
         public const string IDLE_ANIM = "Idle";
         public const string VICTORY_ANIM = "Victory";
+
+        //Powerups
+        public const string MAGNET_POWERUP = "MagnetPowerup";
+        public const string SPEEDBOOST_POWERUP = "SpeedBoostPowerup";
     }
 }
