@@ -338,6 +338,15 @@ namespace BeachHero
             // Update Path 
             DrawPath();
 
+            //Update Obstacles
+            foreach (var obstacleList in obstaclesDictionary.Values)
+            {
+                foreach (var obstacle in obstacleList)
+                {
+                    obstacle.UpdateState();
+                }
+            }
+
             // Start the Simulation after the path is drawn
             if (!isSimulationStarted)
             {
@@ -361,14 +370,6 @@ namespace BeachHero
 
             if (!isLevelCompleted)
             {
-                //Update Obstacles
-                foreach (var obstacleList in obstaclesDictionary.Values)
-                {
-                    foreach (var obstacle in obstacleList)
-                    {
-                        obstacle.UpdateState();
-                    }
-                }
                 //Update Characters
                 foreach (var savedCharacter in savedCharactersList)
                 {
