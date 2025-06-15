@@ -1,26 +1,25 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 
 namespace BeachHero
 {
-    public class MainMenuUIScreen : BaseScreen
+    public class PowerupSelectionScreenTab : BaseScreenTab
     {
         [SerializeField] private PowerupTutorialPanel powerupTutorialPanel;
-        [SerializeField] private Button playButton;
-        [SerializeField] private TextMeshProUGUI levelNumberText;
         [SerializeField] private PowerupButton magnetPowerup;
         [SerializeField] private PowerupButton speedPowerup;
+        [SerializeField] private Button playButton;
+        [SerializeField] private TextMeshProUGUI levelNumberText;
 
         private bool isPowerupTutorialEnabled = false;
 
-        public override void Open(ScreenTabType screenTabType)
+        public override void Open()
         {
-            base.Open(screenTabType);
+            base.Open();
             AddListeners();
-            SetLevelNumber();
             powerupTutorialPanel.Deactivate();
+            SetLevelNumber();
             InitMagnetPowerup();
             InitSpeedBoostPowerup();
         }
@@ -31,25 +30,31 @@ namespace BeachHero
             magnetPowerup.DeInitialize();
             speedPowerup.DeInitialize();
         }
-        private void OnPlayButtonClicked()
+        private void AddListeners()
         {
-            GameController.GetInstance.Play();
-            Close();
+            playButton.onClick.AddListener(OnPlayButtonClicked);
+            GameController.GetInstance.TutorialController.OnPowerupPressAction += OnPowerupButtonPressed;
         }
         private void SetLevelNumber()
         {
             int currentLevelNumber = GameController.GetInstance.CurrentLevelIndex + 1;
             levelNumberText.text = $"Level {currentLevelNumber}";
         }
-        private void AddListeners()
-        {
-            playButton.onClick.AddListener(OnPlayButtonClicked);
-            GameController.GetInstance.TutorialController.OnPowerupPressAction += OnPowerupButtonPressed;
-        }
         private void RemoveListeners()
         {
             playButton.onClick.RemoveListener(OnPlayButtonClicked);
             GameController.GetInstance.TutorialController.OnPowerupPressAction -= OnPowerupButtonPressed;
+        }
+        private void OnPlayButtonClicked()
+        {
+            GameController.GetInstance.Play();
+            Close();
+        }
+        private void OnPowerupButtonPressed()
+        {
+            if (!isPowerupTutorialEnabled)
+                return;
+            powerupTutorialPanel.OnPowerupButtonPressed();
         }
         private void InitMagnetPowerup()
         {
@@ -87,12 +92,6 @@ namespace BeachHero
             int speedPowerupCount = GameController.GetInstance.PowerupController.GetPowerupCount(PowerupType.SpeedBoost);
             speedPowerup.Init(PowerupType.SpeedBoost, speedPowerupCount, isSpeedPowerupLocked);
         }
-   
-       private void OnPowerupButtonPressed()
-       {
-           if (!isPowerupTutorialEnabled)
-               return;
-           powerupTutorialPanel.OnPowerupButtonPressed();
-        }
+
     }
 }

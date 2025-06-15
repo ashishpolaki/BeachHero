@@ -173,7 +173,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1125, y: 2346}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 1
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -339,6 +339,8 @@ GameObject:
   - component: {fileID: 280235831}
   - component: {fileID: 280235832}
   - component: {fileID: 280235833}
+  - component: {fileID: 280235834}
+  - component: {fileID: 280235835}
   m_Layer: 0
   m_Name: ScriptsHolder
   m_TagString: Untagged
@@ -379,6 +381,8 @@ MonoBehaviour:
   saveController: {fileID: 280235831}
   powerupController: {fileID: 280235832}
   tutorialController: {fileID: 280235833}
+  storeController: {fileID: 280235834}
+  skinController: {fileID: 280235835}
 --- !u!114 &280235828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,6 +480,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29b651eb55bda064bbe62917353780a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &280235834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 280235824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7c6419676219824cbe74403e1469a7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  storeDatabase: {fileID: 11400000, guid: 2ba93df0b8ec8bc45ad62827d450fc15, type: 2}
+--- !u!114 &280235835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 280235824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 634d47bfa504c714e9f13684a84f745d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boatSkinsDatabase: {fileID: 11400000, guid: c40b3b52de16db6439f9702261e55ff2, type: 2}
 --- !u!1 &454842542
 GameObject:
   m_ObjectHideFlags: 0
@@ -1028,50 +1058,6 @@ Transform:
   - {fileID: 2115798425}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1186346057
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1186346058}
-  - component: {fileID: 1186346059}
-  m_Layer: 0
-  m_Name: AdController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1186346058
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1186346057}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1186346059
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1186346057}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4064ddef4074394ab2eef7efeef4046, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1498169351
 GameObject:
   m_ObjectHideFlags: 0
@@ -2055,4 +2041,3 @@ SceneRoots:
   - {fileID: 1157621205}
   - {fileID: 280235825}
   - {fileID: 454842544}
-  - {fileID: 1186346058}

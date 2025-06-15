@@ -7,6 +7,8 @@ namespace BeachHero
     {
         None,
         MainMenu,
+        BoatCustomisation,
+        Store,
         Gameplay,
         GameLose,
         GameWin,
