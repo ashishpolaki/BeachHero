@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BeachHero
@@ -8,12 +10,16 @@ namespace BeachHero
         [SerializeField] private LevelSO[] levelsList;
         [SerializeField] private SpawnItem[] spawnItemsList;
 
+        public List<LevelData> LevelDatas => levelDatas;
+
+        [SerializeField] private List<LevelData> levelDatas;
+
         public LevelSO[] LevelsList
         {
             get { return levelsList; }
             private set { levelsList = value; }
         }
-      
+
         public SpawnItem[] SpawnItemsList
         {
             get { return spawnItemsList; }
@@ -29,10 +35,21 @@ namespace BeachHero
         {
             return levelsList[index % levelsList.Length];
         }
+
+        private void OnValidate()
+        {
+            for (int i = 0; i < levelDatas.Count; i++)
+            {
+                if (levelDatas[i].LevelNumber != i + 1)
+                {
+                    levelDatas[i].LevelNumber = i + 1;
+                }
+            }
+        }
     }
-   
+
     [System.Serializable]
-    public struct  SpawnItem 
+    public struct SpawnItem
     {
         public SpawnItemType SpawnItemType;
         public GameObject[] Prefab;

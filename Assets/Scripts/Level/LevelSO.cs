@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace BeachHero
@@ -12,20 +13,26 @@ namespace BeachHero
         [SerializeField] private CollectableData[] collectables;
 
         #region Properties
+        
         public float LevelTime => levelTime;
+
         public StartPointData StartPointData => startPoint;
+
         public ObstacleData Obstacle => obstacles;
+
         public DrownCharacterData[] DrownCharacters => drownCharacters;
+
         public CollectableData[] Collectables => collectables;
         #endregion
     }
-   
+
     [System.Serializable]
     public struct CollectableData
     {
         public CollectableType type;
         public Vector3 position;
     }
+
     public enum CollectableType
     {
         None,
@@ -41,6 +48,7 @@ namespace BeachHero
         public Vector3 Position;
         public Vector3 Rotation;
     }
+
     public enum ObstacleType
     {
         None,
@@ -50,6 +58,7 @@ namespace BeachHero
         Rock,
         Barrel,
     }
+
     public enum MovingObstacleMovementType
     {
         None,
@@ -57,14 +66,16 @@ namespace BeachHero
         FigureEight,
         Circular,
     }
+
     [System.Serializable]
     public struct DrownCharacterData
     {
         [SerializeField] private Vector3 position;
-        [Range(0,1f)]
+        [Range(0, 1f)]
         [SerializeField] private float waitTimePercentage;
 
         public Vector3 Position => position;
+
         public float WaitTimePercentage => waitTimePercentage;
     }
 
@@ -76,7 +87,9 @@ namespace BeachHero
         [SerializeField] private WaterHoleObstacleData[] waterHoleObstacles;
 
         public StaticObstacleData[] StaticObstacles => staticObstacles;
+
         public MovingObstacleData[] MovingObstacles => movingObstacles;
+
         public WaterHoleObstacleData[] WaterHoleObstacles => waterHoleObstacles;
     }
 
@@ -102,18 +115,20 @@ namespace BeachHero
         public bool loopedMovement;
         public bool inverseDirection;
     }
+
     [System.Serializable]
     public struct WaterHoleObstacleData
     {
         public Vector3 position;
         public Vector2 shaderPosition; // Position used for the shader effect
-        public float scale;  
+        public float scale;
     }
+
     [System.Serializable]
     public struct BezierKeyframe
     {
-        public Vector3 position;         // Keyframe position (world position)
-        public Vector3 inTangentLocal;  // Incoming tangent (local position relative to position)
+        public Vector3 position; // Keyframe position (world position)
+        public Vector3 inTangentLocal; // Incoming tangent (local position relative to position)
         public Vector3 outTangentLocal; // Outgoing tangent (local position relative to position)
 
         /// <summary>

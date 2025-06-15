@@ -59,5 +59,66 @@ namespace BeachHero
 
             return evenlySpacedPoints;
         }
+
+        public static List<Vector3> GetEvenlySpacedPointsByCount(List<Vector3> pathPoints, int count)
+        {
+            if (count < 2 || pathPoints.Count < 4)
+                ("Need at least 4 path points and count >= 2").LogError();
+
+            List<Vector3> densePoints = new List<Vector3>();
+            for (int i = 0; i < pathPoints.Count - 3; i++)
+            {
+                for (float t = 0; t <= 1f; t += 0.01f)
+                {
+                    Vector3 point = CatmullRom(
+                        pathPoints[i],
+                        pathPoints[i + 1],
+                        pathPoints[i + 2],
+                        pathPoints[i + 3],
+                        t
+                    );
+                    densePoints.Add(point);
+                }
+            }
+
+            // Calculate total length
+            float totalLength = 0f;
+            for (int i = 0; i < densePoints.Count - 1; i++)
+            {
+                totalLength += Vector3.Distance(densePoints[i], densePoints[i + 1]);
+            }
+
+            float segmentLength = totalLength / (count - 1);
+            float distanceAccumulated = 0f;
+
+            List<Vector3> finalPoints = new List<Vector3>();
+            finalPoints.Add(densePoints[0]);
+
+            float distanceSinceLastPoint = 0f;
+            Vector3 lastPoint = densePoints[0];
+
+            for (int i = 1; i < densePoints.Count; i++)
+            {
+                float distance = Vector3.Distance(lastPoint, densePoints[i]);
+                distanceSinceLastPoint += distance;
+
+                if (distanceSinceLastPoint >= segmentLength)
+                {
+                    finalPoints.Add(densePoints[i]);
+                    distanceSinceLastPoint = 0f;
+
+                    if (finalPoints.Count == count)
+                        break;
+                }
+
+                lastPoint = densePoints[i];
+            }
+
+            // Ensure we always end at the last point
+            if (finalPoints.Count < count)
+                finalPoints.Add(densePoints[densePoints.Count - 1]);
+
+            return finalPoints;
+        }
     }
 }
