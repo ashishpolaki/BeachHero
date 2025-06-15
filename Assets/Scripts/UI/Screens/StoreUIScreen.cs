@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace BeachHero
 {
     public class StoreUIScreen : BaseScreen
     {
-        [SerializeField] private StoreItemUI storeItemPrefab;
+        [SerializeField] private Button homeButton;
         [SerializeField] private Transform content;
         private List<StoreItemUI> storeItemsList = new List<StoreItemUI>();
         private bool isInitialized = false;
@@ -13,7 +14,7 @@ namespace BeachHero
         public override void Open(ScreenTabType screenTabType)
         {
             base.Open(screenTabType);
-
+            homeButton.onClick.AddListener(OpenHome);
             if (!isInitialized)
             {
                 InitializeStoreItems();
@@ -24,17 +25,22 @@ namespace BeachHero
         public override void Close()
         {
             base.Close();
+            homeButton.onClick.RemoveAllListeners();
+        }
+
+        private void OpenHome()
+        {
+            UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
         }
 
         private void InitializeStoreItems()
         {
-            //var storeItemsDatabase = GameController.GetInstance.StoreManager.StoreItemsDatabase;
-            //foreach (var item in storeItemsDatabase)
-            //{
-            //    StoreItemUI storeItemUI = Instantiate(storeItemPrefab, content);
-            //    storeItemUI.Initialize(item.Id); // Assuming item has an Id property
-            //    storeItemsList.Add(storeItemUI);
-            //}
+            foreach (var storeItem in GameController.GetInstance.StoreController.StoreDatabase.StoreItems)
+            {
+                StoreItemUI storeItemUI = Instantiate(storeItem.UIPrefab, content);
+                storeItemUI.Initialize(storeItem);
+                storeItemsList.Add(storeItemUI);
+            }
         }
     }
 }
