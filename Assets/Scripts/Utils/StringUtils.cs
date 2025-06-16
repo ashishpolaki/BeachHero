@@ -20,5 +20,9 @@ namespace BeachHero
         //Powerups
         public const string MAGNET_POWERUP = "MagnetPowerup";
         public const string SPEEDBOOST_POWERUP = "SpeedBoostPowerup";
+
+        //Boat Skins
+        //Current boat selected index
+        public const string CURRENT_BOAT_INDEX = "CurrentBoatSelectedIndex";
     }
 }

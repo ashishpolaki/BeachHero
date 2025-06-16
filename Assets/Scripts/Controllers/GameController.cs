@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace BeachHero
@@ -8,7 +7,6 @@ namespace BeachHero
         [SerializeField] private LevelDatabaseSO levelDatabaseSO;
         [SerializeField] private LevelController levelController;
         [SerializeField] private PoolController poolManager;
-        [SerializeField] private SaveController saveController;
         [SerializeField] private PowerupController powerupController;
         [SerializeField] private TutorialController tutorialController;
         [SerializeField] private StoreController storeController;
@@ -27,6 +25,7 @@ namespace BeachHero
         public PowerupController PowerupController => powerupController;
         public TutorialController TutorialController => tutorialController;
         public StoreController StoreController => storeController;
+        public SkinController SkinController => skinController;
         #endregion
 
         #region Unity Methods

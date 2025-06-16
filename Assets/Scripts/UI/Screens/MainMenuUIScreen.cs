@@ -40,6 +40,7 @@ namespace BeachHero
         }
         private void OnBoatCustomisationButtonClicked()
         {
+            UIController.GetInstance.ScreenEvent(ScreenType.BoatCustomisation, UIScreenEvent.Open);
         }
         private void OnLevelPanelButtonClicked()
         {
