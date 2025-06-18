@@ -96,20 +96,17 @@ namespace BeachHero
             // Open color selection panel
             boatCustomisationUIScreen.OpenCustomisationPanel(index, currentColorIndex);
         }
-
         private void OnSelectButtonClicked()
         {
             SaveController.SaveInt(StringUtils.CURRENT_BOAT_INDEX, index);
             boatCustomisationUIScreen.SetCurrentBoatSelection(index);
         }
-
         private void DisableButtons()
         {
             realMoneyPurchaseButton.gameObject.SetActive(false);
             gameCurrencyPurchaseButton.gameObject.SetActive(false);
             colorEditButton.gameObject.SetActive(false);
         }
-
         private void OnRealMoneyPurchaseButtonClicked()
         {
             realMoneyPurchaseButton.gameObject.SetActive(false);
@@ -117,7 +114,6 @@ namespace BeachHero
             SaveController.SaveBool(StringUtils.BOAT_SKIN_UNLOCKED + index, true);
             OnSelectButtonClicked();
         }
-
         private void OnGameCurrencyPurchaseButtonClicked()
         {
             realMoneyPurchaseButton.gameObject.SetActive(false);

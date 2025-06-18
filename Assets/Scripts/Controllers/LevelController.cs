@@ -187,10 +187,14 @@ namespace BeachHero
             }
         }
 
-        public void GameStart(bool isFTUE)
+        public void GameStart(bool _isFTUE)
         {
-            this.isFTUE = isFTUE;
-            this.isPlaying = true;
+            isFTUE = _isFTUE;
+            isPlaying = true;
+            int boatIndex = GameController.GetInstance.SkinController.GetCurrentSelectedBoatIndex();
+            float speed = GameController.GetInstance.SkinController.GetSpeed();
+            GameObject boatPRefab = GameController.GetInstance.SkinController.GetCurrentSelectedBoat();
+            player.GameStart(boatIndex, speed, boatPRefab);
         }
 
         public void OnLevelCompleted(bool _val)

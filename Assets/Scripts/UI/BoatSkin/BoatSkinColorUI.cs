@@ -9,6 +9,9 @@ namespace BeachHero
         [SerializeField] private Image iconImage;
         [SerializeField] private Button selectButton;
 
+        private BoatCustomisationUIScreen boatCustomisationUIScreen;
+        private int index;
+
         private void OnEnable()
         {
             selectButton.onClick.AddListener(OnSelectButtonClicked);
@@ -19,19 +22,17 @@ namespace BeachHero
             selectButton.onClick.RemoveAllListeners();
         }
 
-        public void SetSkinColor(BoatCustomisationUIScreen boatCustomisationUIScreen, BoatSkinColorData skinColorData, int index, bool isSelected)
+        public void InitSkinColor(BoatCustomisationUIScreen _boatCustomisationUIScreen, BoatSkinColorData skinColorData, int _index)
         {
-            iconImage.sprite = skinColorData.sprite;
-            backgroundImage.SetActive(isSelected);
+            boatCustomisationUIScreen = _boatCustomisationUIScreen;
+            index = _index;
+            iconImage.color = skinColorData.ShaderColors[0];
+           // backgroundImage.SetActive(isSelected);
         }
 
         private void OnSelectButtonClicked()
         {
-            var boatSkinUI = GetComponentInParent<BoatSkinUI>();
-            if (boatSkinUI != null)
-            {
-              //  boatSkinUI.OnColorSelected(iconImage.sprite);
-            }
+            boatCustomisationUIScreen.SetBoatColor(index);
         }
     }
 }

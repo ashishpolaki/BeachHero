@@ -7,6 +7,7 @@ namespace BeachHero
     {
         #region Inspector Variables
         [SerializeField] private string id;
+        [SerializeField] private GameObject boatPrefab;
         [SerializeField] private int index;
         [SerializeField] private string boatName;
         [SerializeField] private float speed;
@@ -32,6 +33,7 @@ namespace BeachHero
         public int InGameCurrencyCost => inGameCurrencyCost;
         public int RealMoneyCost => realMoneyCost;
         public bool IsDefaultBoat => isDefault;
+        public GameObject BoatPrefab => boatPrefab;
         #endregion
 
         public void Initialize()

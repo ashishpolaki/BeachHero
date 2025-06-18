@@ -33,6 +33,7 @@ namespace BeachHero
         public override void Close()
         {
             base.Close();
+            boatSkins[currentBoatIndex].SetUnSelected();
             RemoveListeneres();
         }
         private void AddListeners()
@@ -57,48 +58,79 @@ namespace BeachHero
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
         }
 
-        public void OpenCustomisationPanel(int index, int skinIndex)
+        private void SetupCurrentBoatColors(BoatSkinSO boatSkin)
         {
-            customisationPanel.SetActive(true);
-            var boatSkin = GameController.GetInstance.SkinController.BoatSkinsDatabase.BoatSkins[index];
-            boatEditImage.sprite = boatSkin.SkinColors[skinIndex].sprite;
+            // Deactivate all existing color UIs
+            foreach (var ui in boatSkinColorUIList)
+                ui.gameObject.SetActive(false);
+
+            // Set up color UIs for current skin
             for (int i = 0; i < boatSkin.SkinColors.Length; i++)
             {
                 var skinColorData = boatSkin.SkinColors[i];
-                bool isSelected = i == skinIndex;
-                var boatSkinColorUI = Instantiate(boatSkinColorUIPrefab, boatColorContent);
-                //   boatSkinColorUI.sets(this, skinColorData, isSelected, index, i);
-                boatSkinColorUIList.Add(boatSkinColorUI);
+                var boatSkinColorUI = GetBoatSkinColorUI();
+                boatSkinColorUI.InitSkinColor(this, skinColorData, i);
+                boatSkinColorUI.gameObject.SetActive(true);
             }
+        }
+
+        private BoatSkinColorUI GetBoatSkinColorUI()
+        {
+            foreach (var boatSkinColorUI in boatSkinColorUIList)
+            {
+                if (!boatSkinColorUI.gameObject.activeSelf)
+                {
+                    return boatSkinColorUI;
+                }
+            }
+            var boatSkinColorObj = Instantiate(boatSkinColorUIPrefab, boatColorContent);
+            boatSkinColorUIList.Add(boatSkinColorObj);
+            return boatSkinColorObj;
         }
 
         private void InitializeBoatCustomisation()
         {
-            if (isInitialized)
+            if (!isInitialized)
             {
-                return;
-            }
-            isInitialized = true;
-            foreach (var skinData in GameController.GetInstance.SkinController.BoatSkinsDatabase.BoatSkins)
-            {
-                var boatSkinUI = Instantiate(boatSkinUIPrefab, content);
-                boatSkinUI.SetSkin(this, skinData);
-                boatSkins.Add(skinData.Index, boatSkinUI);
+                isInitialized = true;
+
+                foreach (var skinData in GameController.GetInstance.SkinController.BoatSkinsDatabase.BoatSkins)
+                {
+                    var boatSkinUI = Instantiate(boatSkinUIPrefab, content);
+                    boatSkinUI.SetSkin(this, skinData);
+                    boatSkins.Add(skinData.Index, boatSkinUI);
+                }
             }
 
             int boatIndex = SaveController.LoadInt(StringUtils.CURRENT_BOAT_INDEX, 1);
             SetCurrentBoatSelection(boatIndex);
+        }
+        #region public Methods
+        public void SetBoatColor(int colorIndex)
+        {
+            var boatSkin = GameController.GetInstance.SkinController.GetBoatSkinByIndex(currentBoatIndex);
+            boatEditImage.sprite = boatSkin.SkinColors[colorIndex].sprite;
+        }
+
+        public void OpenCustomisationPanel(int index, int colorIndex)
+        {
+            customisationPanel.SetActive(true);
+            var boatSkin = GameController.GetInstance.SkinController.GetBoatSkinByIndex(index);
+            boatEditImage.sprite = boatSkin.SkinColors[colorIndex].sprite;
+            SetupCurrentBoatColors(boatSkin);
         }
 
         public void SetCurrentBoatSelection(int boatIndex)
         {
             previousBoatIndex = currentBoatIndex;
             currentBoatIndex = boatIndex;
-            if(previousBoatIndex != -1)
+            if (previousBoatIndex != -1)
             {
                 boatSkins[previousBoatIndex].SetUnSelected();
             }
             boatSkins[currentBoatIndex].SetSelected();
         }
+        #endregion
+
     }
 }
