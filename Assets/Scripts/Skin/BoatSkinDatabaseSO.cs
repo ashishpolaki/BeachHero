@@ -1,60 +1,45 @@
-using UnityEditor;
 using UnityEngine;
 
 namespace BeachHero
 {
-    [CreateAssetMenu(fileName = "BoatSkinDatabase", menuName = "Scriptable Objects/BoatSkinDatabase")]
+    [CreateAssetMenu(fileName = "BoatSkinDatabase", menuName = "Scriptable Objects/Skin/BoatSkinDatabase")]
     public class BoatSkinDatabaseSO : ScriptableObject
     {
-        [SerializeField] private BoatSkinData[] boatSkins;
-        public BoatSkinData[] BoatSkins => boatSkins;
+        [SerializeField] private BoatSkinSO[] boatSkins;
+        public BoatSkinSO[] BoatSkins => boatSkins;
     }
 
-    [System.Serializable]
-    public struct BoatSkinData
-    {
-        [SerializeField, UniqueID] private string id;
-        [SerializeField] private int index;
-        [SerializeField] private string name;
-        [SerializeField] private GameObject prefab;
-        [SerializeField, SkinPreview] private Sprite icon;
-        [SerializeField] private float speed;
-        [Range(0f, 1f), SerializeField] private float speedMeter;
-        [SerializeField] private BoatSkinColorData[] skinColors;
-        [SerializeField] private bool isPurchasableWithGameCurrency;
-        [SerializeField] private bool isPurchasableWithAds;
-        [Show("isPurchasableWithGameCurrency")]
-        [SerializeField] private int inGameCurrencyCost;
-        [Show("isPurchasableWithAds")]
-        [SerializeField] private int adsRequired;
+    //[System.Serializable]
+    //public struct BoatSkinData
+    //{
+    //    [SerializeField, UniqueID] private string id;
+    //    [SerializeField] private int index;
+    //    [SerializeField] private string name;
+    //    [SerializeField] private float speed;
+    //    [Range(0f, 1f), SerializeField] private float speedMeter;
+    //    [SerializeField] private BoatSkinColorData[] skinColors;
+    //    [SerializeField] private bool isDefault;
+    //    [Hide("isDefault")][SerializeField] private bool isPurchasableWithGameCurrency;
+    //    [Hide("isDefault")][SerializeField] private bool isPurchasableWithRealMoney;
+    //    [Show("isPurchasableWithGameCurrency")][SerializeField] private int inGameCurrencyCost;
+    //    [Show("isPurchasableWithRealMoney")][SerializeField] private int realMoneyCost;
 
-        public string ID => id;
-        public int Hash { get; private set; }
-        public int Index => index;
-        public GameObject Prefab => prefab;
-        public string Name => name;
-        public float Speed => speed;
-        public float SpeedMeter => speedMeter;
-        public BoatSkinColorData[] SkinColors => skinColors;
-        public Sprite Icon => icon;
-        public bool IsPurchasableWithGameCurrency => isPurchasableWithGameCurrency;
-        public bool IsPurchasableWithAds => isPurchasableWithAds;
-        public int InGameCurrencyCost => inGameCurrencyCost;
-        public int AdsRequired => adsRequired;
+    //    public string ID => id;
+    //    public int Hash { get; private set; }
+    //    public int Index => index;
+    //    public string Name => name;
+    //    public float Speed => speed;
+    //    public float SpeedMeter => speedMeter;
+    //    public BoatSkinColorData[] SkinColors => skinColors;
+    //    public bool IsPurchasableWithGameCurrency => isPurchasableWithGameCurrency;
+    //    public bool IsPurchasableWithRealMoney => isPurchasableWithRealMoney;
+    //    public int InGameCurrencyCost => inGameCurrencyCost;
+    //    public int RealMoneyCost => realMoneyCost;
+    //    public bool IsDefaultBoat => isDefault;
 
-        public void Initialize()
-        {
-            Hash = id.GetHashCode();
-        }
-    }
-
-    [System.Serializable]
-    public struct BoatSkinColorData
-    {
-        public Color[] colors;
-        public bool isPurchasableWithGameCurrency;
-        public bool isPurchasableWithAds;
-        [Show("isPurchasableWithGameCurrency")] public int inGameCurrencyCost;
-        [Show("isPurchasableWithAds")] public int adsRequired;
-    }
+    //    public void Initialize()
+    //    {
+    //        Hash = id.GetHashCode();
+    //    }
+    //}
 }

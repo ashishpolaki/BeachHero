@@ -14,7 +14,7 @@ namespace BeachHero
     }
 
 #if UNITY_EDITOR
-    [CustomPropertyDrawer(typeof(BoatSkinData), true)]
+    [CustomPropertyDrawer(typeof(BoatSkinColorData), true)]
     public class SkinDataPropertyDrawer : PropertyDrawer, System.IDisposable
     {
         private Dictionary<int, PropertyData> propertiesData = new Dictionary<int, PropertyData>();

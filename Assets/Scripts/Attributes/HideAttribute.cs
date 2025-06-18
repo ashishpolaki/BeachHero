@@ -30,12 +30,17 @@ namespace BeachHero
 
         private bool ShouldHide(SerializedProperty property)
         {
+            if (property == null || property.serializedObject == null)
+            {
+                return true; // Hide if property or serializedObject is null
+            }
+
             HideAttribute hideAttribute = (HideAttribute)attribute;
             string boolFieldName = hideAttribute.BoolFieldName;
 
-            // Get the path to the controlling bool relative to the current property
             string propertyPath = property.propertyPath;
-            string parentPath = propertyPath.Substring(0, propertyPath.LastIndexOf('.'));
+            int lastDot = propertyPath.LastIndexOf('.');
+            string parentPath = lastDot == -1 ? string.Empty : propertyPath.Substring(0, lastDot);
             string boolPropPath = string.IsNullOrEmpty(parentPath) ? boolFieldName : parentPath + "." + boolFieldName;
 
             SerializedProperty boolProp = property.serializedObject.FindProperty(boolPropPath);

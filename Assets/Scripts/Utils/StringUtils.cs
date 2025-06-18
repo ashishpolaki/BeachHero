@@ -22,7 +22,9 @@ namespace BeachHero
         public const string SPEEDBOOST_POWERUP = "SpeedBoostPowerup";
 
         //Boat Skins
-        //Current boat selected index
-        public const string CURRENT_BOAT_INDEX = "CurrentBoatSelectedIndex";
+        public const string CURRENT_BOAT_INDEX = "BoatSelectionIndex";
+        public const string CURRENT_BOAT_COLOR_INDEX = "CurrentBoatColorIndex_";
+        //Boat Skin unlock
+        public const string BOAT_SKIN_UNLOCKED = "BoatSkinUnlocked_";
     }
 }
