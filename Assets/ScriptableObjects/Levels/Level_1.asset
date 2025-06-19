@@ -21,7 +21,29 @@ MonoBehaviour:
     - type: 4
       position: {x: -7.71, y: 0, z: 17.18}
       rotation: {x: 0, y: 0, z: 0}
-    movingObstacles: []
+    movingObstacles:
+    - type: 6
+      movementType: 1
+      bezierKeyframes:
+      - position: {x: -7.830131, y: 0, z: 6.5842705}
+        inTangentLocal: {x: -0.8513609, y: 0, z: -0.52458036}
+        outTangentLocal: {x: 0.82338876, y: 0, z: 0.82252884}
+      - position: {x: -4.401838, y: 0, z: 8.989046}
+        inTangentLocal: {x: -0.72293884, y: 0, z: -0.64180773}
+        outTangentLocal: {x: 0.74305403, y: 0, z: 0.6168072}
+      - position: {x: -0.79238284, y: 0, z: 13.5287075}
+        inTangentLocal: {x: 0.65054834, y: 0, z: -0.9229059}
+        outTangentLocal: {x: 0.34946764, y: 0, z: 1.5197296}
+      - position: {x: -2.7127156, y: 0, z: 17.603374}
+        inTangentLocal: {x: 0.24176982, y: 0, z: -0.5844582}
+        outTangentLocal: {x: -0.29600012, y: 0, z: 1.1355199}
+      - position: {x: -7.6511035, y: 0, z: 21.300251}
+        inTangentLocal: {x: -0.6577031, y: 0, z: 0.3339831}
+        outTangentLocal: {x: 1.4910725, y: 0, z: 0.04216109}
+      resolution: 4
+      movementSpeed: 5
+      loopedMovement: 1
+      inverseDirection: 0
     waterHoleObstacles:
     - position: {x: 2.92, y: 0, z: 7.45}
       shaderPosition: {x: 0.427, y: 0.66125}

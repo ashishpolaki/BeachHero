@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace BeachHero
@@ -39,7 +38,7 @@ namespace BeachHero
         Coin,
         Gem,
         Magnet,
-        Speed,
+        SpeedBoost,
     }
 
     [System.Serializable]
@@ -57,6 +56,7 @@ namespace BeachHero
         WaterHole,
         Rock,
         Barrel,
+        MantaRay,
     }
 
     public enum MovingObstacleMovementType

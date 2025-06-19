@@ -163,6 +163,9 @@ public class EditorSceneController : MonoBehaviour
                 case ObstacleType.Eel:
                     path = "Assets/Prefabs/Eel.prefab";
                     break;
+                case ObstacleType.MantaRay:
+                    path = "Assets/Prefabs/MantaRay.prefab";
+                    break;
             }
             MovingObstacle sharkObstaclePrefab = AssetDatabase.LoadAssetAtPath<MovingObstacle>(path);
             GameObject sharkGameObject = (GameObject)PrefabUtility.InstantiatePrefab(sharkObstaclePrefab.gameObject);
@@ -199,7 +202,7 @@ public class EditorSceneController : MonoBehaviour
                     magnetGameobject.transform.parent = container.transform;
                     magnet.Init(item);
                     break;
-                case CollectableType.Speed:
+                case CollectableType.SpeedBoost:
                     path = "Assets/Prefabs/SpeedUp.prefab";
                     Collectable speedPrefab = AssetDatabase.LoadAssetAtPath<Collectable>(path);
                     GameObject speedGameobject = (GameObject)PrefabUtility.InstantiatePrefab(speedPrefab.gameObject);

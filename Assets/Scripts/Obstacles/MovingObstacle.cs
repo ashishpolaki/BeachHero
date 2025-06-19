@@ -9,6 +9,7 @@ namespace BeachHero
     {
         #region Private Variables
         [SerializeField] private BezierKeyframe[] keyframes;
+        [SerializeField] private LineRenderer pathRenderer;
         [SerializeField] private float rotationSpeed = 0.3f;
         [SerializeField] private float movementSpeed = 5f;
         [SerializeField] private int nextPointIndex;
@@ -50,6 +51,10 @@ namespace BeachHero
             }
             transform.position = pointsList[0];
             transform.LookAt(pointsList[1]);
+            pathRenderer.positionCount = PointsList.Length;
+            // Ensure the first point is at a height of 0.5f to fix rendering bug on water
+            PointsList[0].y = 0.5f;
+            pathRenderer.SetPositions(PointsList);
         }
 
         public override void UpdateState()

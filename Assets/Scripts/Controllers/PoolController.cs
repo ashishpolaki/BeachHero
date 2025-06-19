@@ -9,6 +9,7 @@ namespace BeachHero
         [SerializeField] private ScriptableObjectPool savedCharacterPool;
         [SerializeField] private ScriptableObjectPool sharkPool;
         [SerializeField] private ScriptableObjectPool eelPool;
+        [SerializeField] private ScriptableObjectPool mantaRayPool;
         [SerializeField] private ScriptableObjectPool waterHolePool;
         [SerializeField] private ScriptableObjectPool rockPool;
         [SerializeField] private ScriptableObjectPool barrelPool;
@@ -23,6 +24,7 @@ namespace BeachHero
         public ScriptableObjectPool SavedCharacterPool => savedCharacterPool;
         public ScriptableObjectPool SharkPool => sharkPool;
         public ScriptableObjectPool EelPool => eelPool;
+        public ScriptableObjectPool MantaRayPool => mantaRayPool;
         public ScriptableObjectPool WaterHolePool => waterHolePool;
         public ScriptableObjectPool RockPool => rockPool;
         public ScriptableObjectPool BarrelPool => barrelPool;
@@ -39,6 +41,7 @@ namespace BeachHero
             savedCharacterPool.ResetState();
             sharkPool.ResetState();
             eelPool.ResetState();
+            mantaRayPool.ResetState();
             waterHolePool.ResetState();
             rockPool.ResetState();
             barrelPool.ResetState();

@@ -242,7 +242,7 @@ namespace BeachHero
                     {
                         poolManager.MagnetPowerupPool.ReturnObject(collectable.gameObject);
                     }
-                    else if (collectable.CollectableType == CollectableType.Speed)
+                    else if (collectable.CollectableType == CollectableType.SpeedBoost)
                     {
                         poolManager.SpeedPowerupPool.ReturnObject(collectable.gameObject);
                     }
@@ -262,7 +262,6 @@ namespace BeachHero
             }
 
             //Obstacles
-            //Obstacles
             foreach (var obstacleList in obstaclesDictionary.Values)
             {
                 foreach (var obstacle in obstacleList)
@@ -275,8 +274,10 @@ namespace BeachHero
                         case ObstacleType.Eel:
                             poolManager.EelPool.ReturnObject(obstacle.gameObject);
                             break;
+                        case ObstacleType.MantaRay:
+                            poolManager.MantaRayPool.ReturnObject(obstacle.gameObject);
+                            break;
                         case ObstacleType.WaterHole:
-                            obstacle.ResetObstacle();
                             poolManager.WaterHolePool.ReturnObject(obstacle.gameObject);
                             break;
                         case ObstacleType.Rock:
@@ -443,11 +444,21 @@ namespace BeachHero
                         case ObstacleType.Shark:
                             SpawnShark(movingObstacle);
                             break;
+                        case ObstacleType.MantaRay:
+                            SpawnMantaRay(movingObstacle);
+                            break;
                         default:
                             break;
                     }
                 }
             }
+        }
+
+        private void SpawnMantaRay(MovingObstacleData movingObstacleData)
+        {
+            MantaRayObstacle mantaRay = poolManager.MantaRayPool.GetObject().GetComponent<MantaRayObstacle>();
+            mantaRay.Init(movingObstacleData);
+            obstaclesDictionary[ObstacleType.MantaRay].Add(mantaRay);
         }
 
         private void SpawnShark(MovingObstacleData movingObstacleData)
@@ -562,7 +573,7 @@ namespace BeachHero
                     case CollectableType.Magnet:
                         SpawnMagnet(collectable);
                         break;
-                    case CollectableType.Speed:
+                    case CollectableType.SpeedBoost:
                         SpawnSpeed(collectable);
                         break;
                     default:
