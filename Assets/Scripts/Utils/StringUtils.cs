@@ -7,6 +7,11 @@ namespace BeachHero
         public const string POWERUP = "Powerup_";
         public const string LEVELNUMBER = "LevelNumber";
 
+        //Whirlpool
+        public const string WHIRLPOOL_DISTANCE = "_WP_Distance";
+        public const string WHIRLPOOL_POSITION = "_WP_Position";
+        public const string WHIRLPOOL_ENABLE = "_WP_Enable";
+
         //Tags
         public const string PLAYER_TAG = "Player";
         public const string OBSTACLE_TAG = "Obstacle";
@@ -24,7 +29,6 @@ namespace BeachHero
         //Boat Skins
         public const string CURRENT_BOAT_INDEX = "BoatSelectionIndex";
         public const string CURRENT_BOAT_COLOR_INDEX = "CurrentBoatColorIndex_";
-        //Boat Skin unlock
         public const string BOAT_SKIN_UNLOCKED = "BoatSkinUnlocked_";
     }
 }

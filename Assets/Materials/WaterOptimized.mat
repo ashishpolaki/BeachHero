@@ -74,6 +74,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 3dcf3cd8e8ea8064aaf58ac729b20b3a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2DLOD_7329d3022f6a4c4a99d27fdf6eb7253c_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 3dcf3cd8e8ea8064aaf58ac729b20b3a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_38bab29b918d46f490859bd56e717e0b_Texture_1_Texture2D:
         m_Texture: {fileID: 2800000, guid: 3dcf3cd8e8ea8064aaf58ac729b20b3a, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -193,8 +197,8 @@ Material:
     - _GlossyReflections: 0
     - _GradientScale: 0.45
     - _IsWhirlPool: 1
-    - _IsWhirlPoolEnable: 0
-    - _Metallic: 1
+    - _IsWhirlPoolEnable: 1
+    - _Metallic: 0.561
     - _Occlusion: 0.39
     - _OcclusionStrength: 1
     - _QueueControl: 1
@@ -210,18 +214,26 @@ Material:
     - _SurfaceDistortionAmount: 1
     - _SurfaceNoiseCutoff: 1
     - _TextureDepth: 30.35
+    - _WP_Depth_1: 1
+    - _WP_Depth_2: 1
+    - _WP_Distance_1: 0
+    - _WP_Distance_2: 0
+    - _WP_Enable_1: 0
+    - _WP_Enable_2: 0
+    - _WP_Quality_1: 5.21
+    - _WP_Quality_2: 3.02
     - _WavePower: 1
     - _WaveScale: 0.19
     - _WaveSpeed: 1
     - _WhirlPoolColorLerp: 0.71
-    - _WhirlPoolDepth: 9.48
-    - _WhirlPoolQuality: 0
-    - _WhirlpoolDistance: 0
+    - _WhirlPoolDepth: 1
+    - _WhirlPoolQuality: 0.88
+    - _WhirlpoolDistance: 0.1
     - _WhirlpoolSpeed: 1
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_5C567E03: {r: 0.10234957, g: 0.6036652, b: 0.8679245, a: 1}
+    - Color_5C567E03: {r: 0, g: 0.6564102, b: 1, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DepthColor: {r: 0.2337575, g: 0.7179089, b: 0.9716981, a: 0.94509804}
@@ -230,11 +242,15 @@ Material:
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GradientSpeed: {r: 1, g: 1, b: 0, a: 0}
     - _Light_Direction: {r: -0.05, g: -1, b: -0.45, a: 0}
-    - _ShallowColor: {r: 0, g: 1, b: 0.88817024, a: 0.7372549}
+    - _ShallowColor: {r: 0, g: 0.4584227, b: 0.7264151, a: 0.7372549}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _WP_Color_1: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 1}
+    - _WP_Color_2: {r: 0.1096921, g: 0.7303926, b: 0.8018868, a: 1}
+    - _WP_Position_1: {r: 0.427, g: 0.66125, b: 0, a: 0}
+    - _WP_Position_2: {r: 0.32975, g: 0.77425003, b: 0, a: 0}
     - _WaveXZRotation: {r: -0.21, g: 1, b: 0, a: 0}
-    - _WhirlPoolColor: {r: 0.15979888, g: 0.22759753, b: 0.254717, a: 1}
+    - _WhirlPoolColor: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 1}
     - _WhirlPoolDepthColor: {r: 0.2269491, g: 0.368393, b: 0.6415094, a: 1}
-    - _WhirlpoolPosition: {r: 0.405, g: 0.32999998, b: 0, a: 0}
+    - _WhirlpoolPosition: {r: 0.5, g: 0.32999998, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

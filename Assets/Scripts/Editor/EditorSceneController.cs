@@ -54,7 +54,9 @@ public class EditorSceneController : MonoBehaviour
             GameObject waterHoleObject = (GameObject)PrefabUtility.InstantiatePrefab(_object);
             WaterHoleEditComponent waterHole = waterHoleObject.AddComponent<WaterHoleEditComponent>();
             waterHoleObject.transform.parent = container.transform;
-            waterHole.Init(new WaterHoleObstacleData() { position = Vector3.zero, scale = 2 });
+
+            int cyclonesCount = container.transform.GetComponentsInChildren<WaterHoleEditComponent>().Length;
+            waterHole.Init(new WaterHoleObstacleData() { position = Vector3.zero, scale = 2 }, cyclonesCount);
         }
         if (spawnItemType == SpawnItemType.Collectable)
         {
@@ -83,13 +85,15 @@ public class EditorSceneController : MonoBehaviour
         {
             return;
         }
+        int cycloneIndex = 0;
         foreach (var item in currentLevel.Obstacle.WaterHoleObstacles)
         {
+            cycloneIndex++;
             WaterHoleObstacle waterHolePrefab = AssetDatabase.LoadAssetAtPath<WaterHoleObstacle>(path);
             GameObject waterHoleGameobject = PrefabUtility.InstantiatePrefab(waterHolePrefab.gameObject) as GameObject;
             WaterHoleEditComponent waterHoleEditComponent = waterHoleGameobject.AddComponent<WaterHoleEditComponent>();
             waterHoleGameobject.transform.parent = container.transform;
-            waterHoleEditComponent.Init(item);
+            waterHoleEditComponent.Init(item, cycloneIndex);
         }
     }
 

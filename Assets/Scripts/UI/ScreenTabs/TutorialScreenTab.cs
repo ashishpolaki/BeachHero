@@ -26,8 +26,11 @@ namespace BeachHero
         }
         private void OnDisable()
         {
-            GameController.GetInstance.TutorialController.OnFTUEPlayerTouchAction -= OnPlayerTouch;
-            GameController.GetInstance.TutorialController.OnFTUEPathDrawnAction -= OnPathDrawn;
+            if (GameController.GetInstance != null)
+            {
+                GameController.GetInstance.TutorialController.OnFTUEPlayerTouchAction -= OnPlayerTouch;
+                GameController.GetInstance.TutorialController.OnFTUEPathDrawnAction -= OnPathDrawn;
+            }
         }
         private void OnPathDrawn()
         {

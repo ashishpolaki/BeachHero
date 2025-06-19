@@ -22,34 +22,43 @@ namespace BeachHero
         private float angle;
         private Transform targetTransform;
         private Coroutine cycloneCoroutine;
-        private int whirlpoolDistanceID = Shader.PropertyToID("_WhirlpoolDistance");
-        private int whirlpoolPositionID = Shader.PropertyToID("_WhirlpoolPosition");
-        private int whirlpoolEnableID = Shader.PropertyToID("_IsWhirlpoolEnable");
+        private int index = -1;
 
-        public void Init(WaterHoleObstacleData obstacleData)
+        public void Init(WaterHoleObstacleData obstacleData,int index)
         {
+            this.index = index;
             StopCycloneEffect();
             canStartCyclone = false;
             transform.position = obstacleData.position;
             sphereCollider.radius = obstacleData.scale * radiusMultiplier;
 
             //water Shader WhirlPool Data
-            waterMaterial.SetVector(whirlpoolPositionID, obstacleData.shaderPosition);
-            waterMaterial.SetFloat(whirlpoolDistanceID, obstacleData.scale / 20f);
-            waterMaterial.SetFloat(whirlpoolEnableID, 1f);
+            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_DISTANCE}_{index}"), obstacleData.scale / 20f);
+            waterMaterial.SetVector(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_POSITION}_{index}"), obstacleData.shaderPosition);
+            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{index}"), 1f);
         }
 
         public override void Hit()
         {
             base.Hit();
         }
-        public override void ResetObstacle()
+        public void OnDisable()
         {
-            base.ResetObstacle();
-            waterMaterial.SetFloat(whirlpoolEnableID,0f);
-            waterMaterial.SetFloat(whirlpoolDistanceID, 0f); // Reset whirlpool distance
+            ResetWaterMaterial();
         }
-
+        private void OnDestroy()
+        {
+            ResetWaterMaterial();
+        }
+        private void ResetWaterMaterial()
+        {
+            if (index < 0)
+            {
+                return;
+            }
+            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{index}"), 0f);
+            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_DISTANCE}_{index}"), 0f);
+        }
         public void OnPlayerHit(Transform playerTransform)
         {
             targetTransform = playerTransform;

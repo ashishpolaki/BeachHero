@@ -8,12 +8,14 @@ namespace BeachHero
         [Range(0, 10f)] public float cycloneRadius;
         [SerializeField] private GameObject waterGraphicsObject;
         [HideInInspector] public Vector2 shaderPosition;
+        [SerializeField] private int index;
         private WaterHoleObstacle WaterHoleObstacle;
         private bool onValidate = false;
         private Vector3 whirlPoolLastPosition;
 
-        public void Init(WaterHoleObstacleData waterHoleObstacleData)
+        public void Init(WaterHoleObstacleData waterHoleObstacleData, int index)
         {
+            this.index = index;
             cycloneRadius = waterHoleObstacleData.scale;
             waterGraphicsObject = GameObject.Find("Water Graphics");
             if (waterGraphicsObject == null)
@@ -29,7 +31,7 @@ namespace BeachHero
             shaderPosition = new Vector2(whirlPoolPosition.x, whirlPoolPosition.z);
 
             WaterHoleObstacle = GetComponent<WaterHoleObstacle>();
-            WaterHoleObstacle.Init(waterHoleObstacleData);
+            WaterHoleObstacle.Init(waterHoleObstacleData, index);
             onValidate = true;
         }
 
@@ -48,7 +50,7 @@ namespace BeachHero
                 position = transform.position,
                 shaderPosition = shaderPosition,
                 scale = cycloneRadius,
-            });
+            }, index);
         }
 
         private void OnValidate()
@@ -59,7 +61,7 @@ namespace BeachHero
                 position = transform.position,
                 shaderPosition = shaderPosition,
                 scale = cycloneRadius,
-            });
+            }, index);
         }
     }
 }

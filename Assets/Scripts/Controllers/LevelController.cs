@@ -509,17 +509,19 @@ namespace BeachHero
         #region WaterHole Obstacle
         private void SpawnWaterHoleObstacle(WaterHoleObstacleData[] waterHoleObstacleData)
         {
+            int cycloneIndex = 0;
             if (waterHoleObstacleData != null && waterHoleObstacleData.Length > 0)
             {
                 foreach (var waterHole in waterHoleObstacleData)
                 {
+                    cycloneIndex++;
                     if (!obstaclesDictionary.ContainsKey(ObstacleType.WaterHole))
                     {
                         obstaclesDictionary[ObstacleType.WaterHole] = new List<Obstacle>();
                     }
                     WaterHoleObstacle waterHoleObstacle = poolManager.WaterHolePool.GetObject().GetComponent<WaterHoleObstacle>();
                     waterHoleObstacle.transform.position = waterHole.position;
-                    waterHoleObstacle.Init(waterHole);
+                    waterHoleObstacle.Init(waterHole, cycloneIndex);
                     obstaclesDictionary[ObstacleType.WaterHole].Add(waterHoleObstacle);
                 }
             }

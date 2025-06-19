@@ -22,7 +22,13 @@ MonoBehaviour:
       position: {x: -7.71, y: 0, z: 17.18}
       rotation: {x: 0, y: 0, z: 0}
     movingObstacles: []
-    waterHoleObstacles: []
+    waterHoleObstacles:
+    - position: {x: 2.92, y: 0, z: 7.45}
+      shaderPosition: {x: 0.427, y: 0.66125}
+      scale: 2
+    - position: {x: 6.81, y: 0, z: 2.93}
+      shaderPosition: {x: 0.32975, y: 0.77425003}
+      scale: 2
   drownCharacters:
   - position: {x: -0.18, y: 0, z: 7.89}
     waitTimePercentage: 0.878
