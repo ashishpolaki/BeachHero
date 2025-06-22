@@ -44,6 +44,8 @@ namespace BeachHero
         {
             Application.targetFrameRate = 30;
             powerupController.LoadPowerups();
+            AudioController.GetInstance.Init();
+            AudioController.GetInstance.PlayGameMusic();
             SpawnLevel();
         }
         #endregion
@@ -97,11 +99,12 @@ namespace BeachHero
         }
         public void OnLevelFailed()
         {
-            if(isLevelPass)
+            if (isLevelPass)
             {
                 return; // If the level is already passed, do not allow to fail again.
             }
             isLevelPass = false;
+            AudioController.GetInstance.PlaySound(AudioType.Gamelose);
             levelController.OnLevelCompleted(false);
             UIController.GetInstance.ScreenEvent(ScreenType.GameLose, UIScreenEvent.Open);
         }

@@ -23,5 +23,13 @@ namespace BeachHero
         {
             ES3.Save(_saveString, _value);
         }
+        public static void SaveFloat(string _saveString, float _value)
+        {
+            ES3.Save(_saveString, _value);
+        }
+        public static float LoadFloat(string _saveString, float _defaultValue)
+        {
+            return ES3.Load(_saveString, _defaultValue);
+        }
     }
 }

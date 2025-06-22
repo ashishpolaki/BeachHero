@@ -30,5 +30,8 @@ namespace BeachHero
         public const string CURRENT_BOAT_INDEX = "BoatSelectionIndex";
         public const string CURRENT_BOAT_COLOR_INDEX = "CurrentBoatColorIndex_";
         public const string BOAT_SKIN_UNLOCKED = "BoatSkinUnlocked_";
+
+        //Audio
+        public const string GAME_MUSIC_VOLUME = "GameMusicVolume";
     }
 }
