@@ -39,7 +39,7 @@ namespace BeachHero
             obj.SetActive(false);
             pool.Enqueue(obj);
 #if DEBUG
-            Debug.Log($"[{name}] pool count: {pool.Count}");
+         //   Debug.Log($"[{name}] pool count: {pool.Count}");
 #endif
         }
 
@@ -50,7 +50,7 @@ namespace BeachHero
                 Initialise();
             }
 #if DEBUG
-            Debug.Log($"[{name}] pool count: {pool.Count}");
+          //  Debug.Log($"[{name}] pool count: {pool.Count}");
 #endif
 
             if (pool == null)
@@ -58,7 +58,7 @@ namespace BeachHero
                 isInitialised = false;
                 Initialise();
 #if DEBUG
-                Debug.Log($"{name} pool is null");
+           //     Debug.Log($"{name} pool is null");
 #endif
                 return null;
             }

@@ -46,6 +46,7 @@ namespace BeachHero
             powerupController.LoadPowerups();
             AudioController.GetInstance.Init();
             AudioController.GetInstance.PlayGameMusic();
+            AdController.GetInstance.Init();
             SpawnLevel();
         }
         #endregion
