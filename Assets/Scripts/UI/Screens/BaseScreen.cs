@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,8 +28,34 @@ namespace BeachHero
         public void Show(ScreenTabType screenTabType);
         public void Hide();
     }
+    public enum UITweenAnimationType
+    {
+        None,
+        ScalePunch,
+        ScaleBounce,
+        SlideInFromLeft,
+        SlideInFromRight,
+        SlideInFromTop,
+        SlideInFromBottom,
+        FlipIn
+    }
+    [System.Serializable]
+    public struct TweenAnimationData
+    {
+        public UITweenAnimationType Type;
+        public Ease Ease;
+        public float Duration;
+        public float Strength;
+        public float Delay; // Delay before the animation starts
+        public int Vibration;
+        public float Offset;
+        public float Elasticity;
+    }
     public class BaseScreen : MonoBehaviour, IScreen
     {
+        [SerializeField] private TweenAnimationData openingAnimationData;
+        [SerializeField] private bool playOnEnable = false;
+        [SerializeField] private RectTransform rect;
         [SerializeField] private ScreenType screenType;
         [SerializeField] private ScreenTabType defaultOpenTab;
         [SerializeField] private List<BaseScreenTab> tabs;
@@ -59,7 +86,23 @@ namespace BeachHero
                     OpenTab(defaultOpenTab);
                 }
             }
+            PlayOpenAnimation(openingAnimationData);
         }
+        private void OnEnable()
+        {
+            PlayOpenAnimation(openingAnimationData);
+        }
+
+        private void OnValidate()
+        {
+            //Play the opening animation
+            if (openingAnimationData.Type != UITweenAnimationType.None)
+            {
+                if (playOnEnable)
+                    PlayOpenAnimation(openingAnimationData);
+            }
+        }
+
         public virtual void Close()
         {
             foreach (var tab in Tabs)
@@ -83,6 +126,50 @@ namespace BeachHero
         {
             gameObject.SetActive(false);
         }
+        private void PlayOpenAnimation(TweenAnimationData animationData)
+        {
+            switch (animationData.Type)
+            {
+                case UITweenAnimationType.ScalePunch:
+                    rect.DOPunchScale(Vector3.one * animationData.Strength, animationData.Duration, animationData.Vibration, animationData.Elasticity).SetDelay(animationData.Delay);
+                    break;
+                case UITweenAnimationType.ScaleBounce:
+                    rect.localScale = Vector3.zero;
+                    rect.DOScale(Vector3.one, animationData.Duration).SetEase(animationData.Ease).SetDelay(animationData.Delay);
+                    break;
+                case UITweenAnimationType.SlideInFromLeft:
+                    Vector2 originalPos = rect.anchoredPosition;
+                    rect.anchoredPosition = new Vector2(-animationData.Offset, originalPos.y);
+                    rect.DOAnchorPos(originalPos, animationData.Duration).SetEase(animationData.Ease).SetDelay(animationData.Delay);
+                    break;
+                case UITweenAnimationType.SlideInFromRight:
+                    originalPos = rect.anchoredPosition;
+                    rect.anchoredPosition = new Vector2(animationData.Offset, originalPos.y);
+                    rect.DOAnchorPos(originalPos, animationData.Duration).SetEase(animationData.Ease);
+                    break;
+                case UITweenAnimationType.SlideInFromTop:
+                    originalPos = rect.anchoredPosition;
+                    rect.anchoredPosition = new Vector2(originalPos.x, animationData.Offset);
+                    rect.DOAnchorPos(originalPos, animationData.Duration).SetEase(animationData.Ease);
+                    break;
+                case UITweenAnimationType.SlideInFromBottom:
+                    originalPos = rect.anchoredPosition;
+                    rect.anchoredPosition = new Vector2(originalPos.x, -animationData.Offset);
+                    rect.DOAnchorPos(originalPos, animationData.Duration).SetEase(animationData.Ease);
+                    break;
+                case UITweenAnimationType.FlipIn:
+                    //Rotates on Y-axis like a card flip
+                    rect.localScale = Vector3.zero;
+                    rect.localRotation = Quaternion.Euler(0, 180, 0); // Start with the back side facing up
+                    rect.DOScale(Vector3.one, animationData.Duration).SetEase(Ease.OutBack);
+                    rect.DORotate(new Vector3(0, 0, 0), animationData.Duration).SetEase(animationData.Ease);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
 
         public void OpenTab(ScreenTabType screenTabType)
         {

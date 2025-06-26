@@ -92,6 +92,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fe20ad12322fb2499028d7986c27338, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  openingAnimationData:
+    Type: 6
+    Ease: 30
+    Duration: 1
+    Strength: 0
+    Delay: 0
+    Vibration: 0
+    Offset: 2000
+    Elasticity: 0
+  playOnEnable: 0
+  rect: {fileID: 2111526194186752255}
   screenType: 3
   defaultOpenTab: 0
   tabs: []
@@ -321,6 +332,7 @@ GameObject:
   - component: {fileID: 5202557116789663736}
   - component: {fileID: 4126623195686524839}
   - component: {fileID: 1566073162198775830}
+  - component: {fileID: 4799290842681274891}
   m_Layer: 5
   m_Name: HomeButton
   m_TagString: Untagged
@@ -430,6 +442,31 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4799290842681274891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4103798314674993139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openingAnimation:
+    Type: 9
+    Ease: 34
+    Duration: 0.5
+    Strength: 1
+    Delay: 1
+    Vibration: 3
+    Offset: 0
+    Elasticity: 0.4
+  buttonAudioType: 1
+  button: {fileID: 1566073162198775830}
+  rect: {fileID: 6280660595080572005}
+  playOnEnable: 0
 --- !u!1 &4542372352894400281
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3975954916216579080}
   - component: {fileID: 4776544013388753067}
   - component: {fileID: 5192779947189712439}
+  - component: {fileID: 2446996965009974112}
   m_Layer: 5
   m_Name: StoreButton
   m_TagString: Untagged
@@ -34,10 +35,10 @@ RectTransform:
   - {fileID: 6094838752605081894}
   m_Father: {fileID: 8071212869900681318}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -169, y: 101}
-  m_SizeDelta: {x: 233.246, y: 127.49762}
+  m_AnchorMin: {x: 0.26146019, y: 0.019401662}
+  m_AnchorMax: {x: 0.4774287, y: 0.085806675}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3975954916216579080
 CanvasRenderer:
@@ -121,6 +122,31 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2446996965009974112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530731335703073680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openingAnimation:
+    Type: 9
+    Ease: 27
+    Duration: 1
+    Strength: 1
+    Delay: 0
+    Vibration: 0
+    Offset: 1000
+    Elasticity: 0
+  buttonAudioType: 1
+  button: {fileID: 5192779947189712439}
+  rect: {fileID: 2919556460416423963}
+  playOnEnable: 0
 --- !u!1 &2044984838626737233
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,6 +159,7 @@ GameObject:
   - component: {fileID: 6627179071597941274}
   - component: {fileID: 3565705306662668330}
   - component: {fileID: 4141304196390609998}
+  - component: {fileID: 2021827812927618675}
   m_Layer: 5
   m_Name: MAPButton
   m_TagString: Untagged
@@ -155,10 +182,10 @@ RectTransform:
   - {fileID: 8669263239115240360}
   m_Father: {fileID: 8071212869900681318}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 111, y: 101}
-  m_SizeDelta: {x: 233.246, y: 127.49762}
+  m_AnchorMin: {x: 0.51794165, y: 0.019401662}
+  m_AnchorMax: {x: 0.73391014, y: 0.085806675}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6627179071597941274
 CanvasRenderer:
@@ -242,6 +269,31 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2021827812927618675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2044984838626737233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openingAnimation:
+    Type: 7
+    Ease: 27
+    Duration: 1
+    Strength: 1
+    Delay: 0
+    Vibration: 0
+    Offset: 1000
+    Elasticity: 0
+  buttonAudioType: 1
+  button: {fileID: 4141304196390609998}
+  rect: {fileID: 4824854023410272593}
+  playOnEnable: 0
 --- !u!1 &2518283311147858941
 GameObject:
   m_ObjectHideFlags: 0
@@ -329,6 +381,7 @@ GameObject:
   - component: {fileID: 7148990948911149930}
   - component: {fileID: 1686807375650117811}
   - component: {fileID: 3408815223475987010}
+  - component: {fileID: 971613588692747548}
   m_Layer: 5
   m_Name: BoatCustomisationButton
   m_TagString: Untagged
@@ -351,10 +404,10 @@ RectTransform:
   - {fileID: 8194177331034342488}
   m_Father: {fileID: 8071212869900681318}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -432, y: 101}
-  m_SizeDelta: {x: 233.246, y: 127.49762}
+  m_AnchorMin: {x: 0.0086824065, y: 0.019401662}
+  m_AnchorMax: {x: 0.22465092, y: 0.085806675}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7148990948911149930
 CanvasRenderer:
@@ -438,6 +491,31 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &971613588692747548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3030188540991597531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openingAnimation:
+    Type: 6
+    Ease: 27
+    Duration: 1
+    Strength: 1
+    Delay: 0
+    Vibration: 0
+    Offset: 500
+    Elasticity: 0
+  buttonAudioType: 1
+  button: {fileID: 3408815223475987010}
+  rect: {fileID: 4699860009668411207}
+  playOnEnable: 0
 --- !u!1 &3034446249913120528
 GameObject:
   m_ObjectHideFlags: 0
@@ -532,6 +610,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01f59b4e9f7cb0140a165300996994e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  openingAnimationData:
+    Type: 0
+    Ease: 0
+    Duration: 0
+    Strength: 0
+    Delay: 0
+    Vibration: 0
+    Offset: 0
+    Elasticity: 0
+  playOnEnable: 0
+  rect: {fileID: 8071212869900681318}
   screenType: 1
   defaultOpenTab: 0
   tabs:
@@ -1176,6 +1265,7 @@ GameObject:
   - component: {fileID: 8401742885123673693}
   - component: {fileID: 6944883660934015366}
   - component: {fileID: 5993284834546111571}
+  - component: {fileID: 5887865604330089652}
   m_Layer: 5
   m_Name: PlayButton
   m_TagString: Untagged
@@ -1199,10 +1289,10 @@ RectTransform:
   - {fileID: 3554816750642488365}
   m_Father: {fileID: 8071212869900681318}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 421, y: 139}
-  m_SizeDelta: {x: 233.246, y: 233.24597}
+  m_AnchorMin: {x: 0.79085976, y: 0.022046339}
+  m_AnchorMax: {x: 0.9887698, y: 0.12274533}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8401742885123673693
 CanvasRenderer:
@@ -1286,6 +1376,31 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5887865604330089652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9179211002936764314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openingAnimation:
+    Type: 4
+    Ease: 27
+    Duration: 1
+    Strength: 1
+    Delay: 1
+    Vibration: 10
+    Offset: 1000
+    Elasticity: 0.5
+  buttonAudioType: 1
+  button: {fileID: 5993284834546111571}
+  rect: {fileID: 2377908066080421926}
+  playOnEnable: 0
 --- !u!1001 &3448836725170984953
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -22,7 +22,8 @@ namespace BeachHero
         private readonly string androidRewardedAdId = "ca-app-pub-3940256099942544/5224354917";
         private readonly string androidInterstitialAdId = "ca-app-pub-3940256099942544/1033173712";
         private readonly string androidNativeOverlayAdId = "ca-app-pub-3940256099942544/2247696110";
-        private readonly string androidBannerAdId = "ca-app-pub-3940256099942544/6300978111";
+       // private readonly string androidBannerAdId = "ca-app-pub-3940256099942544/6300978111";
+        private readonly string androidBannerAdId = "ca-app-pub-9358123754024746/6409681398";
 
         private readonly string iosAppId = "ca-app-pub-3940256099942544~1458002511";
         private readonly string iosBannerAdId = "ca-app-pub-3940256099942544/2934735716";

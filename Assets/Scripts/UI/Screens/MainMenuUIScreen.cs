@@ -18,6 +18,7 @@ namespace BeachHero
             int currentLevelNumber = GameController.GetInstance.CurrentLevelIndex + 1;
             levelNumberText.text = $"{currentLevelNumber}";
             AddListeners();
+            AdController.GetInstance.ShowBanner();
         }
         public override void Close()
         {

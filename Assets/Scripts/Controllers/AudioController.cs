@@ -96,6 +96,7 @@ namespace BeachHero
         {
             foreach (var audioSourceCase in audioSourcesPool)
             {
+                if(audioSourceCase == null || audioSourceCase.AudioSource == null || audioSourceCase.AudioSource.clip == null) continue;
                 if (audioSourceCase.IsPlaying)
                 {
                     audioSourceCase.AudioSource.Stop();

@@ -10,6 +10,7 @@ namespace BeachHero
         Gamelose,
         Gamewin,
         Coin,
+        None
     }
     public enum AudioVolumeType
     {
