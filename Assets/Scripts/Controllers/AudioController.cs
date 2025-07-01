@@ -30,6 +30,7 @@ namespace BeachHero
             {
                 audioSourcesPool.Add(new AudioSourceCase());
             }
+            PlayGameMusic();
         }
 
         private void OnDestroy()

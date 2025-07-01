@@ -54,7 +54,6 @@ namespace BeachHero
     public class BaseScreen : MonoBehaviour, IScreen
     {
         [SerializeField] private TweenAnimationData openingAnimationData;
-        [SerializeField] private bool playOnEnable = false;
         [SerializeField] private RectTransform rect;
         [SerializeField] private ScreenType screenType;
         [SerializeField] private ScreenTabType defaultOpenTab;
@@ -88,21 +87,6 @@ namespace BeachHero
             }
             PlayOpenAnimation(openingAnimationData);
         }
-        private void OnEnable()
-        {
-            PlayOpenAnimation(openingAnimationData);
-        }
-
-        private void OnValidate()
-        {
-            //Play the opening animation
-            if (openingAnimationData.Type != UITweenAnimationType.None)
-            {
-                if (playOnEnable)
-                    PlayOpenAnimation(openingAnimationData);
-            }
-        }
-
         public virtual void Close()
         {
             foreach (var tab in Tabs)
@@ -164,12 +148,15 @@ namespace BeachHero
                     rect.DOScale(Vector3.one, animationData.Duration).SetEase(Ease.OutBack);
                     rect.DORotate(new Vector3(0, 0, 0), animationData.Duration).SetEase(animationData.Ease);
                     break;
-
                 default:
                     break;
             }
+            PlayTweenAnimations(animationData);
         }
 
+        protected virtual void PlayTweenAnimations(TweenAnimationData animationData)
+        {
+        }
 
         public void OpenTab(ScreenTabType screenTabType)
         {

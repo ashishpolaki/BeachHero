@@ -30,6 +30,7 @@ namespace BeachHero
     {
         public CollectableType type;
         public Vector3 position;
+        [Range(1, 10)] public int count;
     }
 
     public enum CollectableType

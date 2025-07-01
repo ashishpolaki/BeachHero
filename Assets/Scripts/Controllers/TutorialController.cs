@@ -7,8 +7,6 @@ namespace BeachHero
     {
         [Tooltip("First Time User Experience Level Number")]
         private int ftueLevelNumber = 1;
-        private int magnetPowerup_UnlockLevel = 2;
-        private int speedBoost_UnlockLevel = 3;
         public event Action OnFTUEPlayerTouchAction;
         public event Action OnFTUEPathDrawnAction;
         public event Action OnPowerupPressAction;
@@ -31,20 +29,20 @@ namespace BeachHero
         }
         public bool IsMagnetPowerupUnlocked()
         {
-            bool isUnlocked = SaveController.LoadBool(StringUtils.MAGNET_POWERUP, false);
+            bool isUnlocked = SaveController.LoadBool(StringUtils.MAGNET_UNLOCKED, false);
             return isUnlocked;
         }
         public bool IsMagnetUnlockLevel(int levelNumber)
         {
-            return levelNumber == magnetPowerup_UnlockLevel;
+            return levelNumber == IntUtils.MAGNET_UNLOCK_LEVEL;
         }
         public bool IsSpeedBoostUnlockLevel(int levelNumber)
         {
-            return levelNumber == speedBoost_UnlockLevel;
+            return levelNumber == IntUtils.SPEEDBOOST_UNLOCK_LEVEL;
         }
         public bool IsSpeedBoostPowerupUnlocked()
         {
-            bool isUnlocked = SaveController.LoadBool(StringUtils.SPEEDBOOST_POWERUP, false);
+            bool isUnlocked = SaveController.LoadBool(StringUtils.SPEEDBOOST_UNLOCKED, false);
             return isUnlocked;
         }
     }

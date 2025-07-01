@@ -22,8 +22,7 @@ namespace BeachHero
         private readonly string androidRewardedAdId = "ca-app-pub-3940256099942544/5224354917";
         private readonly string androidInterstitialAdId = "ca-app-pub-3940256099942544/1033173712";
         private readonly string androidNativeOverlayAdId = "ca-app-pub-3940256099942544/2247696110";
-       // private readonly string androidBannerAdId = "ca-app-pub-3940256099942544/6300978111";
-        private readonly string androidBannerAdId = "ca-app-pub-9358123754024746/6409681398";
+        private readonly string androidBannerAdId = "ca-app-pub-3940256099942544/6300978111";
 
         private readonly string iosAppId = "ca-app-pub-3940256099942544~1458002511";
         private readonly string iosBannerAdId = "ca-app-pub-3940256099942544/2934735716";
@@ -35,7 +34,7 @@ namespace BeachHero
         //   private string androidAppId = "";
         //private string androidRewardedAdId = "";
         //private string androidInterstitialAdId = "";
-        //private string androidBannerAdId = "";
+        //private string androidBannerAdId = "ca-app-pub-9358123754024746/6409681398";
 
         //private string iosAppId = "";
         //private string iosBannerAdId = "";
@@ -76,6 +75,11 @@ namespace BeachHero
                 }
             });
             RequestADs();
+        }
+
+        public void PurchasedNoADsPack()
+        {
+            SaveController.SaveBool(StringUtils.NO_ADS_PURCHASED, true);
         }
 
         public void RequestADs()
@@ -354,6 +358,11 @@ namespace BeachHero
                 return;
             }
 
+            if (SaveController.LoadBool(StringUtils.NO_ADS_PURCHASED, false))
+            {
+                return;
+            }
+
             // These ad units are configured to always serve test ads.
 #if UNITY_ANDROID
             string adUnitId = androidInterstitialAdId;
@@ -388,6 +397,10 @@ namespace BeachHero
 
         public void ShowInterstitialAd()
         {
+            if (SaveController.LoadBool(StringUtils.NO_ADS_PURCHASED, false))
+            {
+                return;
+            }
             if (interstitial != null && interstitial.CanShowAd())
             {
                 interstitial.Show();
@@ -450,6 +463,11 @@ namespace BeachHero
                 return;
             }
 
+            if(SaveController.LoadBool(StringUtils.NO_ADS_PURCHASED,false))
+            {
+                return;
+            }
+
             if (bannerView == null)
             {
 #if UNITY_ANDROID
@@ -459,7 +477,6 @@ namespace BeachHero
 #else
   private string _adUnitId = "unused";
 #endif
-
                 bannerView = new BannerView(_adUnitId, AdSize.Banner, AdPosition.Bottom);
                 BannerAddListeners();
                 bannerView.LoadAd(CreateAdRequest());
@@ -509,31 +526,31 @@ namespace BeachHero
 
         private void HandleOnAdLoaded()
         {
-            Debug.Log("Banner ad loaded successfully.");
+            DebugUtils.Log("Banner ad loaded successfully.");
         }
         private void HandleOnAdLoadFailed(LoadAdError loadAdError)
         {
-            Debug.LogError("Banner ad failed to load: " + loadAdError.GetMessage());
+            DebugUtils.LogError("Banner ad failed to load: " + loadAdError.GetMessage());
         }
         private void HandleOnAdPaid(AdValue adValue)
         {
-            Debug.Log($"Banner ad paid {adValue.Value} {adValue.CurrencyCode}.");
+            DebugUtils.Log($"Banner ad paid {adValue.Value} {adValue.CurrencyCode}.");
         }
         private void HandleOnAdImpressionRecorded()
         {
-            Debug.Log("Banner ad impression recorded.");
+            DebugUtils.Log("Banner ad impression recorded.");
         }
         private void HandleOnAdClick()
         {
-            Debug.Log("Banner ad clicked.");
+            DebugUtils.Log("Banner ad clicked.");
         }
         private void HandleOnAdFullScreenOpen()
         {
-            Debug.Log("Banner ad opened full screen content.");
+            DebugUtils.Log("Banner ad opened full screen content.");
         }
         private void HandleOnAdFullScreenClosed()
         {
-            Debug.Log("Banner ad closed full screen content.");
+            DebugUtils.Log("Banner ad closed full screen content.");
         }
 
         public void HideBanner()
@@ -547,7 +564,7 @@ namespace BeachHero
 
         public void ShowBanner()
         {
-            if (Application.internetReachability == NetworkReachability.NotReachable)
+            if (SaveController.LoadBool(StringUtils.NO_ADS_PURCHASED, false))
             {
                 return;
             }
@@ -564,7 +581,5 @@ namespace BeachHero
             }
         }
         #endregion
-
     }
-
 }

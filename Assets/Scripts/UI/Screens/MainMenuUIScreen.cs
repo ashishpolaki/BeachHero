@@ -1,3 +1,4 @@
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,23 @@ namespace BeachHero
         [SerializeField] private Button storeButton;
         [SerializeField] private Button mapButton;
         [SerializeField] private TextMeshProUGUI levelNumberText;
+        [SerializeField] private UIButtonAudio[] buttonAnimationDatas;
+
+        protected override void PlayTweenAnimations(TweenAnimationData animationData)
+        {
+            //base.PlayTweenAnimations(animationData);
+            float delay = animationData.Delay + animationData.Duration;
+           DOVirtual.DelayedCall(delay, ButtonTweenAnimations);
+           // ButtonTweenAnimations();
+        }
+
+        private void ButtonTweenAnimations()
+        {
+            foreach (var buttonAnimationData in buttonAnimationDatas)
+            {
+               buttonAnimationData.PlayTweenAnimation();
+            }   
+        }
 
         public override void Open(ScreenTabType screenTabType)
         {
@@ -18,7 +36,6 @@ namespace BeachHero
             int currentLevelNumber = GameController.GetInstance.CurrentLevelIndex + 1;
             levelNumberText.text = $"{currentLevelNumber}";
             AddListeners();
-            AdController.GetInstance.ShowBanner();
         }
         public override void Close()
         {

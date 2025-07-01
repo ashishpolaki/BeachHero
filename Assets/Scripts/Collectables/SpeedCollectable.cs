@@ -7,6 +7,7 @@ namespace BeachHero
     {
         [SerializeField] private GameObject speedGraphics;
         [SerializeField] private float particleTime = 5f;
+        [SerializeField] private PowerupType powerupType;
         private ParticleSystem speedParticle;
 
         private void OnDisable()
@@ -30,6 +31,7 @@ namespace BeachHero
             speedParticle = GameController.GetInstance.PoolManager.CoinParticlePool.GetObject().GetComponent<ParticleSystem>();
             speedParticle.transform.position = transform.position;
             speedParticle.Play();
+            GameController.GetInstance.PowerupController.OnPowerupCollected(powerupType, Count);
             StartCoroutine(IEReturnToPool());
         }
         private IEnumerator IEReturnToPool()

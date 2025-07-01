@@ -43,10 +43,10 @@ namespace BeachHero
         private void Start()
         {
             Application.targetFrameRate = 30;
-            powerupController.LoadPowerups();
             AudioController.GetInstance.Init();
-            AudioController.GetInstance.PlayGameMusic();
             AdController.GetInstance.Init();
+            powerupController.Init();
+            storeController.Init();
             SpawnLevel();
         }
         #endregion
@@ -57,7 +57,7 @@ namespace BeachHero
             cameraController = _cameraController;
             if (_cameraController == null)
             {
-                Debug.LogError("CameraController is null");
+                DebugUtils.LogError("CameraController is null");
             }
         }
         #endregion
@@ -66,7 +66,7 @@ namespace BeachHero
         {
             isGameStarted = false;
             isLevelPass = false;
-            currentLevelIndex = SaveController.LoadInt(StringUtils.LEVELNUMBER, 0);
+            currentLevelIndex = SaveController.LoadInt(StringUtils.LEVELNUMBER, IntUtils.DEFAULT_LEVEL_INDEX);
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
             levelController.StartState(levelDatabaseSO.GetLevelByIndex(currentLevelIndex));
             cameraController.Init();
@@ -112,10 +112,6 @@ namespace BeachHero
         #endregion
 
         #region Powerup
-        public void OnPowerUpPickedUp(PowerupType powerupType)
-        {
-            powerupController.OnPowerupCollected(powerupType);
-        }
         private void ActivatePowerups()
         {
             if (powerupController.CurrentActivePowerupList.Count <= 0)

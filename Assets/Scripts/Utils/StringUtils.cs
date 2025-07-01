@@ -4,7 +4,6 @@ namespace BeachHero
 {
     public class StringUtils
     {
-        public const string POWERUP = "Powerup_";
         public const string LEVELNUMBER = "LevelNumber";
 
         //Whirlpool
@@ -23,8 +22,10 @@ namespace BeachHero
         public const string VICTORY_ANIM = "Victory";
 
         //Powerups
-        public const string MAGNET_POWERUP = "MagnetPowerup";
-        public const string SPEEDBOOST_POWERUP = "SpeedBoostPowerup";
+        public const string MAGNET_UNLOCKED = "MagnetUnlockLevel";
+        public const string SPEEDBOOST_UNLOCKED = "SpeedBoostUnlockLevel";
+        public const string MAGNET_BALANCE = "MagnetBalance";
+        public const string SPEEDBOOST_BALANCE = "SpeedBoostBalance";
 
         //Boat Skins
         public const string CURRENT_BOAT_INDEX = "BoatSelectionIndex";
@@ -33,5 +34,31 @@ namespace BeachHero
 
         //Audio
         public const string GAME_MUSIC_VOLUME = "GameMusicVolume";
+
+        //Product Purchase
+        public const string PRODUCT_PURCHASED_SUCCESS = "Purchase successful!";
+        public const string PRODUCT_PURCHASE_FAILED = "Purchase failed. Please try again later.";
+
+        //Game Currency
+        public const string GAME_CURRENCY_BALANCE = "GameCurrencyBalance";
+
+        //ADS
+        public const string NO_ADS_PURCHASED = "NoAdsPurchased";
+
+    }
+
+    public class IntUtils
+    {
+        //Powerup
+        public const int MAGNET_UNLOCK_LEVEL = 2;
+        public const int SPEEDBOOST_UNLOCK_LEVEL = 3;
+        public const int DEFAULT_MAGNET_BALANCE = 2;
+        public const int DEFAULT_SPEEDBOOST_BALANCE = 2;
+
+        //Game Currency
+        public const int DEFAULT_GAME_CURRENCY_BALANCE = 100;
+
+        // Level 
+        public const int DEFAULT_LEVEL_INDEX = 1;
     }
 }

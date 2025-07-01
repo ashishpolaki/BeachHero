@@ -31,7 +31,7 @@ namespace BeachHero
             magnetParticle = GameController.GetInstance.PoolManager.CoinParticlePool.GetObject().GetComponent<ParticleSystem>();
             magnetParticle.transform.position = transform.position;
             magnetParticle.Play();
-            GameController.GetInstance.OnPowerUpPickedUp(powerupType);
+            GameController.GetInstance.PowerupController.OnPowerupCollected(powerupType,Count);
             StartCoroutine(IEReturnToPool());
         }
         private IEnumerator IEReturnToPool()

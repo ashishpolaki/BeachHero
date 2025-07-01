@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace BeachHero
 {
@@ -10,10 +11,53 @@ namespace BeachHero
     }
     public class PowerupController : MonoBehaviour
     {
-        private Dictionary<PowerupType, int> powerupCounts = new Dictionary<PowerupType, int>();
+        #region Private variables
         private List<PowerupType> currentActivePowerupList = new List<PowerupType>();
+        private int magnetBalance;
+        private int speedBoostBalance;
+        #endregion
 
+        #region Actions
+        public event Action OnMagnetBalanceChange;
+        public event Action OnSpeedBoostBalanceChange;
+        #endregion
+
+        #region Properties
         public List<PowerupType> CurrentActivePowerupList => currentActivePowerupList;
+        public int MagnetBalance
+        {
+            get => magnetBalance;
+            private set
+            {
+                magnetBalance = value;
+                SaveController.SaveInt(StringUtils.MAGNET_BALANCE, magnetBalance);
+                OnMagnetBalanceChange?.Invoke();
+            }
+        }
+
+        public int SpeedBoostBalance
+        {
+            get => speedBoostBalance;
+            private set
+            {
+                speedBoostBalance = value;
+                SaveController.SaveInt(StringUtils.SPEEDBOOST_BALANCE, speedBoostBalance);
+                OnSpeedBoostBalanceChange?.Invoke();
+            }
+        }
+        #endregion
+
+        #region Init
+        public void Init()
+        {
+            InitBalances();
+        }
+        private void InitBalances()
+        {
+            magnetBalance = SaveController.LoadInt(StringUtils.MAGNET_BALANCE, IntUtils.DEFAULT_MAGNET_BALANCE);
+            speedBoostBalance = SaveController.LoadInt(StringUtils.SPEEDBOOST_BALANCE, IntUtils.DEFAULT_SPEEDBOOST_BALANCE);
+        }
+        #endregion
 
         #region Public Methods
         public void AddPowerupInList(PowerupType powerupType)
@@ -30,54 +74,49 @@ namespace BeachHero
                 currentActivePowerupList.Remove(powerupType);
             }
         }
-        public void OnPowerupCollected(PowerupType powerupType)
+        public void OnPowerupCollected(PowerupType powerupType,int count)
         {
-            IncrementPowerupCount(powerupType);
-        }
-        public void LoadPowerups()
-        {
-            foreach (PowerupType powerupType in System.Enum.GetValues(typeof(PowerupType)))
+            switch (powerupType)
             {
-                int powerupCount = SaveController.LoadInt($"{StringUtils.POWERUP}{(int)powerupType}", 1);
-                powerupCounts[powerupType] = powerupCount;
+                case PowerupType.Magnet:
+                    UpdateMagnetBalance(count);
+                    break;
+                case PowerupType.SpeedBoost:
+                    UpdateSpeedBoostBalance(count);
+                    break;
+                default:
+                    DebugUtils.LogError($"Powerup {powerupType} not recognized.");
+                    break;
             }
-        }
-        public int GetPowerupCount(PowerupType powerupType)
-        {
-            return powerupCounts.TryGetValue(powerupType, out int count) ? count : 0;
         }
         public void ActivateSelectedPowerups()
         {
-            foreach (PowerupType powerupType in currentActivePowerupList)
+            foreach (var powerupType in currentActivePowerupList)
             {
-                if (powerupCounts.TryGetValue(powerupType, out int count) && count > 0)
+                switch (powerupType)
                 {
-                    OnPowerupActivated(powerupType);
+                    case PowerupType.Magnet when MagnetBalance > 0:
+                        MagnetBalance--;
+                        break;
+
+                    case PowerupType.SpeedBoost when SpeedBoostBalance > 0:
+                        SpeedBoostBalance--;
+                        break;
+
+                    default:
+                        DebugUtils.LogError($"Powerup {powerupType} not recognized or balance is zero.");
+                        break;
                 }
-            }   
+            }
             currentActivePowerupList.Clear();
         }
-        #endregion
-
-        #region Private Methods
-        private void OnPowerupActivated(PowerupType powerupType)
+        public void UpdateMagnetBalance(int count)
         {
-            // This could involve decrementing the count or applying the powerup effect
-            powerupCounts[powerupType]--;
-            SavePowerupCount(powerupType);
+            MagnetBalance += count;
         }
-        private void IncrementPowerupCount(PowerupType powerupType)
+        public void UpdateSpeedBoostBalance(int count)
         {
-            if (!powerupCounts.ContainsKey(powerupType))
-            {
-                powerupCounts[powerupType] = 0;
-            }
-            powerupCounts[powerupType]++;
-            SavePowerupCount(powerupType);
-        }
-        private void SavePowerupCount(PowerupType powerupType)
-        {
-            SaveController.SaveInt($"{StringUtils.POWERUP}{(int)powerupType}", powerupCounts[powerupType]);
+            SpeedBoostBalance += count;
         }
         #endregion
     }

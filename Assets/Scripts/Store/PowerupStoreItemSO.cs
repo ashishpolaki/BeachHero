@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace BeachHero
 {
-    [CreateAssetMenu(fileName = "PowerupStoreItemSO", menuName = "Scriptable Objects/Store/PowerupStoreItemSO")]
+    [CreateAssetMenu(fileName = "PowerupStoreItemSO", menuName = "Scriptable Objects/Store/Powerup")]
     public class PowerupStoreItemSO : StoreItemSO
     {
         [SerializeField] private PowerupType powerupType;

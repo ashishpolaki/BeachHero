@@ -5,9 +5,9 @@ namespace BeachHero
 {
     public interface IStoreItem
     {
-        public ProductType ProductType { get; }
-        public string ItemName { get; }
-        public Sprite ItemIcon { get; }
-        public int ItemPrice { get; }
+        public ProductType Type { get; }
+        public string Name { get; }
+        public Sprite Icon { get; }
+        public int Price { get; }
     }
 }

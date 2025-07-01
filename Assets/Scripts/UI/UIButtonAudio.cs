@@ -1,4 +1,3 @@
-using Codice.CM.Common;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
@@ -40,20 +39,12 @@ namespace BeachHero
         [SerializeField] private Button button;
         [SerializeField] private RectTransform rect;
 
-        [SerializeField] private bool playOnEnable = true;
-
         private void OnEnable()
         {
             if (button != null)
             {
                 button.onClick.AddListener(PlayAudio);
             }
-            PlayOpenAnimation(openingAnimation);
-        }
-        private void OnValidate()
-        {
-            if (playOnEnable)
-                PlayOpenAnimation(openingAnimation);
         }
 
         private void OnDisable()
@@ -70,6 +61,11 @@ namespace BeachHero
                     AudioController.GetInstance.PlaySound(buttonAudioType);
                 }
             }
+        }
+
+        public void PlayTweenAnimation()
+        {
+            PlayOpenAnimation(openingAnimation);
         }
 
         private void PlayOpenAnimation(ButtonAnimationData buttonAnimationData)

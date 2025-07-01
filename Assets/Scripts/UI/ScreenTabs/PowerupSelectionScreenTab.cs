@@ -18,6 +18,7 @@ namespace BeachHero
         {
             base.Open();
             AddListeners();
+            isPowerupTutorialEnabled = false; // Reset the tutorial state
             powerupTutorialPanel.Deactivate();
             SetLevelNumber();
             InitMagnetPowerup();
@@ -65,13 +66,13 @@ namespace BeachHero
                 bool isMagnetUnlockLevel = GameController.GetInstance.TutorialController.IsMagnetUnlockLevel(currentLevelNumber);
                 if (isMagnetUnlockLevel)
                 {
-                    SaveController.SaveBool(StringUtils.MAGNET_POWERUP, true);
+                    SaveController.SaveBool(StringUtils.MAGNET_UNLOCKED, true);
                     isMagnetPowerupLocked = false;
                     isPowerupTutorialEnabled = true;
                     powerupTutorialPanel.ShowMagnetPowerupTutorial(magnetPowerup.transform.position);
                 }
             }
-            int magnetPowerupCount = GameController.GetInstance.PowerupController.GetPowerupCount(PowerupType.Magnet);
+            int magnetPowerupCount = GameController.GetInstance.PowerupController.MagnetBalance; 
             magnetPowerup.Init(PowerupType.Magnet, magnetPowerupCount, isMagnetPowerupLocked);
         }
         private void InitSpeedBoostPowerup()
@@ -83,13 +84,13 @@ namespace BeachHero
                 bool isSpeedBoostUnlockLevel = GameController.GetInstance.TutorialController.IsSpeedBoostUnlockLevel(currentLevelNumber);
                 if (isSpeedBoostUnlockLevel)
                 {
-                    SaveController.SaveBool(StringUtils.SPEEDBOOST_POWERUP, true);
+                    SaveController.SaveBool(StringUtils.SPEEDBOOST_UNLOCKED, true);
                     isSpeedPowerupLocked = false;
                     isPowerupTutorialEnabled = true;
                     powerupTutorialPanel.ShowSpeedBoostPowerupTutorial(speedPowerup.transform.position);
                 }
             }
-            int speedPowerupCount = GameController.GetInstance.PowerupController.GetPowerupCount(PowerupType.SpeedBoost);
+            int speedPowerupCount = GameController.GetInstance.PowerupController.SpeedBoostBalance;
             speedPowerup.Init(PowerupType.SpeedBoost, speedPowerupCount, isSpeedPowerupLocked);
         }
 

@@ -6,17 +6,17 @@ namespace BeachHero
     public class StoreItemSO : ScriptableObject, IStoreItem
     {
         [SerializeField] protected ProductType productType;
-        [SerializeField] protected int productId;
+        [SerializeField] protected string productId;
         [SerializeField] protected string productName;
         [SerializeField] protected Sprite icon;
         [SerializeField] protected int price;
         [SerializeField] protected StoreItemUI uiPrefab;
 
-        public ProductType ProductType => ProductType;
-        public string ItemName => productName;
-        public Sprite ItemIcon => icon;
-        public int ItemPrice => price;
+        public ProductType Type => productType;
+        public string Name => productName;
+        public string Id => productId;
+        public Sprite Icon => icon;
+        public int Price => price;
         public StoreItemUI UIPrefab => uiPrefab;
-        public int ProductId => productId;
     }
 }

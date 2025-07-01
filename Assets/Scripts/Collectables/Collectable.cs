@@ -11,7 +11,7 @@ namespace BeachHero
     public class Collectable : MonoBehaviour, ICollectable
     {
         [SerializeField] private CollectableType collectableType;
-
+        private int count;
         public CollectableType CollectableType
         {
             get
@@ -23,11 +23,13 @@ namespace BeachHero
                 collectableType = value;
             }
         }
+        public int Count => count;
 
         public virtual void Init(CollectableData collectableData)
         {
             transform.position = collectableData.position;
             collectableType = collectableData.type;
+            count = collectableData.count;
         }
 
         public virtual void Collect()

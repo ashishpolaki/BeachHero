@@ -12,8 +12,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ad70d65a293e094aad559e4b404c6a1, type: 3}
   m_Name: StoreDatabase
   m_EditorClassIdentifier: 
-  storeItems:
-  - {fileID: 11400000, guid: 3ca910c96fe420c4b845db91b5f30795, type: 2}
-  - {fileID: 11400000, guid: ce1d2c963555c0748822ee6afaa12853, type: 2}
-  - {fileID: 11400000, guid: 2e67bccc1d1dc5645a0e762fa07237d1, type: 2}
-  - {fileID: 11400000, guid: f08cf41d10b652748bc75dcd843a9ef7, type: 2}
+  StoreProducts:
+  - index: 0
+    isRealMoney: 1
+    isGameCurrency: 1
+    contents:
+    - itemType: 0
+      quantity: 2
+    Id: magnet_booster
+    Type: 0
+    realMoneyCost: $ 1
+    gameCurrencyCost: 30
+  - index: 1
+    isRealMoney: 0
+    isGameCurrency: 1
+    contents:
+    - itemType: 1
+      quantity: 2
+    Id: 
+    Type: 0
+    realMoneyCost: 
+    gameCurrencyCost: 50
+  - index: 2
+    isRealMoney: 1
+    isGameCurrency: 0
+    contents:
+    - itemType: 1
+      quantity: 3
+    - itemType: 0
+      quantity: 2
+    Id: welcome_pack
+    Type: 0
+    realMoneyCost: $ 1
+    gameCurrencyCost: 50
+  - index: 3
+    isRealMoney: 1
+    isGameCurrency: 0
+    contents:
+    - itemType: 2
+      quantity: -1
+    Id: no_ads
+    Type: 1
+    realMoneyCost: $ 3
+    gameCurrencyCost: 50
+  - index: 4
+    isRealMoney: 1
+    isGameCurrency: 0
+    contents:
+    - itemType: 4
+      quantity: 50
+    Id: star_fish.50
+    Type: 0
+    realMoneyCost: $ 1
+    gameCurrencyCost: 50

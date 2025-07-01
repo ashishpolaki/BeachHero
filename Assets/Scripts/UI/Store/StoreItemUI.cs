@@ -11,14 +11,14 @@ namespace BeachHero
         [SerializeField] private TextMeshProUGUI realMoneyText;
         [SerializeField] private Button realMoneyBuyButton;
 
-        private int itemId;
+        private string itemId;
 
         public virtual void Initialize(StoreItemSO storeItemSO)
         {
-            itemId = storeItemSO.ProductId;
-            itemImage.sprite = storeItemSO.ItemIcon;
-            itemNameText.text = storeItemSO.ItemName;
-            realMoneyText.text = $"Rs.{storeItemSO.ItemPrice}"; 
+            itemId = storeItemSO.Id;
+            itemImage.sprite = storeItemSO.Icon;
+            itemNameText.text = storeItemSO.Name;
+            realMoneyText.text = $"Rs.{storeItemSO.Price}"; 
         }
         private void OnEnable()
         {
@@ -42,7 +42,7 @@ namespace BeachHero
 
         private void OnBuyButtonClicked()
         {
+         //   GameController.GetInstance.StoreController.Purchase(itemId);
         }
-
     }
 }
