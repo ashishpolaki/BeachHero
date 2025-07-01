@@ -7,6 +7,32 @@ namespace BeachHero
     {
         [SerializeField] private BoatSkinSO[] boatSkins;
         public BoatSkinSO[] BoatSkins => boatSkins;
+
+        public BoatSkinSO GetBoatSkin(string id)
+        {
+            foreach (var skin in boatSkins)
+            {
+                if (skin.ID == id)
+                {
+                    return skin;
+                }
+            }
+            DebugUtils.LogError($"BoatSkin with ID {id} not found in the database.");
+            return null;
+        }
+
+        public BoatSkinSO GetBoatSkin(int index)
+        {
+            foreach (var skin in boatSkins)
+            {
+                if (skin.Index == index)
+                {
+                    return skin;
+                }
+            }
+            DebugUtils.LogError($"BoatSkin with index {index} not found in the database.");
+            return null;
+        }
     }
 
     //[System.Serializable]

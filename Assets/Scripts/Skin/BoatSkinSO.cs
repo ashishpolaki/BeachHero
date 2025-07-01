@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Purchasing;
 
 namespace BeachHero
 {
@@ -12,12 +13,14 @@ namespace BeachHero
         [SerializeField] private string boatName;
         [SerializeField] private float speed;
         [Range(0f, 1f), SerializeField] private float speedMeter;
-        [SerializeField] private BoatSkinColorData[] skinColors;
         [SerializeField] private bool isDefault;
-        [Hide("isDefault"), SerializeField] private bool isPurchasableWithGameCurrency;
-        [Hide("isDefault"), SerializeField] private bool isPurchasableWithRealMoney;
-        [Show("isPurchasableWithGameCurrency"), SerializeField] private int inGameCurrencyCost;
-        [Show("isPurchasableWithRealMoney"), SerializeField] private int realMoneyCost;
+        [Hide("isDefault"), SerializeField] private bool isGameCurrency;
+        [Hide("isDefault"), SerializeField] private bool isRealMoney;
+        [Show("isGameCurrency"), SerializeField] private int gameCurrencyCost;
+        [Show("isRealMoney"), SerializeField] private ProductType productType;
+        [Show("isRealMoney"), SerializeField] private string realMoneyCost;
+        [SerializeField] private BoatSkinColorData[] skinColors;
+       
         #endregion
 
         #region Properties
@@ -28,17 +31,23 @@ namespace BeachHero
         public float Speed => speed;
         public float SpeedMeter => speedMeter;
         public BoatSkinColorData[] SkinColors => skinColors;
-        public bool IsPurchasableWithGameCurrency => isPurchasableWithGameCurrency;
-        public bool IsPurchasableWithRealMoney => isPurchasableWithRealMoney;
-        public int InGameCurrencyCost => inGameCurrencyCost;
-        public int RealMoneyCost => realMoneyCost;
         public bool IsDefaultBoat => isDefault;
+        public bool IsGameCurrency => isGameCurrency;
+        public bool IsRealMoney => isRealMoney;
+        public int InGameCurrencyCost => gameCurrencyCost;
+        public string RealMoneyCost => realMoneyCost;
         public GameObject BoatPrefab => boatPrefab;
+        public ProductType ProductType => productType;
         #endregion
 
         public void Initialize()
         {
             Hash = id.GetHashCode();
+        }
+
+        public void SetRealMoneyCost(string _realMoneyCost)
+        {
+            realMoneyCost = _realMoneyCost;
         }
     }
     [System.Serializable]
@@ -47,9 +56,9 @@ namespace BeachHero
         public Color[] ShaderColors;
         [SkinPreview] public Sprite sprite;
         public bool isDefault;
-        [Hide("isDefault")] public bool isPurchasableWithGameCurrency;
-        [Hide("isDefault")] public bool isPurchasableWithAds;
-        [Show("isPurchasableWithGameCurrency")] public int inGameCurrencyCost;
-        [Show("isPurchasableWithAds")] public int adsRequired;
+        [Hide("isDefault")] public bool isGameCurrency;
+        [Hide("isDefault")] public bool isAds;
+        [Show("isGameCurrency")] public int inGameCurrencyCost;
+        [Show("isAds")] public int adsRequired;
     }
 }

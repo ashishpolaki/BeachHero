@@ -12,13 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00278680b69f6cd4c9ef0df71867d69e, type: 3}
   m_Name: FloatBoat
   m_EditorClassIdentifier: 
-  id: 1
+  id: float_boat
   boatPrefab: {fileID: 1754133172325382515, guid: 08976a0f17446bf48a687219a63800f7,
     type: 3}
   index: 1
   boatName: Float
   speed: 5
   speedMeter: 0.068
+  isDefault: 1
+  isGameCurrency: 0
+  isRealMoney: 0
+  gameCurrencyCost: 0
+  productType: 0
+  realMoneyCost: 
   skinColors:
   - ShaderColors:
     - {r: 0.9921569, g: 0.8000001, b: 0.15294118, a: 1}
@@ -26,8 +32,8 @@ MonoBehaviour:
     - {r: 0.20000002, g: 0.20000002, b: 0.20000002, a: 1}
     sprite: {fileID: 21300000, guid: cadcbe113bddbb94fb523d355f04b036, type: 3}
     isDefault: 1
-    isPurchasableWithGameCurrency: 0
-    isPurchasableWithAds: 0
+    isGameCurrency: 0
+    isAds: 0
     inGameCurrencyCost: 0
     adsRequired: 2
   - ShaderColors:
@@ -36,9 +42,9 @@ MonoBehaviour:
     - {r: 0.4431373, g: 0.9058824, b: 0.039215688, a: 1}
     sprite: {fileID: 21300000, guid: d6a576966e40a8d41ae03d5ef3a46e1c, type: 3}
     isDefault: 0
-    isPurchasableWithGameCurrency: 0
-    isPurchasableWithAds: 1
-    inGameCurrencyCost: 0
+    isGameCurrency: 1
+    isAds: 1
+    inGameCurrencyCost: 100
     adsRequired: 2
   - ShaderColors:
     - {r: 0.46274513, g: 0.46274513, b: 0.46274513, a: 1}
@@ -46,12 +52,7 @@ MonoBehaviour:
     - {r: 0.10980393, g: 0.10980393, b: 0.10980393, a: 1}
     sprite: {fileID: 21300000, guid: 9697c9296aa2a1348a116a1d5e0084b0, type: 3}
     isDefault: 0
-    isPurchasableWithGameCurrency: 1
-    isPurchasableWithAds: 1
+    isGameCurrency: 0
+    isAds: 1
     inGameCurrencyCost: 14
     adsRequired: 3
-  isDefault: 1
-  isPurchasableWithGameCurrency: 0
-  isPurchasableWithRealMoney: 0
-  inGameCurrencyCost: 0
-  realMoneyCost: 0

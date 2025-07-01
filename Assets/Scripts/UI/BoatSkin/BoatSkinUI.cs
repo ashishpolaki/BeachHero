@@ -72,9 +72,9 @@ namespace BeachHero
             }
             else
             {
-                realMoneyPurchaseButton.gameObject.SetActive(newBoatSkin.IsPurchasableWithRealMoney);
-                gameCurrencyPurchaseButton.gameObject.SetActive(newBoatSkin.IsPurchasableWithGameCurrency);
-                realMoneyPriceText.text = $"Rs.{newBoatSkin.RealMoneyCost}";
+                realMoneyPurchaseButton.gameObject.SetActive(newBoatSkin.IsRealMoney);
+                gameCurrencyPurchaseButton.gameObject.SetActive(newBoatSkin.IsGameCurrency);
+                realMoneyPriceText.text = $"{newBoatSkin.RealMoneyCost}";
                 gameCurrencyPriceText.text = $"{newBoatSkin.InGameCurrencyCost}";
             }
         }
@@ -109,16 +109,16 @@ namespace BeachHero
         }
         private void OnRealMoneyPurchaseButtonClicked()
         {
-            realMoneyPurchaseButton.gameObject.SetActive(false);
-            gameCurrencyPurchaseButton.gameObject.SetActive(false);
-            SaveController.SaveBool(StringUtils.BOAT_SKIN_UNLOCKED + index, true);
-            OnSelectButtonClicked();
+           GameController.GetInstance.StoreController.PurchaseWithRealMoney(index, PurchaseItemType.BoatSkin);
         }
         private void OnGameCurrencyPurchaseButtonClicked()
         {
+            GameController.GetInstance.SkinController.TryPurchaseWithGameCurrency(index);
+        }
+        public void Purchased()
+        {
             realMoneyPurchaseButton.gameObject.SetActive(false);
             gameCurrencyPurchaseButton.gameObject.SetActive(false);
-            SaveController.SaveBool(StringUtils.BOAT_SKIN_UNLOCKED + index, true);
             OnSelectButtonClicked();
         }
     }

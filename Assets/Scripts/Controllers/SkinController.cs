@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace BeachHero
@@ -5,6 +6,9 @@ namespace BeachHero
     public class SkinController : MonoBehaviour
     {
         [SerializeField] private BoatSkinDatabaseSO boatSkinsDatabase;
+
+        public event Action<int> OnBoatSkinPurchased;
+        public event Action OnPurchaseFail;
 
         public BoatSkinDatabaseSO BoatSkinsDatabase
         {
@@ -20,7 +24,7 @@ namespace BeachHero
                     return item;
             }
 
-            Debug.LogError("BoatSkinsDatabase is null or index is out of range.");
+            DebugUtils.LogError("BoatSkinsDatabase is null or index is out of range.");
             return null;
         }
 
@@ -39,6 +43,44 @@ namespace BeachHero
         public int GetCurrentSelectedBoatIndex()
         {
             return SaveController.LoadInt(StringUtils.CURRENT_BOAT_INDEX, 1);
+        }
+
+        private void OnBoatPurchaseFail()
+        {
+            DebugUtils.LogError("Not enough game currency to purchase this skin.");
+            OnPurchaseFail.Invoke();
+        }
+
+        public void SkinUnlocked(int index)
+        {
+            SaveController.SaveBool(StringUtils.BOAT_SKIN_UNLOCKED + index, true);
+            OnBoatSkinPurchased?.Invoke(index);
+        }
+
+        public void TryPurchaseWithGameCurrency(int index)
+        {
+            BoatSkinSO boatSkin = GetBoatSkinByIndex(index);
+            if (GameController.GetInstance.StoreController.GameCurrencyBalance >= boatSkin.InGameCurrencyCost)
+            {
+                SkinUnlocked(index);
+                GameController.GetInstance.StoreController.DeductGameCurrencyBalance(boatSkin.InGameCurrencyCost);
+            }
+            else
+            {
+                OnBoatPurchaseFail();
+            }
+        }
+
+        public int GetBoatColorAdsCount(int boatIndex, int colorIndex)
+        {
+            int currentAds = SaveController.LoadInt($"{StringUtils.BOAT_SKIN_COLOR_UNLOCK}{boatIndex}_{colorIndex}", 0);
+            return currentAds;
+        }
+
+        public void SetBoatColorAdsCount(int boatIndex, int colorIndex)
+        {
+            int count = GetBoatColorAdsCount(boatIndex, colorIndex) + 1;
+            SaveController.SaveInt($"{StringUtils.BOAT_SKIN_COLOR_UNLOCK}{boatIndex}_{colorIndex}", count);
         }
     }
 }

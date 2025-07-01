@@ -12,13 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00278680b69f6cd4c9ef0df71867d69e, type: 3}
   m_Name: RippleBoat
   m_EditorClassIdentifier: 
-  id: 2
+  id: ripple_boat
   boatPrefab: {fileID: 3763082633194357021, guid: acea10fa1657dfb4bbae24608b34a0be,
     type: 3}
   index: 2
   boatName: Ripple
   speed: 6
   speedMeter: 0.097
+  isDefault: 0
+  isGameCurrency: 0
+  isRealMoney: 1
+  gameCurrencyCost: 0
+  productType: 1
+  realMoneyCost: $ 10
   skinColors:
   - ShaderColors:
     - {r: 0.054901965, g: 0.41176474, b: 0.57254905, a: 1}
@@ -30,8 +36,3 @@ MonoBehaviour:
     isPurchasableWithAds: 0
     inGameCurrencyCost: 0
     adsRequired: 2
-  isDefault: 0
-  isPurchasableWithGameCurrency: 1
-  isPurchasableWithRealMoney: 1
-  inGameCurrencyCost: 15
-  realMoneyCost: 15

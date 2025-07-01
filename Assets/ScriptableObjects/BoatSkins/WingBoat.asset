@@ -12,13 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00278680b69f6cd4c9ef0df71867d69e, type: 3}
   m_Name: WingBoat
   m_EditorClassIdentifier: 
-  id: 3
+  id: wing_boat
   boatPrefab: {fileID: 212522136301439764, guid: b298472335c7f124c87b5dc9ef39325b,
     type: 3}
   index: 3
   boatName: Wing
   speed: 7
   speedMeter: 0.183
+  isDefault: 0
+  isGameCurrency: 1
+  isRealMoney: 1
+  gameCurrencyCost: 500
+  productType: 1
+  realMoneyCost: $ 10
   skinColors:
   - ShaderColors:
     - {r: 0.227451, g: 0.16862746, b: 0.0627451, a: 1}
@@ -29,8 +35,3 @@ MonoBehaviour:
     isPurchasableWithAds: 0
     inGameCurrencyCost: 10
     adsRequired: 2
-  isDefault: 0
-  isPurchasableWithGameCurrency: 0
-  isPurchasableWithRealMoney: 1
-  inGameCurrencyCost: 15
-  realMoneyCost: 15

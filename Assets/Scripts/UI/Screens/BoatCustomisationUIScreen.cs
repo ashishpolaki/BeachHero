@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,20 +7,21 @@ namespace BeachHero
 {
     public class BoatCustomisationUIScreen : BaseScreen
     {
-        [SerializeField] private GameObject customisationPanel;
+        #region Inspector Variables
+        [SerializeField] private BoatColorCustomisationPanel colorCustomisationPanel;
         [SerializeField] private BoatSkinUI boatSkinUIPrefab;
-        [SerializeField] private BoatSkinColorUI boatSkinColorUIPrefab;
         [SerializeField] private Button homeButton;
-        [SerializeField] private Button customisationPanelCloseButton;
-        [SerializeField] private Image boatEditImage;
         [SerializeField] private Transform content;
-        [SerializeField] private Transform boatColorContent;
+        [SerializeField] private GameObject purchasePanel;
+        [SerializeField] private TextMeshProUGUI purchaseDescriptionText;
+        #endregion
 
+        #region Private Variables
         private int currentBoatIndex = -1;
         private int previousBoatIndex = -1;
         private bool isInitialized = false;
         private Dictionary<int, BoatSkinUI> boatSkins = new Dictionary<int, BoatSkinUI>();
-        private List<BoatSkinColorUI> boatSkinColorUIList = new List<BoatSkinColorUI>();
+        #endregion
 
         public override void Open(ScreenTabType screenTabType)
         {
@@ -27,7 +29,7 @@ namespace BeachHero
             currentBoatIndex = -1;
             previousBoatIndex = -1;
             AddListeners();
-            customisationPanel.SetActive(false);
+            colorCustomisationPanel.Close();
             InitializeBoatCustomisation();
         }
         public override void Close()
@@ -39,55 +41,21 @@ namespace BeachHero
         private void AddListeners()
         {
             homeButton.onClick.AddListener(OpenHome);
-            customisationPanelCloseButton.onClick.AddListener(OnCustomisationPanelClose);
+            colorCustomisationPanel.AddListeners();
+            GameController.GetInstance.SkinController.OnBoatSkinPurchased += BoatSkinPurchased;
+            GameController.GetInstance.SkinController.OnPurchaseFail += BoatSkinPurchasedFail;
         }
-
         private void RemoveListeneres()
         {
             homeButton.onClick.RemoveAllListeners();
-            customisationPanelCloseButton.onClick.RemoveAllListeners();
+            colorCustomisationPanel.RemoveListeners();
+            GameController.GetInstance.SkinController.OnBoatSkinPurchased -= BoatSkinPurchased;
+            GameController.GetInstance.SkinController.OnPurchaseFail -= BoatSkinPurchasedFail;
         }
-
-        private void OnCustomisationPanelClose()
-        {
-            customisationPanel.SetActive(false);
-        }
-
         private void OpenHome()
         {
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
         }
-
-        private void SetupCurrentBoatColors(BoatSkinSO boatSkin)
-        {
-            // Deactivate all existing color UIs
-            foreach (var ui in boatSkinColorUIList)
-                ui.gameObject.SetActive(false);
-
-            // Set up color UIs for current skin
-            for (int i = 0; i < boatSkin.SkinColors.Length; i++)
-            {
-                var skinColorData = boatSkin.SkinColors[i];
-                var boatSkinColorUI = GetBoatSkinColorUI();
-                boatSkinColorUI.InitSkinColor(this, skinColorData, i);
-                boatSkinColorUI.gameObject.SetActive(true);
-            }
-        }
-
-        private BoatSkinColorUI GetBoatSkinColorUI()
-        {
-            foreach (var boatSkinColorUI in boatSkinColorUIList)
-            {
-                if (!boatSkinColorUI.gameObject.activeSelf)
-                {
-                    return boatSkinColorUI;
-                }
-            }
-            var boatSkinColorObj = Instantiate(boatSkinColorUIPrefab, boatColorContent);
-            boatSkinColorUIList.Add(boatSkinColorObj);
-            return boatSkinColorObj;
-        }
-
         private void InitializeBoatCustomisation()
         {
             if (!isInitialized)
@@ -101,25 +69,29 @@ namespace BeachHero
                     boatSkins.Add(skinData.Index, boatSkinUI);
                 }
             }
-
             int boatIndex = SaveController.LoadInt(StringUtils.CURRENT_BOAT_INDEX, 1);
             SetCurrentBoatSelection(boatIndex);
         }
-        #region public Methods
-        public void SetBoatColor(int colorIndex)
-        {
-            var boatSkin = GameController.GetInstance.SkinController.GetBoatSkinByIndex(currentBoatIndex);
-            boatEditImage.sprite = boatSkin.SkinColors[colorIndex].sprite;
-        }
 
+        #region Purchase
+        private void BoatSkinPurchased(int index)
+        {
+            purchasePanel.SetActive(true);
+            purchaseDescriptionText.text = StringUtils.PRODUCT_PURCHASED_SUCCESS;
+            boatSkins[index].Purchased();
+        }
+        private void BoatSkinPurchasedFail()
+        {
+            purchasePanel.SetActive(true);
+            purchaseDescriptionText.text = StringUtils.PRODUCT_PURCHASE_FAILED;
+        }
+        #endregion
+
+        #region Public Methods
         public void OpenCustomisationPanel(int index, int colorIndex)
         {
-            customisationPanel.SetActive(true);
-            var boatSkin = GameController.GetInstance.SkinController.GetBoatSkinByIndex(index);
-            boatEditImage.sprite = boatSkin.SkinColors[colorIndex].sprite;
-            SetupCurrentBoatColors(boatSkin);
+            colorCustomisationPanel.Open(index,colorIndex);
         }
-
         public void SetCurrentBoatSelection(int boatIndex)
         {
             previousBoatIndex = currentBoatIndex;
@@ -131,6 +103,5 @@ namespace BeachHero
             boatSkins[currentBoatIndex].SetSelected();
         }
         #endregion
-
     }
 }

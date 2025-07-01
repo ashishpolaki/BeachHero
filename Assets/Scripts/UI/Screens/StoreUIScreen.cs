@@ -121,7 +121,7 @@ namespace BeachHero
         private void RealMoneyPurchaseButton(int index)
         {
             currentPurchaseIndex = index;
-            GameController.GetInstance.StoreController.PurchaseWithRealMoney(currentPurchaseIndex);
+            GameController.GetInstance.StoreController.PurchaseWithRealMoney(currentPurchaseIndex,PurchaseItemType.StoreProduct);
         }
     }
 }
