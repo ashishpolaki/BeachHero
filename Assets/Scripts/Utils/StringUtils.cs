@@ -30,7 +30,8 @@ namespace BeachHero
         //Boat Skins
         public const string CURRENT_BOAT_INDEX = "BoatSelectionIndex";
         public const string CURRENT_BOAT_COLOR_INDEX = "CurrentBoatColorIndex_";
-        public const string BOAT_SKIN_UNLOCKED = "BoatSkinUnlocked_";
+        public const string BOAT_SKIN_UNLOCKED = "BoatSkin_";
+        public const string BOAT_SKIN_COLOR_UNLOCK = "BoatSkinColor_";
 
         //Audio
         public const string GAME_MUSIC_VOLUME = "GameMusicVolume";
@@ -59,6 +60,6 @@ namespace BeachHero
         public const int DEFAULT_GAME_CURRENCY_BALANCE = 100;
 
         // Level 
-        public const int DEFAULT_LEVEL_INDEX = 1;
+        public const int DEFAULT_LEVEL_INDEX = 0;
     }
 }
