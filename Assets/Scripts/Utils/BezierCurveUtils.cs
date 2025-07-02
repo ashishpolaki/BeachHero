@@ -168,6 +168,75 @@ namespace BeachHero
             return keyframes;
         }
 
+        // Cubic Bezier curve: p0, p1, p2, p3
+        public static Vector3 GetPoint(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
+        {
+            float oneMinusT = 1f - t;
 
+            return oneMinusT * oneMinusT * oneMinusT * p0 +
+                   3f * oneMinusT * oneMinusT * t * p1 +
+                   3f * oneMinusT * t * t * p2 +
+                   t * t * t * p3;
+        }
+
+        public static Vector3 GetTangent(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
+        {
+            float oneMinusT = 1f - t;
+
+            return
+                3f * oneMinusT * oneMinusT * (p1 - p0) +
+                6f * oneMinusT * t * (p2 - p1) +
+                3f * t * t * (p3 - p2);
+        }
+
+        public static List<Vector3> GetEvenlySpacedPoints(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, int count)
+        {
+            List<Vector3> sampled = new List<Vector3>();
+            List<float> cumulative = new List<float>();
+            int resolution = 1000;
+            float totalDist = 0;
+            Vector3 prev = GetPoint(p0, p1, p2, p3, 0);
+
+            sampled.Add(prev);
+            cumulative.Add(0);
+
+            for (int i = 1; i <= resolution; i++)
+            {
+                float t = i / (float)resolution;
+                Vector3 pt = GetPoint(p0, p1, p2, p3, t);
+                totalDist += Vector3.Distance(prev, pt);
+                sampled.Add(pt);
+                cumulative.Add(totalDist);
+                prev = pt;
+            }
+
+            List<Vector3> even = new List<Vector3>();
+            float interval = totalDist / (count - 1);
+            float distTarget = 0f;
+            int index = 0;
+
+            for (int i = 0; i < count; i++)
+            {
+                while (index < cumulative.Count - 1 && cumulative[index] < distTarget)
+                    index++;
+
+                if (index == 0)
+                {
+                    even.Add(sampled[0]);
+                }
+                else
+                {
+                    float d0 = cumulative[index - 1];
+                    float d1 = cumulative[index];
+                    float t = Mathf.InverseLerp(d0, d1, distTarget);
+                    Vector3 pt = Vector3.Lerp(sampled[index - 1], sampled[index], t);
+                    even.Add(pt);
+                }
+
+                distTarget += interval;
+            }
+
+            return even;
+        }
     }
 }

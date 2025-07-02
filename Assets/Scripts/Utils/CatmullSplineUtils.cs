@@ -5,7 +5,7 @@ namespace BeachHero
 {
     public class CatmullSplineUtils
     {
-        public static Vector3 CatmullRom(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
+        public static Vector3 GetPoint(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
         {
             // Catmull-Rom spline formula
             float t2 = t * t;
@@ -17,6 +17,16 @@ namespace BeachHero
                 (2f * p0 - 5f * p1 + 4f * p2 - p3) * t2 +
                 (-p0 + 3f * p1 - 3f * p2 + p3) * t3
             );
+        }
+
+        public static Vector3 GetTangent(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
+        {
+            // Derivative of Catmull-Rom spline
+            return 0.5f * (
+                -p0 + p2 +
+                2f * (2f * p0 - 5f * p1 + 4f * p2 - p3) * t +
+                3f * (-p0 + 3f * p1 - 3f * p2 + p3) * t * t
+            ).normalized;
         }
 
         public static List<Vector3> GetEvenlySpacedPoints(List<Vector3> pathPoints, float spacing)
@@ -32,7 +42,7 @@ namespace BeachHero
 
                 for (float t = 0; t <= 1; t += 0.01f) // High resolution for accurate arc length calculation
                 {
-                    Vector3 interpolatedPoint = CatmullRom(
+                    Vector3 interpolatedPoint = GetPoint(
                         pathPoints[i],
                         pathPoints[i + 1],
                         pathPoints[i + 2],
@@ -70,7 +80,7 @@ namespace BeachHero
             {
                 for (float t = 0; t <= 1f; t += 0.01f)
                 {
-                    Vector3 point = CatmullRom(
+                    Vector3 point = GetPoint(
                         pathPoints[i],
                         pathPoints[i + 1],
                         pathPoints[i + 2],
