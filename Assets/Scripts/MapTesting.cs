@@ -4,15 +4,11 @@ using System.Collections.Generic;
 using UnityEditor;
 
 [System.Serializable]
-public class MapNode
+public struct MapNode
 {
-    public Transform controlPoint;
+    public Vector3 position;
     public GameObject levelObject;
     public GameObject levelCompleteIndicator;
-    public GameObject dash1Object;
-    public GameObject dash1CompleteIndicator;
-    public GameObject dash2Object;
-    public GameObject dash2CompleteIndicator;
 }
 [System.Serializable]
 public class BezierPoint
@@ -24,41 +20,78 @@ public class BezierPoint
 public class MapTesting : MonoBehaviour
 {
     public MapLevelEditor levelPrefab;
-    public MapDashEditor dashPrefab;
+    public LineRenderer unCompleteLineRenderer;
+    public LineRenderer completeLineRenderer;
     public List<BezierPoint> bezierPoints = new List<BezierPoint>();
-    public List<MapNode> mapNodes = new List<MapNode>();
     public List<Vector3> evenlySpacedPoints = new List<Vector3>();
+    public List<MapNode> mapNodes = new List<MapNode>();
 
     [Range(0f, 1f)] public float dashOffset1 = 0.33f;
     [Range(0f, 1f)] public float dashOffset2 = 0.66f;
     public int curveSamples = 20;
+    public int lineResolutionPerLoop = 10;
+    [Tooltip("Total Number of levels")]
     public int pointsPerSegment = 100;
 
 #if UNITY_EDITOR
+    //[Header("Validate")]
+    //public bool isValidate;
+    //[Range(0, 1)] public float elapsedTime;
+    //public int index1;
+    //public int index2 = 1;
+    //public Transform spawnObject;
+
+    //private void OnValidate()
+    //{
+    //    if (isValidate)
+    //    {
+    //        BezierPoint bp0 = bezierPoints[index1];
+    //        BezierPoint bp1 = bezierPoints[index2];
+
+    //        Vector3 p0 = bp0.anchor.position;
+    //        Vector3 p1 = p0 + bp0.outTangent;
+    //        Vector3 p2 = bp1.anchor.position + bp1.inTangent;
+    //        Vector3 p3 = bp1.anchor.position;
+
+    //        Vector3 pos = BezierCurveUtils.GetPoint(p0, p1, p2, p3, elapsedTime);
+    //        spawnObject.position = pos;
+    //    }
+    //}
+    public Vector3 GetPoint(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
+    {
+        float oneMinusT = 1f - t;
+
+        return oneMinusT * oneMinusT * oneMinusT * p0 +
+               3f * oneMinusT * oneMinusT * t * p1 +
+               3f * oneMinusT * t * t * p2 +
+               t * t * t * p3;
+    }
+
     public void GenerateMapPointsInEditor()
     {
         if (!Application.isPlaying && bezierPoints != null && bezierPoints.Count >= 2)
         {
-            evenlySpacedPoints = GenerateGlobalEvenlySpacedPoints(bezierPoints, pointsPerSegment);
             ClearGeneratedObjects();
+            evenlySpacedPoints = GenerateGlobalEvenlySpacedPoints(bezierPoints, pointsPerSegment);
+            List<Vector3> linePoints = new List<Vector3>();
 
-            //  STEP 1: Spawn levels on evenly spaced points
+            // Instantiate levelPrefab at each evenly spaced point
             foreach (Vector3 point in evenlySpacedPoints)
             {
-                GameObject level = InstantiateInEditor(levelPrefab.gameObject, point, Quaternion.identity);
-                DestroyImmediate(level.GetComponent<MapLevelEditor>());
+                MapLevelEditor level = InstantiateInEditor<MapLevelEditor>(levelPrefab.gameObject, point, levelPrefab.transform.rotation);
 
                 MapNode mapNode = new MapNode
                 {
-                    controlPoint = null,
-                    levelObject = level,
-                    levelCompleteIndicator = levelPrefab.levelCompleteIndicator
+                    position = point,
+                    levelObject = level.gameObject,
+                    levelCompleteIndicator = level.levelCompleteIndicator
                 };
 
+                DestroyImmediate(level.GetComponent<MapLevelEditor>());
                 mapNodes.Add(mapNode);
             }
 
-            // STEP 2: Spawn dashes using Bézier points
+            // Still populate the lineRenderer using the Bezier curve (not evenly spaced)
             for (int i = 0; i < bezierPoints.Count - 1; i++)
             {
                 BezierPoint bp0 = bezierPoints[i];
@@ -72,31 +105,26 @@ public class MapTesting : MonoBehaviour
                 Vector3 p2 = bp1.anchor.position + bp1.inTangent;
                 Vector3 p3 = bp1.anchor.position;
 
-                // Dash 1 at t = dashOffset1
-                Vector3 dashPos1 = BezierCurveUtils.GetPoint(p0, p1, p2, p3, dashOffset1);
-                Quaternion dashRot1 = Quaternion.LookRotation(BezierCurveUtils.GetTangent(p0, p1, p2, p3, dashOffset1));
-                GameObject dash1 = InstantiateInEditor(dashPrefab.gameObject, dashPos1, dashRot1);
-
-                // Dash 2 at t = dashOffset2
-                Vector3 dashPos2 = BezierCurveUtils.GetPoint(p0, p1, p2, p3, dashOffset2);
-                Quaternion dashRot2 = Quaternion.LookRotation(BezierCurveUtils.GetTangent(p0, p1, p2, p3, dashOffset2));
-                GameObject dash2 = InstantiateInEditor(dashPrefab.gameObject, dashPos2, dashRot2);
-
-                // Optional: Link dashes to a node if you want
-                if (i < mapNodes.Count)
+                for (int j = 0; j <= lineResolutionPerLoop; j++)
                 {
-                    mapNodes[i].dash1Object = dash1;
-                    mapNodes[i].dash2Object = dash2;
-                    mapNodes[i].dash1CompleteIndicator = dashPrefab.dashCompleteIndicator;
-                    mapNodes[i].dash2CompleteIndicator = dashPrefab.dashCompleteIndicator;
+                    float t = j / (float)lineResolutionPerLoop;
+                    Vector3 pointOnCurve = GetPoint(p0, p1, p2, p3, t);
+                    linePoints.Add(pointOnCurve);
                 }
+            }
 
-                DestroyImmediate(dash1.GetComponent<MapDashEditor>());
-                DestroyImmediate(dash2.GetComponent<MapDashEditor>());
+            if (unCompleteLineRenderer != null)
+            {
+                SetLineRenderer(linePoints.ToArray());
             }
         }
     }
 
+    public void SetLineRenderer(Vector3[] points)
+    {
+        unCompleteLineRenderer.positionCount = points.Length;
+        unCompleteLineRenderer.SetPositions(points);
+    }
     public List<Vector3> GenerateGlobalEvenlySpacedPoints(List<BezierPoint> bezierPoints, int totalPoints)
     {
         List<Vector3> allPoints = new List<Vector3>();
@@ -119,7 +147,7 @@ public class MapTesting : MonoBehaviour
             Vector3 p2 = bp1.anchor.position + bp1.inTangent;
             Vector3 p3 = bp1.anchor.position;
 
-            var segment = BezierCurveUtils.GetEvenlySpacedPoints(p0, p1, p2, p3, 200); // High-res per segment
+            var segment = GetEvenlySpacedPoints(p0, p1, p2, p3, 200); // High-res per segment
 
             for (int j = 0; j < segment.Count; j++)
             {
@@ -131,6 +159,7 @@ public class MapTesting : MonoBehaviour
                 arcLengths.Add(totalLength);
             }
         }
+
 
         // Step 2: Resample to 100 evenly spaced points along total length
         float step = totalLength / (totalPoints - 1);
@@ -160,8 +189,57 @@ public class MapTesting : MonoBehaviour
 
         return allPoints;
     }
+    public List<Vector3> GetEvenlySpacedPoints(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, int count)
+    {
+        List<Vector3> sampled = new List<Vector3>();
+        List<float> cumulative = new List<float>();
+        int resolution = 1000;
+        float totalDist = 0;
+        Vector3 prev = GetPoint(p0, p1, p2, p3, 0);
 
-    private GameObject InstantiateInEditor(GameObject prefab, Vector3 position, Quaternion rotation)
+        sampled.Add(prev);
+        cumulative.Add(0);
+
+        for (int i = 1; i <= resolution; i++)
+        {
+            float t = i / (float)resolution;
+            Vector3 pt = GetPoint(p0, p1, p2, p3, t);
+            totalDist += Vector3.Distance(prev, pt);
+            sampled.Add(pt);
+            cumulative.Add(totalDist);
+            prev = pt;
+        }
+
+        List<Vector3> even = new List<Vector3>();
+        float interval = totalDist / (count - 1);
+        float distTarget = 0f;
+        int index = 0;
+
+        for (int i = 0; i < count; i++)
+        {
+            while (index < cumulative.Count - 1 && cumulative[index] < distTarget)
+                index++;
+
+            if (index == 0)
+            {
+                even.Add(sampled[0]);
+            }
+            else
+            {
+                float d0 = cumulative[index - 1];
+                float d1 = cumulative[index];
+                float t = Mathf.InverseLerp(d0, d1, distTarget);
+                Vector3 pt = Vector3.Lerp(sampled[index - 1], sampled[index], t);
+                even.Add(pt);
+            }
+
+            distTarget += interval;
+        }
+
+        return even;
+    }
+
+    private T InstantiateInEditor<T>(GameObject prefab, Vector3 position, Quaternion rotation) where T : MonoBehaviour
     {
         if (prefab == null) return null;
 
@@ -169,17 +247,38 @@ public class MapTesting : MonoBehaviour
         obj.transform.position = position;
         obj.transform.rotation = rotation;
         obj.transform.SetParent(transform);
-        return obj;
+
+        return obj.GetComponent<T>();
     }
+
+    //private GameObject InstantiateInEditor(GameObject prefab, Vector3 position, Quaternion rotation)
+    //{
+    //    if (prefab == null) return null;
+
+    //    GameObject obj = (GameObject)PrefabUtility.InstantiatePrefab(prefab, transform);
+    //    obj.transform.position = position;
+    //    obj.transform.rotation = rotation;
+    //    obj.transform.SetParent(transform);
+    //    return obj;
+    //}
 
     public void ClearGeneratedObjects()
     {
         foreach (var node in mapNodes)
         {
             if (node.levelObject != null) DestroyImmediate(node.levelObject);
-            if (node.dash1Object != null) DestroyImmediate(node.dash1Object);
-            if (node.dash2Object != null) DestroyImmediate(node.dash2Object);
         }
+        if (unCompleteLineRenderer != null)
+        {
+            unCompleteLineRenderer.positionCount = 0;
+            unCompleteLineRenderer.SetPositions(new Vector3[0]);
+        }
+        if (completeLineRenderer != null)
+        {
+            completeLineRenderer.positionCount = 0;
+            completeLineRenderer.SetPositions(new Vector3[0]);
+        }
+        evenlySpacedPoints.Clear();
         mapNodes.Clear();
     }
 
@@ -208,17 +307,10 @@ public class MapTesting : MonoBehaviour
             for (int j = 1; j <= curveSamples; j++)
             {
                 float t = j / (float)curveSamples;
-                Vector3 pos = BezierCurveUtils.GetPoint(p0, p1, p2, p3, t);
+                Vector3 pos = GetPoint(p0, p1, p2, p3, t);
                 Gizmos.DrawLine(prev, pos);
                 prev = pos;
             }
-        }
-
-        //Draw evenly spaced points
-        Gizmos.color = Color.yellow;
-        foreach (var point in evenlySpacedPoints)
-        {
-            Gizmos.DrawSphere(point, 0.1f);
         }
     }
 #endif
