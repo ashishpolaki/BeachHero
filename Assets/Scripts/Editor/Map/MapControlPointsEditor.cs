@@ -27,7 +27,7 @@ public class MapControlPointsEditor : Editor
         if (GUILayout.Button("Add Bezier Point"))
         {
             GameObject anchor = new GameObject($"Bezier Anchor {mapTester.bezierPoints.Count}");
-            anchor.transform.SetParent(mapTester.transform);
+            anchor.transform.SetParent(mapTester.bezierPointsParent);
             anchor.transform.position = mapTester.bezierPoints[mapTester.bezierPoints.Count - 1].anchor.transform.position;
 
             BezierPoint point = new BezierPoint

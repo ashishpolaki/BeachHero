@@ -30,7 +30,7 @@ namespace BeachHero
                 for (int j = 1; j <= resolution; j++)
                 {
                     float t = j / (float)resolution; // Calculate t based on resolution
-                    Vector3 point = CalculateBezierPoint(t, start.position, start.OutTangentWorld, end.InTangentWorld, end.position);
+                    Vector3 point = GetPoint(start.position, start.OutTangentWorld, end.InTangentWorld, end.position, t);
 
                     if (curvePoints.Contains(point)) // Avoid duplicates
                     {
@@ -46,22 +46,6 @@ namespace BeachHero
                 }
             }
             return curvePoints.ToArray();
-        }
-
-        private static Vector3 CalculateBezierPoint(float t, Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3)
-        {
-            float u = 1 - t;
-            float tt = t * t;
-            float uu = u * u;
-            float uuu = uu * u;
-            float ttt = tt * t;
-
-            Vector3 point = uuu * p0; // (1-t)^3 * P0
-            point += 3 * uu * t * p1; // 3(1-t)^2 * t * P1
-            point += 3 * u * tt * p2; // 3(1-t) * t^2 * P2
-            point += ttt * p3;        // t^3 * P3
-
-            return point;
         }
 
         public static BezierKeyframe[] CreateCircleShape(float radius, int segments)
@@ -104,11 +88,10 @@ namespace BeachHero
             return keyframes;
         }
 
-
         public static BezierKeyframe[] CreateFigureEightShape(float radius, int segmentsPerLoop)
         {
             int totalSegments = segmentsPerLoop * 2; // Double the number of segmentsPerLoop for the figure-eight shape
-            var keyframes  = new BezierKeyframe[totalSegments + 1]; // Add one more keyframe for the endpoint
+            var keyframes = new BezierKeyframe[totalSegments + 1]; // Add one more keyframe for the endpoint
 
             float angleStep = 360f / segmentsPerLoop; // Divide the circle into equal segmentsPerLoop
 
@@ -238,5 +221,156 @@ namespace BeachHero
 
             return even;
         }
+
+        public static Vector3 GetClosestPointOnBezierPath(List<BezierPoint> bezierPoints, Vector3 targetPosition, int resolution = 30)
+        {
+            Vector3 closestPoint = Vector3.zero;
+            float minSqrDist = float.MaxValue;
+
+            for (int i = 0; i < bezierPoints.Count - 1; i++)
+            {
+                BezierPoint bp0 = bezierPoints[i];
+                BezierPoint bp1 = bezierPoints[i + 1];
+
+                if (bp0.anchor == null || bp1.anchor == null)
+                    continue;
+
+                Vector3 p0 = bp0.anchor.position;
+                Vector3 p1 = p0 + bp0.outTangent;
+                Vector3 p2 = bp1.anchor.position + bp1.inTangent;
+                Vector3 p3 = bp1.anchor.position;
+
+                for (int j = 0; j <= resolution; j++)
+                {
+                    float t = j / (float)resolution;
+                    Vector3 pointOnCurve = GetPoint(p0, p1, p2, p3, t);
+                    float sqrDist = (pointOnCurve - targetPosition).sqrMagnitude;
+
+                    if (sqrDist < minSqrDist)
+                    {
+                        minSqrDist = sqrDist;
+                        closestPoint = pointOnCurve;
+                    }
+                }
+            }
+
+            return closestPoint;
+        }
+
+        public static void SampleEvenlySpacedPointsWithTangents(List<BezierPoint> bezierPoints, int totalSamples, out List<Vector3> sampledPoints, out List<Vector3> tangentVectors)
+        {
+            sampledPoints = new List<Vector3>();
+            tangentVectors = new List<Vector3>();
+
+            float totalLength = 0f;
+            List<float> segmentLengths = new List<float>();
+
+            // Estimate total curve length
+            for (int i = 0; i < bezierPoints.Count - 1; i++)
+            {
+                Vector3 p0 = bezierPoints[i].anchor.position;
+                Vector3 p1 = p0 + bezierPoints[i].outTangent;
+                Vector3 p3 = bezierPoints[i + 1].anchor.position;
+                Vector3 p2 = p3 + bezierPoints[i + 1].inTangent;
+
+                float length = EstimateCurveLength(p0, p1, p2, p3, 20);
+                segmentLengths.Add(length);
+                totalLength += length;
+            }
+
+            float spacing = totalLength / (totalSamples - 1);
+            float distanceSoFar = 0f;
+            Vector3 lastPoint = bezierPoints[0].anchor.position;
+
+            sampledPoints.Add(lastPoint);
+            tangentVectors.Add(Vector3.forward); // placeholder
+
+            for (int seg = 0; seg < bezierPoints.Count - 1; seg++)
+            {
+                Vector3 p0 = bezierPoints[seg].anchor.position;
+                Vector3 p1 = p0 + bezierPoints[seg].outTangent;
+                Vector3 p3 = bezierPoints[seg + 1].anchor.position;
+                Vector3 p2 = p3 + bezierPoints[seg + 1].inTangent;
+
+                float segmentLength = segmentLengths[seg];
+                int steps = Mathf.CeilToInt(segmentLength * 10);
+                Vector3 prev = p0;
+
+                for (int i = 1; i <= steps; i++)
+                {
+                    float t = i / (float)steps;
+                    Vector3 point = EvaluateBezier(p0, p1, p2, p3, t);
+                    Vector3 tangent = EvaluateBezierDerivative(p0, p1, p2, p3, t).normalized;
+
+                    float dist = Vector3.Distance(prev, point);
+                    if (distanceSoFar + dist >= spacing)
+                    {
+                        float overshoot = spacing - distanceSoFar;
+                        Vector3 newPoint = Vector3.Lerp(prev, point, overshoot / dist);
+                        Vector3 newTangent = tangent;
+
+                        sampledPoints.Add(newPoint);
+                        tangentVectors.Add(newTangent);
+
+                        distanceSoFar = 0f;
+                        prev = newPoint;
+                        i--; // Re-evaluate this t
+                    }
+                    else
+                    {
+                        distanceSoFar += dist;
+                        prev = point;
+                    }
+                    if (sampledPoints.Count >= totalSamples - 1)
+                    {
+                        // Ensure we don't overshoot by one before final point
+                        break;
+                    }
+                }
+                if (sampledPoints.Count >= totalSamples - 1)
+                    break;
+            }
+            // Add final point if needed (ensures exactly totalSamples)
+            if (sampledPoints.Count < totalSamples)
+            {
+                Vector3 end = bezierPoints[bezierPoints.Count - 1].anchor.position;
+                Vector3 finalTangent = (end - sampledPoints[sampledPoints.Count - 1]).normalized;
+
+                sampledPoints.Add(end);
+                tangentVectors.Add(finalTangent);
+            }
+        }
+
+        #region Private Methods
+        private static float EstimateCurveLength(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, int subdivisions = 10)
+        {
+            float length = 0f;
+            Vector3 prev = p0;
+            for (int i = 1; i <= subdivisions; i++)
+            {
+                float t = i / (float)subdivisions;
+                Vector3 point = BezierCurveUtils.GetPoint(p0, p1, p2, p3, t);
+                length += Vector3.Distance(prev, point);
+                prev = point;
+            }
+            return length;
+        }
+        private static Vector3 EvaluateBezier(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
+        {
+            float u = 1 - t;
+            return u * u * u * p0 +
+                   3 * u * u * t * p1 +
+                   3 * u * t * t * p2 +
+                   t * t * t * p3;
+        }
+
+        private static Vector3 EvaluateBezierDerivative(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
+        {
+            float u = 1 - t;
+            return 3 * u * u * (p1 - p0) +
+                   6 * u * t * (p2 - p1) +
+                   3 * t * t * (p3 - p2);
+        }
+        #endregion
     }
 }

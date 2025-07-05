@@ -136,7 +136,7 @@ namespace BeachHero
                 {
                     for (float t = 0; t <= 1; t += 0.05f) // Adjust step size for smoother curves
                     {
-                        Vector3 interpolatedPoint = CatmullSplineUtils.CatmullRom(
+                        Vector3 interpolatedPoint = CatmullSplineUtils.GetPoint(
                             drawnPoints[drawnPoints.Count - 4], // P0
                             drawnPoints[drawnPoints.Count - 3], // P1
                             drawnPoints[drawnPoints.Count - 2], // P2
