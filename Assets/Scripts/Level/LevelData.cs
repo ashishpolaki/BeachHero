@@ -6,7 +6,7 @@ namespace BeachHero
     public class LevelData
     {
         public int LevelNumber;
-        public bool IsUnlocked;
+        public bool IsCurrentLevel;
         public bool IsCompleted;
         public int StarsEarned;
         public Vector3 WorldPosition; // World position in Unity scene

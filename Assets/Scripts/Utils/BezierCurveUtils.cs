@@ -232,13 +232,13 @@ namespace BeachHero
                 BezierPoint bp0 = bezierPoints[i];
                 BezierPoint bp1 = bezierPoints[i + 1];
 
-                if (bp0.anchor == null || bp1.anchor == null)
+                if (bp0.anchorPoint == null || bp1.anchorPoint == null)
                     continue;
 
-                Vector3 p0 = bp0.anchor.position;
+                Vector3 p0 = bp0.anchorPoint;
                 Vector3 p1 = p0 + bp0.outTangent;
-                Vector3 p2 = bp1.anchor.position + bp1.inTangent;
-                Vector3 p3 = bp1.anchor.position;
+                Vector3 p2 = bp1.anchorPoint + bp1.inTangent;
+                Vector3 p3 = bp1.anchorPoint;
 
                 for (int j = 0; j <= resolution; j++)
                 {
@@ -268,9 +268,9 @@ namespace BeachHero
             // Estimate total curve length
             for (int i = 0; i < bezierPoints.Count - 1; i++)
             {
-                Vector3 p0 = bezierPoints[i].anchor.position;
+                Vector3 p0 = bezierPoints[i].anchorPoint;
                 Vector3 p1 = p0 + bezierPoints[i].outTangent;
-                Vector3 p3 = bezierPoints[i + 1].anchor.position;
+                Vector3 p3 = bezierPoints[i + 1].anchorPoint;
                 Vector3 p2 = p3 + bezierPoints[i + 1].inTangent;
 
                 float length = EstimateCurveLength(p0, p1, p2, p3, 20);
@@ -280,16 +280,16 @@ namespace BeachHero
 
             float spacing = totalLength / (totalSamples - 1);
             float distanceSoFar = 0f;
-            Vector3 lastPoint = bezierPoints[0].anchor.position;
+            Vector3 lastPoint = bezierPoints[0].anchorPoint;
 
             sampledPoints.Add(lastPoint);
             tangentVectors.Add(Vector3.forward); // placeholder
 
             for (int seg = 0; seg < bezierPoints.Count - 1; seg++)
             {
-                Vector3 p0 = bezierPoints[seg].anchor.position;
+                Vector3 p0 = bezierPoints[seg].anchorPoint;
                 Vector3 p1 = p0 + bezierPoints[seg].outTangent;
-                Vector3 p3 = bezierPoints[seg + 1].anchor.position;
+                Vector3 p3 = bezierPoints[seg + 1].anchorPoint;
                 Vector3 p2 = p3 + bezierPoints[seg + 1].inTangent;
 
                 float segmentLength = segmentLengths[seg];
@@ -333,7 +333,7 @@ namespace BeachHero
             // Add final point if needed (ensures exactly totalSamples)
             if (sampledPoints.Count < totalSamples)
             {
-                Vector3 end = bezierPoints[bezierPoints.Count - 1].anchor.position;
+                Vector3 end = bezierPoints[bezierPoints.Count - 1].anchorPoint;
                 Vector3 finalTangent = (end - sampledPoints[sampledPoints.Count - 1]).normalized;
 
                 sampledPoints.Add(end);

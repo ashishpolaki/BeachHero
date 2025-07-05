@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine.UIElements;
 
-[CustomEditor(typeof(MapTesting))]
+[CustomEditor(typeof(MapEditor))]
 public class MapControlPointsEditor : Editor
 {
     private bool editMode;
@@ -11,7 +11,7 @@ public class MapControlPointsEditor : Editor
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
-        MapTesting mapTester = (MapTesting)target;
+        MapEditor mapTester = (MapEditor)target;
 
         EditorGUILayout.Space(10);
 
@@ -28,11 +28,11 @@ public class MapControlPointsEditor : Editor
         {
             GameObject anchor = new GameObject($"Bezier Anchor {mapTester.bezierPoints.Count}");
             anchor.transform.SetParent(mapTester.bezierPointsParent);
-            anchor.transform.position = mapTester.bezierPoints[mapTester.bezierPoints.Count - 1].anchor.transform.position;
+            anchor.transform.position = mapTester.bezierPoints[mapTester.bezierPoints.Count - 1].anchorPoint;
 
             BezierPoint point = new BezierPoint
             {
-                anchor = anchor.transform,
+                anchorPoint = anchor.transform.position,
                 inTangent = Vector3.left,
                 outTangent = Vector3.right
             };
@@ -48,8 +48,6 @@ public class MapControlPointsEditor : Editor
             if (mapTester.bezierPoints.Count > 0)
             {
                 BezierPoint last = mapTester.bezierPoints[mapTester.bezierPoints.Count - 1];
-                if (last.anchor != null)
-                    DestroyImmediate(last.anchor.gameObject);
                 mapTester.bezierPoints.RemoveAt(mapTester.bezierPoints.Count - 1);
                 EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
             }
@@ -76,16 +74,16 @@ public class MapControlPointsEditor : Editor
 
     private void OnSceneGUI()
     {
-        MapTesting mapTester = (MapTesting)target;
+        MapEditor mapTester = (MapEditor)target;
         if (!editMode || mapTester.bezierPoints == null)
             return;
 
         for (int i = 0; i < mapTester.bezierPoints.Count; i++)
         {
             var point = mapTester.bezierPoints[i];
-            if (point.anchor == null) continue;
+            if (point.anchorPoint == null) continue;
 
-            Vector3 oldAnchorPos = point.anchor.position;
+            Vector3 oldAnchorPos = point.anchorPoint;
             // === 1. MOVE ANCHOR FIRST ===
             Handles.color = Color.white;
             EditorGUI.BeginChangeCheck();
@@ -99,9 +97,9 @@ public class MapControlPointsEditor : Editor
 
             if (anchorMoved)
             {
-                Undo.RecordObject(point.anchor, "Move Anchor");
+                Undo.RecordObject(mapTester, "Move Anchor");
                 Vector3 delta = newAnchorPos - oldAnchorPos;
-                point.anchor.position = newAnchorPos;
+                point.anchorPoint = newAnchorPos;
             }
             GUIStyle labelStyle = new GUIStyle(EditorStyles.boldLabel)
             {
@@ -113,7 +111,7 @@ public class MapControlPointsEditor : Editor
             if (!anchorMoved)
             {
                 // === 2. UPDATE IN/OUT TANGENTS ===
-                Vector3 anchorPos = point.anchor.position;
+                Vector3 anchorPos = point.anchorPoint;
 
                 // In-Tangent
                 Handles.color = Color.green;
@@ -127,7 +125,7 @@ public class MapControlPointsEditor : Editor
                 );
                 if (EditorGUI.EndChangeCheck())
                 {
-                    Undo.RecordObject(point.anchor, "Move In-Tangent");
+                    Undo.RecordObject(mapTester, "Move In-Tangent");
                     point.inTangent = newInWorld - anchorPos;
                 }
                 Handles.DrawLine(anchorPos, inWorld);
@@ -144,7 +142,7 @@ public class MapControlPointsEditor : Editor
                 );
                 if (EditorGUI.EndChangeCheck())
                 {
-                    Undo.RecordObject(point.anchor, "Move Out-Tangent");
+                    Undo.RecordObject(mapTester, "Move Out-Tangent");
                     point.outTangent = newOutWorld - anchorPos;
                 }
                 Handles.DrawLine(anchorPos, outWorld);
@@ -157,6 +155,4 @@ public class MapControlPointsEditor : Editor
             }
         }
     }
-
-
 }

@@ -5,32 +5,36 @@ namespace BeachHero
     public class LevelVisual : MonoBehaviour
     {
         [SerializeField] private LevelData levelData;
-        [SerializeField] private SpriteRenderer spriteRenderer;
+        [SerializeField] private GameObject complete;
+        [SerializeField] private GameObject current;
 
         public void Setup(LevelData data)
         {
             $"Level {data.LevelNumber}".Log();
             levelData = data;
-            spriteRenderer = GetComponent<SpriteRenderer>();
+            // spriteRenderer = GetComponent<SpriteRenderer>();
 
             UpdateVisual();
         }
 
         void UpdateVisual()
         {
+            complete.SetActive(false);
+            current.SetActive(false);
+
             if (levelData.IsCompleted)
-                spriteRenderer.color = Color.green;
-            else if (levelData.IsUnlocked)
-                spriteRenderer.color = Color.white;
-            else
-                spriteRenderer.color = Color.gray;
+                complete.SetActive(true);
+            else if (levelData.IsCurrentLevel)
+            {
+                current.SetActive(false);
+            }
         }
 
         private void OnMouseDown()
         {
-            if (levelData?.IsUnlocked == true || true)
+            if (levelData?.IsCurrentLevel == true || true)
             {
-                MapController.Instance.ZoomIn(levelData.WorldPosition);
+                MapController.GetInstance.ZoomIn(levelData.WorldPosition);
 
                 Debug.Log($"Level {levelData.LevelNumber} clicked!");
                 // Load your level scene or show popup
