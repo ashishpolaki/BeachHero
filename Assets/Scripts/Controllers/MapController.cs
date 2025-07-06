@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace BeachHero
@@ -25,8 +26,6 @@ namespace BeachHero
 
 
 
-        [SerializeField] private Toggle zoomToggle;
-
 
         public LevelDatabaseSO levelDatabase;
         public GameObject levelPrefab; // A prefab with SpriteRenderer + optional 3D stuff
@@ -38,6 +37,9 @@ namespace BeachHero
         public List<LevelVisual> levelVisuals;
         public MapEditor mapEditor;
 
+        [Header("UI")]
+        [SerializeField] private Toggle zoomToggle;
+        [SerializeField] private Button mapExitBtn; 
 
         private void OnValidate()
         {
@@ -86,6 +88,13 @@ namespace BeachHero
             ZoomOut();
             zoomToggle.onValueChanged.AddListener(ZoomToggle);
             zoomToggle.isOn = true;
+            mapExitBtn.ButtonRegister(MapExit);
+        }
+
+        private void MapExit()
+        {
+            SceneManager.SetActiveScene(SceneManager.GetSceneByName(StringUtils.GAME_SCENE));
+            SceneManager.UnloadSceneAsync(StringUtils.MAP_SCENE);
         }
 
         public Transform boat;

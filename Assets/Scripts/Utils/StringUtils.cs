@@ -46,6 +46,9 @@ namespace BeachHero
         //ADS
         public const string NO_ADS_PURCHASED = "NoAdsPurchased";
 
+        ///Scenes
+        public const string MAP_SCENE = "BeachMetaMap";
+        public const string GAME_SCENE = "BeachGame";
     }
 
     public class IntUtils

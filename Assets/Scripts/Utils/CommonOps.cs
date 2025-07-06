@@ -30,5 +30,15 @@ namespace BeachHero
             btn.onClick.RemoveAllListeners();
             btn.onClick.AddListener(action);
         }
+
+        public static void ButtonDeRegister(this Button button)
+        {
+            if (!button)
+            {
+                $"No Button Exists".LogError();
+                return;
+            }
+            button.onClick.RemoveAllListeners();
+        }
     }
 }
