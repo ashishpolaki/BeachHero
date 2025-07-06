@@ -48,7 +48,7 @@ namespace BeachHero
 
         ///Scenes
         public const string MAP_SCENE = "BeachMetaMap";
-        public const string GAME_SCENE = "BeachGame";
+        public const string GAME_SCENE = "BeachHeroGame";
     }
 
     public class IntUtils
