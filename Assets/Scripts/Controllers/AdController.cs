@@ -79,7 +79,7 @@ namespace BeachHero
 
         public void PurchasedNoADsPack()
         {
-            SaveController.SaveBool(StringUtils.NO_ADS_PURCHASED, true);
+            SaveSystem.SaveBool(StringUtils.NO_ADS_PURCHASED, true);
         }
 
         public void RequestADs()
@@ -358,7 +358,7 @@ namespace BeachHero
                 return;
             }
 
-            if (SaveController.LoadBool(StringUtils.NO_ADS_PURCHASED, false))
+            if (SaveSystem.LoadBool(StringUtils.NO_ADS_PURCHASED, false))
             {
                 return;
             }
@@ -397,7 +397,7 @@ namespace BeachHero
 
         public void ShowInterstitialAd()
         {
-            if (SaveController.LoadBool(StringUtils.NO_ADS_PURCHASED, false))
+            if (SaveSystem.LoadBool(StringUtils.NO_ADS_PURCHASED, false))
             {
                 return;
             }
@@ -463,7 +463,7 @@ namespace BeachHero
                 return;
             }
 
-            if(SaveController.LoadBool(StringUtils.NO_ADS_PURCHASED,false))
+            if(SaveSystem.LoadBool(StringUtils.NO_ADS_PURCHASED,false))
             {
                 return;
             }
@@ -564,7 +564,7 @@ namespace BeachHero
 
         public void ShowBanner()
         {
-            if (SaveController.LoadBool(StringUtils.NO_ADS_PURCHASED, false))
+            if (SaveSystem.LoadBool(StringUtils.NO_ADS_PURCHASED, false))
             {
                 return;
             }

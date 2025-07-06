@@ -30,7 +30,7 @@ namespace BeachHero
             private set
             {
                 magnetBalance = value;
-                SaveController.SaveInt(StringUtils.MAGNET_BALANCE, magnetBalance);
+                SaveSystem.SaveInt(StringUtils.MAGNET_BALANCE, magnetBalance);
                 OnMagnetBalanceChange?.Invoke();
             }
         }
@@ -41,7 +41,7 @@ namespace BeachHero
             private set
             {
                 speedBoostBalance = value;
-                SaveController.SaveInt(StringUtils.SPEEDBOOST_BALANCE, speedBoostBalance);
+                SaveSystem.SaveInt(StringUtils.SPEEDBOOST_BALANCE, speedBoostBalance);
                 OnSpeedBoostBalanceChange?.Invoke();
             }
         }
@@ -54,8 +54,8 @@ namespace BeachHero
         }
         private void InitBalances()
         {
-            magnetBalance = SaveController.LoadInt(StringUtils.MAGNET_BALANCE, IntUtils.DEFAULT_MAGNET_BALANCE);
-            speedBoostBalance = SaveController.LoadInt(StringUtils.SPEEDBOOST_BALANCE, IntUtils.DEFAULT_SPEEDBOOST_BALANCE);
+            magnetBalance = SaveSystem.LoadInt(StringUtils.MAGNET_BALANCE, IntUtils.DEFAULT_MAGNET_BALANCE);
+            speedBoostBalance = SaveSystem.LoadInt(StringUtils.SPEEDBOOST_BALANCE, IntUtils.DEFAULT_SPEEDBOOST_BALANCE);
         }
         #endregion
 

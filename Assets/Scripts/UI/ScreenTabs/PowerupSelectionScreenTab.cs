@@ -66,7 +66,7 @@ namespace BeachHero
                 bool isMagnetUnlockLevel = GameController.GetInstance.TutorialController.IsMagnetUnlockLevel(currentLevelNumber);
                 if (isMagnetUnlockLevel)
                 {
-                    SaveController.SaveBool(StringUtils.MAGNET_UNLOCKED, true);
+                    SaveSystem.SaveBool(StringUtils.MAGNET_UNLOCKED, true);
                     isMagnetPowerupLocked = false;
                     isPowerupTutorialEnabled = true;
                     powerupTutorialPanel.ShowMagnetPowerupTutorial(magnetPowerup.transform.position);
@@ -84,7 +84,7 @@ namespace BeachHero
                 bool isSpeedBoostUnlockLevel = GameController.GetInstance.TutorialController.IsSpeedBoostUnlockLevel(currentLevelNumber);
                 if (isSpeedBoostUnlockLevel)
                 {
-                    SaveController.SaveBool(StringUtils.SPEEDBOOST_UNLOCKED, true);
+                    SaveSystem.SaveBool(StringUtils.SPEEDBOOST_UNLOCKED, true);
                     isSpeedPowerupLocked = false;
                     isPowerupTutorialEnabled = true;
                     powerupTutorialPanel.ShowSpeedBoostPowerupTutorial(speedPowerup.transform.position);

@@ -20,11 +20,17 @@ namespace BeachHero
 
         #region Properties
         public int CurrentLevelIndex => currentLevelIndex;
+
         public PoolController PoolManager => poolManager;
+
         public LevelController LevelController => levelController;
+
         public PowerupController PowerupController => powerupController;
+
         public TutorialController TutorialController => tutorialController;
+
         public StoreController StoreController => storeController;
+
         public SkinController SkinController => skinController;
         #endregion
 
@@ -36,10 +42,12 @@ namespace BeachHero
                 levelController.UpdateState();
             }
         }
+
         private void OnDestroy()
         {
             poolManager.Reset();
         }
+
         private void Start()
         {
             Application.targetFrameRate = 30;
@@ -66,11 +74,12 @@ namespace BeachHero
         {
             isGameStarted = false;
             isLevelPass = false;
-            currentLevelIndex = SaveController.LoadInt(StringUtils.LEVELNUMBER, IntUtils.DEFAULT_LEVEL_INDEX);
+            currentLevelIndex = SaveSystem.LoadInt(StringUtils.LEVELNUMBER, IntUtils.DEFAULT_LEVEL) - 1;
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
             levelController.StartState(levelDatabaseSO.GetLevelByIndex(currentLevelIndex));
             cameraController.Init();
         }
+
         public void Play()
         {
             isGameStarted = true;
@@ -80,10 +89,12 @@ namespace BeachHero
             UIController.GetInstance.ScreenEvent(ScreenType.Gameplay, UIScreenEvent.Open, screenTabType);
             ActivatePowerups();
         }
+
         public void OnCharacterPickUp()
         {
             levelController.OnCharacterPickUp();
         }
+
         public void RetryLevel()
         {
             SpawnLevel();
@@ -93,11 +104,12 @@ namespace BeachHero
         public void OnLevelPass()
         {
             currentLevelIndex++;
-            SaveController.SaveInt(StringUtils.LEVELNUMBER, currentLevelIndex);
+            SaveSystem.SaveInt(StringUtils.LEVELNUMBER, currentLevelIndex + 1);
             isLevelPass = true;
             levelController.OnLevelCompleted(true);
             UIController.GetInstance.ScreenEvent(ScreenType.GameWin, UIScreenEvent.Open);
         }
+
         public void OnLevelFailed()
         {
             if (isLevelPass)
@@ -131,6 +143,7 @@ namespace BeachHero
         {
             cameraController.StartShake();
         }
+
         public void OnLevelPassedCameraEffect()
         {
             if (isLevelPass)

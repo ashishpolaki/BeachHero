@@ -29,7 +29,7 @@ namespace BeachHero
         }
         public bool IsMagnetPowerupUnlocked()
         {
-            bool isUnlocked = SaveController.LoadBool(StringUtils.MAGNET_UNLOCKED, false);
+            bool isUnlocked = SaveSystem.LoadBool(StringUtils.MAGNET_UNLOCKED, false);
             return isUnlocked;
         }
         public bool IsMagnetUnlockLevel(int levelNumber)
@@ -42,7 +42,7 @@ namespace BeachHero
         }
         public bool IsSpeedBoostPowerupUnlocked()
         {
-            bool isUnlocked = SaveController.LoadBool(StringUtils.SPEEDBOOST_UNLOCKED, false);
+            bool isUnlocked = SaveSystem.LoadBool(StringUtils.SPEEDBOOST_UNLOCKED, false);
             return isUnlocked;
         }
     }

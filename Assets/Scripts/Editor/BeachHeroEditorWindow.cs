@@ -62,6 +62,7 @@ public class BeachHeroEditorWindow : EditorWindow
             collectablesProperty = serializedLevelObject.FindProperty("collectables");
         }
     }
+
     public class MoveObstacleRepresentation
     {
         public class KeyFrameRepresentation
@@ -279,7 +280,7 @@ public class BeachHeroEditorWindow : EditorWindow
             // Highlight the selected button
             if (i - 1 == selectedLevelIndex)
             {
-                buttonStyle.normal.textColor = Color.green;  // Change text color (or change background if you prefer)
+                buttonStyle.normal.textColor = Color.green; // Change text color (or change background if you prefer)
                 buttonStyle.normal.background = MakeTex(2, 2, Color.blue); // Set a gray background (as an example)
 
                 if (previousSelectedLevelIndex != selectedLevelIndex)
@@ -471,10 +472,11 @@ public class BeachHeroEditorWindow : EditorWindow
         EditorSceneController.Instance.Clear();
         EditorSceneController.Instance.SpawnLevelData(levelRepresentation.serializedLevelObject.targetObject as LevelSO);
     }
+
     private void TestLevel()
     {
         SaveLevel();
-        SaveController.SaveInt(StringUtils.LEVELNUMBER, selectedLevelIndex);
+        SaveSystem.SaveInt(StringUtils.LEVELNUMBER, selectedLevelIndex + 1);
         EditorSceneManager.OpenScene(GAME_SCENE_PATH);
         EditorApplication.isPlaying = true;
         window.Close();
@@ -608,7 +610,6 @@ public class BeachHeroEditorWindow : EditorWindow
     #region Item Tab
     private void DrawItemsTab()
     {
-
     }
     #endregion
 }

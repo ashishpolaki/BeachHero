@@ -40,7 +40,7 @@ namespace BeachHero
             private set
             {
                 gameCurrencyBalance = value;
-                SaveController.SaveInt(StringUtils.GAME_CURRENCY_BALANCE, gameCurrencyBalance);
+                SaveSystem.SaveInt(StringUtils.GAME_CURRENCY_BALANCE, gameCurrencyBalance);
                 OnGameCurrencyBalanceChange?.Invoke();
             }
         }
@@ -116,7 +116,7 @@ namespace BeachHero
 
         private void InitBalances()
         {
-            gameCurrencyBalance = SaveController.LoadInt(StringUtils.GAME_CURRENCY_BALANCE, IntUtils.DEFAULT_GAME_CURRENCY_BALANCE);
+            gameCurrencyBalance = SaveSystem.LoadInt(StringUtils.GAME_CURRENCY_BALANCE, IntUtils.DEFAULT_GAME_CURRENCY_BALANCE);
         }
         #endregion
 

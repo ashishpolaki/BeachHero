@@ -60,6 +60,6 @@ namespace BeachHero
         public const int DEFAULT_GAME_CURRENCY_BALANCE = 100;
 
         // Level 
-        public const int DEFAULT_LEVEL_INDEX = 0;
+        public const int DEFAULT_LEVEL = 1;
     }
 }

@@ -46,7 +46,7 @@ namespace BeachHero
         public void OnGameMusicVolumeChange(float volumeChange)
         {
             gameMusicSource.volume = volumeChange * gameMusicVolumeMultiplier;
-            SaveController.SaveFloat(StringUtils.GAME_MUSIC_VOLUME, volumeChange);
+            SaveSystem.SaveFloat(StringUtils.GAME_MUSIC_VOLUME, volumeChange);
         }
 
         private void CreateMusicSource(AudioData audioData)
@@ -71,7 +71,7 @@ namespace BeachHero
         }
         private void FadeMusicVolume()
         {
-            float volume = SaveController.LoadFloat(StringUtils.GAME_MUSIC_VOLUME, audioSettings.GetAudioVolume(AudioType.GameMusic));
+            float volume = SaveSystem.LoadFloat(StringUtils.GAME_MUSIC_VOLUME, audioSettings.GetAudioVolume(AudioType.GameMusic));
             gameMusicSource.volume = volume * gameMusicVolumeMultiplier;
             gameMusicSource.DOFade(volume, fadeMusicDuration);
         }

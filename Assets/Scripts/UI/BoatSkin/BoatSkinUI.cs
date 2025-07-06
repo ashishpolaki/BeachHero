@@ -56,13 +56,13 @@ namespace BeachHero
 
         private void SetIcon(Sprite sprite)
         {
-            currentColorIndex = SaveController.LoadInt(StringUtils.CURRENT_BOAT_COLOR_INDEX + index, 0);
+            currentColorIndex = SaveSystem.LoadInt(StringUtils.CURRENT_BOAT_COLOR_INDEX + index, 0);
             iconImage.sprite = sprite;
         }
 
         private void UnlockState(BoatSkinSO newBoatSkin)
         {
-            bool isUnlocked = SaveController.LoadBool(StringUtils.BOAT_SKIN_UNLOCKED + index, false);
+            bool isUnlocked = SaveSystem.LoadBool(StringUtils.BOAT_SKIN_UNLOCKED + index, false);
             selectButton.interactable = isUnlocked || newBoatSkin.IsDefaultBoat;
             if (isUnlocked || newBoatSkin.IsDefaultBoat)
             {
@@ -98,7 +98,7 @@ namespace BeachHero
         }
         private void OnSelectButtonClicked()
         {
-            SaveController.SaveInt(StringUtils.CURRENT_BOAT_INDEX, index);
+            SaveSystem.SaveInt(StringUtils.CURRENT_BOAT_INDEX, index);
             boatCustomisationUIScreen.SetCurrentBoatSelection(index);
         }
         private void DisableButtons()

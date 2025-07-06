@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace BeachHero
 {
-    public class SaveController : MonoBehaviour
+    public class SaveSystem : MonoBehaviour
     {
         public void Init()
         {

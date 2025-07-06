@@ -42,7 +42,7 @@ namespace BeachHero
 
         public int GetCurrentSelectedBoatIndex()
         {
-            return SaveController.LoadInt(StringUtils.CURRENT_BOAT_INDEX, 1);
+            return SaveSystem.LoadInt(StringUtils.CURRENT_BOAT_INDEX, 1);
         }
 
         private void OnBoatPurchaseFail()
@@ -53,7 +53,7 @@ namespace BeachHero
 
         public void SkinUnlocked(int index)
         {
-            SaveController.SaveBool(StringUtils.BOAT_SKIN_UNLOCKED + index, true);
+            SaveSystem.SaveBool(StringUtils.BOAT_SKIN_UNLOCKED + index, true);
             OnBoatSkinPurchased?.Invoke(index);
         }
 
@@ -73,14 +73,14 @@ namespace BeachHero
 
         public int GetBoatColorAdsCount(int boatIndex, int colorIndex)
         {
-            int currentAds = SaveController.LoadInt($"{StringUtils.BOAT_SKIN_COLOR_UNLOCK}{boatIndex}_{colorIndex}", 0);
+            int currentAds = SaveSystem.LoadInt($"{StringUtils.BOAT_SKIN_COLOR_UNLOCK}{boatIndex}_{colorIndex}", 0);
             return currentAds;
         }
 
         public void SetBoatColorAdsCount(int boatIndex, int colorIndex)
         {
             int count = GetBoatColorAdsCount(boatIndex, colorIndex) + 1;
-            SaveController.SaveInt($"{StringUtils.BOAT_SKIN_COLOR_UNLOCK}{boatIndex}_{colorIndex}", count);
+            SaveSystem.SaveInt($"{StringUtils.BOAT_SKIN_COLOR_UNLOCK}{boatIndex}_{colorIndex}", count);
         }
     }
 }

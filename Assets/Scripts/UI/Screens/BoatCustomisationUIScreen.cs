@@ -69,7 +69,7 @@ namespace BeachHero
                     boatSkins.Add(skinData.Index, boatSkinUI);
                 }
             }
-            int boatIndex = SaveController.LoadInt(StringUtils.CURRENT_BOAT_INDEX, 1);
+            int boatIndex = SaveSystem.LoadInt(StringUtils.CURRENT_BOAT_INDEX, 1);
             SetCurrentBoatSelection(boatIndex);
         }
 
