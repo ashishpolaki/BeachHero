@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 
 namespace BeachHero
 {
@@ -15,11 +16,18 @@ namespace BeachHero
         private static readonly float zoomOutThick = 0.35f;
 
 
+        public bool validate;
         [SerializeField] private LineRenderer pathLine;
         [SerializeField] private GameObject zoomOutCam, zoomInCam;
         [SerializeField] private InputManager inputManager;
 
         Vector3 originalCameraPosition;
+
+
+
+        [SerializeField] private Toggle zoomToggle;
+
+
         public LevelDatabaseSO levelDatabase;
         public GameObject levelPrefab; // A prefab with SpriteRenderer + optional 3D stuff
 
@@ -30,7 +38,6 @@ namespace BeachHero
         public List<LevelVisual> levelVisuals;
         public MapEditor mapEditor;
 
-        public bool validate;
 
         private void OnValidate()
         {
@@ -72,6 +79,22 @@ namespace BeachHero
             inputManager.OnEscapePressed += ZoomOut;
             DOTween.Init();
             ZoomOut();
+            zoomToggle.onValueChanged.AddListener(ZoomToggle);
+            zoomToggle.isOn = true;
+        }
+
+ 
+
+        private void ZoomToggle(bool value)
+        {
+            if (value)
+            {
+                ZoomOut();
+            }
+            else
+            {
+                ZoomIn(levelVisuals.Find(x => x.IsCurrentLevel).WorldPosition);
+            }
         }
 
         private void OnDisable()

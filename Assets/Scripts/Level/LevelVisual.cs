@@ -8,6 +8,12 @@ namespace BeachHero
         [SerializeField] private GameObject complete;
         [SerializeField] private GameObject current;
 
+
+
+        public Vector3 WorldPosition => levelData.WorldPosition;
+
+        public bool IsCurrentLevel => levelData.IsCurrentLevel;
+
         public void Setup(LevelData data)
         {
             $"Level {data.LevelNumber}".Log();
