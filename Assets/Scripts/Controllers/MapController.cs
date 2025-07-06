@@ -39,7 +39,7 @@ namespace BeachHero
 
         [Header("UI")]
         [SerializeField] private Toggle zoomToggle;
-        [SerializeField] private Button mapExitBtn; 
+        [SerializeField] private Button mapExitBtn;
 
         private void OnValidate()
         {
@@ -54,23 +54,29 @@ namespace BeachHero
             }
             if (mapEditor)
             {
-                var points = mapEditor.GenerateBezierCurvePoints(bezierPoints);
-                pathLine.positionCount = points.Count;
-                pathLine.SetPositions(points.ToArray());
-
-                for (int i = 0; i < bezierPoints.Count; i++)
-                {
-                    levelVisuals[i].SetPositions(bezierPoints[i].anchorPoint);
-                }
+                // var points = mapEditor.GenerateBezierCurvePoints(bezierPoints);
+                // pathLine.positionCount = points.Count;
+                // pathLine.SetPositions(points.ToArray());
+                //
+                // for (int i = 0; i < bezierPoints.Count; i++)
+                // {
+                //     levelVisuals[i].SetPositions(bezierPoints[i].anchorPoint);
+                // }
             }
-            for (var i = 0; i < levelVisuals.Count; i++)
-            {
-                var level = new LevelData();
-                level.LevelNumber = i + 1;
-                level.WorldPosition = levelVisuals[i].transform.position;
-
-                levelDatabase.LevelDatas.Add(level);
-            }
+            // for (var i = 0; i < levelVisuals.Count - 1; i++)
+            // {
+            //     var tr = levelVisuals[i].transform;
+            //     BezierPoint bp0 = bezierPoints[i];
+            //     BezierPoint bp1 = bezierPoints[i + 1];
+            //
+            //     Vector3 p0 = bp0.anchorPoint;
+            //     Vector3 p1 = p0 + bp0.outTangent;
+            //     Vector3 p2 = bp1.anchorPoint + bp1.inTangent;
+            //     Vector3 p3 = bp1.anchorPoint;
+            //
+            //     Vector3 forward = BezierCurveUtils.GetTangent(p0, p1, p2, p3, 0.1f).normalized;
+            //     tr.up = forward;
+            // }
         }
 
         private void OnDrawGizmos()
