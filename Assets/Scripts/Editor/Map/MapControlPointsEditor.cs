@@ -26,19 +26,19 @@ public class MapControlPointsEditor : Editor
         // Add Bezier Point
         if (GUILayout.Button("Add Bezier Point"))
         {
-            GameObject anchor = new GameObject($"Bezier Anchor {mapTester.bezierPoints.Count}");
-            anchor.transform.SetParent(mapTester.bezierPointsParent);
-            anchor.transform.position = mapTester.bezierPoints[mapTester.bezierPoints.Count - 1].anchorPoint;
+            // GameObject anchor = new GameObject($"Bezier Anchor {mapTester.bezierPoints.Count}");
+            // anchor.transform.SetParent(mapTester.bezierPointsParent);
+            // anchor.transform.position = mapTester.bezierPoints[mapTester.bezierPoints.Count - 1].anchorPoint;
 
             BezierPoint point = new BezierPoint
             {
-                anchorPoint = anchor.transform.position,
-                inTangent = Vector3.left,
-                outTangent = Vector3.right
+                anchorPoint = Vector2.zero,
+                inTangent = Vector3.zero,
+                outTangent = Vector3.zero
             };
             mapTester.bezierPoints.Add(point);
 
-            Undo.RegisterCreatedObjectUndo(anchor, "Add Bezier Point");
+            Undo.RegisterCreatedObjectUndo(mapTester, "Add Bezier Point");
             EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
         }
 

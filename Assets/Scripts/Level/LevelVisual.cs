@@ -14,6 +14,15 @@ namespace BeachHero
 
         public bool IsCurrentLevel => levelData.IsCurrentLevel;
 
+        public int LevelNumber => levelData.LevelNumber;
+
+
+        public void SetPositions(Vector3 positions)
+        {
+            transform.position = positions;
+            levelData.WorldPosition = positions;
+        }
+        
         public void Setup(LevelData data)
         {
             $"Level {data.LevelNumber}".Log();

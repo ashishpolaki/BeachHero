@@ -1,0 +1,4089 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!181963792 &2655988077585873504
+Preset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MapController
+  m_TargetType:
+    m_NativeTypeID: 114
+    m_ManagedTypePPtr: {fileID: 11500000, guid: 776f298bb44d04981a053b73b63520ac,
+      type: 3}
+    m_ManagedTypeFallback: 
+  m_Properties:
+  - target: {fileID: 0}
+    propertyPath: m_Enabled
+    value: 1
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorHideFlags
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: m_EditorClassIdentifier
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: validate
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: pathLine
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: zoomOutCam
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: zoomInCam
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: inputManager
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: zoomToggle
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: levelDatabase
+    value: 
+    objectReference: {fileID: 11400000, guid: ada4a019005cb594e8e48cbf998035ac, type: 2}
+  - target: {fileID: 0}
+    propertyPath: levelPrefab
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.size
+    value: 100
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[0].anchorPoint.x
+    value: 3.9810045
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[0].anchorPoint.y
+    value: -9.485609
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[0].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[0].inTangent.x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[0].inTangent.y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[0].inTangent.z
+    value: -0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[0].outTangent.x
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[0].outTangent.y
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[0].outTangent.z
+    value: 0.5
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[1].anchorPoint.x
+    value: 4.9463477
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[1].anchorPoint.y
+    value: -8.864644
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[1].anchorPoint.z
+    value: 0.1876563
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[1].inTangent.x
+    value: -0.21113491
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[1].inTangent.y
+    value: -0.3781252
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[1].inTangent.z
+    value: 0.058272846
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[1].outTangent.x
+    value: 0.4115371
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[1].outTangent.y
+    value: 0.27792355
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[1].outTangent.z
+    value: -0.058272846
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[2].anchorPoint.x
+    value: 5.844387
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[2].anchorPoint.y
+    value: -8.02167
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[2].anchorPoint.z
+    value: 0.020095835
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[2].inTangent.x
+    value: -0.49680585
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[2].inTangent.y
+    value: -0.033684585
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[2].inTangent.z
+    value: 0.045269072
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[2].outTangent.x
+    value: 0.49680585
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[2].outTangent.y
+    value: 0.033684585
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[2].outTangent.z
+    value: -0.045269072
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[3].anchorPoint.x
+    value: 6.5839953
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[3].anchorPoint.y
+    value: -7.138883
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[3].anchorPoint.z
+    value: -0.00323328
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[3].inTangent.x
+    value: -0.2943743
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[3].inTangent.y
+    value: -0.40408632
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[3].inTangent.z
+    value: -0.007616903
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[3].outTangent.x
+    value: 0.2943743
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[3].outTangent.y
+    value: 0.40408632
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[3].outTangent.z
+    value: 0.007616903
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[4].anchorPoint.x
+    value: 7.6030393
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[4].anchorPoint.y
+    value: -6.3783083
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[4].anchorPoint.z
+    value: -0.00001280476
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[4].inTangent.x
+    value: -0.09837085
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[4].inTangent.y
+    value: -0.49022767
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[4].inTangent.z
+    value: -0.000016344455
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[4].outTangent.x
+    value: 0.09837085
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[4].outTangent.y
+    value: 0.49022767
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[4].outTangent.z
+    value: 0.000016344455
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[5].anchorPoint.x
+    value: 7.6086364
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[5].anchorPoint.y
+    value: -5.0774665
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[5].anchorPoint.z
+    value: 0.0001801966
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[5].inTangent.x
+    value: -0.18349424
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[5].inTangent.y
+    value: -0.46511272
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[5].inTangent.z
+    value: 0.00020138764
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[5].outTangent.x
+    value: 0.18349424
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[5].outTangent.y
+    value: 0.46511272
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[5].outTangent.z
+    value: -0.00020138764
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[6].anchorPoint.x
+    value: 7.9636235
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[6].anchorPoint.y
+    value: -3.797926
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[6].anchorPoint.z
+    value: -0.000000024667516
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[6].inTangent.x
+    value: -0.10448302
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[6].inTangent.y
+    value: -0.48896146
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[6].inTangent.z
+    value: -0.000000019231209
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[6].outTangent.x
+    value: 0.10448302
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[6].outTangent.y
+    value: 0.48896146
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[6].outTangent.z
+    value: 0.000000019231209
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[7].anchorPoint.x
+    value: 8.135371
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[7].anchorPoint.y
+    value: -2.48162
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[7].anchorPoint.z
+    value: 0.0000000014504412
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[7].inTangent.x
+    value: 0.008933558
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[7].inTangent.y
+    value: -0.4999202
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[7].inTangent.z
+    value: 9.063652e-10
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[7].outTangent.x
+    value: -0.008933558
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[7].outTangent.y
+    value: 0.4999202
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[7].outTangent.z
+    value: -9.063652e-10
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[8].anchorPoint.x
+    value: 8.077478
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[8].anchorPoint.y
+    value: -1.152018
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[8].anchorPoint.z
+    value: -1.0503536e-12
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[8].inTangent.x
+    value: 0.008985704
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[8].inTangent.y
+    value: -0.49991927
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[8].inTangent.z
+    value: -7.0722513e-13
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[8].outTangent.x
+    value: -0.008985704
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[8].outTangent.y
+    value: 0.49991927
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[8].outTangent.z
+    value: 7.0722513e-13
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[9].anchorPoint.x
+    value: 8.361707
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[9].anchorPoint.y
+    value: 0.113016024
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[9].anchorPoint.z
+    value: 3.2992838e-14
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[9].inTangent.x
+    value: -0.3456603
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[9].inTangent.y
+    value: -0.3612741
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[9].inTangent.z
+    value: 2.3817005e-14
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[9].outTangent.x
+    value: 0.3456603
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[9].outTangent.y
+    value: 0.3612741
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[9].outTangent.z
+    value: -2.3817005e-14
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[10].anchorPoint.x
+    value: 9.408626
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[10].anchorPoint.y
+    value: 0.9296658
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[10].anchorPoint.z
+    value: 1.463983e-17
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[10].inTangent.x
+    value: -0.41425094
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[10].inTangent.y
+    value: -0.27999315
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[10].inTangent.z
+    value: 8.5324805e-18
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[10].outTangent.x
+    value: 0.41425094
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[10].outTangent.y
+    value: 0.27999315
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[10].outTangent.z
+    value: -8.5324805e-18
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[11].anchorPoint.x
+    value: 10.476549
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[11].anchorPoint.y
+    value: 1.7216816
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[11].anchorPoint.z
+    value: 1.1949604e-19
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[11].inTangent.x
+    value: -0.36825603
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[11].inTangent.y
+    value: -0.33821222
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[11].inTangent.z
+    value: 4.622812e-19
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[11].outTangent.x
+    value: 0.36825603
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[11].outTangent.y
+    value: 0.33821222
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[11].outTangent.z
+    value: -4.622812e-19
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[12].anchorPoint.x
+    value: 11.435088
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[12].anchorPoint.y
+    value: 2.6449103
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[12].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[12].inTangent.x
+    value: -0.35461998
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[12].inTangent.y
+    value: -0.35248357
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[12].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[12].outTangent.x
+    value: 0.35461998
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[12].outTangent.y
+    value: 0.35248357
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[12].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[13].anchorPoint.x
+    value: 12.357877
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[13].anchorPoint.y
+    value: 3.603638
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[13].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[13].inTangent.x
+    value: -0.33025017
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[13].inTangent.y
+    value: -0.37541285
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[13].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[13].outTangent.x
+    value: 0.33025017
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[13].outTangent.y
+    value: 0.37541285
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[13].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[14].anchorPoint.x
+    value: 13.228076
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[14].anchorPoint.y
+    value: 4.6106305
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[14].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[14].inTangent.x
+    value: -0.3360429
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[14].inTangent.y
+    value: -0.37023664
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[14].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[14].outTangent.x
+    value: 0.3360429
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[14].outTangent.y
+    value: 0.37023664
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[14].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[15].anchorPoint.x
+    value: 14.213109
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[15].anchorPoint.y
+    value: 5.498477
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[15].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[15].inTangent.x
+    value: -0.41722307
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[15].inTangent.y
+    value: -0.27554473
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[15].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[15].outTangent.x
+    value: 0.41722307
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[15].outTangent.y
+    value: 0.27554473
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[15].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[16].anchorPoint.x
+    value: 15.2809725
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[16].anchorPoint.y
+    value: 6.290943
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[16].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[16].inTangent.x
+    value: -0.3679563
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[16].inTangent.y
+    value: -0.3385383
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[16].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[16].outTangent.x
+    value: 0.3679563
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[16].outTangent.y
+    value: 0.3385383
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[16].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[17].anchorPoint.x
+    value: 16.043236
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[17].anchorPoint.y
+    value: 7.3608174
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[17].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[17].inTangent.x
+    value: -0.21029787
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[17].inTangent.y
+    value: -0.4536241
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[17].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[17].outTangent.x
+    value: 0.21029787
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[17].outTangent.y
+    value: 0.4536241
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[17].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[18].anchorPoint.x
+    value: 16.92786
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[18].anchorPoint.y
+    value: 8.331039
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[18].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[18].inTangent.x
+    value: -0.41163564
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[18].inTangent.y
+    value: -0.28382412
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[18].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[18].outTangent.x
+    value: 0.41163564
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[18].outTangent.y
+    value: 0.28382412
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[18].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[19].anchorPoint.x
+    value: 18.033161
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[19].anchorPoint.y
+    value: 9.068722
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[19].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[19].inTangent.x
+    value: -0.34233943
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[19].inTangent.y
+    value: -0.36442244
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[19].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[19].outTangent.x
+    value: 0.34233943
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[19].outTangent.y
+    value: 0.36442244
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[19].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[20].anchorPoint.x
+    value: 18.538528
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[20].anchorPoint.y
+    value: 10.282402
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[20].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[20].inTangent.x
+    value: -0.13442594
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[20].inTangent.y
+    value: -0.48159078
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[20].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[20].outTangent.x
+    value: 0.13442594
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[20].outTangent.y
+    value: 0.48159078
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[20].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[21].anchorPoint.x
+    value: 19.148682
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[21].anchorPoint.y
+    value: 11.419398
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[21].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[21].inTangent.x
+    value: -0.46622232
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[21].inTangent.y
+    value: -0.18065651
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[21].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[21].outTangent.x
+    value: 0.46622232
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[21].outTangent.y
+    value: 0.18065651
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[21].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[22].anchorPoint.x
+    value: 20.444706
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[22].anchorPoint.y
+    value: 11.29106
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[22].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[22].inTangent.x
+    value: -0.4619853
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[22].inTangent.y
+    value: 0.1912318
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[22].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[22].outTangent.x
+    value: 0.4619853
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[22].outTangent.y
+    value: -0.1912318
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[22].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[23].anchorPoint.x
+    value: 21.527773
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[23].anchorPoint.y
+    value: 10.539755
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[23].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[23].inTangent.x
+    value: -0.3581109
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[23].inTangent.y
+    value: 0.34893638
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[23].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[23].outTangent.x
+    value: 0.3581109
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[23].outTangent.y
+    value: -0.34893638
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[23].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[24].anchorPoint.x
+    value: 22.568834
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[24].anchorPoint.y
+    value: 9.71526
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[24].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[24].inTangent.x
+    value: -0.4523518
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[24].inTangent.y
+    value: 0.21302079
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[24].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[24].outTangent.x
+    value: 0.4523518
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[24].outTangent.y
+    value: -0.21302079
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[24].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[25].anchorPoint.x
+    value: 23.567358
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[25].anchorPoint.y
+    value: 10.102001
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[25].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[25].inTangent.x
+    value: -0.13735612
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[25].inTangent.y
+    value: -0.48076326
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[25].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[25].outTangent.x
+    value: 0.13735612
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[25].outTangent.y
+    value: 0.48076326
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[25].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[26].anchorPoint.x
+    value: 23.950802
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[26].anchorPoint.y
+    value: 11.376325
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[26].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[26].inTangent.x
+    value: -0.15577252
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[26].inTangent.y
+    value: -0.4751157
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[26].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[26].outTangent.x
+    value: 0.15577252
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[26].outTangent.y
+    value: 0.4751157
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[26].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[27].anchorPoint.x
+    value: 24.452341
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[27].anchorPoint.y
+    value: 12.607545
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[27].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[27].inTangent.x
+    value: -0.20592906
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[27].inTangent.y
+    value: -0.455624
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[27].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[27].outTangent.x
+    value: 0.20592906
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[27].outTangent.y
+    value: 0.455624
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[27].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[28].anchorPoint.x
+    value: 24.911827
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[28].anchorPoint.y
+    value: 13.855872
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[28].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[28].inTangent.x
+    value: -0.15074968
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[28].inTangent.y
+    value: -0.47673318
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[28].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[28].outTangent.x
+    value: 0.15074968
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[28].outTangent.y
+    value: 0.47673318
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[28].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[29].anchorPoint.x
+    value: 25.290592
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[29].anchorPoint.y
+    value: 15.131396
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[29].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[29].inTangent.x
+    value: -0.18070295
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[29].inTangent.y
+    value: -0.4662043
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[29].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[29].outTangent.x
+    value: 0.18070295
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[29].outTangent.y
+    value: 0.4662043
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[29].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[30].anchorPoint.x
+    value: 25.937723
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[30].anchorPoint.y
+    value: 16.290981
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[30].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[30].inTangent.x
+    value: -0.29920655
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[30].inTangent.y
+    value: -0.40059388
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[30].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[30].outTangent.x
+    value: 0.29920655
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[30].outTangent.y
+    value: 0.40059388
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[30].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[31].anchorPoint.x
+    value: 26.924652
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[31].anchorPoint.y
+    value: 17.168718
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[31].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[31].inTangent.x
+    value: -0.38739583
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[31].inTangent.y
+    value: -0.31610832
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[31].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[31].outTangent.x
+    value: 0.38739583
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[31].outTangent.y
+    value: 0.31610832
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[31].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[32].anchorPoint.x
+    value: 27.636782
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[32].anchorPoint.y
+    value: 18.273113
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[32].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[32].inTangent.x
+    value: -0.119176716
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[32].inTangent.y
+    value: -0.48558924
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[32].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[32].outTangent.x
+    value: 0.119176716
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[32].outTangent.y
+    value: 0.48558924
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[32].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[33].anchorPoint.x
+    value: 27.216324
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[33].anchorPoint.y
+    value: 19.427034
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[33].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[33].inTangent.x
+    value: 0.39286694
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[33].inTangent.y
+    value: -0.30928236
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[33].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[33].outTangent.x
+    value: -0.39286694
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[33].outTangent.y
+    value: 0.30928236
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[33].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[34].anchorPoint.x
+    value: 26.217663
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[34].anchorPoint.y
+    value: 20.305485
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[34].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[34].inTangent.x
+    value: 0.3999243
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[34].inTangent.y
+    value: -0.30010092
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[34].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[34].outTangent.x
+    value: -0.3999243
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[34].outTangent.y
+    value: 0.30010092
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[34].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[35].anchorPoint.x
+    value: 25.000002
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[35].anchorPoint.y
+    value: 20.5525
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[35].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[35].inTangent.x
+    value: 0.45473582
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[35].inTangent.y
+    value: 0.20788303
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[35].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[35].outTangent.x
+    value: -0.45473582
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[35].outTangent.y
+    value: -0.20788303
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[35].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[36].anchorPoint.x
+    value: 23.853806
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[36].anchorPoint.y
+    value: 19.87882
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[36].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[36].inTangent.x
+    value: 0.40627268
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[36].inTangent.y
+    value: 0.29144898
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[36].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[36].outTangent.x
+    value: -0.40627268
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[36].outTangent.y
+    value: -0.29144898
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[36].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[37].anchorPoint.x
+    value: 22.797663
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[37].anchorPoint.y
+    value: 19.069729
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[37].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[37].inTangent.x
+    value: 0.4201107
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[37].inTangent.y
+    value: 0.27112174
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[37].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[37].outTangent.x
+    value: -0.4201107
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[37].outTangent.y
+    value: -0.27112174
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[37].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[38].anchorPoint.x
+    value: 21.60253
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[38].anchorPoint.y
+    value: 18.48872
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[38].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[38].inTangent.x
+    value: 0.46834746
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[38].inTangent.y
+    value: 0.17507325
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[38].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[38].outTangent.x
+    value: -0.46834746
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[38].outTangent.y
+    value: -0.17507325
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[38].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[39].anchorPoint.x
+    value: 20.310518
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[39].anchorPoint.y
+    value: 18.195814
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[39].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[39].inTangent.x
+    value: 0.4989632
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[39].inTangent.y
+    value: 0.032183018
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[39].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[39].outTangent.x
+    value: -0.4989632
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[39].outTangent.y
+    value: -0.032183018
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[39].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[40].anchorPoint.x
+    value: 18.98158
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[40].anchorPoint.y
+    value: 18.12345
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[40].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[40].inTangent.x
+    value: 0.49959877
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[40].inTangent.y
+    value: 0.020026399
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[40].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[40].outTangent.x
+    value: -0.49959877
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[40].outTangent.y
+    value: -0.020026399
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[40].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[41].anchorPoint.x
+    value: 17.657267
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[41].anchorPoint.y
+    value: 18.040596
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[41].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[41].inTangent.x
+    value: 0.47382098
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[41].inTangent.y
+    value: 0.15966737
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[41].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[41].outTangent.x
+    value: -0.47382098
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[41].outTangent.y
+    value: -0.15966737
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[41].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[42].anchorPoint.x
+    value: 16.63604
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[42].anchorPoint.y
+    value: 17.209358
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[42].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[42].inTangent.x
+    value: 0.31105947
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[42].inTangent.y
+    value: 0.39146137
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[42].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[42].outTangent.x
+    value: -0.31105947
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[42].outTangent.y
+    value: -0.39146137
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[42].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[43].anchorPoint.x
+    value: 15.712526
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[43].anchorPoint.y
+    value: 16.296452
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[43].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[43].inTangent.x
+    value: 0.4848762
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[43].inTangent.y
+    value: 0.12204529
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[43].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[43].outTangent.x
+    value: -0.4848762
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[43].outTangent.y
+    value: -0.12204529
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[43].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[44].anchorPoint.x
+    value: 14.38849
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[44].anchorPoint.y
+    value: 16.302467
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[44].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[44].inTangent.x
+    value: 0.4945016
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[44].inTangent.y
+    value: -0.07394723
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[44].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[44].outTangent.x
+    value: -0.4945016
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[44].outTangent.y
+    value: 0.07394723
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[44].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[45].anchorPoint.x
+    value: 13.091101
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[45].anchorPoint.y
+    value: 16.593895
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[45].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[45].inTangent.x
+    value: 0.48153397
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[45].inTangent.y
+    value: -0.13462923
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[45].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[45].outTangent.x
+    value: -0.48153397
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[45].outTangent.y
+    value: 0.13462923
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[45].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[46].anchorPoint.x
+    value: 11.806564
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[46].anchorPoint.y
+    value: 16.94209
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[46].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[46].inTangent.x
+    value: 0.47996202
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[46].inTangent.y
+    value: -0.14013025
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[46].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[46].outTangent.x
+    value: -0.47996202
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[46].outTangent.y
+    value: 0.14013025
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[46].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[47].anchorPoint.x
+    value: 10.553503
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[47].anchorPoint.y
+    value: 17.387407
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[47].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[47].inTangent.x
+    value: 0.45979685
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[47].inTangent.y
+    value: -0.1964353
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[47].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[47].outTangent.x
+    value: -0.45979685
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[47].outTangent.y
+    value: 0.1964353
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[47].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[48].anchorPoint.x
+    value: 9.338979
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[48].anchorPoint.y
+    value: 17.930468
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[48].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[48].inTangent.x
+    value: 0.43761376
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[48].inTangent.y
+    value: -0.24185576
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[48].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[48].outTangent.x
+    value: -0.43761376
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[48].outTangent.y
+    value: 0.24185576
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[48].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[49].anchorPoint.x
+    value: 8.51368
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[49].anchorPoint.y
+    value: 18.903107
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[49].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[49].inTangent.x
+    value: 0.1000772
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[49].inTangent.y
+    value: -0.4898822
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[49].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[49].outTangent.x
+    value: -0.1000772
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[49].outTangent.y
+    value: 0.4898822
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[49].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[50].anchorPoint.x
+    value: 8.361855
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[50].anchorPoint.y
+    value: 20.224485
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[50].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[50].inTangent.x
+    value: 0.09650714
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[50].inTangent.y
+    value: -0.49059796
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[50].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[50].outTangent.x
+    value: -0.09650714
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[50].outTangent.y
+    value: 0.49059796
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[50].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[51].anchorPoint.x
+    value: 7.749337
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[51].anchorPoint.y
+    value: 21.38599
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[51].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[51].inTangent.x
+    value: 0.24235687
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[51].inTangent.y
+    value: -0.43733644
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[51].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[51].outTangent.x
+    value: -0.24235687
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[51].outTangent.y
+    value: 0.43733644
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[51].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[52].anchorPoint.x
+    value: 7.3119807
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[52].anchorPoint.y
+    value: 22.638168
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[52].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[52].inTangent.x
+    value: 0.100761116
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[52].inTangent.y
+    value: -0.48974198
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[52].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[52].outTangent.x
+    value: -0.100761116
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[52].outTangent.y
+    value: 0.48974198
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[52].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[53].anchorPoint.x
+    value: 7.156244
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[53].anchorPoint.y
+    value: 23.957838
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[53].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[53].inTangent.x
+    value: 0.018683383
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[53].inTangent.y
+    value: -0.4996508
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[53].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[53].outTangent.x
+    value: -0.018683383
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[53].outTangent.y
+    value: 0.4996508
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[53].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[54].anchorPoint.x
+    value: 7.1350007
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[54].anchorPoint.y
+    value: 25.287403
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[54].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[54].inTangent.x
+    value: -0.06255323
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[54].inTangent.y
+    value: -0.49607167
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[54].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[54].outTangent.x
+    value: 0.06255323
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[54].outTangent.y
+    value: 0.49607167
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[54].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[55].anchorPoint.x
+    value: 7.5554705
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[55].anchorPoint.y
+    value: 26.54087
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[55].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[55].inTangent.x
+    value: -0.1676773
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[55].inTangent.y
+    value: -0.471046
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[55].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[55].outTangent.x
+    value: 0.1676773
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[55].outTangent.y
+    value: 0.471046
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[55].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[56].anchorPoint.x
+    value: 7.815315
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[56].anchorPoint.y
+    value: 27.83935
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[56].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[56].inTangent.x
+    value: 0.037932474
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[56].inTangent.y
+    value: -0.49855906
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[56].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[56].outTangent.x
+    value: -0.037932474
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[56].outTangent.y
+    value: 0.49855906
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[56].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[57].anchorPoint.x
+    value: 6.9318495
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[57].anchorPoint.y
+    value: 28.513937
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[57].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[57].inTangent.x
+    value: 0.49888492
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[57].inTangent.y
+    value: 0.03337412
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[57].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[57].outTangent.x
+    value: -0.49888492
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[57].outTangent.y
+    value: -0.03337412
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[57].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[58].anchorPoint.x
+    value: 5.6055436
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[58].anchorPoint.y
+    value: 28.404669
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[58].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[58].inTangent.x
+    value: 0.4994955
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[58].inTangent.y
+    value: 0.022455435
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[58].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[58].outTangent.x
+    value: -0.4994955
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[58].outTangent.y
+    value: -0.022455435
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[58].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[59].anchorPoint.x
+    value: 4.3545265
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[59].anchorPoint.y
+    value: 28.741577
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[59].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[59].inTangent.x
+    value: 0.4049832
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[59].inTangent.y
+    value: -0.29323816
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[59].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[59].outTangent.x
+    value: -0.4049832
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[59].outTangent.y
+    value: 0.29323816
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[59].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[60].anchorPoint.x
+    value: 3.3051438
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[60].anchorPoint.y
+    value: 29.559929
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[60].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[60].inTangent.x
+    value: 0.3912941
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[60].inTangent.y
+    value: -0.31126988
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[60].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[60].outTangent.x
+    value: -0.3912941
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[60].outTangent.y
+    value: 0.31126988
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[60].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[61].anchorPoint.x
+    value: 2.146973
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[61].anchorPoint.y
+    value: 30.180292
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[61].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[61].inTangent.x
+    value: 0.49343672
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[61].inTangent.y
+    value: -0.080747575
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[61].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[61].outTangent.x
+    value: -0.49343672
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[61].outTangent.y
+    value: 0.080747575
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[61].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[62].anchorPoint.x
+    value: 0.8195041
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[62].anchorPoint.y
+    value: 30.243639
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[62].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[62].inTangent.x
+    value: 0.4996181
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[62].inTangent.y
+    value: 0.019538572
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[62].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[62].outTangent.x
+    value: -0.4996181
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[62].outTangent.y
+    value: -0.019538572
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[62].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[63].anchorPoint.x
+    value: -0.4424708
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[63].anchorPoint.y
+    value: 29.919775
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[63].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[63].inTangent.x
+    value: 0.373991
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[63].inTangent.y
+    value: 0.3318595
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[63].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[63].outTangent.x
+    value: -0.373991
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[63].outTangent.y
+    value: -0.3318595
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[63].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[64].anchorPoint.x
+    value: -1.2069094
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[64].anchorPoint.y
+    value: 28.844164
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[64].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[64].inTangent.x
+    value: 0.15377371
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[64].inTangent.y
+    value: 0.4757664
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[64].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[64].outTangent.x
+    value: -0.15377371
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[64].outTangent.y
+    value: -0.4757664
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[64].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[65].anchorPoint.x
+    value: -1.0328066
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[65].anchorPoint.y
+    value: 27.566774
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[65].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[65].inTangent.x
+    value: -0.1679383
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[65].inTangent.y
+    value: 0.47095302
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[65].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[65].outTangent.x
+    value: 0.1679383
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[65].outTangent.y
+    value: -0.47095302
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[65].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[66].anchorPoint.x
+    value: -0.73856074
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[66].anchorPoint.y
+    value: 26.270138
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[66].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[66].inTangent.x
+    value: -0.07745525
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[66].inTangent.y
+    value: 0.49396425
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[66].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[66].outTangent.x
+    value: 0.07745525
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[66].outTangent.y
+    value: -0.49396425
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[66].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[67].anchorPoint.x
+    value: -0.42338365
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[67].anchorPoint.y
+    value: 24.982859
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[67].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[67].inTangent.x
+    value: -0.20998919
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[67].inTangent.y
+    value: 0.45376706
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[67].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[67].outTangent.x
+    value: 0.20998919
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[67].outTangent.y
+    value: -0.45376706
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[67].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[68].anchorPoint.x
+    value: 0.20412143
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[68].anchorPoint.y
+    value: 23.80956
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[68].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[68].inTangent.x
+    value: -0.21349822
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[68].inTangent.y
+    value: 0.45212665
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[68].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[68].outTangent.x
+    value: 0.21349822
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[68].outTangent.y
+    value: -0.45212665
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[68].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[69].anchorPoint.x
+    value: 0.37881437
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[69].anchorPoint.y
+    value: 22.518578
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[69].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[69].inTangent.x
+    value: 0.087169506
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[69].inTangent.y
+    value: 0.49234286
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[69].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[69].outTangent.x
+    value: -0.087169506
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[69].outTangent.y
+    value: -0.49234286
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[69].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[70].anchorPoint.x
+    value: 0.086947784
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[70].anchorPoint.y
+    value: 21.221474
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[70].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[70].inTangent.x
+    value: 0.1668294
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[70].inTangent.y
+    value: 0.47134697
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[70].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[70].outTangent.x
+    value: -0.1668294
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[70].outTangent.y
+    value: -0.47134697
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[70].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[71].anchorPoint.x
+    value: -0.631206
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[71].anchorPoint.y
+    value: 20.12082
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[71].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[71].inTangent.x
+    value: 0.35033765
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[71].inTangent.y
+    value: 0.35674018
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[71].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[71].outTangent.x
+    value: -0.35033765
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[71].outTangent.y
+    value: -0.35674018
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[71].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[72].anchorPoint.x
+    value: -1.5566223
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[72].anchorPoint.y
+    value: 19.164288
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[72].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[72].inTangent.x
+    value: 0.34948802
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[72].inTangent.y
+    value: 0.35757256
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[72].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[72].outTangent.x
+    value: -0.34948802
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[72].outTangent.y
+    value: -0.35757256
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[72].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[73].anchorPoint.x
+    value: -2.5734255
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[73].anchorPoint.y
+    value: 18.321201
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[73].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[73].inTangent.x
+    value: 0.46728396
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[73].inTangent.y
+    value: 0.17789236
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[73].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[73].outTangent.x
+    value: -0.46728396
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[73].outTangent.y
+    value: -0.17789236
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[73].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[74].anchorPoint.x
+    value: -3.855935
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[74].anchorPoint.y
+    value: 17.970564
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[74].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[74].inTangent.x
+    value: 0.4866622
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[74].inTangent.y
+    value: 0.11471664
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[74].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[74].outTangent.x
+    value: -0.4866622
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[74].outTangent.y
+    value: -0.11471664
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[74].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[75].anchorPoint.x
+    value: -5.0587473
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[75].anchorPoint.y
+    value: 17.478882
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[75].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[75].inTangent.x
+    value: 0.25774416
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[75].inTangent.y
+    value: 0.42844832
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[75].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[75].outTangent.x
+    value: -0.25774416
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[75].outTangent.y
+    value: -0.42844832
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[75].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[76].anchorPoint.x
+    value: -5.4233127
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[76].anchorPoint.y
+    value: 16.213348
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[76].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[76].inTangent.x
+    value: 0.021950644
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[76].inTangent.y
+    value: 0.49951795
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[76].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[76].outTangent.x
+    value: -0.021950644
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[76].outTangent.y
+    value: -0.49951795
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[76].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[77].anchorPoint.x
+    value: -5.239453
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[77].anchorPoint.y
+    value: 14.901713
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[77].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[77].inTangent.x
+    value: -0.050390635
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[77].inTangent.y
+    value: 0.49745432
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[77].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[77].outTangent.x
+    value: 0.050390635
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[77].outTangent.y
+    value: -0.49745432
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[77].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[78].anchorPoint.x
+    value: -5.2789483
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[78].anchorPoint.y
+    value: 13.576428
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[78].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[78].inTangent.x
+    value: 0.10577223
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[78].inTangent.y
+    value: 0.48868418
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[78].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[78].outTangent.x
+    value: -0.10577223
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[78].outTangent.y
+    value: -0.48868418
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[78].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[79].anchorPoint.x
+    value: -6.120878
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[79].anchorPoint.y
+    value: 12.650233
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[79].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[79].inTangent.x
+    value: 0.465316
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[79].inTangent.y
+    value: 0.18297823
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[79].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[79].outTangent.x
+    value: -0.465316
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[79].outTangent.y
+    value: -0.18297823
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[79].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[80].anchorPoint.x
+    value: -7.3391175
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[80].anchorPoint.y
+    value: 12.119199
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[80].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[80].inTangent.x
+    value: 0.4296035
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[80].inTangent.y
+    value: 0.2558141
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[80].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[80].outTangent.x
+    value: -0.4296035
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[80].outTangent.y
+    value: -0.2558141
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[80].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[81].anchorPoint.x
+    value: -7.692689
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[81].anchorPoint.y
+    value: 10.990269
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[81].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[81].inTangent.x
+    value: -0.19711727
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[81].inTangent.y
+    value: 0.45950493
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[81].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[81].outTangent.x
+    value: 0.19711727
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[81].outTangent.y
+    value: -0.45950493
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[81].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[82].anchorPoint.x
+    value: -7.0949535
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[82].anchorPoint.y
+    value: 9.802594
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[82].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[82].inTangent.x
+    value: -0.25677547
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[82].inTangent.y
+    value: 0.42902958
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[82].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[82].outTangent.x
+    value: 0.25677547
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[82].outTangent.y
+    value: -0.42902958
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[82].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[83].anchorPoint.x
+    value: -6.2934394
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[83].anchorPoint.y
+    value: 8.745465
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[83].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[83].inTangent.x
+    value: -0.35699615
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[83].inTangent.y
+    value: 0.35007676
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[83].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[83].outTangent.x
+    value: 0.35699615
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[83].outTangent.y
+    value: -0.35007676
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[83].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[84].anchorPoint.x
+    value: -5.299649
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[84].anchorPoint.y
+    value: 7.8625274
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[84].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[84].inTangent.x
+    value: -0.40705526
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[84].inTangent.y
+    value: 0.290355
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[84].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[84].outTangent.x
+    value: 0.40705526
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[84].outTangent.y
+    value: -0.290355
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[84].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[85].anchorPoint.x
+    value: -4.061294
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[85].anchorPoint.y
+    value: 7.410542
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[85].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[85].inTangent.x
+    value: -0.48466247
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[85].inTangent.y
+    value: 0.12289141
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[85].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[85].outTangent.x
+    value: 0.48466247
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[85].outTangent.y
+    value: -0.12289141
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[85].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[86].anchorPoint.x
+    value: -2.8378963
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[86].anchorPoint.y
+    value: 6.915451
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[86].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[86].inTangent.x
+    value: -0.39411438
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[86].inTangent.y
+    value: 0.3076912
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[86].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[86].outTangent.x
+    value: 0.39411438
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[86].outTangent.y
+    value: -0.3076912
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[86].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[87].anchorPoint.x
+    value: -2.3860765
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[87].anchorPoint.y
+    value: 5.7146773
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[87].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[87].inTangent.x
+    value: -0.07602238
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[87].inTangent.y
+    value: 0.49418682
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[87].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[87].outTangent.x
+    value: 0.07602238
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[87].outTangent.y
+    value: -0.49418682
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[87].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[88].anchorPoint.x
+    value: -2.1592472
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[88].anchorPoint.y
+    value: 4.403314
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[88].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[88].inTangent.x
+    value: -0.0935469
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[88].inTangent.y
+    value: 0.49117103
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[88].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[88].outTangent.x
+    value: 0.0935469
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[88].outTangent.y
+    value: -0.49117103
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[88].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[89].anchorPoint.x
+    value: -1.8880354
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[89].anchorPoint.y
+    value: 3.1003509
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[89].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[89].inTangent.x
+    value: -0.103002205
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[89].inTangent.y
+    value: 0.48927554
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[89].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[89].outTangent.x
+    value: 0.103002205
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[89].outTangent.y
+    value: -0.48927554
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[89].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[90].anchorPoint.x
+    value: -1.6088204
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[90].anchorPoint.y
+    value: 1.7990601
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[90].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[90].inTangent.x
+    value: -0.11035227
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[90].inTangent.y
+    value: 0.48767036
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[90].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[90].outTangent.x
+    value: 0.11035227
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[90].outTangent.y
+    value: -0.48767036
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[90].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[91].anchorPoint.x
+    value: -1.2157484
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[91].anchorPoint.y
+    value: 0.53130877
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[91].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[91].inTangent.x
+    value: -0.2174928
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[91].inTangent.y
+    value: 0.4502187
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[91].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[91].outTangent.x
+    value: 0.2174928
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[91].outTangent.y
+    value: -0.4502187
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[91].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[92].anchorPoint.x
+    value: -0.62580204
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[92].anchorPoint.y
+    value: -0.6617056
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[92].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[92].inTangent.x
+    value: -0.21697783
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[92].inTangent.y
+    value: 0.4504671
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[92].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[92].outTangent.x
+    value: 0.21697783
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[92].outTangent.y
+    value: -0.4504671
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[92].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[93].anchorPoint.x
+    value: -0.16425669
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[93].anchorPoint.y
+    value: -1.9077289
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[93].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[93].inTangent.x
+    value: -0.13466312
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[93].inTangent.y
+    value: 0.4815245
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[93].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[93].outTangent.x
+    value: 0.13466312
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[93].outTangent.y
+    value: -0.4815245
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[93].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[94].anchorPoint.x
+    value: 0.22967765
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[94].anchorPoint.y
+    value: -3.1787422
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[94].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[94].inTangent.x
+    value: -0.1628879
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[94].inTangent.y
+    value: 0.47272354
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[94].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[94].outTangent.x
+    value: 0.1628879
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[94].outTangent.y
+    value: -0.47272354
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[94].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[95].anchorPoint.x
+    value: 0.74897367
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[95].anchorPoint.y
+    value: -4.4012427
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[95].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[95].inTangent.x
+    value: -0.2517802
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[95].inTangent.y
+    value: 0.43198
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[95].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[95].outTangent.x
+    value: 0.2517802
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[95].outTangent.y
+    value: -0.43198
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[95].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[96].anchorPoint.x
+    value: 1.4039551
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[96].anchorPoint.y
+    value: -5.5597157
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[96].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[96].inTangent.x
+    value: -0.23257309
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[96].inTangent.y
+    value: 0.44261694
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[96].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[96].outTangent.x
+    value: 0.23257309
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[96].outTangent.y
+    value: -0.44261694
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[96].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[97].anchorPoint.x
+    value: 1.93236
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[97].anchorPoint.y
+    value: -6.7787223
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[97].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[97].inTangent.x
+    value: -0.1596671
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[97].inTangent.y
+    value: 0.47382107
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[97].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[97].outTangent.x
+    value: 0.1596671
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[97].outTangent.y
+    value: -0.47382107
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[97].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[98].anchorPoint.x
+    value: 2.480077
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[98].anchorPoint.y
+    value: -7.9893947
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[98].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[98].inTangent.x
+    value: -0.23009978
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[98].inTangent.y
+    value: 0.44390774
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[98].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[98].outTangent.x
+    value: 0.23009978
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[98].outTangent.y
+    value: -0.44390774
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[98].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[99].anchorPoint.x
+    value: 3.0920205
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[99].anchorPoint.y
+    value: -9.163644
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[99].anchorPoint.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[99].inTangent.x
+    value: -0.23107277
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[99].inTangent.y
+    value: 0.44340205
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[99].inTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[99].outTangent.x
+    value: 0.23107277
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[99].outTangent.y
+    value: -0.44340205
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: bezierPoints.Array.data[99].outTangent.z
+    value: 0
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: levelsParent
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: levelVisuals.Array.size
+    value: 100
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[0]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[1]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[2]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[3]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[4]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[5]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[6]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[7]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[8]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[9]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[10]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[11]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[12]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[13]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[14]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[15]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[16]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[17]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[18]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[19]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[20]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[21]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[22]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[23]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[24]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[25]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[26]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[27]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[28]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[29]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[30]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[31]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[32]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[33]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[34]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[35]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[36]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[37]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[38]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[39]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[40]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[41]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[42]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[43]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[44]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[45]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[46]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[47]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[48]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[49]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[50]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[51]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[52]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[53]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[54]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[55]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[56]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[57]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[58]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[59]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[60]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[61]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[62]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[63]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[64]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[65]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[66]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[67]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[68]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[69]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[70]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[71]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[72]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[73]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[74]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[75]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[76]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[77]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[78]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[79]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[80]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[81]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[82]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[83]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[84]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[85]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[86]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[87]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[88]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[89]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[90]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[91]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[92]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[93]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[94]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[95]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[96]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[97]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[98]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: 'levelVisuals.Array.data[99]'
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: mapEditor
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: boat
+    value: 
+    objectReference: {fileID: 0}
+  - target: {fileID: 0}
+    propertyPath: move
+    value: 0
+    objectReference: {fileID: 0}
+  m_ExcludedProperties: []
+  m_CoupledType:
+    m_NativeTypeID: 0
+    m_ManagedTypePPtr: {fileID: 0}
+    m_ManagedTypeFallback: 
+  m_CoupledProperties: []

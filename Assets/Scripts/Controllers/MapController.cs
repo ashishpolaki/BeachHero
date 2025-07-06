@@ -55,6 +55,11 @@ namespace BeachHero
                 var points = mapEditor.GenerateBezierCurvePoints(bezierPoints);
                 pathLine.positionCount = points.Count;
                 pathLine.SetPositions(points.ToArray());
+
+                for (int i = 0; i < bezierPoints.Count; i++)
+                {
+                    levelVisuals[i].SetPositions(bezierPoints[i].anchorPoint);
+                }
             }
             for (var i = 0; i < levelVisuals.Count; i++)
             {
@@ -83,7 +88,47 @@ namespace BeachHero
             zoomToggle.isOn = true;
         }
 
- 
+        public Transform boat;
+
+        public bool move;
+
+        public void Update()
+        {
+            if (move)
+            {
+                move = false;
+                MoveBoatFromCurrentLevelToNextLevel();
+            }
+        }
+
+        public void MoveBoatFromCurrentLevelToNextLevel()
+        {
+            var currentLevel = levelVisuals.Find(x => x.IsCurrentLevel).LevelNumber - 1;
+            var nextLevel = currentLevel + 1;
+            if (nextLevel != null)
+            {
+                BezierPoint bp0 = bezierPoints[currentLevel];
+                BezierPoint bp1 = bezierPoints[nextLevel];
+
+                Vector3 p0 = bp0.anchorPoint;
+                Vector3 p1 = p0 + bp0.outTangent;
+                Vector3 p2 = bp1.anchorPoint + bp1.inTangent;
+                Vector3 p3 = bp1.anchorPoint;
+
+                float time = 0;
+                DOTween.To(() => time,
+                    x =>
+                        {
+                            time = x;
+                            Vector3 pos = BezierCurveUtils.GetPoint(p0, p1, p2, p3, time);
+                            Vector3 forward = BezierCurveUtils.GetTangent(p0, p1, p2, p3, time).normalized;
+                            boat.up = forward;
+                            boat.position = pos;
+                        },
+                    1,
+                    2f).SetEase(Ease.Linear);
+            }
+        }
 
         private void ZoomToggle(bool value)
         {

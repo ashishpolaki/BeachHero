@@ -9,19 +9,22 @@ using Object = UnityEngine.Object;
 public class BezierPoint
 {
     public Vector3 anchorPoint; // Main control point
-    public Vector3 inTangent = Vector3.left; // Local position
-    public Vector3 outTangent = Vector3.right; // Local position
+    public Vector3 inTangent = Vector3.zero; // Local position
+    public Vector3 outTangent = Vector3.zero; // Local position
+
+    public void ResetZ()
+    {
+        anchorPoint.z = 0;
+        inTangent.z = 0;
+        outTangent.z = 0;
+    }
 }
 
 public class MapEditor : SingleTon<MapEditor>
 {
-    public GameObject levelPrefab;
     public LineRenderer visualLineRenderer;
-    public Transform bezierPointsParent;
-    public Transform levelsParent;
     public List<BezierPoint> bezierPoints = new List<BezierPoint>();
     public List<Vector3> linePoints = new List<Vector3>();
-    public List<GameObject> levelGos;
     public bool validate;
 
     private void OnValidate()
@@ -29,11 +32,6 @@ public class MapEditor : SingleTon<MapEditor>
         if (validate)
         {
             validate = false;
-        }
-
-        for (int i = 0; i < bezierPoints.Count; i++)
-        {
-            bezierPoints[i].anchorPoint = levelsParent.GetChild(i).position;
         }
     }
 
@@ -44,7 +42,6 @@ public class MapEditor : SingleTon<MapEditor>
 
     public void GenerateMapPointsInEditor()
     {
-        levelGos ??= new();
         if (!Application.isPlaying && bezierPoints != null && bezierPoints.Count >= 2)
         {
             ClearGeneratedObjects();
@@ -56,11 +53,9 @@ public class MapEditor : SingleTon<MapEditor>
             for (int i = 0; i < bezierPoints.Count - 1; i++)
             {
                 BezierPoint bp0 = bezierPoints[i];
+                bp0.ResetZ();
                 BezierPoint bp1 = bezierPoints[i + 1];
-
-                //Instantiate level prefab 
-                var level = InstantiateInEditor<GameObject>(levelPrefab, bezierPoints[i].anchorPoint, levelPrefab.transform.rotation, levelsParent);
-                DestroyImmediate(level);
+                bp1.ResetZ();
 
                 if (bp0.anchorPoint == null || bp1.anchorPoint == null)
                     continue;
@@ -79,14 +74,6 @@ public class MapEditor : SingleTon<MapEditor>
                 }
             }
 
-            // Instantiate the last level
-            if (bezierPoints.Count > 0)
-            {
-                int index = bezierPoints.Count - 1;
-                var level = InstantiateInEditor<GameObject>(levelPrefab.gameObject, bezierPoints[index].anchorPoint, levelPrefab.transform.rotation, levelsParent);
-                DestroyImmediate(level);
-            }
-
             if (visualLineRenderer != null)
             {
                 SetLineRenderer(linePoints.ToArray());
@@ -102,7 +89,7 @@ public class MapEditor : SingleTon<MapEditor>
         {
             BezierPoint bp0 = bezierPoints[i];
             BezierPoint bp1 = bezierPoints[i + 1];
-            
+
             Vector3 p0 = bp0.anchorPoint;
             Vector3 p1 = p0 + bp0.outTangent;
             Vector3 p2 = bp1.anchorPoint + bp1.inTangent;
@@ -129,16 +116,16 @@ public class MapEditor : SingleTon<MapEditor>
         // Create new BezierPoints with anchors and tangents
         for (int i = 0; i < sampledPoints.Count; i++)
         {
-            GameObject go = new GameObject("Bezier Anchor " + i);
-            go.transform.position = sampledPoints[i];
-            go.transform.SetParent(bezierPointsParent);
+            // GameObject go = new GameObject("Bezier Anchor " + i);
+            // go.transform.position = sampledPoints[i];
+            // go.transform.SetParent(bezierPointsParent);
 
             Vector3 tangent = tangentVectors[i].normalized;
             float handleLength = 0.5f; // You can adapt this based on spacing
 
             bezierPoints.Add(new BezierPoint
             {
-                anchorPoint = go.transform.position,
+                anchorPoint = sampledPoints[i],
                 inTangent = -tangent * handleLength,
                 outTangent = tangent * handleLength
             });
@@ -199,15 +186,10 @@ public class MapEditor : SingleTon<MapEditor>
 
     public void ClearGeneratedObjects()
     {
-        foreach (var node in levelGos)
-        {
-            if (node != null) DestroyImmediate(node);
-        }
         if (visualLineRenderer != null)
         {
             visualLineRenderer.positionCount = 0;
             visualLineRenderer.SetPositions(new Vector3[0]);
         }
-        levelGos.Clear();
     }
 }
