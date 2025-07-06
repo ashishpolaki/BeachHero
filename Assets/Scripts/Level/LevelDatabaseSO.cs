@@ -46,6 +46,18 @@ namespace BeachHero
                 }
             }
         }
+
+        public void Init()
+        {
+            int curentLevel = SaveSystem.LoadInt(StringUtils.LEVELNUMBER, IntUtils.DEFAULT_LEVEL);
+            int i = 0;
+            while (i < curentLevel)
+            {
+                levelDatas[i++].MarkComplete();
+            }
+            if (i < levelDatas.Count)
+                levelDatas[i].MarkCurrentLevel();
+        }
     }
 
     [System.Serializable]

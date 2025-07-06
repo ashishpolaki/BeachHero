@@ -55,6 +55,7 @@ namespace BeachHero
             AdController.GetInstance.Init();
             powerupController.Init();
             storeController.Init();
+            levelDatabaseSO.Init();
             SpawnLevel();
         }
         #endregion
