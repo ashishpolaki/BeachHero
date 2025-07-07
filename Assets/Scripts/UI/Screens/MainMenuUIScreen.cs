@@ -79,7 +79,7 @@ namespace BeachHero
 
         private void OnMapButtonClicked()
         {
-            var loading = SceneManager.LoadSceneAsync(StringUtils.MAP_SCENE, LoadSceneMode.Additive);
+            var loading = SceneManager.LoadSceneAsync(StringUtils.MAP_SCENE); //, LoadSceneMode.Additive);
             loading.completed += (x) =>
                 {
                     Scene loadedScene = SceneManager.GetSceneByName(StringUtils.MAP_SCENE);

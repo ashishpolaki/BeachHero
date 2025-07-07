@@ -99,8 +99,11 @@ namespace BeachHero
 
         private void MapExit()
         {
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName(StringUtils.GAME_SCENE));
-            SceneManager.UnloadSceneAsync(StringUtils.MAP_SCENE);
+            var loading = SceneManager.LoadSceneAsync(StringUtils.GAME_SCENE); //, LoadSceneMode.Additive);
+            loading.completed += (x) =>
+                {
+                    Scene loadedScene = SceneManager.GetSceneByName(StringUtils.GAME_SCENE);
+                };
         }
 
         public Transform boat;
