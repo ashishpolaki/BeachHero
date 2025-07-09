@@ -48,8 +48,20 @@ namespace BeachHero
                 case UIScreenEvent.Hide:
                     HideScreen(_screenType);
                     break;
+                case UIScreenEvent.Push:
+                    PushScreen(_screenType, screenTabType);
+                    break;
             }
         }
+        private void PushScreen(ScreenType _screenType, ScreenTabType screenTabType)
+        {
+            InstantiateIfDoesntExist(_screenType);
+            currentActiveScreen = screenDictionary[_screenType];
+            currentActiveScreen.Open(screenTabType);
+            //Set the sibling as first
+            currentActiveScreen.transform.SetAsLastSibling();
+        }
+
         private void OpenScreen(ScreenType _screenType, ScreenTabType screenTabType)
         {
             InstantiateIfDoesntExist(_screenType);

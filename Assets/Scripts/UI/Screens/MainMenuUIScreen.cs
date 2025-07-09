@@ -1,8 +1,6 @@
 using DG.Tweening;
 using TMPro;
-using UnityEditor.Build.Reporting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace BeachHero
@@ -16,6 +14,7 @@ namespace BeachHero
         [SerializeField] private TextMeshProUGUI levelNumberText;
         [SerializeField] private UIButtonAudio[] buttonAnimationDatas;
 
+        #region Tween Animations
         protected override void PlayTweenAnimations(TweenAnimationData animationData)
         {
             //base.PlayTweenAnimations(animationData);
@@ -23,7 +22,6 @@ namespace BeachHero
             DOVirtual.DelayedCall(delay, ButtonTweenAnimations);
             // ButtonTweenAnimations();
         }
-
         private void ButtonTweenAnimations()
         {
             foreach (var buttonAnimationData in buttonAnimationDatas)
@@ -31,6 +29,7 @@ namespace BeachHero
                 buttonAnimationData.PlayTweenAnimation();
             }
         }
+        #endregion
 
         public override void Open(ScreenTabType screenTabType)
         {
@@ -67,9 +66,15 @@ namespace BeachHero
             UIController.GetInstance.ScreenEvent(ScreenType.BoatCustomisation, UIScreenEvent.Open);
         }
 
-        private void OnLevelPanelButtonClicked()
+        private async void OnLevelPanelButtonClicked()
         {
-            OpenTab(ScreenTabType.PowerupSelection);
+            //  OpenTab(ScreenTabType.PowerupSelection);
+            UIController.GetInstance.FadeIn();
+            await SceneLoader.GetInstance.LoadScene(StringUtils.MAP_SCENE, IntUtils.MAP_SCENE_LOAD_DELAY);
+            UIController.GetInstance.FadeOut();
+            UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);
+            GameController.GetInstance.CameraController.DisableCameras();
+            MapController.GetInstance.SetBoatInCurrentLevel();
         }
 
         private void OnStoreButtonClicked()
@@ -79,12 +84,6 @@ namespace BeachHero
 
         private void OnMapButtonClicked()
         {
-            var loading = SceneManager.LoadSceneAsync(StringUtils.MAP_SCENE); //, LoadSceneMode.Additive);
-            loading.completed += (x) =>
-                {
-                    Scene loadedScene = SceneManager.GetSceneByName(StringUtils.MAP_SCENE);
-                    SceneManager.SetActiveScene(loadedScene);
-                };
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace BeachHero
 {
-    public class InputManager : MonoBehaviour
+    public class InputManager : SingleTon<InputManager>
     {
         private InputSystem_Actions inputSystemActions;
 
@@ -12,27 +12,36 @@ namespace BeachHero
         public event Action<Vector2> OnMouseClickUp;
         public event Action OnEscapePressed;
 
-       // public static Vector3 MousePosition => Mouse.current.position.ReadValue();
+        // public static Vector3 MousePosition => Mouse.current.position.ReadValue();
         public static Vector3 MousePosition { get; private set; }
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        private void Awake()
         {
             inputSystemActions = new InputSystem_Actions();
+        }
+        void OnEnable()
+        {
             inputSystemActions.Game.Enable();
 
             inputSystemActions.Game.Click.performed += OnClickPerformed;
             inputSystemActions.Game.Release.performed += OnClickReleased;
-            inputSystemActions.Game.TouchPosition.performed += OnTouchPOsition;
+            inputSystemActions.Game.TouchPosition.performed += OnTouchPosition;
             inputSystemActions.Game.Escape.performed += OnEscape;
         }
+        void OnDisable()
+        {
+            inputSystemActions.Game.Click.performed -= OnClickPerformed;
+            inputSystemActions.Game.Release.performed -= OnClickReleased;
+            inputSystemActions.Game.TouchPosition.performed -= OnTouchPosition;
+            inputSystemActions.Game.Escape.performed -= OnEscape;
 
+            inputSystemActions.Game.Disable();
+        }
         private void OnEscape(InputAction.CallbackContext obj)
         {
             OnEscapePressed?.Invoke();
         }
-
-        private void OnTouchPOsition(InputAction.CallbackContext obj)
+        private void OnTouchPosition(InputAction.CallbackContext obj)
         {
             MousePosition = inputSystemActions.Game.TouchPosition.ReadValue<Vector2>();
         }
@@ -47,15 +56,6 @@ namespace BeachHero
         {
             MousePosition = inputSystemActions.Game.TouchPosition.ReadValue<Vector2>();
             OnMouseClickUp?.Invoke(MousePosition);
-        }
-
-        private void OnDestroy()
-        {
-            inputSystemActions.Game.Click.performed -= OnClickPerformed;
-            inputSystemActions.Game.Click.canceled -= OnClickReleased;
-            inputSystemActions.Game.TouchPosition.performed -= OnTouchPOsition;
-
-            inputSystemActions.Game.Disable();
         }
     }
 }

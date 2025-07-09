@@ -31,9 +31,12 @@ namespace BeachHero
 
         private void OnDisable()
         {
-            GameController.GetInstance.PowerupController.OnMagnetBalanceChange -= OnMagnetBalanceChange;
-            GameController.GetInstance.StoreController.OnGameCurrencyBalanceChange -= OnGameCurrencyBalanceChange;
-            GameController.GetInstance.PowerupController.OnSpeedBoostBalanceChange -= OnSpeedBoostBalanceChange;
+            if (GameController.GetInstance != null)
+            {
+                GameController.GetInstance.PowerupController.OnMagnetBalanceChange -= OnMagnetBalanceChange;
+                GameController.GetInstance.StoreController.OnGameCurrencyBalanceChange -= OnGameCurrencyBalanceChange;
+                GameController.GetInstance.PowerupController.OnSpeedBoostBalanceChange -= OnSpeedBoostBalanceChange;
+            }
             UnSetupAddButton(addMagnetButton);
             UnSetupAddButton(addGameCurrencyButton);
             UnSetupAddButton(addSpeedBoostButton);

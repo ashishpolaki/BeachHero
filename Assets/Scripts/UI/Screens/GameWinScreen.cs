@@ -15,10 +15,16 @@ namespace BeachHero
         {
             nextLevelButton.onClick.RemoveListener(OnNextLevel);
         }
-        private void OnNextLevel()
+        private async void OnNextLevel()
         {
+            await UIController.GetInstance.FadeInASync();
             Close();
-            GameController.GetInstance.RetryLevel();
+            GameController.GetInstance.NextLevel();
+            await SceneLoader.GetInstance.LoadScene(StringUtils.MAP_SCENE, 0);
+            GameController.GetInstance.CameraController.DisableCameras();
+            await UIController.GetInstance.FadeOutASync();
+            MapController.GetInstance.MoveBoatFromPrevToCurrentLevel();
+            UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);
         }
     }
 }

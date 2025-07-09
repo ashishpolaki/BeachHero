@@ -80,5 +80,15 @@ namespace BeachHero
             // Reset position after shaking
             gameViewCamera.transform.localPosition = originalPos;
         }
+
+        public void DisableCameras()
+        {
+            gameObject.SetActive(false);
+        }
+
+        public void EnableCameras()
+        {
+            gameObject.SetActive(true);
+        }
     }
 }

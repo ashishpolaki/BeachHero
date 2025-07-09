@@ -64,5 +64,9 @@ namespace BeachHero
 
         // Level 
         public const int DEFAULT_LEVEL = 1;
+
+        //Scene
+        public const int MAP_SCENE_LOAD_DELAY = 500;
     }
+
 }

@@ -7,7 +7,6 @@ namespace BeachHero
     {
         #region Inspector Variables
         [SerializeField] private PoolController poolManager;
-        [SerializeField] private InputManager inputManager;
 
         [SerializeField] private LayerMask startPointLayer;
         [SerializeField] private LayerMask touchLayer;
@@ -68,14 +67,17 @@ namespace BeachHero
         #region Unity Methods
         private void OnEnable()
         {
-            inputManager.OnMouseClickDown += OnMouseClickDown;
-            inputManager.OnMouseClickUp += OnMouseClickUp;
+            InputManager.GetInstance.OnMouseClickDown += OnMouseClickDown;
+            InputManager.GetInstance.OnMouseClickUp += OnMouseClickUp;
         }
 
         private void OnDisable()
         {
-            inputManager.OnMouseClickDown -= OnMouseClickDown;
-            inputManager.OnMouseClickUp -= OnMouseClickUp;
+            if (InputManager.GetInstance != null)
+            {
+                InputManager.GetInstance.OnMouseClickDown -= OnMouseClickDown;
+                InputManager.GetInstance.OnMouseClickUp -= OnMouseClickUp;
+            }
         }
         #endregion
 

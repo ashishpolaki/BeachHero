@@ -8,8 +8,6 @@ namespace BeachHero
         [SerializeField] private GameObject complete;
         [SerializeField] private GameObject current;
 
-
-
         public Vector3 WorldPosition => levelData.WorldPosition;
 
         public bool IsCurrentLevel => levelData.IsCurrentLevel;
@@ -27,10 +25,8 @@ namespace BeachHero
         
         public void Setup(LevelData data)
         {
-            $"Level {data.LevelNumber}".Log();
             levelData = data;
             // spriteRenderer = GetComponent<SpriteRenderer>();
-
             UpdateVisual();
         }
 
@@ -43,18 +39,7 @@ namespace BeachHero
                 complete.SetActive(true);
             else if (levelData.IsCurrentLevel)
             {
-                current.SetActive(false);
-            }
-        }
-
-        private void OnMouseDown()
-        {
-            if (levelData?.IsCurrentLevel == true || true)
-            {
-                MapController.GetInstance.ZoomIn(levelData.WorldPosition);
-
-                Debug.Log($"Level {levelData.LevelNumber} clicked!");
-                // Load your level scene or show popup
+                current.SetActive(true);
             }
         }
     }

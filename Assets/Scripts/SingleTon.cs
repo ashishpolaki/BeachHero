@@ -89,6 +89,11 @@ namespace BeachHero
                         UnityEngine.Object.DontDestroyOnLoad(SingleTon<T>.instance);
                     }
                 }
+                // Ensure the instance is not null
+                if (SingleTon<T>.instance == null)
+                {
+                    return null;
+                }
                 SingleTon<T>.instance.gameObject.SetActive(true);
                 return SingleTon<T>.instance;
             }

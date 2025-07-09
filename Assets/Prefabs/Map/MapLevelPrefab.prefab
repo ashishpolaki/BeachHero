@@ -10,14 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 3114972947175779914}
   - component: {fileID: 8241341839624156964}
-  - component: {fileID: 2987164891858712642}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: MapLevelPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3114972947175779914
 Transform:
   m_ObjectHideFlags: 0
@@ -57,52 +56,6 @@ MonoBehaviour:
     WorldPosition: {x: -2.0639307, y: 7.8359413, z: -0.5}
   complete: {fileID: 6098481293942356309}
   current: {fileID: 8291167797800028670}
---- !u!61 &2987164891858712642
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 241424474881460587}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.42666668, y: 0.42666668}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 0.42666668, y: 0.42666668}
-  m_EdgeRadius: 0
 --- !u!1 &1114715297792601469
 GameObject:
   m_ObjectHideFlags: 0
@@ -113,7 +66,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4143733255751219573}
   - component: {fileID: 6642349849736210371}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -200,7 +153,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6894943424961375690}
   - component: {fileID: 2962908662012407553}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -287,7 +240,7 @@ GameObject:
   m_Component:
   - component: {fileID: 521377237588876529}
   - component: {fileID: 1536061567916767989}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Complete
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -374,7 +327,7 @@ GameObject:
   m_Component:
   - component: {fileID: 877008753098844351}
   - component: {fileID: 798830271094191043}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Current
   m_TagString: Untagged
   m_Icon: {fileID: 0}

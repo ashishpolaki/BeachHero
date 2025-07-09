@@ -36,6 +36,15 @@ namespace BeachHero
             return levelsList[index % levelsList.Length];
         }
 
+#if UNITY_EDITOR
+        public void ClearLevelsData()
+        {
+            for (int i = 0; i < levelDatas.Count; i++)
+            {
+                levelDatas[i].IsCurrentLevel = false;
+                levelDatas[i].IsCompleted = false;
+            }
+        }
         private void OnValidate()
         {
             for (int i = 0; i < levelDatas.Count; i++)
@@ -46,18 +55,21 @@ namespace BeachHero
                 }
             }
         }
+#endif
 
         public void Init()
         {
             int curentLevel = SaveSystem.LoadInt(StringUtils.LEVELNUMBER, IntUtils.DEFAULT_LEVEL);
+            int currentLevelIndex = curentLevel - 1;
             int i = 0;
-            while (i < curentLevel)
+            while (i < currentLevelIndex)
             {
                 levelDatas[i++].MarkComplete();
             }
             if (i < levelDatas.Count)
                 levelDatas[i].MarkCurrentLevel();
         }
+
     }
 
     [System.Serializable]

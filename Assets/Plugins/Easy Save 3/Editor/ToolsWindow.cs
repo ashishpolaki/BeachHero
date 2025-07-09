@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.IO;
+using BeachHero;
 
 namespace ES3Editor
 {
@@ -55,6 +56,28 @@ namespace ES3Editor
                     file.Delete();
                 foreach (DirectoryInfo dir in di.GetDirectories())
                     dir.Delete(true);
+
+                // Check if the LevelDatabaseSO exists and clear its data
+                string levelDatabasePath = "Assets/ScriptableObjects/Levels/LevelsDatabase.asset";
+                if (File.Exists(levelDatabasePath))
+                {
+                    LevelDatabaseSO levelDatabase = AssetDatabase.LoadAssetAtPath<LevelDatabaseSO>(levelDatabasePath);
+                    if (levelDatabase != null)
+                    {
+                        levelDatabase.ClearLevelsData();
+                        EditorUtility.SetDirty(levelDatabase);
+                        AssetDatabase.SaveAssets();
+                        DebugUtils.Log("Level Database cleared successfully.");
+                    }
+                    else
+                    {
+                        DebugUtils.LogError("Level Database SO not found at the specified path.");
+                    }
+                }
+                else
+                {
+                    DebugUtils.LogError("Level Database SO file does not exist at the specified path.");
+                }
             }
         }
 

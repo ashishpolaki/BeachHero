@@ -7,7 +7,7 @@ namespace BeachHero
         public override void Hit()
         {
             base.Hit();
-            GameController.GetInstance.OnCameraShakeEffect();
+            GameController.GetInstance.CameraController.StartShake();
         }
     }
 }

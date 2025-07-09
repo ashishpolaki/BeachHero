@@ -14,6 +14,8 @@ namespace BeachHero
         GameLose,
         GameWin,
         Results,
+        Map,
+        PowerupSelection,
     }
     public interface IScreen
     {
