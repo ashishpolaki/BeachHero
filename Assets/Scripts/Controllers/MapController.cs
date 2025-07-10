@@ -26,6 +26,7 @@ namespace BeachHero
         [SerializeField] private List<LevelVisual> levelVisuals;
         [SerializeField] private float boatDuration = 1f;
         [SerializeField] private float boatOffset = 0.5f;
+        [SerializeField] private Ease boatEase = Ease.OutCubic;
 
         private Tween boatTween;
         private Vector2 pendingClickPosition;
@@ -171,7 +172,7 @@ namespace BeachHero
                         boat.position = pos + right * boatOffset;
                     },
                     1,
-                    boatDuration).SetEase(Ease.InQuad);
+                    boatDuration).SetEase(boatEase);
             }
         }
         public void ZoomIn()

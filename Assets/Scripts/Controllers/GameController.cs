@@ -56,7 +56,6 @@ namespace BeachHero
             AdController.GetInstance.Init();
             powerupController.Init();
             storeController.Init();
-            levelDatabaseSO.Init();
             SpawnLevel();
         }
         #endregion
@@ -80,6 +79,7 @@ namespace BeachHero
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
             levelController.StartState(levelDatabaseSO.GetLevelByIndex(currentLevelIndex));
             CameraController.Init();
+            levelDatabaseSO.Init();
         }
 
         public void Play()
@@ -110,6 +110,7 @@ namespace BeachHero
             currentLevelIndex = SaveSystem.LoadInt(StringUtils.LEVELNUMBER, IntUtils.DEFAULT_LEVEL) - 1;
             levelController.StartState(levelDatabaseSO.GetLevelByIndex(currentLevelIndex));
             CameraController.Init();
+            levelDatabaseSO.Init();
         }
         public void OnLevelPass()
         {

@@ -14589,16 +14589,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 776f298bb44d04981a053b73b63520ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  move: 0
-  boatOffset: 0.5
   boat: {fileID: 643769863}
-  boatDuration: 1
   pathLine: {fileID: 5617654796178919947}
   zoomOutCam: {fileID: 670755073}
   zoomInCam: {fileID: 839931412}
-  levelDatabase: {fileID: 11400000, guid: ada4a019005cb594e8e48cbf998035ac, type: 2}
   levelPrefab: {fileID: 241424474881460587, guid: bfe8e0114a1f76747af25c71c6197df3,
     type: 3}
+  levelsParent: {fileID: 1493847618}
+  levelDatabase: {fileID: 11400000, guid: ada4a019005cb594e8e48cbf998035ac, type: 2}
   bezierPoints:
   - anchorPoint: {x: 3.9810045, y: -9.485609, z: 0}
     inTangent: {x: 0, y: 0, z: 0}
@@ -14900,7 +14898,6 @@ MonoBehaviour:
   - anchorPoint: {x: 3.0920205, y: -9.163644, z: 0}
     inTangent: {x: -0.23107308, y: 0.44340187, z: 0}
     outTangent: {x: 0.23107308, y: -0.44340187, z: 0}
-  levelsParent: {fileID: 1493847618}
   levelVisuals:
   - {fileID: 1651608055}
   - {fileID: 2023035908}
@@ -15002,8 +14999,12 @@ MonoBehaviour:
   - {fileID: 2033970611}
   - {fileID: 1252500907}
   - {fileID: 599562228}
-  mapEditor: {fileID: 73177766}
+  boatDuration: 1
+  boatOffset: 0.5
+  boatEase: 7
   validate: 0
+  mapEditor: {fileID: 73177766}
+  move: 0
 --- !u!1 &637975540
 GameObject:
   m_ObjectHideFlags: 0

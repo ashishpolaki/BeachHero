@@ -382,7 +382,6 @@ MonoBehaviour:
   tutorialController: {fileID: 280235833}
   storeController: {fileID: 280235834}
   skinController: {fileID: 280235835}
-  inputManager: {fileID: 0}
 --- !u!114 &280235828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -527,7 +526,8 @@ MonoBehaviour:
   screenManager:
     screenConfig: {fileID: 11400000, guid: b46d68ad495a5bd43849ee648a8c0fe2, type: 2}
   fadePanel: {fileID: 1881130642}
-  fadeDuration: 0.5
+  fadeInDuration: 0.5
+  fadeOutDuration: 0.5
 --- !u!4 &454842544
 Transform:
   m_ObjectHideFlags: 0
