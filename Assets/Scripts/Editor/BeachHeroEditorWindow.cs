@@ -128,7 +128,7 @@ public class BeachHeroEditorWindow : EditorWindow
 
     #region Window Variables
     private static readonly int DEFAULT_WINDOW_MIN_SIZE = 600;
-    private string ASSETPATH = "Assets/ScriptableObjects/LevelsDatabase.asset";
+    private string ASSETPATH = "Assets/ScriptableObjects/Levels/LevelsDatabase.asset";
     private string EDITOR_SCENE_NAME = "BeachHeroEditorScene";
     private string EDITOR_SCENE_PATH = "Assets/Scenes/BeachHeroEditorScene.unity";
     private string GAME_SCENE_PATH = "Assets/Scenes/BeachGame.unity";
