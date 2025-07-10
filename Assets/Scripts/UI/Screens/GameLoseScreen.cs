@@ -15,7 +15,6 @@ namespace BeachHero
         {
             retryButton.onClick.RemoveListener(OnRetryClick);
         }
-
         private void OnRetryClick()
         {
             Close();

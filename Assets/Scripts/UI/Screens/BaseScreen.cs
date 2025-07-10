@@ -11,11 +11,11 @@ namespace BeachHero
         BoatCustomisation,
         Store,
         Gameplay,
-        GameLose,
-        GameWin,
         Results,
         Map,
         PowerupSelection,
+        NoInternet,
+        AdNotLoaded,
     }
     public interface IScreen
     {

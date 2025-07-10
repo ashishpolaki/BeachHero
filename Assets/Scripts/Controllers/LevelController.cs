@@ -217,7 +217,7 @@ namespace BeachHero
             {
                 isPlaying = false;
                 GameController.GetInstance.OnLevelPass();
-                UIController.GetInstance.ScreenEvent(ScreenType.GameWin, UIScreenEvent.Open);
+                UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Open, ScreenTabType.LevelPass);
             }
         }
 

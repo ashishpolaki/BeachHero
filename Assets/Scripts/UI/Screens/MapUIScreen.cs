@@ -24,13 +24,13 @@ namespace BeachHero
         }
         private async void MapExit()
         {
-            UIController.GetInstance.FadeIn();
+            await UIController.GetInstance.FadeInASync();
             GameController.GetInstance.CameraController.EnableCameras();
             await SceneLoader.GetInstance.UnloadScene(StringUtils.MAP_SCENE, IntUtils.MAP_SCENE_LOAD_DELAY);
             UIController.GetInstance.FadeOut();
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
         }
-       
+
         private void ZoomToggle(bool value)
         {
             if (value)

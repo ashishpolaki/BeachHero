@@ -46,12 +46,23 @@ namespace BeachHero
         }
         private async void OnPlayButtonClicked()
         {
-            await UIController.GetInstance.FadeInASync();
-            GameController.GetInstance.CameraController.EnableCameras();
-            await SceneLoader.GetInstance.UnloadScene(StringUtils.MAP_SCENE, IntUtils.MAP_SCENE_LOAD_DELAY);
-            UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Close);
-            UIController.GetInstance.ScreenEvent(ScreenType.PowerupSelection, UIScreenEvent.Close);
-            UIController.GetInstance.FadeOut();
+            if (GameController.GetInstance.GameState == GameState.LevelFailed)
+            {
+                await UIController.GetInstance.FadeInASync();
+                UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Close);
+                UIController.GetInstance.ScreenEvent(ScreenType.PowerupSelection, UIScreenEvent.Close);
+                GameController.GetInstance.RetryLevel();
+                await UIController.GetInstance.FadeOutASync();
+            }
+            else
+            {
+                await UIController.GetInstance.FadeInASync();
+                GameController.GetInstance.CameraController.EnableCameras();
+                await SceneLoader.GetInstance.UnloadScene(StringUtils.MAP_SCENE, IntUtils.MAP_SCENE_LOAD_DELAY);
+                UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Close);
+                UIController.GetInstance.ScreenEvent(ScreenType.PowerupSelection, UIScreenEvent.Close);
+                UIController.GetInstance.FadeOut();
+            }
             GameController.GetInstance.Play();
         }
         private void SetLevelNumber()

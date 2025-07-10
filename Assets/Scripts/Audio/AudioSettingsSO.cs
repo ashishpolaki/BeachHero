@@ -9,7 +9,7 @@ namespace BeachHero
         CharacterPickup,
         Gamelose,
         Gamewin,
-        Coin,
+        GameCurrency,
         None
     }
     public enum AudioVolumeType

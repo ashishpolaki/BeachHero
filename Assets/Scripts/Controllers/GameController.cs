@@ -2,6 +2,14 @@ using UnityEngine;
 
 namespace BeachHero
 {
+    public enum GameState
+    {
+        NotStarted,
+        Playing,
+        Paused,
+        LevelPassed,
+        LevelFailed,
+    }
     public class GameController : SingleTon<GameController>
     {
         [SerializeField] private LevelDatabaseSO levelDatabaseSO;
@@ -14,11 +22,12 @@ namespace BeachHero
 
         [Tooltip("The Index Starts from 0")]
         private int currentLevelIndex;
-        private bool isGameStarted = false;
-        private bool isLevelPass = false;
+
+        private GameState gameState = GameState.NotStarted;
         private CameraController cameraController;
 
         #region Properties
+        public GameState GameState => gameState;
         public int CurrentLevelIndex => currentLevelIndex;
         public PoolController PoolManager => poolManager;
         public LevelController LevelController => levelController;
@@ -26,29 +35,10 @@ namespace BeachHero
         public TutorialController TutorialController => tutorialController;
         public StoreController StoreController => storeController;
         public SkinController SkinController => skinController;
-        public CameraController CameraController
-        {
-            get
-            {
-                return cameraController;
-            }
-        }
+        public CameraController CameraController => cameraController;
         #endregion
 
         #region Unity Methods
-        private void Update()
-        {
-            if (isGameStarted)
-            {
-                levelController.UpdateState();
-            }
-        }
-
-        private void OnDestroy()
-        {
-            poolManager.Reset();
-        }
-
         private void Start()
         {
             Application.targetFrameRate = 30;
@@ -58,9 +48,20 @@ namespace BeachHero
             storeController.Init();
             SpawnLevel();
         }
+        private void Update()
+        {
+            if (GameState == GameState.Playing || GameState == GameState.LevelPassed)
+            {
+                levelController.UpdateState();
+            }
+        }
+        private void OnDestroy()
+        {
+            poolManager.Reset();
+        }
         #endregion
 
-        #region Cache Component
+        #region Initialization
         public void CacheCameraController(CameraController _cameraController)
         {
             cameraController = _cameraController;
@@ -69,67 +70,69 @@ namespace BeachHero
                 DebugUtils.LogError("CameraController is null");
             }
         }
-        #endregion
-
-        private void SpawnLevel()
+        private void InitializeLevel()
         {
-            isGameStarted = false;
-            isLevelPass = false;
-            currentLevelIndex = SaveSystem.LoadInt(StringUtils.LEVELNUMBER, IntUtils.DEFAULT_LEVEL) - 1;
-            UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
+            SetGameState(GameState.NotStarted);
             levelController.StartState(levelDatabaseSO.GetLevelByIndex(currentLevelIndex));
-            CameraController.Init();
+            cameraController.Init();
             levelDatabaseSO.Init();
         }
+        private void SpawnLevel()
+        {
+            InitializeLevel();
+            UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
+        }
+        #endregion
 
+        #region Game Flow
         public void Play()
         {
-            isGameStarted = true;
+            SetGameState(GameState.Playing);
             bool isFTUE = tutorialController.IsFTUE(currentLevelIndex + 1);
             ScreenTabType screenTabType = isFTUE ? ScreenTabType.Tutorial : ScreenTabType.None;
             levelController.GameStart(isFTUE);
             UIController.GetInstance.ScreenEvent(ScreenType.Gameplay, UIScreenEvent.Open, screenTabType);
             ActivatePowerups();
         }
-
         public void OnCharacterPickUp()
         {
             levelController.OnCharacterPickUp();
         }
-
-        #region Level 
         public void RetryLevel()
         {
-            SpawnLevel();
+            InitializeLevel();
         }
-
         public void NextLevel()
         {
-            isGameStarted = false;
-            isLevelPass = false;
-            currentLevelIndex = SaveSystem.LoadInt(StringUtils.LEVELNUMBER, IntUtils.DEFAULT_LEVEL) - 1;
-            levelController.StartState(levelDatabaseSO.GetLevelByIndex(currentLevelIndex));
-            CameraController.Init();
-            levelDatabaseSO.Init();
+            InitializeLevel();
         }
-        public void OnLevelPass()
+        public void SkipLevel()
+        {
+            IncrementLevel();
+            InitializeLevel();
+        }
+        private void IncrementLevel()
         {
             currentLevelIndex++;
             SaveSystem.SaveInt(StringUtils.LEVELNUMBER, currentLevelIndex + 1);
-            isLevelPass = true;
+        }
+        public void OnLevelPass()
+        {
+            IncrementLevel();
+            gameState = GameState.LevelPassed;
             levelController.OnLevelCompleted(true);
-            UIController.GetInstance.ScreenEvent(ScreenType.GameWin, UIScreenEvent.Open);
+            UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Open, ScreenTabType.LevelPass);
         }
         public void OnLevelFailed()
         {
-            if (isLevelPass)
+            if (GameState == GameState.LevelPassed)
             {
                 return; // If the level is already passed, do not allow to fail again.
             }
-            isLevelPass = false;
+            gameState = GameState.LevelFailed;
             AudioController.GetInstance.PlaySound(AudioType.Gamelose);
             levelController.OnLevelCompleted(false);
-            UIController.GetInstance.ScreenEvent(ScreenType.GameLose, UIScreenEvent.Open);
+            UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Open, ScreenTabType.LevelFail);
         }
         #endregion
 
@@ -151,10 +154,17 @@ namespace BeachHero
         #region Camera
         public void OnLevelPassedCameraEffect()
         {
-            if (isLevelPass)
+            if (GameState == GameState.LevelPassed)
             {
                 cameraController.OnLevelPass(levelController.PlayerTransform);
             }
+        }
+        #endregion
+
+        #region Utilities
+        private void SetGameState(GameState state)
+        {
+            gameState = state;
         }
         #endregion
     }

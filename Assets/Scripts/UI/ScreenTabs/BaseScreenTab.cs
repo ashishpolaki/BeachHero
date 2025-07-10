@@ -6,7 +6,6 @@ namespace BeachHero
     {
         None,
         Tutorial,
-        PowerupSelection,
         LevelPass,
         LevelFail,
     }

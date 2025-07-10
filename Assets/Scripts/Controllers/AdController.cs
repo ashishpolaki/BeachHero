@@ -12,6 +12,7 @@ namespace BeachHero
         private NativeOverlayAd _nativeOverlayAd;
         private RewardedAd rewardedAd;
 
+        private Action<Reward> pendingRewardCallback;
         private bool isBannerActive = false;
         private bool isInterstitialActive = false;
         private string gameName = "Beach Hero";
@@ -296,17 +297,36 @@ namespace BeachHero
                 });
         }
 
-        public void ShowRewardedAd(/*Action<Reward> onUserEarnedReward*/)
+        public void ShowRewardedAd(Action<Reward> onUserEarnedReward)
         {
-            const string rewardMsg =
-     "Rewarded ad rewarded the user. Type: {0}, amount: {1}.";
+            if (Application.internetReachability == NetworkReachability.NotReachable)
+            {
+                // Show no internet dialog
+                UIController.GetInstance.ScreenEvent(ScreenType.NoInternet, UIScreenEvent.Push);
+                return;
+            }
+
+            //If rewarded ad not loaded
+            if (rewardedAd == null || !rewardedAd.CanShowAd())
+            {
+                UIController.GetInstance.ScreenEvent(ScreenType.AdNotLoaded, UIScreenEvent.Push);
+               
+                RequestRewardedAD();
+                return;
+            }
+
+            if (onUserEarnedReward != null)
+            {
+                pendingRewardCallback = onUserEarnedReward;
+            }
 
             if (rewardedAd != null && rewardedAd.CanShowAd())
             {
                 rewardedAd.Show((Reward reward) =>
                 {
                     // TODO: Reward the user.
-                    Debug.Log(String.Format(rewardMsg, reward.Type, reward.Amount));
+                    DebugUtils.Log("Rewarded ad rewarded the user");
+                    pendingRewardCallback?.Invoke(reward);
                 });
             }
         }
@@ -463,7 +483,7 @@ namespace BeachHero
                 return;
             }
 
-            if(SaveSystem.LoadBool(StringUtils.NO_ADS_PURCHASED,false))
+            if (SaveSystem.LoadBool(StringUtils.NO_ADS_PURCHASED, false))
             {
                 return;
             }
