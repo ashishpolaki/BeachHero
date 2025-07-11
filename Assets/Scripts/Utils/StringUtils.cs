@@ -11,6 +11,9 @@ namespace BeachHero
         public const string WHIRLPOOL_POSITION = "_WP_Position";
         public const string WHIRLPOOL_ENABLE = "_WP_Enable";
 
+        //Trail Renderer
+        public const string TRAIL_SPEED = "_Speed";
+
         //Tags
         public const string PLAYER_TAG = "Player";
         public const string OBSTACLE_TAG = "Obstacle";

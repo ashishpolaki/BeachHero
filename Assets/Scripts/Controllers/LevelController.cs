@@ -23,7 +23,6 @@ namespace BeachHero
         private Dictionary<ObstacleType, List<Obstacle>> obstaclesDictionary = new Dictionary<ObstacleType, List<Obstacle>>();
         private Dictionary<CollectableType, List<Collectable>> collectableDictionary = new Dictionary<CollectableType, List<Collectable>>();
         private PathTrail playerPathDrawTrail;
-        private PathTrail playerPathTransparentTrail;
 
         private Camera cam;
         private Ray ray;
@@ -182,6 +181,7 @@ namespace BeachHero
         private void StartSimulation()
         {
             player.StartMovement(smoothedDrawnPoints.ToArray());
+            playerPathDrawTrail.SetTrailSpeed(player.MovementSpeed / 2f);
             isSimulationStarted = true;
             if (isFTUE)
             {

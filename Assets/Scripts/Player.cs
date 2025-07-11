@@ -18,8 +18,10 @@ namespace BeachHero
         private int nextPointIndex;
         private int sinkingAnimHash = Animator.StringToHash(StringUtils.SINKING_ANIM);
         private int idleAnimHash = Animator.StringToHash(StringUtils.IDLE_ANIM);
-
         private Dictionary<int, GameObject> boatObjects = new Dictionary<int, GameObject>();
+
+        public float MovementSpeed => movementSpeed;
+
 #if UNITY_EDITOR
         private void OnDrawGizmos()
         {
