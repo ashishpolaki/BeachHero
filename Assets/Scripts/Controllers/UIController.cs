@@ -11,8 +11,8 @@ namespace BeachHero
         Close,          // Close the current screen
         Show,           // Show the screen without affecting others (e.g., reappear)
         Hide,           // Hide the screen without destroying it
-
         Push,           // Open a new screen while keeping the current one active (stack-based UI)
+        ChangeTab   // Change the active tab within the current screen
     }
     public class UIController : SingleTon<UIController>
     {
@@ -41,35 +41,27 @@ namespace BeachHero
         {
             screenManager.CloseAllScreens();
         }
-        public void FadeIn()
-        {
-            if (fadePanel != null)
-            {
-                fadePanel.DOFade(1f, fadeInDuration).SetEase(Ease.InOutSine); 
-            }
-        }
-        public async Task FadeInASync()
-        {
-            if (fadePanel != null)
-            {
-                fadePanel.DOKill();
-                await fadePanel.DOFade(1f, fadeInDuration).SetEase(Ease.InOutSine).AsyncWaitForCompletion();
-            }
-        }
-        public void FadeOut()
+        public void FadeIn() => StartFade(1f, fadeInDuration);
+        public void FadeOut() => StartFade(0f, fadeOutDuration);
+        public Task FadeInASync() => StartFadeAsync(1f, fadeInDuration);
+        public Task FadeOutASync() => StartFadeAsync(0f, fadeOutDuration);
+        #endregion
+
+        #region Private Methods
+        private void StartFade(float endValue, float duration)
         {
             if (fadePanel != null)
             {
                 fadePanel.DOKill();
-                fadePanel.DOFade(0f, fadeOutDuration).SetEase(Ease.InOutSine);
+                fadePanel.DOFade(endValue, duration).SetEase(Ease.InOutSine);
             }
         }
-        public async Task FadeOutASync()
+        private async Task StartFadeAsync(float endValue, float duration)
         {
             if (fadePanel != null)
             {
                 fadePanel.DOKill();
-                await fadePanel.DOFade(0f, fadeOutDuration).SetEase(Ease.InOutSine).AsyncWaitForCompletion();
+                await fadePanel.DOFade(endValue, duration).SetEase(Ease.InOutSine).AsyncWaitForCompletion();
             }
         }
         #endregion
