@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 namespace BeachHero
@@ -6,20 +5,14 @@ namespace BeachHero
     public class GameCurrencyCollectable : Collectable
     {
         [SerializeField] private GameObject graphics;
-        [SerializeField] private float particleTime = 5f;
         [SerializeField] private float rotateSpeed = 200f;
         [SerializeField] private float moveSpeed = 10f;
 
-        private ParticleSystem particle;
         private Transform moveTarget;
         private bool canMoveToTarget;
 
         public bool CanMoveToTarget => canMoveToTarget;
 
-        private void OnDisable()
-        {
-            StopAllCoroutines();
-        }
         public void SetTarget(Transform target)
         {
             moveTarget = target;
@@ -29,11 +22,6 @@ namespace BeachHero
         {
             base.Init(collectableData);
             graphics.SetActive(true);
-            if (particle != null)
-            {
-                particle.Stop();
-                GameController.GetInstance.PoolManager.GameCurrencyParticlePool.ReturnObject(particle.gameObject);
-            }
             canMoveToTarget = false;
         }
         public override void UpdateState()
@@ -57,18 +45,10 @@ namespace BeachHero
         {
             base.Collect();
             graphics.SetActive(false);
-            particle = GameController.GetInstance.PoolManager.GameCurrencyParticlePool.GetObject().GetComponent<ParticleSystem>();
-            particle.transform.position = transform.position;
-            particle.Play();
+            var particle = GameController.GetInstance.PoolManager.GameCurrencyParticlePool.GetObject().GetComponent<ParticleAutoDisable>();
+            particle.PlayParticle(transform.position);
             GameController.GetInstance.OnGameCurrencyPickup();
-            StartCoroutine(IEReturnToPool());
-        }
-
-        private IEnumerator IEReturnToPool()
-        {
-            yield return new WaitForSeconds(particleTime);
-            particle.Stop();
-            GameController.GetInstance.PoolManager.GameCurrencyParticlePool.ReturnObject(particle.gameObject);
+            gameObject.SetActive(false);
         }
     }
 }

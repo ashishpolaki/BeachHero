@@ -131,7 +131,7 @@ public class BeachHeroEditorWindow : EditorWindow
     private string ASSETPATH = "Assets/ScriptableObjects/Levels/LevelsDatabase.asset";
     private string EDITOR_SCENE_NAME = "BeachHeroEditorScene";
     private string EDITOR_SCENE_PATH = "Assets/Scenes/BeachHeroEditorScene.unity";
-    private string GAME_SCENE_PATH = "Assets/Scenes/BeachGame.unity";
+    private string GAME_SCENE_PATH = "Assets/Scenes/BeachHeroGame.unity";
     private string FILE_STRING = "file :";
     private int selectedTab = 0;
     private string[] tabTitles = { "Levels", "Items" };

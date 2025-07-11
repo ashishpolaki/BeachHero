@@ -177,6 +177,7 @@ namespace BeachHero
         }
         #endregion
 
+        #region Game Flow
         private void StartSimulation()
         {
             player.StartMovement(smoothedDrawnPoints.ToArray());
@@ -197,7 +198,6 @@ namespace BeachHero
             GameObject boatPRefab = GameController.GetInstance.SkinController.GetCurrentSelectedBoat();
             player.GameStart(boatIndex, speed, boatPRefab);
         }
-
         public void OnLevelCompleted(bool _val)
         {
             isLevelCompleted = true;
@@ -208,6 +208,7 @@ namespace BeachHero
                 player.StopMovement();
             }
         }
+        #endregion
 
         #region Collect
         public void OnCharacterPickUp()
@@ -217,7 +218,6 @@ namespace BeachHero
             {
                 isPlaying = false;
                 GameController.GetInstance.OnLevelPass();
-                UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Open, ScreenTabType.LevelPass);
             }
         }
         public void OnGameCurrencyCollect()
@@ -226,6 +226,7 @@ namespace BeachHero
         }
         #endregion
 
+        #region Pool
         private void ReturnToPoolEverything()
         {
             //StartPoint
@@ -297,6 +298,7 @@ namespace BeachHero
                 }
             }
         }
+        #endregion
 
         #region Powerup
         public void OnActivatePowerup(PowerupType powerUpType)
@@ -405,6 +407,8 @@ namespace BeachHero
 
         private void ResetState()
         {
+            gameCurrencyCount = 0;
+            drownCharactersCounter = 0;
             ReturnToPoolEverything();
             coinMagnetActivated = false;
             isLevelCompleted = false;

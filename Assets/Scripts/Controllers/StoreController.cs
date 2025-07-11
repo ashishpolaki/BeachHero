@@ -155,6 +155,7 @@ namespace BeachHero
             if (GameCurrencyBalance >= cost)
             {
                 GameCurrencyBalance -= cost;
+                DebugUtils.Log($"Game currency balance decreased by {cost}. New balance: {GameCurrencyBalance}");
             }
             else
             {

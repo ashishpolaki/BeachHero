@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelTime: 6
   startPoint:
-    Position: {x: 0, y: 0, z: 0}
+    Position: {x: 0.63, y: 0, z: -1.59}
     Rotation: {x: 0, y: 0, z: 0}
   obstacles:
     staticObstacles:
     - type: 5
       position: {x: -3.87, y: -0.55, z: 14.62}
-      rotation: {x: 9.555322, y: 22.685036, z: 37.26609}
+      rotation: {x: 9.555324, y: 22.685036, z: 37.266094}
     - type: 5
       position: {x: -6.43, y: -0.97, z: 16.43}
       rotation: {x: 19.165533, y: 350.86508, z: 306.47934}
@@ -56,4 +56,10 @@ MonoBehaviour:
     waitTimePercentage: 0.71
   - position: {x: -6.44, y: 0, z: 4.91}
     waitTimePercentage: 0.385
-  collectables: []
+  collectables:
+  - type: 1
+    position: {x: -4.88, y: 0, z: 2.96}
+    count: 0
+  - type: 1
+    position: {x: -3.12, y: 0, z: 0.8}
+    count: 0

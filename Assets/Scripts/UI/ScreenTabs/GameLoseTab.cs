@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,18 +8,30 @@ namespace BeachHero
     {
         [SerializeField] private Button retryButton;
         [SerializeField] private Button skipLevelButton;
+        [SerializeField] private Button homeButton;
+        [SerializeField] private GameObject gameCurrencyBalanceObject;
+        [SerializeField] private TextMeshProUGUI gameCurrencyBalanceText;
 
         public override void Open()
         {
             base.Open();
+            SetGameCurrency();
             retryButton.onClick.AddListener(OnRetryClick);
             skipLevelButton.onClick.AddListener(OnSkipLevelClick);
+            homeButton.ButtonRegister(OnHomeASync);
         }
         public override void Close()
         {
             base.Close();
             retryButton.onClick.RemoveListener(OnRetryClick);
             skipLevelButton.onClick.RemoveListener(OnSkipLevelClick);
+            homeButton.ButtonDeRegister();
+        }
+        private void SetGameCurrency()
+        {
+            int collectedGameCurrency = GameController.GetInstance.LevelController.GameCurrencyCount;
+            GameController.GetInstance.StoreController.IncrementGameCurrencyBalance(collectedGameCurrency);
+            gameCurrencyBalanceText.text = GameController.GetInstance.StoreController.GameCurrencyBalance.ToString();
         }
         private void OnSkipLevelClick()
         {
@@ -38,6 +51,14 @@ namespace BeachHero
             await UIController.GetInstance.FadeOutASync();
             MapController.GetInstance.MoveBoatFromPrevToCurrentLevel();
             UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);
+        }
+        private async void OnHomeASync()
+        {
+            await UIController.GetInstance.FadeInASync();
+            UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Close);
+            GameController.GetInstance.RetryLevel();
+            UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
+            await UIController.GetInstance.FadeOutASync();
         }
         private void OnRetryClick()
         {
