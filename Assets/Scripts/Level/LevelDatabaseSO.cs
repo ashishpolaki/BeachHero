@@ -59,8 +59,7 @@ namespace BeachHero
 
         public void Init()
         {
-            int curentLevel = SaveSystem.LoadInt(StringUtils.LEVELNUMBER, IntUtils.DEFAULT_LEVEL);
-            int currentLevelIndex = curentLevel - 1;
+            int currentLevelIndex = GameController.GetInstance.CurrentLevelIndex;
             int i = 0;
             while (i < currentLevelIndex)
             {
@@ -69,7 +68,6 @@ namespace BeachHero
             if (i < levelDatas.Count)
                 levelDatas[i].MarkCurrentLevel();
         }
-
     }
 
     [System.Serializable]

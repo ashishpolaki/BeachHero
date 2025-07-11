@@ -38,18 +38,17 @@ namespace BeachHero
         private bool isLevelPassed;
         private bool isSimulationStarted;
         private bool isFTUE = false; // For First Time User Experience
-        private int totalCharactersInLevel;
+        private int targetDrownCharacters;
+        private int gameCurrencyCount;
         [Tooltip("Number of characters saved by the player in current level")]
-        private int savedCharacterCounter;
+        private int drownCharactersCounter;
         #endregion
 
         #region Properties
         public Transform PlayerTransform => player != null ? player.transform : null;
-
         public Transform DrownCharacter => savedCharactersList.Count > 0 ? savedCharactersList[0].transform : null;
-
         public bool IsLevelPassed => isLevelPassed;
-
+        public int GameCurrencyCount => gameCurrencyCount;
         public Camera Cam
         {
             get
@@ -210,16 +209,22 @@ namespace BeachHero
             }
         }
 
+        #region Collect
         public void OnCharacterPickUp()
         {
-            savedCharacterCounter++;
-            if (savedCharacterCounter >= totalCharactersInLevel)
+            drownCharactersCounter++;
+            if (drownCharactersCounter >= targetDrownCharacters)
             {
                 isPlaying = false;
                 GameController.GetInstance.OnLevelPass();
                 UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Open, ScreenTabType.LevelPass);
             }
         }
+        public void OnGameCurrencyCollect()
+        {
+            gameCurrencyCount++;
+        }
+        #endregion
 
         private void ReturnToPoolEverything()
         {
@@ -236,9 +241,9 @@ namespace BeachHero
             {
                 foreach (var collectable in collectableList)
                 {
-                    if (collectable.CollectableType == CollectableType.Coin)
+                    if (collectable.CollectableType == CollectableType.GameCurrency)
                     {
-                        poolManager.CoinsPool.ReturnObject(collectable.gameObject);
+                        poolManager.GameCurrencyPool.ReturnObject(collectable.gameObject);
                     }
                     else if (collectable.CollectableType == CollectableType.Magnet)
                     {
@@ -321,11 +326,11 @@ namespace BeachHero
         {
             if (coinMagnetActivated)
             {
-                if (collectableDictionary != null && collectableDictionary.ContainsKey(CollectableType.Coin))
-                    foreach (var coinCollectable in collectableDictionary[CollectableType.Coin])
+                if (collectableDictionary != null && collectableDictionary.ContainsKey(CollectableType.GameCurrency))
+                    foreach (var coinCollectable in collectableDictionary[CollectableType.GameCurrency])
                     {
                         float distance = Vector3.Distance(player.transform.position, coinCollectable.transform.position);
-                        CoinCollectable coin = (CoinCollectable)coinCollectable;
+                        GameCurrencyCollectable coin = (GameCurrencyCollectable)coinCollectable;
                         if (!coin.CanMoveToTarget)
                         {
                             if (distance <= magnetRadius)
@@ -342,7 +347,7 @@ namespace BeachHero
         public void StartState(LevelSO levelSO)
         {
             ResetState();
-            totalCharactersInLevel = levelSO.DrownCharacters.Length;
+            targetDrownCharacters = levelSO.DrownCharacters.Length;
 
             // Load the level data
             SpawnStartPoint(levelSO.StartPointData.Position, levelSO.StartPointData.Rotation);
@@ -412,7 +417,7 @@ namespace BeachHero
             curvePoints.Clear();
             smoothedDrawnPoints.Clear();
             lastTrailPoint = Vector3.zero;
-            savedCharacterCounter = 0;
+            drownCharactersCounter = 0;
             savedCharactersList.Clear();
             obstaclesDictionary.Clear();
             collectableDictionary.Clear();
@@ -569,7 +574,7 @@ namespace BeachHero
                 }
                 switch (collectable.type)
                 {
-                    case CollectableType.Coin:
+                    case CollectableType.GameCurrency:
                         SpawnCoin(collectable);
                         break;
                     case CollectableType.Magnet:
@@ -600,7 +605,7 @@ namespace BeachHero
 
         private void SpawnCoin(CollectableData collectableData)
         {
-            Collectable collectable = poolManager.CoinsPool.GetObject().GetComponent<Collectable>();
+            Collectable collectable = poolManager.GameCurrencyPool.GetObject().GetComponent<Collectable>();
             collectable.Init(collectableData);
             collectableDictionary[collectableData.type].Add(collectable);
         }

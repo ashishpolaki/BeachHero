@@ -36,7 +36,7 @@ namespace BeachHero
     public enum CollectableType
     {
         None,
-        Coin,
+        GameCurrency,
         Gem,
         Magnet,
         SpeedBoost,

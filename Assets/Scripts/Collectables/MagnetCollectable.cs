@@ -21,14 +21,14 @@ namespace BeachHero
             if (magnetParticle != null)
             {
                 magnetParticle.Stop();
-                GameController.GetInstance.PoolManager.CoinParticlePool.ReturnObject(magnetParticle.gameObject);
+                GameController.GetInstance.PoolManager.GameCurrencyParticlePool.ReturnObject(magnetParticle.gameObject);
             }
         }
         public override void Collect()
         {
             base.Collect();
             magnetGraphics.SetActive(false);
-            magnetParticle = GameController.GetInstance.PoolManager.CoinParticlePool.GetObject().GetComponent<ParticleSystem>();
+            magnetParticle = GameController.GetInstance.PoolManager.GameCurrencyParticlePool.GetObject().GetComponent<ParticleSystem>();
             magnetParticle.transform.position = transform.position;
             magnetParticle.Play();
             GameController.GetInstance.PowerupController.OnPowerupCollected(powerupType,Count);
@@ -38,7 +38,7 @@ namespace BeachHero
         {
             yield return new WaitForSeconds(particleTime);
             magnetParticle.Stop();
-            GameController.GetInstance.PoolManager.CoinParticlePool.ReturnObject(magnetParticle.gameObject);
+            GameController.GetInstance.PoolManager.GameCurrencyParticlePool.ReturnObject(magnetParticle.gameObject);
         }
     }
 }

@@ -21,14 +21,14 @@ namespace BeachHero
             if (speedParticle != null)
             {
                 speedParticle.Stop();
-                GameController.GetInstance.PoolManager.CoinParticlePool.ReturnObject(speedParticle.gameObject);
+                GameController.GetInstance.PoolManager.GameCurrencyParticlePool.ReturnObject(speedParticle.gameObject);
             }
         }
         public override void Collect()
         {
             base.Collect();
             speedGraphics.SetActive(false);
-            speedParticle = GameController.GetInstance.PoolManager.CoinParticlePool.GetObject().GetComponent<ParticleSystem>();
+            speedParticle = GameController.GetInstance.PoolManager.GameCurrencyParticlePool.GetObject().GetComponent<ParticleSystem>();
             speedParticle.transform.position = transform.position;
             speedParticle.Play();
             GameController.GetInstance.PowerupController.OnPowerupCollected(powerupType, Count);
@@ -38,7 +38,7 @@ namespace BeachHero
         {
             yield return new WaitForSeconds(particleTime);
             speedParticle.Stop();
-            GameController.GetInstance.PoolManager.CoinParticlePool.ReturnObject(speedParticle.gameObject);
+            GameController.GetInstance.PoolManager.GameCurrencyParticlePool.ReturnObject(speedParticle.gameObject);
         }
 
     }

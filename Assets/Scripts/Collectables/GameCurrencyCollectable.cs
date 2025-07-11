@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace BeachHero
 {
-    public class CoinCollectable : Collectable
+    public class GameCurrencyCollectable : Collectable
     {
-        [SerializeField] private GameObject coinGraphics;
+        [SerializeField] private GameObject graphics;
         [SerializeField] private float particleTime = 5f;
         [SerializeField] private float rotateSpeed = 200f;
         [SerializeField] private float moveSpeed = 10f;
 
-        private ParticleSystem coinParticle;
+        private ParticleSystem particle;
         private Transform moveTarget;
         private bool canMoveToTarget;
 
@@ -28,11 +28,11 @@ namespace BeachHero
         public override void Init(CollectableData collectableData)
         {
             base.Init(collectableData);
-            coinGraphics.SetActive(true);
-            if (coinParticle != null)
+            graphics.SetActive(true);
+            if (particle != null)
             {
-                coinParticle.Stop();
-                GameController.GetInstance.PoolManager.CoinParticlePool.ReturnObject(coinParticle.gameObject);
+                particle.Stop();
+                GameController.GetInstance.PoolManager.GameCurrencyParticlePool.ReturnObject(particle.gameObject);
             }
             canMoveToTarget = false;
         }
@@ -56,18 +56,19 @@ namespace BeachHero
         public override void Collect()
         {
             base.Collect();
-            coinGraphics.SetActive(false);
-            coinParticle = GameController.GetInstance.PoolManager.CoinParticlePool.GetObject().GetComponent<ParticleSystem>();
-            coinParticle.transform.position = transform.position;
-            coinParticle.Play();
+            graphics.SetActive(false);
+            particle = GameController.GetInstance.PoolManager.GameCurrencyParticlePool.GetObject().GetComponent<ParticleSystem>();
+            particle.transform.position = transform.position;
+            particle.Play();
+            GameController.GetInstance.OnGameCurrencyPickup();
             StartCoroutine(IEReturnToPool());
         }
 
         private IEnumerator IEReturnToPool()
         {
             yield return new WaitForSeconds(particleTime);
-            coinParticle.Stop();
-            GameController.GetInstance.PoolManager.CoinParticlePool.ReturnObject(coinParticle.gameObject);
+            particle.Stop();
+            GameController.GetInstance.PoolManager.GameCurrencyParticlePool.ReturnObject(particle.gameObject);
         }
     }
 }

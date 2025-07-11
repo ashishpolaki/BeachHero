@@ -79,6 +79,7 @@ namespace BeachHero
         }
         private void SpawnLevel()
         {
+            currentLevelIndex = SaveSystem.LoadInt(StringUtils.LEVELNUMBER, IntUtils.DEFAULT_LEVEL) - 1;
             InitializeLevel();
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
         }
@@ -94,10 +95,7 @@ namespace BeachHero
             UIController.GetInstance.ScreenEvent(ScreenType.Gameplay, UIScreenEvent.Open, screenTabType);
             ActivatePowerups();
         }
-        public void OnCharacterPickUp()
-        {
-            levelController.OnCharacterPickUp();
-        }
+       
         public void RetryLevel()
         {
             InitializeLevel();
@@ -136,6 +134,17 @@ namespace BeachHero
         }
         #endregion
 
+        #region Collect
+        public void OnCharacterPickUp()
+        {
+            levelController.OnCharacterPickUp();
+        }
+        public void OnGameCurrencyPickup()
+        {
+            levelController.OnGameCurrencyCollect();
+        }
+        #endregion
+
         #region Powerup
         private void ActivatePowerups()
         {
@@ -162,7 +171,7 @@ namespace BeachHero
         #endregion
 
         #region Utilities
-        private void SetGameState(GameState state)
+        public void SetGameState(GameState state)
         {
             gameState = state;
         }

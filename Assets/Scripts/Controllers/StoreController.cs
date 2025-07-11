@@ -144,6 +144,12 @@ namespace BeachHero
             }
         }
 
+        public void IncrementGameCurrencyBalance(int amount)
+        {
+            GameCurrencyBalance += amount;
+            DebugUtils.Log($"Game currency balance increased by {amount}. New balance: {GameCurrencyBalance}");
+        }
+
         public void DeductGameCurrencyBalance(int cost)
         {
             if (GameCurrencyBalance >= cost)

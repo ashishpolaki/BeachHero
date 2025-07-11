@@ -13,8 +13,8 @@ namespace BeachHero
         [SerializeField] private ScriptableObjectPool waterHolePool;
         [SerializeField] private ScriptableObjectPool rockPool;
         [SerializeField] private ScriptableObjectPool barrelPool;
-        [SerializeField] private ScriptableObjectPool coinsPool;
-        [SerializeField] private ScriptableObjectPool coinParticlePool;
+        [SerializeField] private ScriptableObjectPool gameCurrencyPool;
+        [SerializeField] private ScriptableObjectPool gameCurrencyParticlePool;
         [SerializeField] private ScriptableObjectPool magnetPowerupPool;
         [SerializeField] private ScriptableObjectPool speedPowerupPool;
         [SerializeField] private ScriptableObjectPool pathTrailPool;
@@ -28,8 +28,8 @@ namespace BeachHero
         public ScriptableObjectPool WaterHolePool => waterHolePool;
         public ScriptableObjectPool RockPool => rockPool;
         public ScriptableObjectPool BarrelPool => barrelPool;
-        public ScriptableObjectPool CoinsPool => coinsPool;
-        public ScriptableObjectPool CoinParticlePool => coinParticlePool;
+        public ScriptableObjectPool GameCurrencyPool => gameCurrencyPool;
+        public ScriptableObjectPool GameCurrencyParticlePool => gameCurrencyParticlePool;
         public ScriptableObjectPool MagnetPowerupPool => magnetPowerupPool;
         public ScriptableObjectPool SpeedPowerupPool => speedPowerupPool;
         public ScriptableObjectPool PathTrailPool => pathTrailPool;
@@ -45,8 +45,8 @@ namespace BeachHero
             waterHolePool.ResetState();
             rockPool.ResetState();
             barrelPool.ResetState();
-            coinsPool.ResetState();
-            coinParticlePool.ResetState();
+            gameCurrencyPool.ResetState();
+            gameCurrencyParticlePool.ResetState();
             magnetPowerupPool.ResetState();
             speedPowerupPool.ResetState();
             pathTrailPool.ResetState();

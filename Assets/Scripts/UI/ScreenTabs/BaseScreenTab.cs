@@ -8,6 +8,7 @@ namespace BeachHero
         Tutorial,
         LevelPass,
         LevelFail,
+        GamePause,
     }
     public interface IScreenTab
     {

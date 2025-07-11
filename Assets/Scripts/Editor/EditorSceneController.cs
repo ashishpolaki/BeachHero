@@ -186,8 +186,8 @@ public class EditorSceneController : MonoBehaviour
         {
             switch (item.type)
             {
-                case CollectableType.Coin:
-                    path = "Assets/Prefabs/Coin.prefab";
+                case CollectableType.GameCurrency:
+                    path = "Assets/Prefabs/Collectables/GameCurrency.prefab";
                     Collectable coinPrefab = AssetDatabase.LoadAssetAtPath<Collectable>(path);
                     GameObject coinGameobject = (GameObject)PrefabUtility.InstantiatePrefab(coinPrefab.gameObject);
                     Collectable coin = coinGameobject.GetComponent<Collectable>();
@@ -195,7 +195,7 @@ public class EditorSceneController : MonoBehaviour
                     coin.Init(item);
                     break;
                 case CollectableType.Magnet:
-                    path = "Assets/Prefabs/Powerups/Magnet.prefab";
+                    path = "Assets/Prefabs/Collectables/Magnet.prefab";
                     Collectable magnetPrefab = AssetDatabase.LoadAssetAtPath<Collectable>(path);
                     GameObject magnetGameobject = (GameObject)PrefabUtility.InstantiatePrefab(magnetPrefab.gameObject);
                     Collectable magnet = magnetGameobject.GetComponent<Collectable>();
@@ -203,7 +203,7 @@ public class EditorSceneController : MonoBehaviour
                     magnet.Init(item);
                     break;
                 case CollectableType.SpeedBoost:
-                    path = "Assets/Prefabs/Powerups/SpeedBoost.prefab";
+                    path = "Assets/Prefabs/Collectables/SpeedBoost.prefab";
                     Collectable speedPrefab = AssetDatabase.LoadAssetAtPath<Collectable>(path);
                     GameObject speedGameobject = (GameObject)PrefabUtility.InstantiatePrefab(speedPrefab.gameObject);
                     Collectable speed = speedGameobject.GetComponent<Collectable>();

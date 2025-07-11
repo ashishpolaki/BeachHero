@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 650311150616210649}
   - component: {fileID: -7757076218396222291}
   m_Layer: 11
-  m_Name: Coin
+  m_Name: GameCurrency
   m_TagString: Coin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -91,8 +91,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collectableType: 1
-  coinGraphics: {fileID: 3865040562340935888}
-  coinParticle: {fileID: 0}
+  graphics: {fileID: 3865040562340935888}
+  particleTime: 5
   rotateSpeed: 200
   moveSpeed: 10
 --- !u!1 &3865040562340935888
