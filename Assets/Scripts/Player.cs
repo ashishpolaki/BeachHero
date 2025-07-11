@@ -70,7 +70,14 @@ namespace BeachHero
                         OnBoatCollided();
                     }
                 }
+            }
 
+            //Collided with Shore
+            if (other.CompareTag(StringUtils.GROUND_TAG))
+            {
+                StopMovement();
+                GameController.GetInstance.OnLevelFailed();
+                OnBoatCollided();
             }
         }
         #endregion
@@ -113,7 +120,7 @@ namespace BeachHero
             nextPointIndex = 1;
             pointsList = new Vector3[0];
         }
-        public void GameStart(int boatIndex,float speed, GameObject boatPrefab)
+        public void GameStart(int boatIndex, float speed, GameObject boatPrefab)
         {
             foreach (var boatObject in boatObjects.Values)
             {
@@ -135,7 +142,7 @@ namespace BeachHero
                     currentBoat = boat.GetComponent<Boat>();
                 }
             }
-            movementSpeed = speed; 
+            movementSpeed = speed;
             currentBoat.PlayIdleAnimation();
         }
         public void UpdateState()

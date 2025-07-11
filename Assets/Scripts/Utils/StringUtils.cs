@@ -18,6 +18,8 @@ namespace BeachHero
         public const string PLAYER_TAG = "Player";
         public const string OBSTACLE_TAG = "Obstacle";
         public const string CHARACTER_TAG = "Character";
+        public const string GROUND_TAG = "Ground";
+
 
         //Animations
         public const string SINKING_ANIM = "Sinking";
