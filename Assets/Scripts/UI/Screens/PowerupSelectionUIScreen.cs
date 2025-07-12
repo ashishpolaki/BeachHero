@@ -60,7 +60,7 @@ namespace BeachHero
                 GameController.GetInstance.CameraController.EnableCameras();
                 await SceneLoader.GetInstance.UnloadScene(StringUtils.MAP_SCENE, IntUtils.MAP_SCENE_LOAD_DELAY);
             }
-
+            UIController.GetInstance.ScreenEvent(ScreenType.PowerupSelection, UIScreenEvent.Close);
             await UIController.GetInstance.FadeOutASync();
             GameController.GetInstance.Play();
         }
