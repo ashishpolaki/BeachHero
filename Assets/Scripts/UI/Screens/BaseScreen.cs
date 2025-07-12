@@ -29,6 +29,7 @@ namespace BeachHero
         public void Close();
         public void Show(ScreenTabType screenTabType);
         public void Hide();
+        public void ChangeTab(ScreenTabType tab);
     }
     public enum UITweenAnimationType
     {
@@ -67,37 +68,19 @@ namespace BeachHero
         public List<BaseScreenTab> Tabs { get => tabs; }
         public ScreenTabType DefaultOpenTab { get => defaultOpenTab; }
         public ScreenTabType CurrentOpenTab { get => currentOpenTab; }
-
         public bool IsScreenOpen { get => gameObject.activeSelf; }
         public bool IsAnyTabOpened { get => tabs.Exists(tab => tab.IsOpen); }
 
+        #region IScreen Implementation
         public virtual void Open(ScreenTabType screenTabType)
         {
             gameObject.SetActive(true);
-            //If screenTabType is not None then open the tab
-            if (screenTabType != ScreenTabType.None)
-            {
-                OpenTab(screenTabType);
-            }
-            else
-            {
-                //else if defaultOpenTab is not None then open the defaulttab
-                if (defaultOpenTab != ScreenTabType.None)
-                {
-                    OpenTab(defaultOpenTab);
-                }
-            }
+            OpenInitialTab(screenTabType);
             PlayOpenAnimation(openingAnimationData);
         }
         public virtual void Close()
         {
-            foreach (var tab in Tabs)
-            {
-                if (tab.IsOpen)
-                {
-                    tab.Close();
-                }
-            }
+            CloseAllTabs();
             gameObject.SetActive(false);
         }
         public virtual void Show(ScreenTabType screenTabType)
@@ -112,6 +95,78 @@ namespace BeachHero
         {
             gameObject.SetActive(false);
         }
+        public virtual void OnScreenBack()
+        {
+            //Close the tab that is open and then return.
+            if (currentOpenTab != ScreenTabType.None)
+            {
+                CloseTab(currentOpenTab);
+            }
+        }
+        #endregion
+
+        #region Tab Handling
+        private void OpenInitialTab(ScreenTabType tab)
+        {
+            if (tab != ScreenTabType.None)
+            {
+                OpenTab(tab);
+            }
+            else if (defaultOpenTab != ScreenTabType.None)
+            {
+                OpenTab(defaultOpenTab);
+            }
+        }
+        public void OpenTab(ScreenTabType screenTabType)
+        {
+            for (int i = 0; i < Tabs.Count; i++)
+            {
+                if (Tabs[i].ScreenTabType == screenTabType)
+                {
+                    currentOpenTab = screenTabType;
+                    Tabs[i].Open();
+                    break;
+                }
+            }
+        }
+        public void CloseTab(ScreenTabType screenTabType)
+        {
+            for (int i = 0; i < Tabs.Count; i++)
+            {
+                if (Tabs[i].ScreenTabType == screenTabType)
+                {
+                    Tabs[i].Close();
+                    currentOpenTab = ScreenTabType.None;
+                    break;
+                }
+            }
+        }
+        public void CloseAllTabs()
+        {
+            for (int i = 0; i < Tabs.Count; i++)
+            {
+                Tabs[i].Close();
+            }
+            currentOpenTab = ScreenTabType.None;
+        }
+        public void ChangeTab(ScreenTabType screenTabType)
+        {
+            if (currentOpenTab == screenTabType)
+            {
+                //If the tab is already open, do nothing.
+                return;
+            }
+            //Close the current tab if it is open.
+            if (currentOpenTab != ScreenTabType.None)
+            {
+                CloseTab(currentOpenTab);
+            }
+            //Open the new tab.
+            OpenTab(screenTabType);
+        }
+        #endregion
+
+        #region Animation
         private void PlayOpenAnimation(TweenAnimationData animationData)
         {
             switch (animationData.Type)
@@ -159,63 +214,6 @@ namespace BeachHero
         protected virtual void PlayTweenAnimations(TweenAnimationData animationData)
         {
         }
-
-        public void OpenTab(ScreenTabType screenTabType)
-        {
-            for (int i = 0; i < Tabs.Count; i++)
-            {
-                if (Tabs[i].ScreenTabType == screenTabType)
-                {
-                    currentOpenTab = screenTabType;
-                    Tabs[i].Open();
-                    break;
-                }
-            }
-        }
-        public void CloseTab(ScreenTabType screenTabType)
-        {
-            for (int i = 0; i < Tabs.Count; i++)
-            {
-                if (Tabs[i].ScreenTabType == screenTabType)
-                {
-                    currentOpenTab = ScreenTabType.None;
-                    Tabs[i].Close();
-                    break;
-                }
-            }
-        }
-        public void CloseAllTabs()
-        {
-            for (int i = 0; i < Tabs.Count; i++)
-            {
-                Tabs[i].Close();
-            }
-            currentOpenTab = ScreenTabType.None;
-        }
-        public void ChangeTab(ScreenTabType screenTabType)
-        {
-            if (currentOpenTab == screenTabType)
-            {
-                //If the tab is already open, do nothing.
-                return;
-            }
-            //Close the current tab if it is open.
-            if (currentOpenTab != ScreenTabType.None)
-            {
-                CloseTab(currentOpenTab);
-            }
-            //Open the new tab.
-            OpenTab(screenTabType);
-        }
-
-        public virtual void OnScreenBack()
-        {
-            //Close the tab that is open and then return.
-            if (currentOpenTab != ScreenTabType.None)
-            {
-                CloseTab(currentOpenTab);
-                return;
-            }
-        }
+        #endregion
     }
 }
