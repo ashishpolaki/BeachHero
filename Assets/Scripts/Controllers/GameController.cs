@@ -117,7 +117,7 @@ namespace BeachHero
         public void OnLevelPass()
         {
             IncrementLevel();
-            gameState = GameState.LevelPassed;
+            SetGameState(GameState.LevelPassed);
             levelController.OnLevelCompleted(true);
             UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Open, ScreenTabType.LevelPass);
         }
@@ -127,7 +127,7 @@ namespace BeachHero
             {
                 return; // If the level is already passed, do not allow to fail again.
             }
-            gameState = GameState.LevelFailed;
+            SetGameState(GameState.LevelFailed);
             AudioController.GetInstance.PlaySound(AudioType.Gamelose);
             levelController.OnLevelCompleted(false);
             UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Open, ScreenTabType.LevelFail);

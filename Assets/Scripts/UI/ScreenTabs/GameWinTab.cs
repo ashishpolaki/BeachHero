@@ -37,7 +37,7 @@ namespace BeachHero
             collectedGameCurrency = GameController.GetInstance.LevelController.GameCurrencyCount;
             collectedGameCurrencyText.text = collectedGameCurrency.ToString();
             collectedGameCurrencyText2.text = collectedGameCurrency.ToString();
-            if(collectedGameCurrency > 0)
+            if (collectedGameCurrency > 0)
             {
                 multiplyGameCurrencyButton.gameObject.SetActive(true);
             }
@@ -62,9 +62,9 @@ namespace BeachHero
             GameController.GetInstance.NextLevel();
             await SceneLoader.GetInstance.LoadScene(StringUtils.MAP_SCENE, 0);
             GameController.GetInstance.CameraController.DisableCameras();
+            UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);
             await UIController.GetInstance.FadeOutASync();
             MapController.GetInstance.MoveBoatFromPrevToCurrentLevel();
-            UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);
         }
         private void OnWatchAd()
         {

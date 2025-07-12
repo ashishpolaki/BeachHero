@@ -13,25 +13,34 @@ namespace BeachHero
         public override void Open()
         {
             base.Open();
-            panelCloseButton.onClick.AddListener(Close);
-            resumeButton.onClick.AddListener(Close);
-            homeButton.onClick.AddListener(OnHomeASync);
-            settingsButton.onClick.AddListener(OnSettings);
+            panelCloseButton.ButtonRegister(OnPanelCloseClick);
+            resumeButton.ButtonRegister(OnResumeButtonClick);
+            homeButton.ButtonRegister(OnHomeASync);
+            settingsButton.ButtonRegister(OnSettings);
         }
         public override void Close()
         {
             base.Close();
-            panelCloseButton.onClick.RemoveListener(Close);
-            resumeButton.onClick.RemoveListener(Close);
-            homeButton.onClick.RemoveListener(OnHomeASync);
-            GameController.GetInstance.SetGameState(GameState.Playing);
+            panelCloseButton.ButtonDeRegister();
+            resumeButton.ButtonDeRegister();
+            homeButton.ButtonDeRegister();
+            settingsButton.ButtonDeRegister();
         }
         private void OnSettings()
         {
             // Open settings tab.
             // UIController.GetInstance.ScreenEvent(ScreenType.Settings, UIScreenEvent.Open);
         }
-
+        private void OnPanelCloseClick()
+        {
+            GameController.GetInstance.SetGameState(GameState.Playing);
+            Close();
+        }
+        private void OnResumeButtonClick()
+        {
+            GameController.GetInstance.SetGameState(GameState.Playing);
+            Close();
+        }
         private async void OnHomeASync()
         {
             await UIController.GetInstance.FadeInASync();

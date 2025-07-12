@@ -1,7 +1,8 @@
+#if UNITY_EDITOR
+
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
-using UnityEngine.UIElements;
 
 [CustomEditor(typeof(MapEditor))]
 public class MapControlPointsEditor : Editor
@@ -156,3 +157,4 @@ public class MapControlPointsEditor : Editor
         }
     }
 }
+#endif

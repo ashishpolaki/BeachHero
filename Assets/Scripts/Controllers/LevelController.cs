@@ -11,7 +11,6 @@ namespace BeachHero
         [SerializeField] private LayerMask startPointLayer;
         [SerializeField] private LayerMask touchLayer;
         [SerializeField] private float minTrailPointsDistance = 0.3f;
-        [SerializeField] private float smoothingStep = 0.05f;
         [SerializeField] private float spacing = 0.5f;
         [SerializeField] private float magnetRadius = 5f;
         #endregion

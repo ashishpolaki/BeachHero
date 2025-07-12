@@ -12,7 +12,8 @@ namespace BeachHero
         {
             base.Open(screenTabType);
             zoomToggle.onValueChanged.AddListener(ZoomToggle);
-            zoomToggle.isOn = true;
+            zoomToggle.isOn = false;
+            ZoomToggle(false); // Ensure map is zoomed in on open
             mapExitBtn.ButtonRegister(MapExit);
         }
 

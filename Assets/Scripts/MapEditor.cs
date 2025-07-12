@@ -1,4 +1,3 @@
-using System;
 using BeachHero;
 using UnityEngine;
 using System.Collections.Generic;
@@ -19,6 +18,7 @@ public class BezierPoint
         outTangent.z = 0;
     }
 }
+#if UNITY_EDITOR
 
 public class MapEditor : SingleTon<MapEditor>
 {
@@ -193,3 +193,5 @@ public class MapEditor : SingleTon<MapEditor>
         }
     }
 }
+#endif
+

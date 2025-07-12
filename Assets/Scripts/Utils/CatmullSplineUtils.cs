@@ -99,7 +99,7 @@ namespace BeachHero
             }
 
             float segmentLength = totalLength / (count - 1);
-            float distanceAccumulated = 0f;
+           // float distanceAccumulated = 0f;
 
             List<Vector3> finalPoints = new List<Vector3>();
             finalPoints.Add(densePoints[0]);
