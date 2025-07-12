@@ -25,13 +25,6 @@ namespace BeachHero
         [SerializeField] private float fadeOutDuration = 0.5f;
         #endregion
 
-        #region Unity Methods
-        private void Awake()
-        {
-            screenManager.Initialize();
-        }
-        #endregion
-
         #region Public Methods
         public void ScreenEvent(ScreenType screenType, UIScreenEvent uIScreenEvent, ScreenTabType screenTabType = ScreenTabType.None)
         {
@@ -39,7 +32,7 @@ namespace BeachHero
         }
         public void Close()
         {
-            screenManager.CloseAllScreens();
+            screenManager.CloseAll();
         }
         public void FadeIn() => StartFade(1f, fadeInDuration);
         public void FadeOut() => StartFade(0f, fadeOutDuration);

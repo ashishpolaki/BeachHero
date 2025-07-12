@@ -46,31 +46,22 @@ namespace BeachHero
         }
         private async void OnPlayButtonClicked()
         {
-            if (GameController.GetInstance.GameState == GameState.LevelFailed)
+            var gameState = GameController.GetInstance.GameState;
+
+            // Fade in before handling play logic
+            await UIController.GetInstance.FadeInASync();
+
+            if (gameState == GameState.LevelFailed || gameState == GameState.Paused)
             {
-                await UIController.GetInstance.FadeInASync();
-                UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Close);
-                UIController.GetInstance.ScreenEvent(ScreenType.PowerupSelection, UIScreenEvent.Close);
                 GameController.GetInstance.RetryLevel();
-                await UIController.GetInstance.FadeOutASync();
-            }
-            else if (GameController.GetInstance.GameState == GameState.Paused)
-            {
-                await UIController.GetInstance.FadeInASync();
-                UIController.GetInstance.ScreenEvent(ScreenType.Gameplay, UIScreenEvent.Close);
-                UIController.GetInstance.ScreenEvent(ScreenType.PowerupSelection, UIScreenEvent.Close);
-                GameController.GetInstance.RetryLevel();
-                await UIController.GetInstance.FadeOutASync();
             }
             else
             {
-                await UIController.GetInstance.FadeInASync();
                 GameController.GetInstance.CameraController.EnableCameras();
                 await SceneLoader.GetInstance.UnloadScene(StringUtils.MAP_SCENE, IntUtils.MAP_SCENE_LOAD_DELAY);
-                UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Close);
-                UIController.GetInstance.ScreenEvent(ScreenType.PowerupSelection, UIScreenEvent.Close);
-                UIController.GetInstance.FadeOut();
             }
+
+            await UIController.GetInstance.FadeOutASync();
             GameController.GetInstance.Play();
         }
         private void SetLevelNumber()

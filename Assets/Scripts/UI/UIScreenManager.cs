@@ -7,120 +7,108 @@ namespace BeachHero
     public class UIScreenManager
     {
         [SerializeField] private ScreenConfigSO screenConfig;
+        [SerializeField] private Transform uiHolder;
+        private Dictionary<ScreenType, BaseScreen> screenCache = new Dictionary<ScreenType, BaseScreen>();
+        private Stack<BaseScreen> screenStack = new Stack<BaseScreen>();
 
-        private UIHolder uiHolder;
-        private Dictionary<ScreenType, BaseScreen> screenDictionary = new Dictionary<ScreenType, BaseScreen>();
-        private BaseScreen currentActiveScreen;
-
-        public void Initialize()
-        {
-            if (uiHolder == null)
-            {
-                uiHolder = GameObject.FindFirstObjectByType<UIHolder>();
-            }
-        }
-
-        public void CloseAllScreens()
-        {
-            foreach (var screen in screenDictionary)
-            {
-                screen.Value.Close();
-            }
-        }
-
-        public void ScreenEvent(ScreenType _screenType, UIScreenEvent uIEvent, ScreenTabType screenTabType)
+        public void ScreenEvent(ScreenType screenType, UIScreenEvent uIEvent, ScreenTabType tabType)
         {
             switch (uIEvent)
             {
                 case UIScreenEvent.Open:
-                    if(currentActiveScreen != null && currentActiveScreen.IsScreenOpen)
-                    {
-                        CloseScreen(currentActiveScreen.ScreenType);
-                    }
-                    OpenScreen(_screenType, screenTabType);
+                    OpenExclusive(screenType, tabType);
                     break;
                 case UIScreenEvent.Close:
-                    CloseScreen(_screenType);
+                    Close(screenType);
                     break;
                 case UIScreenEvent.Show:
-                    ShowScreen(_screenType, screenTabType);
+                    Show(screenType, tabType);
                     break;
                 case UIScreenEvent.Hide:
-                    HideScreen(_screenType);
+                    Hide(screenType);
                     break;
                 case UIScreenEvent.Push:
-                    PushScreen(_screenType, screenTabType);
+                    Push(screenType, tabType);
+                    break;
+                case UIScreenEvent.ChangeTab:
+                    ChangeTab(screenType, tabType);
                     break;
             }
         }
-        private void PushScreen(ScreenType _screenType, ScreenTabType screenTabType)
+        private void OpenExclusive(ScreenType screenType, ScreenTabType tabType)
         {
-            InstantiateIfDoesntExist(_screenType);
-            currentActiveScreen = screenDictionary[_screenType];
-            currentActiveScreen.Open(screenTabType);
-            //Set the sibling as first
-            currentActiveScreen.transform.SetAsLastSibling();
+            CloseAll();
+            Open(screenType, tabType);
+        }
+        private void Open(ScreenType screenType, ScreenTabType tabType)
+        {
+            var screen = GetOrCreateScreen(screenType);
+            screen.Open(tabType);
+            screen.transform.SetAsLastSibling();
+            screenStack.Push(screen);
+        }
+        private void Push(ScreenType screenType, ScreenTabType tabType)
+        {
+            var screen = GetOrCreateScreen(screenType);
+            screen.Open(tabType);
+            screen.transform.SetAsLastSibling();
+            screenStack.Push(screen);
         }
 
-        private void OpenScreen(ScreenType _screenType, ScreenTabType screenTabType)
+        private void ChangeTab(ScreenType screenType, ScreenTabType tabType)
         {
-            InstantiateIfDoesntExist(_screenType);
-            currentActiveScreen = screenDictionary[_screenType];
-            currentActiveScreen.Open(screenTabType);
-        }
-        private void CloseScreen(ScreenType _screenType)
-        {
-            if (screenDictionary.ContainsKey(_screenType))
+            if (screenCache.TryGetValue(screenType, out var screen) && screen.IsScreenOpen)
             {
-                screenDictionary[_screenType].Close();
+                screen.ChangeTab(tabType);
             }
         }
-        private void ShowScreen(ScreenType _screenType, ScreenTabType screenTabType)
+        private BaseScreen GetOrCreateScreen(ScreenType screenType)
         {
-            InstantiateIfDoesntExist(_screenType);
-            currentActiveScreen = screenDictionary[_screenType];
-            currentActiveScreen.Show(screenTabType);
-        }
-        private void HideScreen(ScreenType _screenType)
-        {
-            if (screenDictionary.ContainsKey(_screenType))
+            if (!screenCache.ContainsKey(screenType))
             {
-                screenDictionary[_screenType].Hide();
-            }
-        }
-
-        /// <summary>
-        /// Instantiate the screen if it doesn't exist in the dictionary
-        /// </summary>
-        /// <param name="_screenType"></param>
-        private void InstantiateIfDoesntExist(ScreenType _screenType)
-        {
-            if (!screenDictionary.ContainsKey(_screenType))
-            {
-                var screen = InstantiateScreen(_screenType);
-                screenDictionary.Add(_screenType, screen);
-            }
-        }
-
-        /// <summary>
-        /// Instantiate the screen based on the screen type
-        /// </summary>
-        /// <param name="screenType"></param>
-        /// <returns></returns>
-        private BaseScreen InstantiateScreen(ScreenType screenType)
-        {
-            BaseScreen screen = null;
-
-            foreach (var item in screenConfig.screens)
-            {
-                if (item.ScreenType == screenType)
+                foreach (var config in screenConfig.screens)
                 {
-                    screen = GameObject.Instantiate(item, uiHolder.transform);
-                    break;
+                    if (config.ScreenType == screenType)
+                    {
+                        var instance = GameObject.Instantiate(config, uiHolder);
+                        screenCache[screenType] = instance;
+                        return instance;
+                    }
                 }
-            }
-            return screen;
-        }
 
+                DebugUtils.LogError($"Screen not found for type: {screenType}");
+                return null;
+            }
+
+            return screenCache[screenType];
+        }
+        private void Show(ScreenType screenType, ScreenTabType tabType)
+        {
+            var screen = GetOrCreateScreen(screenType);
+            screen.Show(tabType);
+        }
+        private void Hide(ScreenType screenType)
+        {
+            if (screenCache.TryGetValue(screenType, out var screen))
+            {
+                screen.Hide();
+            }
+        }
+        private void Close(ScreenType screenType)
+        {
+            if (screenCache.TryGetValue(screenType, out var screen))
+            {
+                screen.Close();
+                screenStack.TryPop(out _); // Remove from stack if it's on top
+            }
+        }
+        public void CloseAll()
+        {
+            while (screenStack.Count > 0)
+            {
+                var screen = screenStack.Pop();
+                screen.Close();
+            }
+        }
     }
 }

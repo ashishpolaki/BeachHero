@@ -310,7 +310,6 @@ namespace BeachHero
             if (rewardedAd == null || !rewardedAd.CanShowAd())
             {
                 UIController.GetInstance.ScreenEvent(ScreenType.AdNotLoaded, UIScreenEvent.Push);
-               
                 RequestRewardedAD();
                 return;
             }

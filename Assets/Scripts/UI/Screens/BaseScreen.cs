@@ -192,6 +192,21 @@ namespace BeachHero
             }
             currentOpenTab = ScreenTabType.None;
         }
+        public void ChangeTab(ScreenTabType screenTabType)
+        {
+            if (currentOpenTab == screenTabType)
+            {
+                //If the tab is already open, do nothing.
+                return;
+            }
+            //Close the current tab if it is open.
+            if (currentOpenTab != ScreenTabType.None)
+            {
+                CloseTab(currentOpenTab);
+            }
+            //Open the new tab.
+            OpenTab(screenTabType);
+        }
 
         public virtual void OnScreenBack()
         {

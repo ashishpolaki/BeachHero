@@ -44,7 +44,6 @@ namespace BeachHero
         private async void OnSkipLevelASync()
         {
             await UIController.GetInstance.FadeInASync();
-            UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Close);
             GameController.GetInstance.SkipLevel();
             await SceneLoader.GetInstance.LoadScene(StringUtils.MAP_SCENE, 0);
             GameController.GetInstance.CameraController.DisableCameras();
@@ -55,7 +54,6 @@ namespace BeachHero
         private async void OnHomeASync()
         {
             await UIController.GetInstance.FadeInASync();
-            UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Close);
             GameController.GetInstance.RetryLevel();
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
             await UIController.GetInstance.FadeOutASync();
