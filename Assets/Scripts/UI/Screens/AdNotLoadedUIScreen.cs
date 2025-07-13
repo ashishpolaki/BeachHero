@@ -29,6 +29,15 @@ namespace BeachHero
 
         private void OnRetryClick()
         {
+            UIController.GetInstance.ScreenEvent(ScreenType.AdNotLoaded, UIScreenEvent.Close);
+            if (AdController.GetInstance.IsRewardedADLoaded())
+            {
+                AdController.GetInstance.ShowRewardedAd();
+            }
+            else
+            {
+                AdController.GetInstance.RequestRewardedAD();
+            }
         }
     }
 }

@@ -27,13 +27,10 @@ namespace BeachHero
             SceneManager.SetActiveScene(loadedScene);
         }
 
-        public async Task UnloadScene(string name, int milliSeconds = 0,Action action = null)
+        public async Task UnloadScene(string name, int milliSeconds = 0)
         {
             await Task.Delay(milliSeconds);
-            if(action != null)
-            {
-                action?.Invoke();
-            }
+          
             var asyncOperation = SceneManager.UnloadSceneAsync(name, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
             while (!asyncOperation.isDone)
                 await Task.Yield();

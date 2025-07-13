@@ -1,6 +1,7 @@
 using GoogleMobileAds.Api;
 using System;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 namespace BeachHero
@@ -15,8 +16,10 @@ namespace BeachHero
         private Action<Reward> pendingRewardCallback;
         private bool isBannerActive = false;
         private bool isInterstitialActive = false;
+        private bool isRewardEarned = false;
         private string gameName = "Beach Hero";
 
+        private bool isInternetAvailable => Application.internetReachability != NetworkReachability.NotReachable;
         #region Ad Id's
         // test id's ----------------------------------------
         private readonly string androidAppId = "ca-app-pub-3940256099942544~3347511713";
@@ -66,11 +69,9 @@ namespace BeachHero
                     {
                         case AdapterState.NotReady:
                             // The adapter initialization did not complete.
-                            //MonoBehaviour.print("Adapter: " + className + " not ready.");
                             break;
                         case AdapterState.Ready:
                             // The adapter was successfully initialized.
-                            //  Debug.Log("Adapter: " + className + " is initialized.");
                             break;
                     }
                 }
@@ -85,7 +86,7 @@ namespace BeachHero
 
         public void RequestADs()
         {
-            if (Application.internetReachability == NetworkReachability.NotReachable)
+            if (!isInternetAvailable)
             {
                 return;
             }
@@ -124,7 +125,7 @@ namespace BeachHero
                 DestroyNativeAd();
             }
 
-            Debug.Log("Loading Native Overlay ad with ad unit id: " + _adUnitId);
+            DebugUtils.Log("Loading Native Overlay ad with ad unit id: " + _adUnitId);
             var adRequest = CreateAdRequest();
 
             var options = new NativeAdOptions
@@ -138,7 +139,7 @@ namespace BeachHero
                 {
                     if (error != null)
                     {
-                        Debug.LogError("Native Overlay ad failed to load an ad " +
+                        DebugUtils.LogError("Native Overlay ad failed to load an ad " +
                                " with error: " + error);
                         return;
                     }
@@ -147,13 +148,13 @@ namespace BeachHero
                     // double-check to avoid a crash.
                     if (ad == null)
                     {
-                        Debug.LogError("Unexpected error: Native Overlay ad load event " +
+                        DebugUtils.LogError("Unexpected error: Native Overlay ad load event " +
                                " fired with null ad and null error.");
                         return;
                     }
 
                     // The operation completed successfully.
-                    Debug.Log("Native Overlay ad loaded with response : " +
+                    DebugUtils.Log("Native Overlay ad loaded with response : " +
                        ad.GetResponseInfo());
                     _nativeOverlayAd = ad;
 
@@ -167,28 +168,28 @@ namespace BeachHero
             // Raised when the ad is estimated to have earned money.
             nativeOverlayAd.OnAdPaid += (AdValue adValue) =>
             {
-                Debug.Log(String.Format("Native Overlay ad paid {0} {1}.",
+                DebugUtils.Log(String.Format("Native Overlay ad paid {0} {1}.",
                                        adValue.Value,
                                                           adValue.CurrencyCode));
             };
 
             nativeOverlayAd.OnAdImpressionRecorded += () =>
             {
-                Debug.Log("Native Overlay ad recorded an impression.");
+                DebugUtils.Log("Native Overlay ad recorded an impression.");
             };
 
             nativeOverlayAd.OnAdClicked += () =>
             {
-                Debug.Log("Native Overlay ad was clicked.");
+                DebugUtils.Log("Native Overlay ad was clicked.");
             };
 
             nativeOverlayAd.OnAdFullScreenContentOpened += () =>
             {
-                Debug.Log("Native Overlay ad full screen content opened.");
+                DebugUtils.Log("Native Overlay ad full screen content opened.");
             };
             nativeOverlayAd.OnAdFullScreenContentClosed += () =>
             {
-                Debug.Log("Native Overlay ad full screen content closed.");
+                DebugUtils.Log("Native Overlay ad full screen content closed.");
             };
         }
 
@@ -199,7 +200,7 @@ namespace BeachHero
         {
             if (_nativeOverlayAd != null)
             {
-                Debug.Log("Rendering Native Overlay ad.");
+                DebugUtils.Log("Rendering Native Overlay ad.");
 
                 // Define a native template style with a custom style.
                 var style = new NativeTemplateStyle
@@ -225,7 +226,7 @@ namespace BeachHero
         /// </summary>
         public void ShowNativeAd()
         {
-            Debug.Log("Showing Native Overlay ad.");
+            DebugUtils.Log("Showing Native Overlay ad.");
             if (_nativeOverlayAd != null)
             {
                 _nativeOverlayAd.Show();
@@ -238,7 +239,7 @@ namespace BeachHero
         {
             if (_nativeOverlayAd != null)
             {
-                Debug.Log("Hiding Native Overlay ad.");
+                DebugUtils.Log("Hiding Native Overlay ad.");
                 _nativeOverlayAd.Hide();
             }
         }
@@ -249,7 +250,7 @@ namespace BeachHero
         {
             if (_nativeOverlayAd != null)
             {
-                Debug.Log("Destroying native overlay ad.");
+                DebugUtils.Log("Destroying native overlay ad.");
                 _nativeOverlayAd.Destroy();
                 _nativeOverlayAd = null;
             }
@@ -257,6 +258,14 @@ namespace BeachHero
         #endregion
 
         #region RewardedVideo AD
+        public bool IsRewardedADLoaded()
+        {
+            if (rewardedAd == null)
+            {
+                return false;
+            }
+            return rewardedAd.CanShowAd();
+        }
         public void RequestRewardedAD()
         {
             // These ad units are configured to always serve test ads.
@@ -273,7 +282,8 @@ namespace BeachHero
                 rewardedAd.Destroy();
                 rewardedAd = null;
             }
-            Debug.Log("Loading the rewarded ad.");
+            isRewardEarned = false;
+            DebugUtils.Log("Loading the rewarded ad.");
 
             // create our request used to load the ad.
             var adRequest = new AdRequest();
@@ -285,27 +295,30 @@ namespace BeachHero
                     // if error is not null, the load request failed.
                     if (error != null || ad == null)
                     {
-                        Debug.LogError("Rewarded ad failed to load an ad " +
+                        DebugUtils.LogError("Rewarded ad failed to load an ad " +
                                        "with error : " + error);
                         return;
                     }
 
-                    Debug.Log("Rewarded ad loaded with response : "
+                    DebugUtils.Log("Rewarded ad loaded with response : "
                               + ad.GetResponseInfo());
                     rewardedAd = ad;
                     RegisterEventHandlers(rewardedAd);
                 });
         }
 
-        public void ShowRewardedAd(Action<Reward> onUserEarnedReward)
+        public void ShowRewardedAd(Action<Reward> onUserEarnedReward = null)
         {
-            if (Application.internetReachability == NetworkReachability.NotReachable)
+            if (onUserEarnedReward != null)
+            {
+                pendingRewardCallback = onUserEarnedReward;
+            }
+            if (!isInternetAvailable)
             {
                 // Show no internet dialog
                 UIController.GetInstance.ScreenEvent(ScreenType.NoInternet, UIScreenEvent.Push);
                 return;
             }
-
             //If rewarded ad not loaded
             if (rewardedAd == null || !rewardedAd.CanShowAd())
             {
@@ -314,18 +327,12 @@ namespace BeachHero
                 return;
             }
 
-            if (onUserEarnedReward != null)
-            {
-                pendingRewardCallback = onUserEarnedReward;
-            }
-
             if (rewardedAd != null && rewardedAd.CanShowAd())
             {
                 rewardedAd.Show((Reward reward) =>
                 {
-                    // TODO: Reward the user.
-                    DebugUtils.Log("Rewarded ad rewarded the user");
-                    pendingRewardCallback?.Invoke(reward);
+                    DebugUtils.Log("Reward earned");
+                    isRewardEarned = true;
                 });
             }
         }
@@ -334,45 +341,57 @@ namespace BeachHero
             // Raised when the ad is estimated to have earned money.
             ad.OnAdPaid += (AdValue adValue) =>
             {
-                Debug.Log(String.Format("Rewarded ad paid {0} {1}.",
+                DebugUtils.Log(String.Format("Rewarded ad paid {0} {1}.",
                     adValue.Value,
                     adValue.CurrencyCode));
             };
             // Raised when an impression is recorded for an ad.
             ad.OnAdImpressionRecorded += () =>
             {
-                Debug.Log("Rewarded ad recorded an impression.");
+                DebugUtils.Log("Rewarded ad recorded an impression.");
             };
             // Raised when a click is recorded for an ad.
             ad.OnAdClicked += () =>
             {
-                Debug.Log("Rewarded ad was clicked.");
+                DebugUtils.Log("Rewarded ad was clicked.");
             };
             // Raised when an ad opened full screen content.
             ad.OnAdFullScreenContentOpened += () =>
             {
-                Debug.Log("Rewarded ad full screen content opened.");
+                DebugUtils.Log("Rewarded ad full screen content opened.");
             };
             // Raised when the ad closed full screen content.
             ad.OnAdFullScreenContentClosed += () =>
             {
+                if (isRewardEarned)
+                {
+                    // TODO: Reward the user.
+                    StartCoroutine(IHandleRewardWithDelay(ad.GetRewardItem()));
+                }
                 RequestRewardedAD();
-                Debug.Log("Rewarded ad full screen content closed.");
+                DebugUtils.Log("Rewarded ad full screen content closed.");
             };
             // Raised when the ad failed to open full screen content.
             ad.OnAdFullScreenContentFailed += (AdError error) =>
             {
                 RequestRewardedAD();
-                Debug.LogError("Rewarded ad failed to open full screen content " +
+                DebugUtils.LogError("Rewarded ad failed to open full screen content " +
                                "with error : " + error);
             };
+        }
+
+        IEnumerator IHandleRewardWithDelay(Reward reward)
+        {
+            yield return new WaitForSeconds(0.05f);
+            pendingRewardCallback?.Invoke(reward );
+            pendingRewardCallback = null;
         }
         #endregion
 
         #region Interstitial AD
         public void RequestInterstitial()
         {
-            if (Application.internetReachability == NetworkReachability.NotReachable)
+            if (!isInternetAvailable)
             {
                 return;
             }
@@ -435,25 +454,25 @@ namespace BeachHero
             // Raised when the ad is estimated to have earned money.
             interstitialAd.OnAdPaid += (AdValue adValue) =>
             {
-                Debug.Log(String.Format("Interstitial ad paid {0} {1}.",
+                DebugUtils.Log(String.Format("Interstitial ad paid {0} {1}.",
                     adValue.Value,
                     adValue.CurrencyCode));
             };
             // Raised when an impression is recorded for an ad.
             interstitialAd.OnAdImpressionRecorded += () =>
             {
-                Debug.Log("Interstitial ad recorded an impression.");
+                DebugUtils.Log("Interstitial ad recorded an impression.");
             };
             // Raised when a click is recorded for an ad.
             interstitialAd.OnAdClicked += () =>
             {
-                Debug.Log("Interstitial ad was clicked.");
+                DebugUtils.Log("Interstitial ad was clicked.");
             };
             // Raised when an ad opened full screen content.
             interstitialAd.OnAdFullScreenContentOpened += () =>
             {
                 isInterstitialActive = true;
-                Debug.Log("Interstitial ad full screen content opened.");
+                DebugUtils.Log("Interstitial ad full screen content opened.");
             };
             // Raised when the ad closed full screen content.
             interstitialAd.OnAdFullScreenContentClosed += () =>
@@ -461,14 +480,14 @@ namespace BeachHero
                 RequestInterstitial();
                 //Fade Black Screen
                 isInterstitialActive = false;
-                Debug.Log("Interstitial ad full screen content closed.");
+                DebugUtils.Log("Interstitial ad full screen content closed.");
             };
             // Raised when the ad failed to open full screen content.
             interstitialAd.OnAdFullScreenContentFailed += (AdError error) =>
             {
                 isInterstitialActive = false;
                 RequestInterstitial();
-                Debug.LogError("Interstitial ad failed to open full screen content " +
+                DebugUtils.LogError("Interstitial ad failed to open full screen content " +
                                "with error : " + error);
             };
         }
@@ -477,7 +496,7 @@ namespace BeachHero
         #region Banner AD
         public void RequestBanner()
         {
-            if (Application.internetReachability == NetworkReachability.NotReachable)
+            if (!isInternetAvailable)
             {
                 return;
             }
@@ -492,9 +511,9 @@ namespace BeachHero
 #if UNITY_ANDROID
                 string _adUnitId = androidBannerAdId;
 #elif UNITY_IPHONE
-  private string _adUnitId = iosBannerAdId;
+   string _adUnitId = iosBannerAdId;
 #else
-  private string _adUnitId = "unused";
+   string _adUnitId = "unused";
 #endif
                 bannerView = new BannerView(_adUnitId, AdSize.Banner, AdPosition.Bottom);
                 BannerAddListeners();
