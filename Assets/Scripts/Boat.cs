@@ -4,6 +4,7 @@ namespace BeachHero
 {
     public class Boat : MonoBehaviour
     {
+
         [SerializeField] private Transform boostPosition;
         [SerializeField] private Animator characterAnimator;
         private int VICTORY_HASH = Animator.StringToHash(StringUtils.VICTORY_ANIM);

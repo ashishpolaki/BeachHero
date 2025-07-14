@@ -88,6 +88,7 @@ namespace BeachHero
                 ray = Cam.ScreenPointToRay(position);
                 if (Physics.Raycast(ray, out raycastHit, 1000f, startPointLayer))
                 {
+                    HapticsManager.GetInstance.MediumImpactHaptic();
                     canDrawPath = true;
                     if (isFTUE)
                     {
