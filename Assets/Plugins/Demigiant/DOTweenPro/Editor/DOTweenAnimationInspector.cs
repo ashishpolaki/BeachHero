@@ -63,7 +63,7 @@ namespace DG.DOTweenEditor
             { DOTweenAnimation.AnimationType.Scale, new[] { typeof(Transform) } },
             { DOTweenAnimation.AnimationType.Color, new[] {
                 typeof(Light),
-#if false // SPRITE_MARKER
+#if true // SPRITE_MARKER
                 typeof(SpriteRenderer),
 #endif
 #if true // UI_MARKER
@@ -73,7 +73,7 @@ namespace DG.DOTweenEditor
             }},
             { DOTweenAnimation.AnimationType.Fade, new[] {
                 typeof(Light),
-#if false // SPRITE_MARKER
+#if true // SPRITE_MARKER
                 typeof(SpriteRenderer),
 #endif
 #if true // UI_MARKER

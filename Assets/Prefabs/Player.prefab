@@ -20516,6 +20516,7 @@ Transform:
   m_Children:
   - {fileID: 8995052309301594749}
   - {fileID: 5570374158790207834}
+  - {fileID: 1326482457238998608}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6510516422747523393
@@ -20531,7 +20532,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boatAnimator: {fileID: 5964314989585320926}
-  magnetParticle: {fileID: 7625405228825094704}
+  magnetEffect: {fileID: 633200013036752944}
   boatGraphicsHolder: {fileID: 8995052309301594749}
   movementSpeed: 5
   rotationSpeed: 5
@@ -20749,9 +20750,94 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3498907968379905635}
   m_PrefabAsset: {fileID: 0}
---- !u!198 &7625405228825094704 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 6439162192273591379, guid: 89535d85853b5ca47b31492185117018,
+--- !u!1001 &5095372176410173285
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 8995052309315393795}
+    m_Modifications:
+    - target: {fileID: 6115599376582889781, guid: c6199860378c21f43a4776e559ecbdf6,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6115599376582889781, guid: c6199860378c21f43a4776e559ecbdf6,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6115599376582889781, guid: c6199860378c21f43a4776e559ecbdf6,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6115599376582889781, guid: c6199860378c21f43a4776e559ecbdf6,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6115599376582889781, guid: c6199860378c21f43a4776e559ecbdf6,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6115599376582889781, guid: c6199860378c21f43a4776e559ecbdf6,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6115599376582889781, guid: c6199860378c21f43a4776e559ecbdf6,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6115599376582889781, guid: c6199860378c21f43a4776e559ecbdf6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6115599376582889781, guid: c6199860378c21f43a4776e559ecbdf6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6115599376582889781, guid: c6199860378c21f43a4776e559ecbdf6,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6149316839921852698, guid: c6199860378c21f43a4776e559ecbdf6,
+        type: 3}
+      propertyPath: m_Name
+      value: MagnetRippleEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 6149316839921852698, guid: c6199860378c21f43a4776e559ecbdf6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c6199860378c21f43a4776e559ecbdf6, type: 3}
+--- !u!114 &633200013036752944 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5656505678240567125, guid: c6199860378c21f43a4776e559ecbdf6,
     type: 3}
-  m_PrefabInstance: {fileID: 3498907968379905635}
+  m_PrefabInstance: {fileID: 5095372176410173285}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7866d5d9a5717304dba244f0872a9de6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1326482457238998608 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6115599376582889781, guid: c6199860378c21f43a4776e559ecbdf6,
+    type: 3}
+  m_PrefabInstance: {fileID: 5095372176410173285}
   m_PrefabAsset: {fileID: 0}

@@ -91,7 +91,7 @@ namespace BeachHero
             SetGameState(GameState.Playing);
             bool isFTUE = tutorialController.IsFTUE(currentLevelIndex + 1);
             ScreenTabType screenTabType = isFTUE ? ScreenTabType.FTUE : ScreenTabType.None;
-            levelController.GameStart(isFTUE);
+            levelController.LoadGameData(isFTUE);
             UIController.GetInstance.ScreenEvent(ScreenType.Gameplay, UIScreenEvent.Open, screenTabType);
             ActivatePowerups();
         }

@@ -6,7 +6,7 @@ namespace BeachHero
     public class Player : MonoBehaviour
     {
         [SerializeField] private Animator boatAnimator;
-        [SerializeField] private ParticleSystem magnetParticle;
+        [SerializeField] private MagnetEffect magnetEffect;
         [SerializeField] private Transform boatGraphicsHolder;
         [SerializeField] private float movementSpeed;
         [SerializeField] private float rotationSpeed;
@@ -82,6 +82,27 @@ namespace BeachHero
         }
         #endregion
 
+        #region Powerups
+        public void ActivateSpeedPowerup()
+        {
+            movementSpeed *= speedMultiplier;
+            rotationSpeed *= speedMultiplier;
+        }
+        public void ActivateMagnetPowerup()
+        {
+            magnetEffect.gameObject.SetActive(true);
+            magnetEffect.PlayRippleEffect();
+        }
+        private void DeactivateMagnetPowerup()
+        {
+            if (magnetEffect.IsPlaying)
+            {
+                magnetEffect.StopRippleEffect();
+                magnetEffect.gameObject.SetActive(false);
+            }
+        }
+        #endregion
+
         public void PlayVictoryAnimation()
         {
             currentBoat.PlayVictoryAnimation();
@@ -89,22 +110,12 @@ namespace BeachHero
         public void StopMovement()
         {
             canStartMovement = false;
-            magnetParticle.Stop();
-            magnetParticle.gameObject.SetActive(false);
+            this.pointsList = new Vector3[0];
+            DeactivateMagnetPowerup();
         }
         private void OnBoatCollided()
         {
             boatAnimator.SetTrigger(sinkingAnimHash);
-        }
-        public void ActivateSpeedPowerup()
-        {
-            movementSpeed *= speedMultiplier;
-            rotationSpeed *= speedMultiplier;
-        }
-        public void ActivateCoinMagnetPowerup()
-        {
-            magnetParticle.gameObject.SetActive(true);
-            magnetParticle.Play();
         }
         public void StartMovement(Vector3[] pointsList)
         {
@@ -113,14 +124,13 @@ namespace BeachHero
         }
         public void Init()
         {
-            magnetParticle.Stop();
-            magnetParticle.gameObject.SetActive(false);
+            DeactivateMagnetPowerup();
             boatAnimator.Play(idleAnimHash, -1, Random.Range(0f, 1f));
             canStartMovement = false;
             nextPointIndex = 1;
             pointsList = new Vector3[0];
         }
-        public void GameStart(int boatIndex, float speed, GameObject boatPrefab)
+        public void SpawnBoat(int boatIndex, float speed, GameObject boatPrefab)
         {
             foreach (var boatObject in boatObjects.Values)
             {
@@ -197,6 +207,7 @@ namespace BeachHero
                         {
                             GameController.GetInstance.OnLevelFailed();
                         }
+                        StopMovement();
                     }
                 }
             }

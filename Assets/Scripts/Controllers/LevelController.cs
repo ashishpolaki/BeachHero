@@ -188,15 +188,14 @@ namespace BeachHero
                 GameController.GetInstance.TutorialController.OnFTUEPathDrawn();
             }
         }
-
-        public void GameStart(bool _isFTUE)
+        public void LoadGameData(bool _isFTUE)
         {
             isFTUE = _isFTUE;
             isPlaying = true;
             int boatIndex = GameController.GetInstance.SkinController.GetCurrentSelectedBoatIndex();
             float speed = GameController.GetInstance.SkinController.GetSpeed();
             GameObject boatPRefab = GameController.GetInstance.SkinController.GetCurrentSelectedBoat();
-            player.GameStart(boatIndex, speed, boatPRefab);
+            player.SpawnBoat(boatIndex, speed, boatPRefab);
         }
         public void OnLevelCompleted(bool _val)
         {
@@ -316,7 +315,7 @@ namespace BeachHero
         public void ActivateCoinMagnetPowerup()
         {
             coinMagnetActivated = true;
-            player.ActivateCoinMagnetPowerup();
+            player.ActivateMagnetPowerup();
         }
 
         public void ActivateSpeedPowerup()
