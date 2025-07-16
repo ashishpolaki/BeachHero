@@ -5,9 +5,24 @@ namespace BeachHero
 {
     public class LevelController : MonoBehaviour
     {
+        public enum LevelPhase
+        {
+            None,
+            Intro,
+            DrawingPath,
+            Simulating,
+            CompletedSuccess,
+            CompletedFail
+        }
+        public enum PlayerMode
+        {
+            None,
+            FTUE,
+            Normal
+        }
+
         #region Inspector Variables
         [SerializeField] private PoolController poolManager;
-
         [SerializeField] private LayerMask startPointLayer;
         [SerializeField] private LayerMask touchLayer;
         [SerializeField] private float minTrailPointsDistance = 0.3f;
@@ -18,27 +33,28 @@ namespace BeachHero
         #region Private Variables
         private StartPointBehaviour startPointBehaviour;
         private Player player;
-        private List<DrownCharacter> savedCharactersList = new List<DrownCharacter>();
-        private Dictionary<ObstacleType, List<Obstacle>> obstaclesDictionary = new Dictionary<ObstacleType, List<Obstacle>>();
-        private Dictionary<CollectableType, List<Collectable>> collectableDictionary = new Dictionary<CollectableType, List<Collectable>>();
+        private List<DrownCharacter> savedCharactersList = new();
+        private Dictionary<ObstacleType, List<Obstacle>> obstaclesDictionary = new();
+        private Dictionary<CollectableType, List<Collectable>> collectableDictionary = new();
+        private List<Vector3> curvePoints = new List<Vector3>();
         private PathTrail playerPathDrawTrail;
 
         private Camera cam;
         private Ray ray;
         private RaycastHit raycastHit;
         private Vector3 lastTrailPoint;
-        private List<Vector3> drawnPoints = new List<Vector3>();
-        private List<Vector3> smoothedDrawnPoints = new List<Vector3>();
-        private bool isPathDrawn = false;
-        private bool canDrawPath = false;
-        private bool isPlaying;
-        private bool coinMagnetActivated;
-        private bool isLevelCompleted;
-        private bool isLevelPassed;
-        private bool isSimulationStarted;
-        private bool isFTUE = false; // For First Time User Experience
-        private int targetDrownCharacters;
+        private List<Vector3> drawnPoints = new();
+        private List<Vector3> smoothedDrawnPoints = new();
+
+        private LevelPhase levelPhase = LevelPhase.None;
+        private PlayerMode playerMode = PlayerMode.Normal;
+
+        private bool hasDrawnPath = false;
+        private bool isPathDrawingAllowed = false;
+        private bool isMagnetActive = false;
+
         private int gameCurrencyCount;
+        private int targetDrownCharacters;
         [Tooltip("Number of characters saved by the player in current level")]
         private int drownCharactersCounter;
         #endregion
@@ -46,19 +62,10 @@ namespace BeachHero
         #region Properties
         public Transform PlayerTransform => player != null ? player.transform : null;
         public Transform DrownCharacter => savedCharactersList.Count > 0 ? savedCharactersList[0].transform : null;
-        public bool IsLevelPassed => isLevelPassed;
+        public bool IsLevelPassed => levelPhase == LevelPhase.CompletedSuccess;
         public int GameCurrencyCount => gameCurrencyCount;
-        public Camera Cam
-        {
-            get
-            {
-                if (cam == null)
-                {
-                    cam = Camera.main;
-                }
-                return cam;
-            }
-        }
+
+        public Camera Cam => cam ??= Camera.main;
         #endregion
 
         #region Unity Methods
@@ -82,15 +89,15 @@ namespace BeachHero
         private void OnMouseClickDown(Vector2 position)
         {
             //Dont draw the path more than once
-            if (!isPathDrawn && isPlaying)
+            if (!hasDrawnPath && levelPhase == LevelPhase.DrawingPath)
             {
                 playerPathDrawTrail.ResetTrail(player.transform.position);
                 ray = Cam.ScreenPointToRay(position);
                 if (Physics.Raycast(ray, out raycastHit, 1000f, startPointLayer))
                 {
                     HapticsManager.GetInstance.MediumImpactHaptic();
-                    canDrawPath = true;
-                    if (isFTUE)
+                    isPathDrawingAllowed = true;
+                    if (playerMode == PlayerMode.FTUE)
                     {
                         GameController.GetInstance.TutorialController.OnFTUEPlayerTouch();
                     }
@@ -102,10 +109,10 @@ namespace BeachHero
 
         private void OnMouseClickUp(Vector2 position)
         {
-            if (isPlaying && !isPathDrawn)
+            if (levelPhase == LevelPhase.DrawingPath && !hasDrawnPath)
             {
-                isPathDrawn = true;
-                canDrawPath = false;
+                hasDrawnPath = true;
+                isPathDrawingAllowed = false;
                 if (drawnPoints.Count >= 4)
                 {
                     smoothedDrawnPoints = CatmullSplineUtils.GetEvenlySpacedPoints(drawnPoints, spacing);
@@ -113,8 +120,7 @@ namespace BeachHero
                 }
                 else
                 {
-                    isPathDrawn = false;
-                    canDrawPath = false;
+                    hasDrawnPath = false;
                     drawnPoints.Clear();
                 }
             }
@@ -122,7 +128,6 @@ namespace BeachHero
         #endregion
 
         #region DrawPath
-        private List<Vector3> curvePoints = new List<Vector3>();
 
         private void UpdatePath(Vector3 newPosition)
         {
@@ -157,21 +162,16 @@ namespace BeachHero
 
         private void DrawPath()
         {
-            if (isPlaying && canDrawPath)
+            if (levelPhase == LevelPhase.DrawingPath && isPathDrawingAllowed)
             {
                 ray = Cam.ScreenPointToRay(InputManager.MousePosition);
                 if (Physics.Raycast(ray, out raycastHit, 1000f, touchLayer))
                 {
-                    if (raycastHit.collider.CompareTag("Ground"))
-                    {
-                        UpdatePath(raycastHit.point);
-                    }
-                    else
-                    {
-                        Vector3 hitpoint = raycastHit.point;
-                        hitpoint.y = 0f;
-                        UpdatePath(hitpoint);
-                    }
+                    Vector3 hitPoint = raycastHit.point;
+                    if (!raycastHit.collider.CompareTag("Ground"))
+                        hitPoint.y = 0f;
+
+                    UpdatePath(hitPoint);
                 }
             }
         }
@@ -182,30 +182,27 @@ namespace BeachHero
         {
             player.StartMovement(smoothedDrawnPoints.ToArray());
             playerPathDrawTrail.SetTrailSpeed(player.MovementSpeed / 2f);
-            isSimulationStarted = true;
-            if (isFTUE)
+            levelPhase = LevelPhase.Simulating;
+            if (playerMode == PlayerMode.FTUE)
             {
                 GameController.GetInstance.TutorialController.OnFTUEPathDrawn();
             }
         }
-        public void LoadGameData(bool _isFTUE)
+        public void InitializePlayerData(bool isFirstTimeUser)
         {
-            isFTUE = _isFTUE;
-            isPlaying = true;
+            playerMode = isFirstTimeUser ? PlayerMode.FTUE : PlayerMode.Normal;
+            levelPhase = LevelPhase.DrawingPath;
+
             int boatIndex = GameController.GetInstance.SkinController.GetCurrentSelectedBoatIndex();
             float speed = GameController.GetInstance.SkinController.GetSpeed();
             GameObject boatPRefab = GameController.GetInstance.SkinController.GetCurrentSelectedBoat();
             player.SpawnBoat(boatIndex, speed, boatPRefab);
         }
-        public void OnLevelCompleted(bool _val)
+        public void SetLevelCompletionResult(bool passed)
         {
-            isLevelCompleted = true;
-            isLevelPassed = _val;
-
-            if (!isLevelPassed)
-            {
+            levelPhase = passed ? LevelPhase.CompletedSuccess : LevelPhase.CompletedFail;
+            if (!passed)
                 player.StopMovement();
-            }
         }
         #endregion
 
@@ -215,7 +212,6 @@ namespace BeachHero
             drownCharactersCounter++;
             if (drownCharactersCounter >= targetDrownCharacters)
             {
-                isPlaying = false;
                 GameController.GetInstance.OnLevelPass();
             }
         }
@@ -304,7 +300,7 @@ namespace BeachHero
         {
             if (powerUpType == PowerupType.Magnet)
             {
-                ActivateCoinMagnetPowerup();
+                ActivateMagnetPowerup();
             }
             else if (powerUpType == PowerupType.SpeedBoost)
             {
@@ -312,9 +308,9 @@ namespace BeachHero
             }
         }
 
-        public void ActivateCoinMagnetPowerup()
+        public void ActivateMagnetPowerup()
         {
-            coinMagnetActivated = true;
+            isMagnetActive = true;
             player.ActivateMagnetPowerup();
         }
 
@@ -323,20 +319,27 @@ namespace BeachHero
             player.ActivateSpeedPowerup();
         }
 
-        private void OnCoinMagnetPowerup()
+        private void UpdateCollectables()
         {
-            if (coinMagnetActivated)
+            foreach (var collectableList in collectableDictionary.Values)
+            {
+                foreach (var collectable in collectableList)
+                {
+                    collectable.UpdateState();
+                }
+            }
+            if (isMagnetActive)
             {
                 if (collectableDictionary != null && collectableDictionary.ContainsKey(CollectableType.GameCurrency))
-                    foreach (var coinCollectable in collectableDictionary[CollectableType.GameCurrency])
+                    foreach (var gameCurrency in collectableDictionary[CollectableType.GameCurrency])
                     {
-                        float distance = Vector3.Distance(player.transform.position, coinCollectable.transform.position);
-                        GameCurrencyCollectable coin = (GameCurrencyCollectable)coinCollectable;
-                        if (!coin.CanMoveToTarget)
+                        float distance = Vector3.Distance(player.transform.position, gameCurrency.transform.position);
+                        GameCurrencyCollectable gcCollectable = (GameCurrencyCollectable)gameCurrency;
+                        if (!gcCollectable.CanMoveToTarget)
                         {
                             if (distance <= magnetRadius)
                             {
-                                coin.SetTarget(player.transform);
+                                gcCollectable.SetTarget(player.transform);
                             }
                         }
                     }
@@ -361,40 +364,23 @@ namespace BeachHero
 
         public void UpdateState()
         {
-            // Update Path 
             DrawPath();
+            UpdateObstacles();
 
-            //Update Obstacles
-            foreach (var obstacleList in obstaclesDictionary.Values)
+            if (levelPhase == LevelPhase.Simulating || levelPhase == LevelPhase.CompletedSuccess)
             {
-                foreach (var obstacle in obstacleList)
-                {
-                    obstacle.UpdateState();
-                }
+                player?.UpdateState();
             }
 
             // Start the Simulation after the path is drawn
-            if (!isSimulationStarted)
+            if (levelPhase != LevelPhase.Simulating)
             {
                 return;
             }
 
-            //Update Player
-            if (player != null)
-            {
-                player.UpdateState();
-            }
-            //Update Collectables
-            OnCoinMagnetPowerup();
-            foreach (var collectableList in collectableDictionary.Values)
-            {
-                foreach (var collectable in collectableList)
-                {
-                    collectable.UpdateState();
-                }
-            }
+            UpdateCollectables();
 
-            if (!isLevelCompleted)
+            if (levelPhase != LevelPhase.CompletedFail)
             {
                 //Update Characters
                 foreach (var savedCharacter in savedCharactersList)
@@ -409,13 +395,10 @@ namespace BeachHero
             gameCurrencyCount = 0;
             drownCharactersCounter = 0;
             ReturnToPoolEverything();
-            coinMagnetActivated = false;
-            isLevelCompleted = false;
-            isLevelPassed = false;
-            isPlaying = false;
-            isSimulationStarted = false;
-            isPathDrawn = false;
-            canDrawPath = false;
+            isMagnetActive = false;
+            hasDrawnPath = false;
+            isPathDrawingAllowed = false;
+            levelPhase = LevelPhase.None;
             drawnPoints.Clear();
             curvePoints.Clear();
             smoothedDrawnPoints.Clear();
@@ -433,6 +416,13 @@ namespace BeachHero
             SpawnStaticObstacles(obstacle);
             SpawnMoveableObstacles(obstacle);
             SpawnWaterHoleObstacle(obstacle.WaterHoleObstacles);
+        }
+
+        private void UpdateObstacles()
+        {
+            foreach (var obstacleList in obstaclesDictionary.Values)
+                foreach (var obstacle in obstacleList)
+                    obstacle.UpdateState();
         }
 
         #region Moving obstacle
