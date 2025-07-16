@@ -50,6 +50,7 @@ namespace BeachHero
             MapController.GetInstance.MoveBoatFromPrevToCurrentLevel();
             UIController.GetInstance.FadeOut();
             UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);
+            GameController.GetInstance.SetGameState(GameState.Map);
         }
 
         private async void OnHomeASync()

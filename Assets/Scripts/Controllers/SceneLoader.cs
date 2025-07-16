@@ -23,7 +23,7 @@ namespace BeachHero
             while (!asyncOperation.isDone)
                 await Task.Yield();
 
-            Scene loadedScene = SceneManager.GetSceneByName(StringUtils.MAP_SCENE);
+            Scene loadedScene = SceneManager.GetSceneByName(name);
             SceneManager.SetActiveScene(loadedScene);
         }
 

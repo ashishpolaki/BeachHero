@@ -9,6 +9,7 @@ namespace BeachHero
         Paused,
         LevelPassed,
         LevelFailed,
+        Map
     }
     public class GameController : SingleTon<GameController>
     {

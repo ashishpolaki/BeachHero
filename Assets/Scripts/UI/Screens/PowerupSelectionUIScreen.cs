@@ -35,14 +35,18 @@ namespace BeachHero
         private void AddListeners()
         {
             playButton.onClick.AddListener(OnPlayButtonClicked);
-            closeButton.onClick.AddListener(Close);
+            closeButton.ButtonRegister(ClosePanel);
             GameController.GetInstance.TutorialController.OnPowerupPressAction += OnPowerupButtonPressed;
         }
         private void RemoveListeners()
         {
             playButton.onClick.RemoveListener(OnPlayButtonClicked);
-            closeButton.onClick.RemoveListener(Close);
+            closeButton.ButtonDeRegister();
             GameController.GetInstance.TutorialController.OnPowerupPressAction -= OnPowerupButtonPressed;
+        }
+        private void ClosePanel()
+        {
+            Close();
         }
         private async void OnPlayButtonClicked()
         {

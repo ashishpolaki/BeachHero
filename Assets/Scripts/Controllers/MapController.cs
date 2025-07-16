@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.EventSystems;
+using System;
 
 namespace BeachHero
 {
@@ -31,6 +31,10 @@ namespace BeachHero
         private Tween boatTween;
         private Vector2 pendingClickPosition;
         private bool shouldCheckClick;
+
+        public event Action OnMapButtonsActive;
+        public event Action OnPushPowerupSelectionScreen;
+
 
 #if UNITY_EDITOR
         public bool validate;
@@ -92,7 +96,7 @@ namespace BeachHero
         {
             if (InputManager.GetInstance != null)
             {
-                InputManager.GetInstance.OnEscapePressed += ZoomOut;
+                //  InputManager.GetInstance.OnEscapePressed += ZoomOut;
                 InputManager.GetInstance.OnMouseClickDown += HandleClick;
             }
         }
@@ -100,7 +104,7 @@ namespace BeachHero
         {
             if (InputManager.GetInstance != null)
             {
-                InputManager.GetInstance.OnEscapePressed -= ZoomOut;
+                //   InputManager.GetInstance.OnEscapePressed -= ZoomOut;
                 InputManager.GetInstance.OnMouseClickDown -= HandleClick;
             }
             if (boatTween != null && boatTween.IsActive())
@@ -115,26 +119,26 @@ namespace BeachHero
                 GetInstance = null;
             }
         }
-        private void Update()
-        {
-            if (shouldCheckClick)
-            {
-                shouldCheckClick = false;
-                if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
-                {
-                    // Click was on UI
-                    return;
-                }
+        //private void Update()
+        //{
+        //    if (shouldCheckClick)
+        //    {
+        //        shouldCheckClick = false;
+        //        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+        //        {
+        //            // Click was on UI
+        //            return;
+        //        }
 
-                Vector2 mousePos = Camera.main.ScreenToWorldPoint(pendingClickPosition);
-                RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero, 0f);
+        //        Vector2 mousePos = Camera.main.ScreenToWorldPoint(pendingClickPosition);
+        //        RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero, 0f);
 
-                if (hit.collider != null && hit.collider.TryGetComponent<LevelVisual>(out var levelVisual))
-                {
-                    UIController.GetInstance.ScreenEvent(ScreenType.PowerupSelection, UIScreenEvent.Push);
-                }
-            }
-        }
+        //        if (hit.collider != null && hit.collider.TryGetComponent<LevelVisual>(out var levelVisual))
+        //        {
+        //            UIController.GetInstance.ScreenEvent(ScreenType.PowerupSelection, UIScreenEvent.Push);
+        //        }
+        //    }
+        //}
         #endregion
 
         #region Public Methods
@@ -144,6 +148,7 @@ namespace BeachHero
             int currentLevelIndex = levelVisuals.Find(x => x.IsCurrentLevel).LevelNumber - 1;
             Transform target = levelVisuals[currentLevelIndex].transform;
             boat.SetPositionAndRotation(levelVisuals[currentLevelIndex].transform.position + target.right * boatOffset, target.rotation);
+            OnMapButtonsActive?.Invoke();
         }
         public void MoveBoatFromPrevToCurrentLevel()
         {
@@ -172,7 +177,10 @@ namespace BeachHero
                         boat.position = pos + right * boatOffset;
                     },
                     1,
-                    boatDuration).SetEase(boatEase);
+                    boatDuration).SetEase(boatEase).OnComplete(() =>
+                    {
+                        OnPushPowerupSelectionScreen?.Invoke();
+                    });
             }
         }
         public void ZoomIn()

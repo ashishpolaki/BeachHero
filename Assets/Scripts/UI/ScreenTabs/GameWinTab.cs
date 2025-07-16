@@ -65,6 +65,7 @@ namespace BeachHero
             UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);
             await UIController.GetInstance.FadeOutASync();
             MapController.GetInstance.MoveBoatFromPrevToCurrentLevel();
+            GameController.GetInstance.SetGameState(GameState.Map);
         }
         private void OnWatchAd()
         {
