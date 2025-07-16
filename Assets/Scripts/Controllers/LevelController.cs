@@ -204,9 +204,6 @@ namespace BeachHero
             if (!passed)
                 player.StopMovement();
         }
-        #endregion
-
-        #region Collect
         public void OnCharacterPickUp()
         {
             drownCharactersCounter++;
@@ -214,10 +211,6 @@ namespace BeachHero
             {
                 GameController.GetInstance.OnLevelPass();
             }
-        }
-        public void OnGameCurrencyCollect()
-        {
-            gameCurrencyCount++;
         }
         #endregion
 
@@ -295,7 +288,11 @@ namespace BeachHero
         }
         #endregion
 
-        #region Powerup
+        #region Powerups/Collectables
+        public void OnGameCurrencyCollect()
+        {
+            gameCurrencyCount++;
+        }
         public void OnActivatePowerup(PowerupType powerUpType)
         {
             if (powerUpType == PowerupType.Magnet)
