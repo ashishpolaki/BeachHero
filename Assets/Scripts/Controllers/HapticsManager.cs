@@ -7,6 +7,12 @@ namespace BeachHero
         public Most_HapticFeedback.CustomHapticPattern CustomHapticPatternA;
         public Most_HapticFeedback.CustomHapticPattern CustomHapticPatternB;
 
+        public void Init()
+        {
+            bool hapticsEnabled = SaveSystem.LoadBool(StringUtils.HAPTICS_ON, true);
+            ToggleHaptics(hapticsEnabled);
+        }
+
         public void GenerateBasicHaptic(Most_HapticFeedback.HapticTypes type)
         {
             Most_HapticFeedback.Generate(type);
@@ -27,6 +33,7 @@ namespace BeachHero
             StartCoroutine(Most_HapticFeedback.GeneratePattern(CustomHapticPatternB));
         }
 
+        #region Basic
         // __________________________________ Basic Haptics __________________________________
         public void SelectionHaptic()
         {
@@ -72,7 +79,9 @@ namespace BeachHero
         {
             Most_HapticFeedback.Generate(Most_HapticFeedback.HapticTypes.SoftImpact);
         }
+        #endregion
 
+        #region Basic With Cooldown
         // __________________________________ Basic Haptics with Cooldown __________________________________ 
         public void SelectionHapticWithCooldown(float cooldown)
         {
@@ -118,6 +127,7 @@ namespace BeachHero
         {
             Most_HapticFeedback.GenerateWithCooldown(Most_HapticFeedback.HapticTypes.SoftImpact, cooldown);
         }
+        #endregion
 
         // ___________________ Enable / Disable Haptic Feedback ___________________  
         public void ToggleHaptics(bool enabled)

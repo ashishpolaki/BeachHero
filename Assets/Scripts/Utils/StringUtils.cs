@@ -20,6 +20,12 @@ namespace BeachHero
         public const string CHARACTER_TAG = "Character";
         public const string GROUND_TAG = "Ground";
 
+        //Audio
+        public const string MUSIC_ON = "Music";
+        public const string SOUND_ON = "Sound";
+
+        //Haptics
+        public const string HAPTICS_ON = "Haptics";
 
         //Animations
         public const string SINKING_ANIM = "Sinking";
@@ -73,5 +79,5 @@ namespace BeachHero
         //Scene
         public const int MAP_SCENE_LOAD_DELAY = 500;
     }
-
+    
 }

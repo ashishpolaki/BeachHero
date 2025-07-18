@@ -10,6 +10,7 @@ namespace BeachHero
         [SerializeField] private Button boatCustomisationButton;
         [SerializeField] private Button levelPanelButton;
         [SerializeField] private Button storeButton;
+        [SerializeField] private Button settingsButton;
         [SerializeField] private TextMeshProUGUI levelNumberText;
         [SerializeField] private UIButtonAudio[] buttonAnimationDatas;
         [SerializeField] private Transform titleFont;
@@ -53,6 +54,7 @@ namespace BeachHero
             boatCustomisationButton.ButtonRegister(OnBoatCustomisationButtonClicked);
             levelPanelButton.ButtonRegister(OnLevelPanelButtonClicked);
             storeButton.ButtonRegister(OnStoreButtonClicked);
+            settingsButton.ButtonRegister(OnSettingsButtonClick);
         }
 
         private void RemoveListeners()
@@ -60,6 +62,11 @@ namespace BeachHero
             boatCustomisationButton.ButtonDeRegister();
             levelPanelButton.ButtonDeRegister();
             storeButton.ButtonDeRegister();
+            settingsButton.ButtonDeRegister();
+        }
+        private void OnSettingsButtonClick()
+        {
+            UIController.GetInstance.ScreenEvent(ScreenType.Settings, UIScreenEvent.Push);
         }
 
         private void OnBoatCustomisationButtonClicked()

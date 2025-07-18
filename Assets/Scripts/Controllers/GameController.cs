@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 namespace BeachHero
@@ -45,6 +46,8 @@ namespace BeachHero
             Application.targetFrameRate = 30;
             AudioController.GetInstance.Init();
             AdController.GetInstance.Init();
+            DOTween.Init();
+            HapticsManager.GetInstance.Init();
             powerupController.Init();
             storeController.Init();
             SpawnLevel();

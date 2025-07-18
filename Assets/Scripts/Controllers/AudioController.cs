@@ -13,6 +13,9 @@ namespace BeachHero
         private float gameMusicVolumeMultiplier = 1.0f;
         private List<AudioSourceCase> audioSourcesPool;
 
+        private bool isMusicOn = true;
+        private bool isSoundOn = true;
+
         public void Init()
         {
             foreach (var audioClip in audioSettings.audioClips)
@@ -30,6 +33,10 @@ namespace BeachHero
             {
                 audioSourcesPool.Add(new AudioSourceCase());
             }
+
+            isMusicOn = SaveSystem.LoadBool(StringUtils.MUSIC_ON, true);
+            isSoundOn = SaveSystem.LoadBool(StringUtils.SOUND_ON, true);
+
             PlayGameMusic();
         }
 
@@ -43,6 +50,22 @@ namespace BeachHero
         }
 
         #region Game Music
+        public void OnGameMusicToggleChange(bool isOn)
+        {
+            isMusicOn = isOn;
+            SaveSystem.SaveBool(StringUtils.MUSIC_ON, isOn);
+            if (isOn)
+            {
+                PlayGameMusic();
+            }
+            else
+            {
+                if (gameMusicSource != null)
+                {
+                    gameMusicSource.Stop();
+                }
+            }
+        }
         public void OnGameMusicVolumeChange(float volumeChange)
         {
             gameMusicSource.volume = volumeChange * gameMusicVolumeMultiplier;
@@ -61,6 +84,10 @@ namespace BeachHero
 
         public void PlayGameMusic()
         {
+            if (!isMusicOn || gameMusicSource == null)
+            {
+                return;
+            }
             if (gameMusicSource != null)
             {
                 gameMusicSource.volume = 0.0f;
@@ -78,8 +105,21 @@ namespace BeachHero
         #endregion
 
         #region SFX
+        public void OnSoundToggleChange(bool isOn)
+        {
+            isSoundOn = isOn;
+            SaveSystem.SaveBool(StringUtils.SOUND_ON, isOn);
+            if (!isOn)
+            {
+                ReleaseSources();
+            }
+        }
         public void PlaySound(AudioType audioType)
         {
+            if (!isSoundOn)
+            {
+                return;
+            }
             AudioSourceCase sourceCase = GetAudioSource();
             AudioSource source = sourceCase.AudioSource;
 
@@ -97,7 +137,7 @@ namespace BeachHero
         {
             foreach (var audioSourceCase in audioSourcesPool)
             {
-                if(audioSourceCase == null || audioSourceCase.AudioSource == null || audioSourceCase.AudioSource.clip == null) continue;
+                if (audioSourceCase == null || audioSourceCase.AudioSource == null || audioSourceCase.AudioSource.clip == null) continue;
                 if (audioSourceCase.IsPlaying)
                 {
                     audioSourceCase.AudioSource.Stop();
