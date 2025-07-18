@@ -24,9 +24,14 @@ namespace BeachHero
         [SerializeField] private float fadeInDuration = 0.5f;
         [SerializeField] private float fadeOutDuration = 0.5f;
 
+        [Header("Notch SafeArea")]
+        [SerializeField] private NotchSafeArea notchSafeArea;
+
         [Header("Loading")]
         [SerializeField] private Image loadingPanel;
         #endregion
+
+        public NotchSafeArea NotchSafeArea => notchSafeArea;
 
         #region Public Methods
         public void ScreenEvent(ScreenType screenType, UIScreenEvent uIScreenEvent, ScreenTabType screenTabType = ScreenTabType.None)

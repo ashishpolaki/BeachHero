@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using System;
+using Unity.Cinemachine;
 
 namespace BeachHero
 {
@@ -14,10 +15,13 @@ namespace BeachHero
 
         private static readonly float zoomInThick = 0.05f;
         private static readonly float zoomOutThick = 0.35f;
+        private readonly float referenceOrthoSize = 31f;
+        private readonly Vector2 referenceMapScale = new Vector2(4.5f, 4f);
 
         [SerializeField] private Transform boat;
+        [SerializeField] private Transform mapTransform;
         [SerializeField] private LineRenderer pathLine;
-        [SerializeField] private GameObject zoomOutCam, zoomInCam;
+        [SerializeField] private CinemachineCamera zoomOutCam, zoomInCam;
 
         [SerializeField] private LevelDatabaseSO levelDatabase;
         [SerializeField] private List<BezierPoint> bezierPoints = new List<BezierPoint>();
@@ -77,6 +81,15 @@ namespace BeachHero
         }
 #endif
 
+        private void ApplyResolutionScaling()
+        {
+            zoomOutCam.Lens.OrthographicSize = ScreenResolutionUtils.GetOrthographicSize(referenceOrthoSize);
+            if (mapTransform != null)
+            {
+                var scale = ScreenResolutionUtils.GetObjectScale(referenceMapScale, referenceOrthoSize);
+                mapTransform.localScale = new Vector3(scale.x, scale.y, 1f);
+            }
+        }
         #region Unity Methods
         private void Awake()
         {
@@ -91,6 +104,7 @@ namespace BeachHero
             DOTween.Init();
             ZoomIn();
         }
+
         private void OnEnable()
         {
             if (InputManager.GetInstance != null)
@@ -191,9 +205,10 @@ namespace BeachHero
         }
         public void ZoomIn()
         {
+            ApplyResolutionScaling();
             Vector2 position = levelVisuals.Find(x => x.IsCurrentLevel).WorldPosition;
-            zoomOutCam.SetActive(false);
-            zoomInCam.SetActive(true);
+            zoomOutCam.gameObject.SetActive(false);
+            zoomInCam.gameObject.SetActive(true);
             zoomInCam.transform.position = new Vector3(position.x, position.y, zoomInCam.transform.position.z);
             DOTween.To(() => pathLine.startWidth, (x) => pathLine.startWidth = x, zoomInThick, 1.5f);
             DOTween.To(() => pathLine.endWidth, (x) => pathLine.endWidth = x, zoomInThick, 1.5f);
@@ -201,8 +216,10 @@ namespace BeachHero
         }
         public void ZoomOut()
         {
-            zoomOutCam.SetActive(true);
-            zoomInCam.SetActive(false);
+            ApplyResolutionScaling();
+            zoomOutCam.gameObject.SetActive(true);
+            zoomInCam.gameObject.SetActive(false);
+
             DOTween.To(() => pathLine.startWidth, (x) => pathLine.startWidth = x, zoomOutThick, 1.5f);
             DOTween.To(() => pathLine.endWidth, (x) => pathLine.endWidth = x, zoomOutThick, 1.5f);
             DOTween.To(() => pathLine.textureScale, (x) => pathLine.textureScale = x, originalTextureScale, 1.5f);

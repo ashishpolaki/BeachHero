@@ -58,6 +58,7 @@ namespace BeachHero
     {
         [SerializeField] private TweenAnimationData openingAnimationData;
         [SerializeField] private RectTransform rect;
+        [SerializeField] private RectTransform notchSafeArea;
         [SerializeField] private ScreenType screenType;
         [SerializeField] private ScreenTabType defaultOpenTab;
         [SerializeField] private List<BaseScreenTab> tabs;
@@ -74,6 +75,10 @@ namespace BeachHero
         #region IScreen Implementation
         public virtual void Open(ScreenTabType screenTabType)
         {
+            if (notchSafeArea != null)
+            {
+                UIController.GetInstance.NotchSafeArea.RegisterRectTransform(notchSafeArea);
+            }
             gameObject.SetActive(true);
             OpenInitialTab(screenTabType);
             PlayOpenAnimation(openingAnimationData);
