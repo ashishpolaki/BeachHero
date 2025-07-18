@@ -40,13 +40,13 @@ public class MapEditor : SingleTon<MapEditor>
     [Tooltip("Total Number of levels")]
     public int pointsPerSegment = 100;
 
-    public void GenerateMapPointsInEditor()
+    public void GenerateMapPointsInEditor(bool isResize)
     {
         if (!Application.isPlaying && bezierPoints != null && bezierPoints.Count >= 2)
         {
             ClearGeneratedObjects();
-            ReplaceBezierCurveWithTangents();
-
+            if (isResize)
+                ReplaceBezierCurveWithTangents();
             // Generate map nodes and line renderer points
             linePoints ??= new List<Vector3>();
             linePoints.Clear();

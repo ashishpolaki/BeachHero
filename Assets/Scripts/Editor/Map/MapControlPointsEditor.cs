@@ -57,7 +57,14 @@ public class MapControlPointsEditor : Editor
         // Generate Map
         if (GUILayout.Button("Generate Map"))
         {
-            mapTester.GenerateMapPointsInEditor();
+            mapTester.GenerateMapPointsInEditor(false);
+            EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
+        }
+
+        //Resize Bezier Points
+        if (GUILayout.Button("Resize Bezier Points"))
+        {
+            mapTester.GenerateMapPointsInEditor(true);
             EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
         }
 
