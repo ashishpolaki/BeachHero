@@ -12,6 +12,8 @@ namespace BeachHero
         [SerializeField] private Button storeButton;
         [SerializeField] private TextMeshProUGUI levelNumberText;
         [SerializeField] private UIButtonAudio[] buttonAnimationDatas;
+        [SerializeField] private Transform titleFont;
+        [SerializeField] private Transform tree;
 
         #region Tween Animations
         protected override void PlayTweenAnimations(TweenAnimationData animationData)
@@ -20,6 +22,7 @@ namespace BeachHero
             float delay = animationData.Delay + animationData.Duration;
             DOVirtual.DelayedCall(delay, ButtonTweenAnimations);
             // ButtonTweenAnimations();
+
         }
         private void ButtonTweenAnimations()
         {
@@ -33,15 +36,16 @@ namespace BeachHero
         public override void Open(ScreenTabType screenTabType)
         {
             base.Open(screenTabType);
-            int currentLevelNumber = GameController.GetInstance.CurrentLevelIndex + 1;
-            levelNumberText.text = $"{currentLevelNumber}";
+            SetLevelNumber();
             AddListeners();
+            OnAnimateBeachProps();
         }
 
         public override void Close()
         {
             base.Close();
             RemoveListeners();
+            KillPropAnimations();
         }
 
         private void AddListeners()
@@ -79,5 +83,43 @@ namespace BeachHero
         {
             UIController.GetInstance.ScreenEvent(ScreenType.Store, UIScreenEvent.Open);
         }
+
+        private void SetLevelNumber()
+        {
+            int currentLevelNumber = GameController.GetInstance.CurrentLevelIndex + 1;
+            levelNumberText.text = $"{currentLevelNumber}";
+        }
+
+        #region Beach Props
+        private void OnAnimateBeachProps()
+        {
+            //Tree
+            ShakeTree();
+
+            //Title Font 
+            titleFont.localScale = Vector3.zero;
+            titleFont.DOScale(Vector3.one, 1).SetEase(Ease.OutFlash, 1f);
+        }
+        //462806//AE8653
+        public void ShakeTree()
+        {
+            Sequence shakeLoop = DOTween.Sequence();
+            shakeLoop.Append(tree.DOShakeRotation(0.3f, new Vector3(0, 0, 1), 10, 90, false, ShakeRandomnessMode.Harmonic));
+            shakeLoop.AppendInterval(1); // Wait before the next loop starts
+            shakeLoop.SetLoops(-1, LoopType.Restart); // Loop forever
+        }
+
+        private void KillPropAnimations()
+        {
+            if (tree != null)
+            {
+                tree.DOKill();
+            }
+            if (titleFont != null)
+            {
+                titleFont.DOKill();
+            }
+        }
+        #endregion
     }
 }

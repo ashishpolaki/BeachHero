@@ -23,6 +23,9 @@ namespace BeachHero
         [SerializeField] private Image fadePanel;
         [SerializeField] private float fadeInDuration = 0.5f;
         [SerializeField] private float fadeOutDuration = 0.5f;
+
+        [Header("Loading")]
+        [SerializeField] private Image loadingPanel;
         #endregion
 
         #region Public Methods

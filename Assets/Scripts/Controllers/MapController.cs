@@ -18,8 +18,6 @@ namespace BeachHero
         [SerializeField] private Transform boat;
         [SerializeField] private LineRenderer pathLine;
         [SerializeField] private GameObject zoomOutCam, zoomInCam;
-        [SerializeField] private GameObject levelPrefab; // A prefab with SpriteRenderer + optional 3D stuff
-        [SerializeField] private Transform levelsParent;
 
         [SerializeField] private LevelDatabaseSO levelDatabase;
         [SerializeField] private List<BezierPoint> bezierPoints = new List<BezierPoint>();
@@ -39,6 +37,7 @@ namespace BeachHero
 #if UNITY_EDITOR
         public bool validate;
         public MapEditor mapEditor;
+        [SerializeField] private GameObject levelPrefab; // A prefab with SpriteRenderer + optional 3D stuff
         private void OnValidate()
         {
             if (!validate)
@@ -52,29 +51,29 @@ namespace BeachHero
             }
             if (mapEditor)
             {
-                // var points = mapEditor.GenerateBezierCurvePoints(bezierPoints);
-                // pathLine.positionCount = points.Count;
-                // pathLine.SetPositions(points.ToArray());
-                //
-                // for (int i = 0; i < bezierPoints.Count; i++)
-                // {
-                //     levelVisuals[i].SetPositions(bezierPoints[i].anchorPoint);
-                // }
+                var points = mapEditor.GenerateBezierCurvePoints(bezierPoints);
+                pathLine.positionCount = points.Count;
+                pathLine.SetPositions(points.ToArray());
+
+                for (int i = 0; i < bezierPoints.Count; i++)
+                {
+                    levelVisuals[i].SetPositions(bezierPoints[i].anchorPoint);
+                }
+                for (var i = 0; i < levelVisuals.Count - 1; i++)
+                {
+                    var tr = levelVisuals[i].transform;
+                    BezierPoint bp0 = bezierPoints[i];
+                    BezierPoint bp1 = bezierPoints[i + 1];
+
+                    Vector3 p0 = bp0.anchorPoint;
+                    Vector3 p1 = p0 + bp0.outTangent;
+                    Vector3 p2 = bp1.anchorPoint + bp1.inTangent;
+                    Vector3 p3 = bp1.anchorPoint;
+
+                    Vector3 forward = BezierCurveUtils.GetTangent(p0, p1, p2, p3, 0.1f).normalized;
+                    tr.up = forward;
+                }
             }
-            // for (var i = 0; i < levelVisuals.Count - 1; i++)
-            // {
-            //     var tr = levelVisuals[i].transform;
-            //     BezierPoint bp0 = bezierPoints[i];
-            //     BezierPoint bp1 = bezierPoints[i + 1];
-            //
-            //     Vector3 p0 = bp0.anchorPoint;
-            //     Vector3 p1 = p0 + bp0.outTangent;
-            //     Vector3 p2 = bp1.anchorPoint + bp1.inTangent;
-            //     Vector3 p3 = bp1.anchorPoint;
-            //
-            //     Vector3 forward = BezierCurveUtils.GetTangent(p0, p1, p2, p3, 0.1f).normalized;
-            //     tr.up = forward;
-            // }
         }
 #endif
 
@@ -97,7 +96,7 @@ namespace BeachHero
             if (InputManager.GetInstance != null)
             {
                 //  InputManager.GetInstance.OnEscapePressed += ZoomOut;
-                InputManager.GetInstance.OnMouseClickDown += HandleClick;
+                //  InputManager.GetInstance.OnMouseClickDown += HandleClick;
             }
         }
         private void OnDisable()
@@ -105,7 +104,7 @@ namespace BeachHero
             if (InputManager.GetInstance != null)
             {
                 //   InputManager.GetInstance.OnEscapePressed -= ZoomOut;
-                InputManager.GetInstance.OnMouseClickDown -= HandleClick;
+                // InputManager.GetInstance.OnMouseClickDown -= HandleClick;
             }
             if (boatTween != null && boatTween.IsActive())
             {
@@ -138,6 +137,11 @@ namespace BeachHero
         //            UIController.GetInstance.ScreenEvent(ScreenType.PowerupSelection, UIScreenEvent.Push);
         //        }
         //    }
+        //}
+        //private void HandleClick(Vector2 screenPosition)
+        //{
+        //    pendingClickPosition = screenPosition;
+        //    shouldCheckClick = true;
         //}
         #endregion
 
@@ -181,6 +185,8 @@ namespace BeachHero
                     {
                         OnPushPowerupSelectionScreen?.Invoke();
                     });
+
+
             }
         }
         public void ZoomIn()
@@ -203,10 +209,6 @@ namespace BeachHero
         }
         #endregion
 
-        private void HandleClick(Vector2 screenPosition)
-        {
-            pendingClickPosition = screenPosition;
-            shouldCheckClick = true;
-        }
+
     }
 }
