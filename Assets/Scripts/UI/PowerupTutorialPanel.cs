@@ -6,8 +6,8 @@ namespace BeachHero
     public class PowerupTutorialPanel : MonoBehaviour
     {
         [SerializeField] private RectTransform tutorialHandRect;
-        [SerializeField] private RectTransform powerUpButtonRect;
-        [SerializeField] private RectTransform playButtonTutorialRect;
+        [SerializeField] private RectTransform powerUpMaskRect;
+        [SerializeField] private RectTransform playButtonMaskRect;
         [SerializeField] private GameObject rayCastPanel;
 
         [Header("Button Animation Parameters")]
@@ -18,71 +18,77 @@ namespace BeachHero
         [SerializeField] private Ease buttonScaleEase = Ease.OutBack;
 
         [Header("Hand Animation")]
-        [SerializeField] private float handScaleDuration = 0.5f;
-        [SerializeField] private float handScaleElasticity = 0.2f;
-        [SerializeField] private float handScalePunch = 0.2f;
+        [SerializeField] private float handMoveOffset = 50f;        // How far up/down the hand moves
+        [SerializeField] private float handMoveDuration = 0.5f;
+        [SerializeField] private Ease handMoveEase = Ease.InOutSine;
 
         private Transform playButtonTransform;
         private Transform currentPowerupTransform;
 
         public void Deactivate()
         {
-            powerUpButtonRect.sizeDelta = Vector2.zero;
-            powerUpButtonRect.gameObject.SetActive(false);
-            playButtonTutorialRect.gameObject.SetActive(false);
+            powerUpMaskRect.sizeDelta = Vector2.zero;
+            powerUpMaskRect.gameObject.SetActive(false);
+            playButtonMaskRect.gameObject.SetActive(false);
             tutorialHandRect.gameObject.SetActive(false);
             rayCastPanel.SetActive(false);
             tutorialHandRect.DOKill();
-            powerUpButtonRect.DOKill();
-            playButtonTutorialRect.DOKill();
+            powerUpMaskRect.DOKill();
+            playButtonMaskRect.DOKill();
         }
 
         public void ShowMagnetPowerupTutorial(Transform _powerupButton, Transform _playButton)
         {
-            powerUpButtonRect.gameObject.SetActive(true);
+            powerUpMaskRect.gameObject.SetActive(true);
             rayCastPanel.SetActive(true); // Enable the raycast panel to block input during the tutorial
-            powerUpButtonRect.position = _powerupButton.position;
-            powerUpButtonRect.DOSizeDelta(powerupButtonSizeRect, buttonScaleDuration).SetDelay(buttonScaleDelay).SetEase(buttonScaleEase).OnComplete
+            powerUpMaskRect.position = _powerupButton.position;
+            currentPowerupTransform = _powerupButton;
+            playButtonTransform = _playButton;
+            powerUpMaskRect.DOSizeDelta(powerupButtonSizeRect, buttonScaleDuration).SetDelay(buttonScaleDelay).SetEase(buttonScaleEase).OnComplete
                 (() =>
                 {
-                    powerUpButtonRect.DOKill();
-                    currentPowerupTransform = _powerupButton;
-                    _powerupButton.SetParent(transform);
-                    playButtonTransform = _playButton;
+                    powerUpMaskRect.DOKill();
+                    PlayTutorialHandAnimation(_powerupButton);
                 });
         }
 
         public void ShowSpeedBoostPowerupTutorial(Transform _powerupButton, Transform _playButton)
         {
-            powerUpButtonRect.gameObject.SetActive(true);
-            rayCastPanel.SetActive(true); // Enable the raycast panel to block input during the tutorial
-            powerUpButtonRect.position = _powerupButton.position;
-            powerUpButtonRect.DOSizeDelta(powerupButtonSizeRect, buttonScaleDuration).SetEase(buttonScaleEase).OnComplete
+            powerUpMaskRect.gameObject.SetActive(true);
+            rayCastPanel.SetActive(true);
+            powerUpMaskRect.position = _powerupButton.position;
+            playButtonTransform = _playButton;
+            currentPowerupTransform = _powerupButton;
+            powerUpMaskRect.DOSizeDelta(powerupButtonSizeRect, buttonScaleDuration).SetEase(buttonScaleEase).OnComplete
               (() =>
               {
-                  powerUpButtonRect.DOKill();
-                  _powerupButton.SetParent(transform);
-                  playButtonTransform = _playButton;
-                  currentPowerupTransform = _powerupButton;
+                  powerUpMaskRect.DOKill();
+                  PlayTutorialHandAnimation(_powerupButton);
               });
         }
         public void OnPowerupButtonPressed(Transform _buttonsParent)
         {
-            powerUpButtonRect.gameObject.SetActive(false);
+            powerUpMaskRect.gameObject.SetActive(false);
+            tutorialHandRect.gameObject.SetActive(false);
+            playButtonMaskRect.gameObject.SetActive(true);
             currentPowerupTransform.SetParent(_buttonsParent);
-
-            playButtonTutorialRect.gameObject.SetActive(true);
-            playButtonTutorialRect.position = playButtonTransform.position;
-            playButtonTutorialRect.DOSizeDelta(playButtonSizeRect, buttonScaleDuration).SetEase(buttonScaleEase).OnComplete
+            playButtonMaskRect.position = playButtonTransform.position;
+            playButtonMaskRect.DOSizeDelta(playButtonSizeRect, buttonScaleDuration).SetEase(buttonScaleEase).OnComplete
               (() =>
               {
-                  tutorialHandRect.position = playButtonTransform.position;
-                  tutorialHandRect.gameObject.SetActive(true);
-                  tutorialHandRect.DOKill();
-                  tutorialHandRect.DOPunchScale(Vector3.one * handScalePunch, handScaleDuration, 0, handScaleElasticity).SetLoops(-1);
-                  playButtonTransform.SetParent(transform);
-                  //  playButtonTransform.SetAsLastSibling(); // Ensure the play button is on top
+                  PlayTutorialHandAnimation(playButtonTransform);
               });
+        }
+
+        private void PlayTutorialHandAnimation(Transform _transform)
+        {
+            tutorialHandRect.DOKill();
+            tutorialHandRect.position = _transform.position;
+            tutorialHandRect.gameObject.SetActive(true);
+            Vector2 anchoredPos = tutorialHandRect.anchoredPosition;
+            tutorialHandRect.DOAnchorPosY(anchoredPos.y + handMoveOffset, handMoveDuration).SetEase(handMoveEase).SetLoops(-1, LoopType.Yoyo);
+            _transform.SetParent(transform);
+            //  playButtonTransform.SetAsLastSibling(); // Ensure the play button is on top
         }
     }
 }
