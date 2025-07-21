@@ -12,6 +12,7 @@ namespace BeachHero
         [SerializeField] private Button playButton;
         [SerializeField] private Button closeButton;
         [SerializeField] private TextMeshProUGUI levelNumberText;
+        [SerializeField] private Transform buttonsParentTransform;
 
         private bool isPowerupTutorialEnabled = false;
 
@@ -77,7 +78,7 @@ namespace BeachHero
         {
             if (!isPowerupTutorialEnabled)
                 return;
-            powerupTutorialPanel.OnPowerupButtonPressed();
+            powerupTutorialPanel.OnPowerupButtonPressed(buttonsParentTransform);
         }
         private void InitMagnetPowerup()
         {
@@ -91,7 +92,9 @@ namespace BeachHero
                     SaveSystem.SaveBool(StringUtils.MAGNET_UNLOCKED, true);
                     isMagnetPowerupLocked = false;
                     isPowerupTutorialEnabled = true;
-                    powerupTutorialPanel.ShowMagnetPowerupTutorial(magnetPowerup.transform.position);
+                    speedPowerup.transform.SetParent(buttonsParentTransform);
+                    playButton.transform.SetParent(buttonsParentTransform);
+                    powerupTutorialPanel.ShowMagnetPowerupTutorial(magnetPowerup.transform, playButton.transform);
                 }
             }
             int magnetPowerupCount = GameController.GetInstance.PowerupController.MagnetBalance;
@@ -109,7 +112,9 @@ namespace BeachHero
                     SaveSystem.SaveBool(StringUtils.SPEEDBOOST_UNLOCKED, true);
                     isSpeedPowerupLocked = false;
                     isPowerupTutorialEnabled = true;
-                    powerupTutorialPanel.ShowSpeedBoostPowerupTutorial(speedPowerup.transform.position);
+                    magnetPowerup.transform.SetParent(buttonsParentTransform);
+                    playButton.transform.SetParent(buttonsParentTransform);
+                    powerupTutorialPanel.ShowSpeedBoostPowerupTutorial(speedPowerup.transform, playButton.transform);
                 }
             }
             int speedPowerupCount = GameController.GetInstance.PowerupController.SpeedBoostBalance;
