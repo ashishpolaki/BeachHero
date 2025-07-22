@@ -705,7 +705,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 300}
+  m_AnchoredPosition: {x: 0, y: 223.55}
   m_SizeDelta: {x: 900, y: 800}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &533921987
@@ -821,7 +821,7 @@ Camera:
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
-  m_FOVAxisMode: 0
+  m_FOVAxisMode: 1
   m_Iso: 200
   m_ShutterSpeed: 0.005
   m_Aperture: 16
@@ -841,8 +841,8 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
-  orthographic: 1
+  field of view: 160
+  orthographic: 0
   orthographic size: 12
   m_Depth: 0
   m_CullingMask:
@@ -1436,7 +1436,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -374}
+  m_AnchoredPosition: {x: 0, y: -380}
   m_SizeDelta: {x: 1000, y: 1000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1075742617
@@ -2298,11 +2298,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54811b861e6d66d4584478ad1a743808, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadingBar: {fileID: 468402966}
-  renderCamera: {fileID: 558898237}
-  panelBG: {fileID: 729886503}
-  loadingTime: 1
-  referenceOrthoSize: 12
+  loadingFillImage: {fileID: 468402966}
+  backgroundPanel: {fileID: 729886503}
+  tutorialCharacter: {fileID: 2100442865}
+  minimumLoadingDuration: 1
+  referenceCharacterSize: {x: 1100, y: 1100}
 --- !u!223 &1521272782
 Canvas:
   m_ObjectHideFlags: 0
@@ -2628,8 +2628,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 14, y: -69}
-  m_SizeDelta: {x: 820, y: 820}
+  m_AnchoredPosition: {x: 14, y: -131.3}
+  m_SizeDelta: {x: 1100, y: 1100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2100442866
 MonoBehaviour:

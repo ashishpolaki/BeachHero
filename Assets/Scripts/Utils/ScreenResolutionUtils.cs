@@ -20,7 +20,6 @@ namespace BeachHero
             float adjustedOrthoSize = referenceOrthoSize * aspectScale;
             return adjustedOrthoSize;
         }
-
         /// <summary>
         /// Returns the scale for a target object based on the current screen resolution and a reference resolution.
         /// </summary>
@@ -32,5 +31,26 @@ namespace BeachHero
 
             return new Vector2(referenceScale.x, scaleY);
         }
+        /// <summary>
+        /// Returns the size delta for a RectTransform based on a reference width and height, adjusted for the current screen resolution.
+        /// </summary>
+        /// <param name="referenceWidth"></param>
+        /// <param name="referenceHeight"></param>
+        /// <returns></returns>
+        public static Vector2 GetSizeDeltaFromOrthoReference(float referenceWidth, float referenceHeight)
+        {
+            float screenWidth = Screen.width;
+            float screenHeight = Screen.height;
+
+            float currentAspect = screenWidth / screenHeight;
+            float referenceAspect = ReferenceResolution.x / ReferenceResolution.y;
+            float aspectScale = referenceAspect / currentAspect;
+
+            float adjustedWidth = referenceWidth * aspectScale;
+            float adjustedHeight = referenceHeight * aspectScale;
+
+            return new Vector2(adjustedWidth, adjustedHeight);
+        }
+
     }
 }

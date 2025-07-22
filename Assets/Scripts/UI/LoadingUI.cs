@@ -7,30 +7,36 @@ namespace BeachHero
 {
     public class LoadingUI : MonoBehaviour
     {
-        [SerializeField] private Image loadingBar;
-        [SerializeField] private Camera renderCamera;
-        [SerializeField] private GameObject panelBG;
-        [SerializeField] private float loadingTime = 1;
-        [SerializeField] private float referenceOrthoSize = 12f;
+        [SerializeField] private Image loadingFillImage;
+        [SerializeField] private GameObject backgroundPanel;
+        [SerializeField] private RectTransform tutorialCharacter;
+        [SerializeField] private float minimumLoadingDuration = 1;
+        [SerializeField] private Vector2 referenceCharacterSize = new Vector2(820, 820);
 
-        public void EnableLoadingScreen(bool enable)
+        private void SetActiveLoadingScreen(bool enable)
         {
-            panelBG.SetActive(enable);
+            backgroundPanel.SetActive(enable);
+        }
+
+        private void UpdateTutorialCharacterSize()
+        {
+            Vector2 scaledSize = ScreenResolutionUtils.GetSizeDeltaFromOrthoReference(referenceCharacterSize.x, referenceCharacterSize.y);
+            tutorialCharacter.sizeDelta = scaledSize;
         }
 
         public async Task LoadSceneAsync(string sceneName)
         {
-            renderCamera.orthographicSize = ScreenResolutionUtils.GetOrthographicSize(referenceOrthoSize);
-            EnableLoadingScreen(true);
+            UpdateTutorialCharacterSize();
+            SetActiveLoadingScreen(true);
             var asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
             asyncOperation.allowSceneActivation = false;
 
             float barProgress = 0;
-            while (barProgress <= loadingTime)
+            while (barProgress <= minimumLoadingDuration)
             {
                 barProgress += Time.deltaTime;
-                float progress = Mathf.Clamp01(barProgress / loadingTime);
-                loadingBar.fillAmount = progress;
+                float progress = Mathf.Clamp01(barProgress / minimumLoadingDuration);
+                loadingFillImage.fillAmount = progress;
                 await Task.Yield();
             }
 
@@ -38,7 +44,7 @@ namespace BeachHero
             {
                 await Task.Yield();
             }
-            loadingBar.fillAmount = 1f; // Ensure the bar is full
+            loadingFillImage.fillAmount = 1f; // Ensure the bar is full
             asyncOperation.allowSceneActivation = true;
 
             while (!asyncOperation.isDone)
@@ -46,7 +52,7 @@ namespace BeachHero
 
             Scene loadedScene = SceneManager.GetSceneByName(sceneName);
             SceneManager.SetActiveScene(loadedScene);
-            EnableLoadingScreen(false);
+            SetActiveLoadingScreen(false);
         }
     }
 }
