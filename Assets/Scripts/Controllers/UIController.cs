@@ -28,10 +28,11 @@ namespace BeachHero
         [SerializeField] private NotchSafeArea notchSafeArea;
 
         [Header("Loading")]
-        [SerializeField] private Image loadingPanel;
+        [SerializeField] private LoadingUI loadingUI;
         #endregion
 
         public NotchSafeArea NotchSafeArea => notchSafeArea;
+        public LoadingUI LoadingUI => loadingUI;
 
         #region Public Methods
         public void ScreenEvent(ScreenType screenType, UIScreenEvent uIScreenEvent, ScreenTabType screenTabType = ScreenTabType.None)

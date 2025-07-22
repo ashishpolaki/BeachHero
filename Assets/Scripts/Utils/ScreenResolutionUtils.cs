@@ -4,7 +4,7 @@ namespace BeachHero
 {
     public class ScreenResolutionUtils
     {
-        public static Vector2 ReferenceResolution = new Vector2(1920, 1080);
+        public static Vector2 ReferenceResolution = new Vector2(1080, 1920);
 
         /// <summary>
         /// Returns the orthographic size based on current screen aspect ratio.
@@ -15,7 +15,7 @@ namespace BeachHero
             float screenHeight = Screen.height;
 
             float currentAspect = screenWidth / screenHeight;
-            float referenceAspect = ReferenceResolution.y / ReferenceResolution.x;
+            float referenceAspect = ReferenceResolution.x / ReferenceResolution.y;
             float aspectScale = referenceAspect / currentAspect;
             float adjustedOrthoSize = referenceOrthoSize * aspectScale;
             return adjustedOrthoSize;

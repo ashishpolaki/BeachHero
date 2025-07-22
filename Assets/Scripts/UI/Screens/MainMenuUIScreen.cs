@@ -16,6 +16,8 @@ namespace BeachHero
         [SerializeField] private Transform titleFont;
         [SerializeField] private Transform tree;
 
+        private Sequence treeShakeSequence;
+
         #region Tween Animations
         protected override void PlayTweenAnimations(TweenAnimationData animationData)
         {
@@ -77,9 +79,10 @@ namespace BeachHero
         private async void OnLevelPanelButtonClicked()
         {
             //  OpenTab(ScreenTabType.PowerupSelection);
-            UIController.GetInstance.FadeIn();
-            await SceneLoader.GetInstance.LoadScene(StringUtils.MAP_SCENE, IntUtils.MAP_SCENE_LOAD_DELAY);
-            UIController.GetInstance.FadeOut();
+            //UIController.GetInstance.FadeIn();
+            //await SceneLoader.GetInstance.LoadScene(StringUtils.MAP_SCENE, IntUtils.MAP_SCENE_LOAD_DELAY);
+            //UIController.GetInstance.FadeOut();
+            await UIController.GetInstance.LoadingUI.LoadSceneAsync(StringUtils.MAP_SCENE);
             UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);
             GameController.GetInstance.SetGameState(GameState.Map);
             GameController.GetInstance.CameraController.DisableCameras();
@@ -108,12 +111,15 @@ namespace BeachHero
             titleFont.DOScale(Vector3.one, 1).SetEase(Ease.OutFlash, 1f);
         }
         //462806//AE8653
+
         public void ShakeTree()
         {
-            Sequence shakeLoop = DOTween.Sequence();
-            shakeLoop.Append(tree.DOShakeRotation(0.3f, new Vector3(0, 0, 1), 10, 90, false, ShakeRandomnessMode.Harmonic));
-            shakeLoop.AppendInterval(1); // Wait before the next loop starts
-            shakeLoop.SetLoops(-1, LoopType.Restart); // Loop forever
+            tree.DOKill();
+            treeShakeSequence.Kill();
+            treeShakeSequence = DOTween.Sequence();
+            treeShakeSequence.Append(tree.DOShakeRotation(0.3f, new Vector3(0, 0, 1), 10, 90, false, ShakeRandomnessMode.Harmonic));
+            treeShakeSequence.AppendInterval(1); // Wait before the next loop starts
+            treeShakeSequence.SetLoops(-1, LoopType.Restart); // Loop forever
         }
 
         private void KillPropAnimations()
