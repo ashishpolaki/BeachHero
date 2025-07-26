@@ -1,4 +1,3 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,18 +7,15 @@ namespace BeachHero
     {
         [SerializeField] private BoatCustomisationUIScreen boatCustomisationUIScreen;
         [SerializeField] private Image iconImage;
-        [SerializeField] private Image selectImage;
-        [SerializeField] private Slider speedSlider;
+        [SerializeField] private Image outerImage;
+        [SerializeField] private Image innerImage;
         [SerializeField] private Button selectButton;
-        [SerializeField] private Button realMoneyPurchaseButton;
-        [SerializeField] private Button gameCurrencyPurchaseButton;
-        [SerializeField] private Button colorEditButton;
-        [SerializeField] private TextMeshProUGUI boatNameText;
-        [SerializeField] private TextMeshProUGUI realMoneyPriceText;
-        [SerializeField] private TextMeshProUGUI gameCurrencyPriceText;
 
-        [SerializeField] private Color selectedColor;
-        [SerializeField] private Color unselectedColor;
+        [SerializeField] private Color outerImageSelectedColor;
+        [SerializeField] private Color outerImageUnselectedColor;
+        [SerializeField] private Color innerImageSelectedColor;
+        [SerializeField] private Color innerImageUnselectedColor;
+
         private int index;
         private int currentColorIndex;
 
@@ -27,19 +23,13 @@ namespace BeachHero
         private void OnEnable()
         {
             // Add listeners for buttons
-            colorEditButton.onClick.AddListener(OnEditColor);
             selectButton.onClick.AddListener(OnSelectButtonClicked);
-            realMoneyPurchaseButton.onClick.AddListener(OnRealMoneyPurchaseButtonClicked);
-            gameCurrencyPurchaseButton.onClick.AddListener(OnGameCurrencyPurchaseButtonClicked);
         }
 
         private void OnDisable()
         {
             // Remove listeners for buttons
-            colorEditButton.onClick.RemoveAllListeners();
             selectButton.onClick.RemoveAllListeners();
-            realMoneyPurchaseButton.onClick.RemoveAllListeners();
-            gameCurrencyPurchaseButton.onClick.RemoveAllListeners();
         }
         #endregion
 
@@ -47,16 +37,11 @@ namespace BeachHero
         {
             boatCustomisationUIScreen = _boatCustomisationUIScreen;
             index = newBoatSkin.Index;
-            DisableButtons();
-            UnlockState(newBoatSkin);
             SetIcon(newBoatSkin.SkinColors[currentColorIndex].sprite);
-            boatNameText.text = newBoatSkin.Name;
-            speedSlider.value = newBoatSkin.SpeedMeter;
         }
 
         private void SetIcon(Sprite sprite)
         {
-            currentColorIndex = SaveSystem.LoadInt(StringUtils.CURRENT_BOAT_COLOR_INDEX + index, 0);
             iconImage.sprite = sprite;
         }
 
@@ -66,60 +51,34 @@ namespace BeachHero
             selectButton.interactable = isUnlocked || newBoatSkin.IsDefaultBoat;
             if (isUnlocked || newBoatSkin.IsDefaultBoat)
             {
-                realMoneyPurchaseButton.gameObject.SetActive(false);
-                gameCurrencyPurchaseButton.gameObject.SetActive(false);
-             
+                //   realMoneyPurchaseButton.gameObject.SetActive(false);
+                //   gameCurrencyPurchaseButton.gameObject.SetActive(false);
             }
             else
             {
-                realMoneyPurchaseButton.gameObject.SetActive(newBoatSkin.IsRealMoney);
-                gameCurrencyPurchaseButton.gameObject.SetActive(newBoatSkin.IsGameCurrency);
-                realMoneyPriceText.text = $"{newBoatSkin.RealMoneyCost}";
-                gameCurrencyPriceText.text = $"{newBoatSkin.InGameCurrencyCost}";
+                //realMoneyPurchaseButton.gameObject.SetActive(newBoatSkin.IsRealMoney);
+                //gameCurrencyPurchaseButton.gameObject.SetActive(newBoatSkin.IsGameCurrency);
+                //realMoneyPriceText.text = $"{newBoatSkin.RealMoneyCost}";
+                //gameCurrencyPriceText.text = $"{newBoatSkin.InGameCurrencyCost}";
             }
         }
 
         public void SetSelected()
         {
-            colorEditButton.gameObject.SetActive(true);
-            selectImage.color = selectedColor;
+            outerImage.color = outerImageSelectedColor;
+            innerImage.color = innerImageSelectedColor;
             selectButton.interactable = false;
         }
         public void SetUnSelected()
         {
-            colorEditButton.gameObject.SetActive(false);
-            selectImage.color = unselectedColor;
+            outerImage.color = outerImageUnselectedColor;
+            innerImage.color = innerImageUnselectedColor;
             selectButton.interactable = true;
-        }
-        private void OnEditColor()
-        {
-            // Open color selection panel
-            boatCustomisationUIScreen.OpenCustomisationPanel(index, currentColorIndex);
         }
         private void OnSelectButtonClicked()
         {
             SaveSystem.SaveInt(StringUtils.CURRENT_BOAT_INDEX, index);
-            boatCustomisationUIScreen.SetCurrentBoatSelection(index);
-        }
-        private void DisableButtons()
-        {
-            realMoneyPurchaseButton.gameObject.SetActive(false);
-            gameCurrencyPurchaseButton.gameObject.SetActive(false);
-            colorEditButton.gameObject.SetActive(false);
-        }
-        private void OnRealMoneyPurchaseButtonClicked()
-        {
-           GameController.GetInstance.StoreController.PurchaseWithRealMoney(index, PurchaseItemType.BoatSkin);
-        }
-        private void OnGameCurrencyPurchaseButtonClicked()
-        {
-            GameController.GetInstance.SkinController.TryPurchaseWithGameCurrency(index);
-        }
-        public void Purchased()
-        {
-            realMoneyPurchaseButton.gameObject.SetActive(false);
-            gameCurrencyPurchaseButton.gameObject.SetActive(false);
-            OnSelectButtonClicked();
+            boatCustomisationUIScreen.ChangeBoat();
         }
     }
 }

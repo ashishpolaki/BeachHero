@@ -78,6 +78,10 @@ namespace BeachHero
 
         //Scene
         public const int MAP_SCENE_LOAD_DELAY = 500;
+
+        //Boat
+        public const int DEFAULT_BOAT_INDEX = 1;
+        public const int DEFAULT_BOAT_COLOR_INDEX = 0;
     }
     
 }

@@ -47,27 +47,37 @@ namespace BeachHero
         {
             int playerLevel = GameController.GetInstance.CurrentLevelIndex + 1;
             var store = GameController.GetInstance.StoreController;
-            // Game Currency: Always visible
-            gameCurrencyBalanceObject.SetActive(true);
-            SetupAddButton(addGameCurrencyButton);
-            UpdateText(gameCurrencyBalanceText, store.GameCurrencyBalance);
 
-            // Magnet
-            bool isMagnetUnlocked = playerLevel > IntUtils.MAGNET_UNLOCK_LEVEL;
-            magnetBalanceObject.SetActive(isMagnetUnlocked);
-            if (isMagnetUnlocked)
+            if (gameCurrencyBalanceObject != null)
             {
-                SetupAddButton(addMagnetButton);
-                UpdateText(magnetBalanceText, GameController.GetInstance.PowerupController.MagnetBalance);
+                // Game Currency: Always visible
+                gameCurrencyBalanceObject.SetActive(true);
+                SetupAddButton(addGameCurrencyButton);
+                UpdateText(gameCurrencyBalanceText, store.GameCurrencyBalance);
             }
 
-            //Speed Boost
-            bool isSpeedBoostUnlocked = playerLevel > IntUtils.SPEEDBOOST_UNLOCK_LEVEL;
-            speedBoostBalanceObject.SetActive(isSpeedBoostUnlocked);
-            if (isSpeedBoostUnlocked)
+            if (magnetBalanceObject != null)
             {
-                SetupAddButton(addSpeedBoostButton);
-                UpdateText(speedBoostBalanceText, GameController.GetInstance.PowerupController.SpeedBoostBalance);
+                // Magnet
+                bool isMagnetUnlocked = playerLevel > IntUtils.MAGNET_UNLOCK_LEVEL;
+                magnetBalanceObject.SetActive(isMagnetUnlocked);
+                if (isMagnetUnlocked)
+                {
+                    SetupAddButton(addMagnetButton);
+                    UpdateText(magnetBalanceText, GameController.GetInstance.PowerupController.MagnetBalance);
+                }
+            }
+
+            if (speedBoostBalanceObject != null)
+            {
+                //Speed Boost
+                bool isSpeedBoostUnlocked = playerLevel > IntUtils.SPEEDBOOST_UNLOCK_LEVEL;
+                speedBoostBalanceObject.SetActive(isSpeedBoostUnlocked);
+                if (isSpeedBoostUnlocked)
+                {
+                    SetupAddButton(addSpeedBoostButton);
+                    UpdateText(speedBoostBalanceText, GameController.GetInstance.PowerupController.SpeedBoostBalance);
+                }
             }
         }
 

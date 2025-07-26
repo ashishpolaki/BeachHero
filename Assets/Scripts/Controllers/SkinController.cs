@@ -42,7 +42,11 @@ namespace BeachHero
 
         public int GetCurrentSelectedBoatIndex()
         {
-            return SaveSystem.LoadInt(StringUtils.CURRENT_BOAT_INDEX, 1);
+            return SaveSystem.LoadInt(StringUtils.CURRENT_BOAT_INDEX, IntUtils.DEFAULT_BOAT_INDEX);
+        }
+        public int GetCurrentSelectedBoatColorIndex(int boatIndex)
+        {
+            return SaveSystem.LoadInt(StringUtils.CURRENT_BOAT_COLOR_INDEX + boatIndex, IntUtils.DEFAULT_BOAT_COLOR_INDEX);
         }
 
         private void OnBoatPurchaseFail()

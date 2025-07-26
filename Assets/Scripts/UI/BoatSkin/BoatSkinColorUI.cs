@@ -1,37 +1,52 @@
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 namespace BeachHero
 {
     public class BoatSkinColorUI : MonoBehaviour
     {
-        [SerializeField] private GameObject backgroundImage;
+        [SerializeField] private Image backgroundImage;
         [SerializeField] private Image iconImage;
         [SerializeField] private Button selectButton;
+        [SerializeField] private float unSelectedFadeAlpha = 0.5f;
 
-        private BoatColorCustomisationPanel colorCustomisationPanel;
+        private BoatCustomisationUIScreen boatCustomisationUIScreen;
         private int index;
+        private bool isSelected = false;
 
         private void OnEnable()
         {
-            selectButton.onClick.AddListener(OnSelectButtonClicked);
+            selectButton.ButtonRegister(OnSelectButtonClicked);
         }
         private void OnDisable()
         {
-            selectButton.onClick.RemoveAllListeners();
+            selectButton.ButtonDeRegister();
         }
-        public void InitSkinColor(BoatColorCustomisationPanel _colorCustomisationPanel,BoatSkinColorData skinColorData, int _index)
+        public void InitSkinColor(BoatCustomisationUIScreen _boatCustomisationUIScreen, BoatSkinColorData skinColorData, int _index, bool _isSelected = false)
         {
             index = _index;
             iconImage.color = skinColorData.ShaderColors[0];
-            colorCustomisationPanel = _colorCustomisationPanel;
-           // backgroundImage.SetActive(isSelected);
+            boatCustomisationUIScreen = _boatCustomisationUIScreen;
+            isSelected = _isSelected;
+            selectButton.interactable = !_isSelected;
+            backgroundImage.DOFade(isSelected ? 1 : unSelectedFadeAlpha,0);
         }
-
         private void OnSelectButtonClicked()
         {
-            colorCustomisationPanel.SetBoatColor(index);
-            // boatCustomisationUIScreen.SetBoatColor(index);
+             boatCustomisationUIScreen.SetBoatColor(index);
+        }
+        public void Select()
+        {
+            isSelected = true;
+            backgroundImage.DOFade(1 , 0);
+            selectButton.interactable = false;
+        }
+        public void UnSelect()
+        {
+            isSelected = false;
+            backgroundImage.DOFade(unSelectedFadeAlpha, 0);
+            selectButton.interactable = true;
         }
     }
 }
