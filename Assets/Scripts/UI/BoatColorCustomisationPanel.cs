@@ -63,7 +63,7 @@ namespace BeachHero
             var boatSkin = GameController.GetInstance.SkinController.GetBoatSkinByIndex(currentBoatIndex);
             if (boatSkin.SkinColors[currentBoatColorIndex].isAds)
             {
-                GameController.GetInstance.SkinController.SetBoatColorAdsCount(currentBoatIndex, currentBoatColorIndex);
+              //  GameController.GetInstance.SkinController.SetBoatColorAdsCount(currentBoatIndex, currentBoatColorIndex);
             }
         }
 
@@ -79,8 +79,8 @@ namespace BeachHero
             bool isAds = boatSkin.SkinColors[currentBoatColorIndex].isAds;
             if (isAds)
             {
-                int currentAds = GameController.GetInstance.SkinController.GetBoatColorAdsCount(currentBoatIndex, currentBoatColorIndex);
-                adText.text = $"{currentAds}/{boatSkin.SkinColors[currentBoatColorIndex].adsRequired}";
+                // int currentAds = GameController.GetInstance.SkinController.GetBoatColorAdsCount(currentBoatIndex, currentBoatColorIndex);
+                // adText.text = $"{currentAds}/{boatSkin.SkinColors[currentBoatColorIndex].adsRequired}";
             }
             adBuyButton.gameObject.SetActive(isAds && !isDefaultColor);
 
@@ -105,7 +105,7 @@ namespace BeachHero
                 var skinColorData = boatSkin.SkinColors[i];
                 var boatSkinColorUI = GetBoatSkinColorUI();
                 int index = i;
-                boatSkinColorUI.InitSkinColor(this, skinColorData, index);
+                // boatSkinColorUI.InitSkinColor(this, skinColorData, index);
                 boatSkinColorUI.gameObject.SetActive(true);
             }
         }

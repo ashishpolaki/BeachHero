@@ -40,10 +40,10 @@ namespace BeachHero
         public ProductType ProductType => productType;
         #endregion
 
-        public void Initialize()
-        {
-            Hash = id.GetHashCode();
-        }
+        //public void Initialize()
+        //{
+        //    Hash = id.GetHashCode();
+        //}
 
         public void SetRealMoneyCost(string _realMoneyCost)
         {
@@ -59,6 +59,5 @@ namespace BeachHero
         [Hide("isDefault")] public bool isGameCurrency;
         [Hide("isDefault")] public bool isAds;
         [Show("isGameCurrency")] public int inGameCurrencyCost;
-        [Show("isAds")] public int adsRequired;
     }
 }

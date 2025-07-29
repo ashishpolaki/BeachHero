@@ -94,6 +94,7 @@ namespace BeachHero
                 {
                     return null;
                 }
+                if(!SingleTon<T>.instance.gameObject.activeSelf)
                 SingleTon<T>.instance.gameObject.SetActive(true);
                 return SingleTon<T>.instance;
             }

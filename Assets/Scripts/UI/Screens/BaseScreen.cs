@@ -16,7 +16,8 @@ namespace BeachHero
         PowerupSelection,
         NoInternet,
         AdNotLoaded,
-        Settings
+        Settings,
+        Purchase
     }
     public interface IScreen
     {

@@ -29,7 +29,8 @@ namespace BeachHero
         #endregion
 
         #region Actions
-        public event Action<bool> OnPurchaseSuccess;
+        public event Action<bool> OnStoreItemPurchaseAction;
+        public event Action OnBoatPurchaseFail;
         public event Action OnGameCurrencyBalanceChange;
         #endregion
 
@@ -84,7 +85,7 @@ namespace BeachHero
                     //Boat Skin
                     if (item.definition.id.Contains("boat", StringComparison.OrdinalIgnoreCase))
                     {
-                        BoatSkinSO boatSkin = boatSkinDatabase.GetBoatSkin(item.definition.id);
+                        BoatSkinSO boatSkin = GameController.GetInstance.SkinController.GetBoatSkinByID(item.definition.id);
                         if (boatSkin != null)
                         {
                             boatSkin.SetRealMoneyCost(item.metadata.localizedPriceString);
@@ -125,10 +126,47 @@ namespace BeachHero
         {
             currentIndex = index;
             currentPurchaseItemType = purchaseItemType;
-            m_StoreController.InitiatePurchase(GetProductID(currentIndex));
-        }
 
-        public void PurchaseWithGameCurrency(int index)
+            if (currentPurchaseItemType == PurchaseItemType.BoatSkin)
+            {
+                string productID = GameController.GetInstance.SkinController.GetBoatSkinByIndex(currentIndex).ID;
+                m_StoreController.InitiatePurchase(productID);
+            }
+            else
+            {
+                m_StoreController.InitiatePurchase(GetProductID(currentIndex));
+            }
+        }
+        public void RetryPurchase()
+        {
+            if (currentPurchaseItemType == PurchaseItemType.BoatSkin)
+            {
+                string productID = GameController.GetInstance.SkinController.GetBoatSkinByIndex(currentIndex).ID;
+                m_StoreController.InitiatePurchase(productID);
+            }
+            else
+            {
+                m_StoreController.InitiatePurchase(GetProductID(currentIndex));
+            }
+        }
+        public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs purchaseEvent)
+        {
+            if (currentPurchaseItemType == PurchaseItemType.StoreProduct)
+            {
+                StoreItemBought();
+            }
+            else if (currentPurchaseItemType == PurchaseItemType.BoatSkin)
+            {
+                GameController.GetInstance.SkinController.UnlockBoatSkin(currentIndex);
+            }
+            DebugUtils.Log($"Processing purchase for Store Product: {purchaseEvent.purchasedProduct.definition.id}");
+            // Return a flag indicating whether this product has completely been received, or if the application needs 
+            // to be reminded of this purchase at next app launch. Use PurchaseProcessingResult.Pending when still 
+            // saving purchased products to the cloud, and when that save is delayed. 
+            return PurchaseProcessingResult.Complete;
+        }
+        //StoreItem
+        public void BuyStoreItemWithGameCurrency(int index)
         {
             currentIndex = index;
             var storeItem = GetStoreProduct(currentIndex);
@@ -139,45 +177,8 @@ namespace BeachHero
             }
             else
             {
-                DebugUtils.LogError("Not enough game currency to purchase this item.");
-                OnPurchaseSuccess?.Invoke(false);
+                HandleInSufficientGameCurrency();
             }
-        }
-
-        public void IncrementGameCurrencyBalance(int amount)
-        {
-            GameCurrencyBalance += amount;
-            DebugUtils.Log($"Game currency balance increased by {amount}. New balance: {GameCurrencyBalance}");
-        }
-
-        public void DeductGameCurrencyBalance(int cost)
-        {
-            if (GameCurrencyBalance >= cost)
-            {
-                GameCurrencyBalance -= cost;
-                DebugUtils.Log($"Game currency balance decreased by {cost}. New balance: {GameCurrencyBalance}");
-            }
-            else
-            {
-                DebugUtils.LogError("Not enough game currency to deduct.");
-            }
-        }
-
-        public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs purchaseEvent)
-        {
-            if (currentPurchaseItemType == PurchaseItemType.StoreProduct)
-            {
-                DebugUtils.Log($"Processing purchase for Store Product: {purchaseEvent.purchasedProduct.definition.id}");
-                StoreItemBought();
-            }
-            else if (currentPurchaseItemType == PurchaseItemType.BoatSkin)
-            {
-                GameController.GetInstance.SkinController.SkinUnlocked(currentIndex);
-            }
-            // Return a flag indicating whether this product has completely been received, or if the application needs 
-            // to be reminded of this purchase at next app launch. Use PurchaseProcessingResult.Pending when still 
-            // saving purchased products to the cloud, and when that save is delayed. 
-            return PurchaseProcessingResult.Complete;
         }
         private void StoreItemBought()
         {
@@ -204,18 +205,74 @@ namespace BeachHero
                         AdController.GetInstance.PurchasedNoADsPack();
                     }
                 }
-                OnPurchaseSuccess?.Invoke(true);
+                OnStoreItemPurchaseAction?.Invoke(true);
+            }
+        }
+
+        //Boats/Boat Skins
+        public void BuyBoatWithGameCurrency(int index)
+        {
+            SkinController skinController = GameController.GetInstance.SkinController;
+            BoatSkinSO boatSkin = skinController.GetBoatSkinByIndex(index);
+            if (GameCurrencyBalance >= boatSkin.InGameCurrencyCost)
+            {
+                skinController.UnlockBoatSkin(index);
+                DeductGameCurrencyBalance(boatSkin.InGameCurrencyCost);
             }
             else
             {
-                DebugUtils.LogError("Not enough game currency to purchase this item.");
-                OnPurchaseSuccess?.Invoke(false);
+                HandleInSufficientGameCurrency();
             }
+        }
+
+        public void BuyBoatColorWithGameCurrency(int boatIndex, int colorIndex)
+        {
+            SkinController skinController = GameController.GetInstance.SkinController;
+            BoatSkinSO boatSkin = skinController.GetBoatSkinByIndex(boatIndex);
+            if (GameCurrencyBalance >= boatSkin.SkinColors[colorIndex].inGameCurrencyCost)
+            {
+                skinController.UnlockBoatSkinColor(boatIndex, colorIndex);
+                DeductGameCurrencyBalance(boatSkin.SkinColors[colorIndex].inGameCurrencyCost);
+            }
+            else
+            {
+                HandleInSufficientGameCurrency();
+            }
+        }
+
+        public void IncrementGameCurrencyBalance(int amount)
+        {
+            GameCurrencyBalance += amount;
+            DebugUtils.Log($"Game currency balance increased by {amount}. New balance: {GameCurrencyBalance}");
+        }
+
+        public void DeductGameCurrencyBalance(int cost)
+        {
+            if (GameCurrencyBalance >= cost)
+            {
+                GameCurrencyBalance -= cost;
+                DebugUtils.Log($"Game currency balance decreased by {cost}. New balance: {GameCurrencyBalance}");
+            }
+            else
+            {
+                DebugUtils.LogError("Not enough game currency to deduct.");
+            }
+        }
+        private void HandleInSufficientGameCurrency()
+        {
+            UIController.GetInstance.ScreenEvent(ScreenType.Purchase, UIScreenEvent.Push, ScreenTabType.InsufficientGameCurrency);
         }
 
         public void OnPurchaseFailed(Product product, PurchaseFailureDescription failureDescription)
         {
-            OnPurchaseSuccess?.Invoke(false);
+            if (currentPurchaseItemType == PurchaseItemType.StoreProduct)
+            {
+                OnStoreItemPurchaseAction?.Invoke(false);
+            }
+            else
+            {
+                OnBoatPurchaseFail?.Invoke();
+            }
             //            if (Application.internetReachability != NetworkReachability.NotReachable)
             //            {
 
@@ -239,7 +296,14 @@ namespace BeachHero
 
         public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
         {
-            OnPurchaseSuccess?.Invoke(false);
+            if (currentPurchaseItemType == PurchaseItemType.StoreProduct)
+            {
+                OnStoreItemPurchaseAction?.Invoke(false);
+            }
+            else
+            {
+                OnBoatPurchaseFail?.Invoke();
+            }
             //            if (Application.internetReachability != NetworkReachability.NotReachable)
             //            {
 

@@ -9,6 +9,9 @@ namespace BeachHero
         LevelPass,
         LevelFail,
         GamePause,
+        PurchasSuccess,
+        PurchasFail,
+        InsufficientGameCurrency,
     }
     public interface IScreenTab
     {

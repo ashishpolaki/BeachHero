@@ -193,9 +193,9 @@ namespace BeachHero
             playerMode = isFirstTimeUser ? PlayerMode.FTUE : PlayerMode.Normal;
             levelPhase = LevelPhase.DrawingPath;
 
-            int boatIndex = GameController.GetInstance.SkinController.GetCurrentSelectedBoatIndex();
-            float speed = GameController.GetInstance.SkinController.GetSpeed();
-            GameObject boatPRefab = GameController.GetInstance.SkinController.GetCurrentSelectedBoat();
+            int boatIndex = GameController.GetInstance.SkinController.GetSavedBoatIndex();
+            float speed = GameController.GetInstance.SkinController.GetSelectedBoatSpeed();
+            GameObject boatPRefab = GameController.GetInstance.SkinController.GetSelectedBoatPrefab();
             player.SpawnBoat(boatIndex, speed, boatPRefab);
         }
         public void SetLevelCompletionResult(bool passed)

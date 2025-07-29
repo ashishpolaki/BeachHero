@@ -70,7 +70,7 @@ namespace BeachHero
 
         private void AddListener()
         {
-            GameController.GetInstance.StoreController.OnPurchaseSuccess += OnPurchaseSuccess;
+            GameController.GetInstance.StoreController.OnStoreItemPurchaseAction += OnPurchaseSuccess;
             homeButton.onClick.AddListener(OpenHome);
             for (int i = 0; i < storeProducts.Length; i++)
             {
@@ -91,7 +91,7 @@ namespace BeachHero
 
         private void RemoveListener()
         {
-            GameController.GetInstance.StoreController.OnPurchaseSuccess -= OnPurchaseSuccess;
+            GameController.GetInstance.StoreController.OnStoreItemPurchaseAction -= OnPurchaseSuccess;
             homeButton.onClick.RemoveAllListeners();
             for (int i = 0; i < storeProducts.Length; i++)
             {
@@ -115,7 +115,7 @@ namespace BeachHero
         private void GameCurrencyPurchaseButton(int index)
         {
             currentPurchaseIndex = index;
-            GameController.GetInstance.StoreController.PurchaseWithGameCurrency(currentPurchaseIndex);
+            GameController.GetInstance.StoreController.BuyStoreItemWithGameCurrency(currentPurchaseIndex);
         }
 
         private void RealMoneyPurchaseButton(int index)

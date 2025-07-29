@@ -10,6 +10,7 @@ namespace BeachHero
         [SerializeField] private Image outerImage;
         [SerializeField] private Image innerImage;
         [SerializeField] private Button selectButton;
+        [SerializeField] private GameObject lockObject;
 
         [SerializeField] private Color outerImageSelectedColor;
         [SerializeField] private Color outerImageUnselectedColor;
@@ -18,17 +19,15 @@ namespace BeachHero
 
         private int index;
         private int currentColorIndex;
+        private bool isLocked = false;
 
         #region Unity methods
         private void OnEnable()
         {
-            // Add listeners for buttons
             selectButton.onClick.AddListener(OnSelectButtonClicked);
         }
-
         private void OnDisable()
         {
-            // Remove listeners for buttons
             selectButton.onClick.RemoveAllListeners();
         }
         #endregion
@@ -37,32 +36,19 @@ namespace BeachHero
         {
             boatCustomisationUIScreen = _boatCustomisationUIScreen;
             index = newBoatSkin.Index;
+            currentColorIndex = GameController.GetInstance.SkinController.GetSavedBoatColorIndex(newBoatSkin.Index);
             SetIcon(newBoatSkin.SkinColors[currentColorIndex].sprite);
+            UpdateLockState();
         }
-
         private void SetIcon(Sprite sprite)
         {
             iconImage.sprite = sprite;
         }
-
-        private void UnlockState(BoatSkinSO newBoatSkin)
+        public void UpdateLockState()
         {
-            bool isUnlocked = SaveSystem.LoadBool(StringUtils.BOAT_SKIN_UNLOCKED + index, false);
-            selectButton.interactable = isUnlocked || newBoatSkin.IsDefaultBoat;
-            if (isUnlocked || newBoatSkin.IsDefaultBoat)
-            {
-                //   realMoneyPurchaseButton.gameObject.SetActive(false);
-                //   gameCurrencyPurchaseButton.gameObject.SetActive(false);
-            }
-            else
-            {
-                //realMoneyPurchaseButton.gameObject.SetActive(newBoatSkin.IsRealMoney);
-                //gameCurrencyPurchaseButton.gameObject.SetActive(newBoatSkin.IsGameCurrency);
-                //realMoneyPriceText.text = $"{newBoatSkin.RealMoneyCost}";
-                //gameCurrencyPriceText.text = $"{newBoatSkin.InGameCurrencyCost}";
-            }
+            isLocked = !GameController.GetInstance.SkinController.IsBoatSkinUnlocked(index);
+            lockObject.SetActive(isLocked);
         }
-
         public void SetSelected()
         {
             outerImage.color = outerImageSelectedColor;
@@ -77,8 +63,7 @@ namespace BeachHero
         }
         private void OnSelectButtonClicked()
         {
-            SaveSystem.SaveInt(StringUtils.CURRENT_BOAT_INDEX, index);
-            boatCustomisationUIScreen.ChangeBoat();
+            boatCustomisationUIScreen.UpdateSelectedBoat(index);
         }
     }
 }

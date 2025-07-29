@@ -12,7 +12,7 @@ namespace BeachHero
         [SerializeField] private float unSelectedFadeAlpha = 0.5f;
 
         private BoatCustomisationUIScreen boatCustomisationUIScreen;
-        private int index;
+        private int colorIndex;
         private bool isSelected = false;
 
         private void OnEnable()
@@ -25,7 +25,7 @@ namespace BeachHero
         }
         public void InitSkinColor(BoatCustomisationUIScreen _boatCustomisationUIScreen, BoatSkinColorData skinColorData, int _index, bool _isSelected = false)
         {
-            index = _index;
+            colorIndex = _index;
             iconImage.color = skinColorData.ShaderColors[0];
             boatCustomisationUIScreen = _boatCustomisationUIScreen;
             isSelected = _isSelected;
@@ -34,7 +34,7 @@ namespace BeachHero
         }
         private void OnSelectButtonClicked()
         {
-             boatCustomisationUIScreen.SetBoatColor(index);
+             boatCustomisationUIScreen.ApplyBoatColor(colorIndex);
         }
         public void Select()
         {
