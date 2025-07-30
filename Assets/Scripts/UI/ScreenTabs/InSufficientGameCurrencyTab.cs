@@ -19,7 +19,7 @@ namespace BeachHero
         private void OnGoToStoreButtonClicked()
         {
             //OpenStore
-            UIController.GetInstance.ScreenEvent(ScreenType.Store, UIScreenEvent.Push, ScreenTabType.None);
+            UIController.GetInstance.ScreenEvent(ScreenType.Store, UIScreenEvent.Open, ScreenTabType.None);
         }
     }
 }

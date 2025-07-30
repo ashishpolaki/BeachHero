@@ -24,24 +24,22 @@ MonoBehaviour:
     realMoneyCost: $ 1
     gameCurrencyCost: 30
   - index: 1
-    isRealMoney: 0
+    isRealMoney: 1
     isGameCurrency: 1
     contents:
     - itemType: 1
       quantity: 2
-    Id: 
+    Id: speed_booster
     Type: 0
-    realMoneyCost: 
+    realMoneyCost: $ 10
     gameCurrencyCost: 50
   - index: 2
     isRealMoney: 1
     isGameCurrency: 0
     contents:
-    - itemType: 1
-      quantity: 3
-    - itemType: 0
-      quantity: 2
-    Id: welcome_pack
+    - itemType: 4
+      quantity: 50
+    Id: star_fish.50
     Type: 0
     realMoneyCost: $ 1
     gameCurrencyCost: 50
@@ -59,9 +57,25 @@ MonoBehaviour:
     isRealMoney: 1
     isGameCurrency: 0
     contents:
-    - itemType: 4
-      quantity: 50
-    Id: star_fish.50
+    - itemType: 1
+      quantity: 3
+    - itemType: 0
+      quantity: 2
+    Id: welcome_pack
     Type: 0
-    realMoneyCost: $ 1
+    realMoneyCost: $ 10
+    gameCurrencyCost: 50
+  - index: 5
+    isRealMoney: 1
+    isGameCurrency: 0
+    contents:
+    - itemType: 1
+      quantity: 3
+    - itemType: 0
+      quantity: 2
+    - itemType: 4
+      quantity: 15
+    Id: supreme_pack
+    Type: 0
+    realMoneyCost: $ 12
     gameCurrencyCost: 50

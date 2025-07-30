@@ -8,8 +8,6 @@ namespace BeachHero
     {
         [SerializeField] private Button homeButton;
         [SerializeField] private Transform content;
-        [SerializeField] private GameObject purchasePanel;
-        [SerializeField] private TextMeshProUGUI purchaseDescriptionText;
         private int currentPurchaseIndex;
 
         public StoreProductUI[] storeProducts;
@@ -108,8 +106,14 @@ namespace BeachHero
 
         private void OnPurchaseSuccess(bool _val)
         {
-            purchasePanel.SetActive(true);
-            purchaseDescriptionText.text = _val ? StringUtils.PRODUCT_PURCHASED_SUCCESS : StringUtils.PRODUCT_PURCHASE_FAILED;
+            if(_val)
+            {
+                UIController.GetInstance.ScreenEvent(ScreenType.Purchase, UIScreenEvent.Push,ScreenTabType.PurchasSuccess);
+            }
+            else
+            {
+                UIController.GetInstance.ScreenEvent(ScreenType.Purchase, UIScreenEvent.Push, ScreenTabType.PurchasFail);
+            }
         }
 
         private void GameCurrencyPurchaseButton(int index)
