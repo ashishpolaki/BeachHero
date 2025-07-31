@@ -9,12 +9,12 @@ namespace BeachHero
         [SerializeField] private Button nextLevelButton;
         [SerializeField] private Button multiplyGameCurrencyButton;
         [SerializeField] private Button homeButton;
-        [SerializeField] private GameObject gameCurrencyBalanceObject;
         [SerializeField] private TextMeshProUGUI gameCurrencyBalanceText;
         [SerializeField] private TextMeshProUGUI collectedGameCurrencyText;
-        [SerializeField] private TextMeshProUGUI collectedGameCurrencyText2;
+        [SerializeField] private TextMeshProUGUI multipleGameCurrencyTxt;
 
         private int collectedGameCurrency = 0;
+        private int adWatchGameCurrency = 0;
 
         public override void Open()
         {
@@ -30,23 +30,30 @@ namespace BeachHero
             nextLevelButton.ButtonDeRegister();
             multiplyGameCurrencyButton.ButtonDeRegister();
             homeButton.ButtonDeRegister();
-            multiplyGameCurrencyButton.gameObject.SetActive(false);
         }
         private void SetGameCurrency()
         {
             collectedGameCurrency = GameController.GetInstance.LevelController.GameCurrencyCount;
             collectedGameCurrencyText.text = collectedGameCurrency.ToString();
-            collectedGameCurrencyText2.text = collectedGameCurrency.ToString();
+            SetADGameCurrency();
+            SetGameCurrencyBalance(collectedGameCurrency);
+        }
+        private void SetADGameCurrency()
+        {
             if (collectedGameCurrency > 0)
             {
-                multiplyGameCurrencyButton.gameObject.SetActive(true);
+                adWatchGameCurrency = collectedGameCurrency * IntUtils.MULTIPLIER_GAME_CURRENCY_REWARD;
+            }
+            else
+            {
+                adWatchGameCurrency = IntUtils.BASE_GAME_CURRENCY_REWARD;
             }
             //Animate game currency balance object
-            AddGameCurrency();
+            multipleGameCurrencyTxt.text = adWatchGameCurrency.ToString();
         }
-        private void AddGameCurrency()
+        private void SetGameCurrencyBalance(int gameCurrency)
         {
-            GameController.GetInstance.StoreController.IncrementGameCurrencyBalance(collectedGameCurrency);
+            GameController.GetInstance.StoreController.IncrementGameCurrencyBalance(gameCurrency);
             gameCurrencyBalanceText.text = GameController.GetInstance.StoreController.GameCurrencyBalance.ToString();
         }
         private async void OnHomeASync()
@@ -72,7 +79,7 @@ namespace BeachHero
             // Get more Game Currency by watching AD.
             AdController.GetInstance.ShowRewardedAd((reward) =>
             {
-                AddGameCurrency();
+                SetGameCurrencyBalance(adWatchGameCurrency);
             });
         }
     }

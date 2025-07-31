@@ -72,6 +72,8 @@ namespace BeachHero
 
         //Game Currency
         public const int DEFAULT_GAME_CURRENCY_BALANCE = 100;
+        public const int BASE_GAME_CURRENCY_REWARD = 3;
+        public const int MULTIPLIER_GAME_CURRENCY_REWARD = 2;
 
         // Level 
         public const int DEFAULT_LEVEL = 1;
