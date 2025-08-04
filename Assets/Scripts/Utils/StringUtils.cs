@@ -1,12 +1,10 @@
-using UnityEditor;
-
 namespace BeachHero
 {
     public class StringUtils
     {
         public const string LEVELNUMBER = "LevelNumber";
 
-        //Whirlpool
+        //Whirlpool (ShaderGraph Properties)
         public const string WHIRLPOOL_DISTANCE = "_WP_Distance";
         public const string WHIRLPOOL_POSITION = "_WP_Position";
         public const string WHIRLPOOL_ENABLE = "_WP_Enable";
@@ -43,6 +41,10 @@ namespace BeachHero
         public const string CURRENT_BOAT_COLOR_INDEX = "CurrentBoatColorIndex_";
         public const string BOAT_SKIN_UNLOCKED = "BoatSkin_";
         public const string BOAT_SKIN_COLOR_UNLOCK = "BoatSkinColor_";
+
+        //Replace Boat Colors (ShaderGraph Properties)
+        public const string BOAT_REPLACEABLE_COLORS_KEY = "_CanReplaceColors";
+        public const string BOAT_COLOR_PREFIX = "Color_";
 
         //Audio
         public const string GAME_MUSIC_VOLUME = "GameMusicVolume";

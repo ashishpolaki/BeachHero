@@ -24,11 +24,11 @@ namespace BeachHero
         public void SetBoatInit()
         {
             boatMaterial = boatMeshRenderer.material;
-            boatMaterial.SetFloat(Shader.PropertyToID($"_CanReplaceColors"), 1f);
+            boatMaterial.SetFloat(Shader.PropertyToID(StringUtils.BOAT_REPLACEABLE_COLORS_KEY), 1f);
             Color[] colors = GameController.GetInstance.SkinController.GetCurrentBoatColors();
             for (int i = 0; i < colors.Length; i++)
             {
-                boatMaterial.SetColor(Shader.PropertyToID($"Color_{i}"), colors[i]);
+                boatMaterial.SetColor(Shader.PropertyToID($"{StringUtils.BOAT_COLOR_PREFIX}{i}"), colors[i]);
             }
             PlayIdleAnimation();
         }
