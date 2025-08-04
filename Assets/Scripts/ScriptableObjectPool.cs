@@ -38,9 +38,6 @@ namespace BeachHero
             GameObject obj = Instantiate(prefab, poolParent);
             obj.SetActive(false);
             pool.Enqueue(obj);
-#if DEBUG
-         //   Debug.Log($"[{name}] pool count: {pool.Count}");
-#endif
         }
 
         public GameObject GetObject()
@@ -49,17 +46,11 @@ namespace BeachHero
             {
                 Initialise();
             }
-#if DEBUG
-          //  Debug.Log($"[{name}] pool count: {pool.Count}");
-#endif
 
             if (pool == null)
             {
                 isInitialised = false;
                 Initialise();
-#if DEBUG
-           //     Debug.Log($"{name} pool is null");
-#endif
                 return null;
             }
             if (pool.Count == 0)

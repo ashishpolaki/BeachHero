@@ -56,6 +56,10 @@ namespace BeachHero
             if (other.CompareTag(StringUtils.OBSTACLE_TAG))
             {
                 IObstacle obstacle = other.GetComponent<IObstacle>();
+                if (obstacle == null)
+                {
+                    obstacle = other.GetComponentInParent<IObstacle>();
+                }
                 if (obstacle != null)
                 {
                     StopMovement();

@@ -49,17 +49,6 @@ namespace BeachHero
         public Vector3 Rotation;
     }
 
-    public enum ObstacleType
-    {
-        None,
-        Shark,
-        Eel,
-        WaterHole,
-        Rock,
-        Barrel,
-        MantaRay,
-    }
-
     public enum MovingObstacleMovementType
     {
         None,

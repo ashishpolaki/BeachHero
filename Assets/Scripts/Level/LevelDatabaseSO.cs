@@ -9,10 +9,10 @@ namespace BeachHero
     {
         [SerializeField] private LevelSO[] levelsList;
         [SerializeField] private SpawnItem[] spawnItemsList;
-
-        public List<LevelData> LevelDatas => levelDatas;
-
         [SerializeField] private List<LevelData> levelDatas;
+
+        #region Properties
+        public List<LevelData> LevelDatas => levelDatas;
 
         public LevelSO[] LevelsList
         {
@@ -30,11 +30,7 @@ namespace BeachHero
         {
             get { return levelsList.Length; }
         }
-
-        public LevelSO GetLevelByIndex(int index)
-        {
-            return levelsList[index % levelsList.Length];
-        }
+        #endregion
 
 #if UNITY_EDITOR
         public void ClearLevelsData()
@@ -57,6 +53,7 @@ namespace BeachHero
         }
 #endif
 
+        #region Methods
         public void Init()
         {
             int currentLevelIndex = GameController.GetInstance.CurrentLevelIndex;
@@ -68,6 +65,13 @@ namespace BeachHero
             if (i < levelDatas.Count)
                 levelDatas[i].MarkCurrentLevel();
         }
+
+        public LevelSO GetLevelByIndex(int index)
+        {
+            return levelsList[index % levelsList.Length];
+        }
+        #endregion
+
     }
 
     [System.Serializable]
@@ -75,5 +79,14 @@ namespace BeachHero
     {
         public SpawnItemType SpawnItemType;
         public GameObject[] Prefab;
+    }
+    public enum SpawnItemType
+    {
+        None,
+        Collectable,
+        MovingObstacle,
+        StaticObstacle,
+        WaterHoleObstacle,
+        DrownCharacter,
     }
 }

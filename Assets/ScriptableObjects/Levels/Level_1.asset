@@ -21,6 +21,12 @@ MonoBehaviour:
     - type: 4
       position: {x: -7.71, y: 0, z: 17.18}
       rotation: {x: 0, y: 0, z: 0}
+    - type: 7
+      position: {x: 3.38, y: 0, z: 9.95}
+      rotation: {x: 0, y: 0, z: 0}
+    - type: 8
+      position: {x: 3.03, y: -0.09, z: 5.01}
+      rotation: {x: 345.0647, y: 324.15973, z: -0.00000088362464}
     movingObstacles:
     - type: 6
       movementType: 1
@@ -44,16 +50,11 @@ MonoBehaviour:
       movementSpeed: 5
       loopedMovement: 1
       inverseDirection: 0
-    waterHoleObstacles:
-    - position: {x: 2.92, y: 0, z: 7.45}
-      shaderPosition: {x: 0.427, y: 0.66125}
-      scale: 2
-    - position: {x: 6.81, y: 0, z: 2.93}
-      shaderPosition: {x: 0.32975, y: 0.77425003}
-      scale: 2
+    waterHoleObstacles: []
   drownCharacters:
   - position: {x: -0.18, y: 0, z: 7.89}
     waitTimePercentage: 0.878
   collectables:
   - type: 1
     position: {x: -0.25, y: 0, z: 3.8}
+    count: 0

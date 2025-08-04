@@ -282,6 +282,12 @@ namespace BeachHero
                         case ObstacleType.Barrel:
                             poolManager.BarrelPool.ReturnObject(obstacle.gameObject);
                             break;
+                        case ObstacleType.Iceberg:
+                            poolManager.IcebergPool.ReturnObject(obstacle.gameObject);
+                            break;
+                        case ObstacleType.ShipWreck:
+                            poolManager.ShipWreckPool.ReturnObject(obstacle.gameObject);
+                            break;
                     }
                 }
             }
@@ -478,39 +484,34 @@ namespace BeachHero
         {
             if (obstacle.StaticObstacles != null && obstacle.StaticObstacles.Length > 0)
             {
-                foreach (var staticObstacle in obstacle.StaticObstacles)
+                foreach (var staticObstacleData in obstacle.StaticObstacles)
                 {
-                    if (!obstaclesDictionary.ContainsKey(staticObstacle.type))
+                    if (!obstaclesDictionary.ContainsKey(staticObstacleData.type))
                     {
-                        obstaclesDictionary[staticObstacle.type] = new List<Obstacle>();
+                        obstaclesDictionary[staticObstacleData.type] = new List<Obstacle>();
                     }
-                    switch (staticObstacle.type)
+                    StaticObstacle staticObstacle = null;
+                    switch (staticObstacleData.type)
                     {
                         case ObstacleType.Rock:
-                            SpawnRock(staticObstacle.type, staticObstacle);
+                            staticObstacle = poolManager.RockPool.GetObject().GetComponent<StaticObstacle>();
                             break;
                         case ObstacleType.Barrel:
-                            SpawnBarrel(staticObstacle.type, staticObstacle);
+                            staticObstacle = poolManager.BarrelPool.GetObject().GetComponent<StaticObstacle>();
+                            break;
+                        case ObstacleType.Iceberg:
+                            staticObstacle = poolManager.IcebergPool.GetObject().GetComponent<StaticObstacle>();
+                            break;
+                        case ObstacleType.ShipWreck:
+                            staticObstacle = poolManager.ShipWreckPool.GetObject().GetComponent<StaticObstacle>();
                             break;
                         default:
                             break;
                     }
+                    staticObstacle.transform.SetPositionAndRotation(staticObstacleData.position, Quaternion.Euler(staticObstacleData.rotation));
+                    obstaclesDictionary[staticObstacleData.type].Add(staticObstacle);
                 }
             }
-        }
-
-        private void SpawnBarrel(ObstacleType obstacleType, StaticObstacleData rockObstacle)
-        {
-            BarrelObstacle barrel = poolManager.BarrelPool.GetObject().GetComponent<BarrelObstacle>();
-            barrel.transform.SetPositionAndRotation(rockObstacle.position, Quaternion.Euler(rockObstacle.rotation));
-            obstaclesDictionary[obstacleType].Add(barrel);
-        }
-
-        private void SpawnRock(ObstacleType obstacleType, StaticObstacleData rockObstacle)
-        {
-            RockObstacle rock = poolManager.RockPool.GetObject().GetComponent<RockObstacle>();
-            rock.transform.SetPositionAndRotation(rockObstacle.position, Quaternion.Euler(rockObstacle.rotation));
-            obstaclesDictionary[obstacleType].Add(rock);
         }
         #endregion
 

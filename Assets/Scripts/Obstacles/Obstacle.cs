@@ -2,6 +2,18 @@ using UnityEngine;
 
 namespace BeachHero
 {
+    public enum ObstacleType
+    {
+        None,
+        Shark,
+        Eel,
+        WaterHole,
+        Rock,
+        Barrel,
+        MantaRay,
+        Iceberg,
+        ShipWreck,
+    }
     public class Obstacle : MonoBehaviour, IObstacle
     {
         [SerializeField] private ObstacleType obstacleType;
@@ -36,14 +48,5 @@ namespace BeachHero
         public abstract void Hit();
         public abstract void UpdateState();
         public abstract void ResetObstacle();
-    }
-    public enum SpawnItemType
-    {
-        None,
-        Collectable,
-        MovingObstacle,
-        StaticObstacle,
-        WaterHoleObstacle,
-        DrownCharacter,
     }
 }

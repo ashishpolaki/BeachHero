@@ -2,6 +2,7 @@
 using BeachHero;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class EditorSceneController : MonoBehaviour
 {
@@ -10,6 +11,24 @@ public class EditorSceneController : MonoBehaviour
 
     [SerializeField] private GameObject container;
     private LevelSO currentLevel;
+
+    //Spawn Item Paths 
+    private static string drownCharacterPath = "Assets/Prefabs/DrownCharacter.prefab";
+    private static string startPointPath = "Assets/Prefabs/StartPoint.prefab";
+
+    private static string gameCurrencyPath = "Assets/Prefabs/Collectables/GameCurrency.prefab";
+    private static string magnetPath = "Assets/Prefabs/Collectables/Magnet.prefab";
+    private static string speedBoostPath = "Assets/Prefabs/Collectables/SpeedBoost.prefab";
+
+    private static string waterHolePath = "Assets/Prefabs/Obstacles/WaterHole.prefab";
+    private static string rockObstaclePath = "Assets/Prefabs/Obstacles/Rock.prefab";
+    private static string barrelObstaclePath = "Assets/Prefabs/Obstacles/Barrel.prefab";
+    private static string sharkObstaclePath = "Assets/Prefabs/Obstacles/Shark.prefab";
+    private static string eelObstaclePath = "Assets/Prefabs/Obstacles/Eel.prefab";
+    private static string mantaRayObstaclePath = "Assets/Prefabs/Obstacles/MantaRay.prefab";
+    private static string icebergObstaclePath = "Assets/Prefabs/Obstacles/Iceberg.prefab";
+    private static string shipWreckObstaclePath = "Assets/Prefabs/Obstacles/ShipWreck.prefab";
+
 
     public EditorSceneController()
     {
@@ -80,7 +99,6 @@ public class EditorSceneController : MonoBehaviour
 
     private void SpawnWaterHoleObstacle()
     {
-        string path = "Assets/Prefabs/WaterHole.prefab";
         if (currentLevel.Obstacle.WaterHoleObstacles == null || currentLevel.Obstacle.WaterHoleObstacles.Length == 0)
         {
             return;
@@ -89,7 +107,7 @@ public class EditorSceneController : MonoBehaviour
         foreach (var item in currentLevel.Obstacle.WaterHoleObstacles)
         {
             cycloneIndex++;
-            WaterHoleObstacle waterHolePrefab = AssetDatabase.LoadAssetAtPath<WaterHoleObstacle>(path);
+            WaterHoleObstacle waterHolePrefab = AssetDatabase.LoadAssetAtPath<WaterHoleObstacle>(waterHolePath);
             GameObject waterHoleGameobject = PrefabUtility.InstantiatePrefab(waterHolePrefab.gameObject) as GameObject;
             WaterHoleEditComponent waterHoleEditComponent = waterHoleGameobject.AddComponent<WaterHoleEditComponent>();
             waterHoleGameobject.transform.parent = container.transform;
@@ -105,45 +123,37 @@ public class EditorSceneController : MonoBehaviour
         }
         foreach (var characterItem in currentLevel.DrownCharacters)
         {
-            string path = "Assets/Prefabs/DrownCharacter.prefab";
-            DrownCharacter drownCharacterPrefab = AssetDatabase.LoadAssetAtPath<DrownCharacter>(path);
+            DrownCharacter drownCharacterPrefab = AssetDatabase.LoadAssetAtPath<DrownCharacter>(drownCharacterPath);
             GameObject drownCharacterobject = PrefabUtility.InstantiatePrefab(drownCharacterPrefab.gameObject) as GameObject;
             DrownCharacterEditComponent drownCharacter = drownCharacterobject.AddComponent<DrownCharacterEditComponent>();
             drownCharacterobject.transform.parent = container.transform;
             drownCharacter.Init(characterItem.Position, characterItem.WaitTimePercentage, currentLevel.LevelTime);
         }
     }
+
     private void SpawnStaticObstacles()
     {
-        string path = string.Empty;
         foreach (var item in currentLevel.Obstacle.StaticObstacles)
         {
-            switch (item.type)
+            string path = item.type switch
             {
-                case ObstacleType.Rock:
-                    path = "Assets/Prefabs/Rock.prefab";
-                    RockObstacle rockObstaclePrefab = AssetDatabase.LoadAssetAtPath<RockObstacle>(path);
-                    GameObject rockGameobject = (GameObject)PrefabUtility.InstantiatePrefab(rockObstaclePrefab.gameObject);
-                    rockGameobject.transform.parent = container.transform;
-                    rockGameobject.transform.position = item.position;
-                    rockGameobject.transform.rotation = Quaternion.Euler(item.rotation);
-                    break;
-                case ObstacleType.Barrel:
-                    path = "Assets/Prefabs/Barrel.prefab";
-                    BarrelObstacle barrelObstaclePrefab = AssetDatabase.LoadAssetAtPath<BarrelObstacle>(path);
-                    GameObject barrelGameobject = (GameObject)PrefabUtility.InstantiatePrefab(barrelObstaclePrefab.gameObject);
-                    barrelGameobject.transform.parent = container.transform;
-                    barrelGameobject.transform.position = item.position;
-                    barrelGameobject.transform.rotation = Quaternion.Euler(item.rotation);
-                    break;
-            }
+                ObstacleType.Rock => rockObstaclePath,
+                ObstacleType.Barrel => barrelObstaclePath,
+                ObstacleType.Iceberg => icebergObstaclePath,
+                ObstacleType.ShipWreck => shipWreckObstaclePath,
+                _ => null
+            };
+
+            StaticObstacle prefab = AssetDatabase.LoadAssetAtPath<StaticObstacle>(path);
+            GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab.gameObject);
+            instance.transform.SetParent(container.transform);
+            instance.transform.SetPositionAndRotation(item.position, Quaternion.Euler(item.rotation));
         }
     }
 
     private void SpawnStartPoint()
     {
-        string path = "Assets/Prefabs/StartPoint.prefab";
-        StartPointBehaviour startPointPrefab = AssetDatabase.LoadAssetAtPath<StartPointBehaviour>(path);
+        StartPointBehaviour startPointPrefab = AssetDatabase.LoadAssetAtPath<StartPointBehaviour>(startPointPath);
         GameObject startPoint = PrefabUtility.InstantiatePrefab(startPointPrefab.gameObject) as GameObject;
         startPoint.transform.parent = container.transform;
         startPoint.transform.position = currentLevel.StartPointData.Position;
@@ -158,13 +168,13 @@ public class EditorSceneController : MonoBehaviour
             switch (item.type)
             {
                 case ObstacleType.Shark:
-                    path = "Assets/Prefabs/Shark.prefab";
+                    path = sharkObstaclePath;
                     break;
                 case ObstacleType.Eel:
-                    path = "Assets/Prefabs/Eel.prefab";
+                    path = eelObstaclePath;
                     break;
                 case ObstacleType.MantaRay:
-                    path = "Assets/Prefabs/MantaRay.prefab";
+                    path = mantaRayObstaclePath;
                     break;
             }
             MovingObstacle sharkObstaclePrefab = AssetDatabase.LoadAssetAtPath<MovingObstacle>(path);
@@ -181,43 +191,25 @@ public class EditorSceneController : MonoBehaviour
         {
             return;
         }
-        string path = string.Empty;
         foreach (var item in currentLevel.Collectables)
         {
-            switch (item.type)
+            string path = item.type switch
             {
-                case CollectableType.GameCurrency:
-                    path = "Assets/Prefabs/Collectables/GameCurrency.prefab";
-                    Collectable coinPrefab = AssetDatabase.LoadAssetAtPath<Collectable>(path);
-                    GameObject coinGameobject = (GameObject)PrefabUtility.InstantiatePrefab(coinPrefab.gameObject);
-                    Collectable coin = coinGameobject.GetComponent<Collectable>();
-                    coin.transform.parent = container.transform;
-                    coin.Init(item);
-                    break;
-                case CollectableType.Magnet:
-                    path = "Assets/Prefabs/Collectables/Magnet.prefab";
-                    Collectable magnetPrefab = AssetDatabase.LoadAssetAtPath<Collectable>(path);
-                    GameObject magnetGameobject = (GameObject)PrefabUtility.InstantiatePrefab(magnetPrefab.gameObject);
-                    Collectable magnet = magnetGameobject.GetComponent<Collectable>();
-                    magnetGameobject.transform.parent = container.transform;
-                    magnet.Init(item);
-                    break;
-                case CollectableType.SpeedBoost:
-                    path = "Assets/Prefabs/Collectables/SpeedBoost.prefab";
-                    Collectable speedPrefab = AssetDatabase.LoadAssetAtPath<Collectable>(path);
-                    GameObject speedGameobject = (GameObject)PrefabUtility.InstantiatePrefab(speedPrefab.gameObject);
-                    Collectable speed = speedGameobject.GetComponent<Collectable>();
-                    speedGameobject.transform.parent = container.transform;
-                    speed.Init(item);
-                    break;
-            }
+                CollectableType.GameCurrency => gameCurrencyPath,
+                CollectableType.Magnet => magnetPath,
+                CollectableType.SpeedBoost => speedBoostPath,
+                _ => null
+            };
+            Collectable prefab = AssetDatabase.LoadAssetAtPath<Collectable>(path);
+            GameObject go = (GameObject)PrefabUtility.InstantiatePrefab(prefab.gameObject);
+            Collectable collectable = go.GetComponent<Collectable>();
+            collectable.transform.parent = container.transform;
+            collectable.Init(item);
         }
     }
     #endregion
 
-
     #region Get Edited Data
-
     public WaterHoleEditComponent[] GetWaterHoleEditData()
     {
         WaterHoleEditComponent[] data = container.GetComponentsInChildren<WaterHoleEditComponent>();

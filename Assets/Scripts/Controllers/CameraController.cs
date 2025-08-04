@@ -17,6 +17,7 @@ namespace BeachHero
 
         private Vector3 originalPos;
         private Transform mainCameraTransform;
+        private Coroutine shakeCoroutine;
 
         private void Awake()
         {
@@ -54,14 +55,16 @@ namespace BeachHero
 
         public void StartShake()
         {
-            StopAllCoroutines(); // Stop any ongoing shake to prevent overlap
-            StartCoroutine(ShakeCoroutine());
+            if (shakeCoroutine != null)
+            {
+                StopCoroutine(shakeCoroutine); // Stop any ongoing shake to prevent overlap
+            }
+            shakeCoroutine = StartCoroutine(IShakeCamera());
         }
 
-        private IEnumerator ShakeCoroutine()
+        private IEnumerator IShakeCamera()
         {
             float elapsed = 0f;
-
             while (elapsed < shakeDuration)
             {
                 elapsed += Time.deltaTime;

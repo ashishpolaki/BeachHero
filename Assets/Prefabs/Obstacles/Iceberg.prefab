@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5676641161446648442
+--- !u!1 &5252815308947722609
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,67 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3347319728969342082}
-  - component: {fileID: 8936593214428608868}
-  - component: {fileID: -7458579990371377923}
+  - component: {fileID: 3049616962473826712}
+  - component: {fileID: -2669873528713939442}
   m_Layer: 11
-  m_Name: Rock
+  m_Name: Iceberg
   m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3347319728969342082
+--- !u!4 &3049616962473826712
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5676641161446648442}
+  m_GameObject: {fileID: 5252815308947722609}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -3.24, y: 0, z: 10.76}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3481395267723546446}
+  - {fileID: 8481424137621306062}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &8936593214428608868
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5676641161446648442}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 1.05
-  m_Center: {x: -0.03, y: 0, z: -0.06}
---- !u!114 &-7458579990371377923
+--- !u!114 &-2669873528713939442
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5676641161446648442}
+  m_GameObject: {fileID: 5252815308947722609}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9aca736373d9ea642b2426026ca5559a, type: 3}
+  m_Script: {fileID: 11500000, guid: 5d9963dd7df80784bb44edbe94cdfb1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacleType: 4
---- !u!1 &6574260444971154548
+  obstacleType: 7
+  isShakeEffectEnabled: 1
+--- !u!1 &8753884502438663165
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -76,53 +55,54 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3481395267723546446}
-  - component: {fileID: 5324873407660726750}
-  - component: {fileID: 6428368134579628556}
-  m_Layer: 0
-  m_Name: LG_rock
-  m_TagString: Untagged
+  - component: {fileID: 8481424137621306062}
+  - component: {fileID: 715733436152699327}
+  - component: {fileID: 5382917062431171614}
+  - component: {fileID: 107081863162505466}
+  m_Layer: 11
+  m_Name: Iceberg
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3481395267723546446
+--- !u!4 &8481424137621306062
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6574260444971154548}
+  m_GameObject: {fileID: 8753884502438663165}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.3933167, z: -0, w: 0.9194031}
-  m_LocalPosition: {x: -0.00789834, y: -3.2117445, z: -0.08249344}
-  m_LocalScale: {x: 0.87993, y: 1.4511806, z: 0.75796294}
+  m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
+  m_LocalPosition: {x: 0.4335044, y: 1.1620097, z: -1.9265579}
+  m_LocalScale: {x: 0.2, y: 0.25498, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3347319728969342082}
-  m_LocalEulerAnglesHint: {x: 0, y: -46.322, z: 0}
---- !u!33 &5324873407660726750
+  m_Father: {fileID: 3049616962473826712}
+  m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
+--- !u!33 &715733436152699327
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6574260444971154548}
-  m_Mesh: {fileID: 4199401309831131938, guid: 0723085a9e9922c4fb60cb3d8bba83e8, type: 3}
---- !u!23 &6428368134579628556
+  m_GameObject: {fileID: 8753884502438663165}
+  m_Mesh: {fileID: 4414137914274103877, guid: d4cbd046fd3209d4a99499eec65ecc01, type: 3}
+--- !u!23 &5382917062431171614
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6574260444971154548}
+  m_GameObject: {fileID: 8753884502438663165}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
-  m_LightProbeUsage: 1
+  m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
@@ -132,7 +112,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8b0752d182452b84386e416152b6e209, type: 2}
+  - {fileID: 2100000, guid: a91807ed0b20f26468990ec419b33217, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -154,3 +134,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &107081863162505466
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8753884502438663165}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 9.046198, y: 11.574938, z: 9.276604}
+  m_Center: {x: -0.35725772, y: 4.1462975, z: -0.10019988}
