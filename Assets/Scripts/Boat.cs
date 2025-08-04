@@ -28,7 +28,8 @@ namespace BeachHero
             Color[] colors = GameController.GetInstance.SkinController.GetCurrentBoatColors();
             for (int i = 0; i < colors.Length; i++)
             {
-                boatMaterial.SetColor(Shader.PropertyToID($"{StringUtils.BOAT_COLOR_PREFIX}{i}"), colors[i]);
+                int index = i;
+                boatMaterial.SetColor(Shader.PropertyToID($"{StringUtils.BOAT_COLOR_PREFIX}{index}"), colors[index]);
             }
             PlayIdleAnimation();
         }
