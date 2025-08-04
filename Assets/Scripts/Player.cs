@@ -138,7 +138,10 @@ namespace BeachHero
         {
             foreach (var boatObject in boatObjects.Values)
             {
-                boatObject.SetActive(false);
+                if (boatObject.activeSelf)
+                {
+                    boatObject.SetActive(false);
+                }
             }
             //Spawn Boat
             if (boatObjects.ContainsKey(boatIndex))
@@ -157,7 +160,7 @@ namespace BeachHero
                 }
             }
             movementSpeed = speed;
-            currentBoat.PlayIdleAnimation();
+            currentBoat.SetBoatInit();
         }
         public void UpdateState()
         {

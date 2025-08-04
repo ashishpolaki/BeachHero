@@ -84,6 +84,19 @@ namespace BeachHero
         {
             return SaveSystem.LoadInt(StringUtils.CURRENT_BOAT_COLOR_INDEX + boatIndex, IntUtils.DEFAULT_BOAT_COLOR_INDEX);
         }
+        public Color[] GetCurrentBoatColors()
+        {
+            int currentBoatIndex = GetSavedBoatIndex();
+            int currentColorIndex = GetSavedBoatColorIndex(currentBoatIndex);
+            BoatSkinSO boatSkin = GetBoatSkinByIndex(currentBoatIndex);
+            if (boatSkin != null && boatSkin.SkinColors.Length > currentColorIndex)
+            {
+                return boatSkin.SkinColors[currentColorIndex].ShaderColors;
+            }
+            DebugUtils.LogError($"No colors found for boat index {currentBoatIndex} and color index {currentColorIndex}.");
+            return Array.Empty<Color>();
+
+        }
         #endregion
 
         #region Set Methods
