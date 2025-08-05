@@ -4,6 +4,14 @@ using UnityEngine.UI;
 
 namespace BeachHero
 {
+    [System.Serializable]
+    public struct RewardAdItemUI
+    {
+        public StoreItemType itemType;
+        public int quantity;
+        public TextMeshProUGUI quantityText;
+        public Button watchAdButton;
+    }
     public class StoreUIScreen : BaseScreen
     {
         [SerializeField] private Button homeButton;
@@ -11,14 +19,15 @@ namespace BeachHero
         private int currentPurchaseIndex;
 
         public StoreProductUI[] storeProducts;
+        public RewardAdItemUI[] rewardAdItems;
 
         public override void Open(ScreenTabType screenTabType)
         {
             base.Open(screenTabType);
             InitializeIAPItems();
+            InitializeRewardedADItems();
             AddListener();
         }
-
         public override void Close()
         {
             base.Close();
@@ -28,6 +37,18 @@ namespace BeachHero
         private void OpenHome()
         {
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
+        }
+
+        private void InitializeRewardedADItems()
+        {
+            for (int i = 0; i < rewardAdItems.Length; i++)
+            {
+                RewardAdItemUI itemUI = rewardAdItems[i];
+                if (itemUI.quantityText != null)
+                {
+                    itemUI.quantityText.text = itemUI.quantity.ToString();
+                }
+            }
         }
 
         private void InitializeIAPItems()
@@ -70,19 +91,32 @@ namespace BeachHero
         {
             GameController.GetInstance.StoreController.OnStoreItemPurchaseAction += OnPurchaseSuccess;
             homeButton.onClick.AddListener(OpenHome);
+            //Store Products
             for (int i = 0; i < storeProducts.Length; i++)
             {
                 // Game Currency button
                 if (storeProducts[i].gameCurrencyPurchaseButton != null)
                 {
                     int index = i;
-                    storeProducts[index].gameCurrencyPurchaseButton.onClick.AddListener(() => GameCurrencyPurchaseButton(storeProducts[index].index));
+                    storeProducts[index].gameCurrencyPurchaseButton.ButtonRegister(() => GameCurrencyPurchaseButton(storeProducts[index].index));
                 }
                 // Real Money button
                 if (storeProducts[i].realMoneyPurchaseButton != null)
                 {
                     int index = i;
-                    storeProducts[index].realMoneyPurchaseButton.onClick.AddListener(() => RealMoneyPurchaseButton(storeProducts[index].index));
+                    storeProducts[index].realMoneyPurchaseButton.ButtonRegister(() => RealMoneyPurchaseButton(storeProducts[index].index));
+                }
+            }
+            // Rewarded AD Items
+            for (int i = 0; i < rewardAdItems.Length; i++)
+            {
+                if (rewardAdItems[i].watchAdButton != null)
+                {
+                    int index = i;
+                    rewardAdItems[index].watchAdButton.ButtonRegister(() =>
+                    {
+                        HandleRewardAdButton(index);
+                    });
                 }
             }
         }
@@ -91,24 +125,52 @@ namespace BeachHero
         {
             GameController.GetInstance.StoreController.OnStoreItemPurchaseAction -= OnPurchaseSuccess;
             homeButton.onClick.RemoveAllListeners();
+            //Store Products
             for (int i = 0; i < storeProducts.Length; i++)
             {
                 if (storeProducts[i].gameCurrencyPurchaseButton != null)
                 {
-                    storeProducts[i].gameCurrencyPurchaseButton.onClick.RemoveAllListeners();
+                    storeProducts[i].gameCurrencyPurchaseButton.ButtonDeRegister();
                 }
                 if (storeProducts[i].realMoneyPurchaseButton != null)
                 {
-                    storeProducts[i].realMoneyPurchaseButton.onClick.RemoveAllListeners();
+                    storeProducts[i].realMoneyPurchaseButton.ButtonDeRegister();
+                }
+            }
+            // Rewarded AD Items
+            for (int i = 0; i < rewardAdItems.Length; i++)
+            {
+                if (rewardAdItems[i].watchAdButton != null)
+                {
+                    rewardAdItems[i].watchAdButton.ButtonDeRegister();
                 }
             }
         }
 
+        private void HandleRewardAdButton(int index)
+        {
+            AdController.GetInstance.ShowRewardedAd((reward) =>
+            {
+                if (rewardAdItems[index].itemType == StoreItemType.GameCurrency)
+                {
+                    GameController.GetInstance.StoreController.IncrementGameCurrencyBalance(rewardAdItems[index].quantity);
+                }
+                else if (rewardAdItems[index].itemType == StoreItemType.Magnet)
+                {
+                    GameController.GetInstance.PowerupController.UpdateMagnetBalance(rewardAdItems[index].quantity);
+                }
+                else if(rewardAdItems[index].itemType == StoreItemType.SpeedBoost)
+                {
+                    GameController.GetInstance.PowerupController.UpdateSpeedBoostBalance(rewardAdItems[index].quantity);
+                }
+            });
+        }
+
         private void OnPurchaseSuccess(bool _val)
         {
-            if(_val)
+            if (_val)
             {
-                UIController.GetInstance.ScreenEvent(ScreenType.Purchase, UIScreenEvent.Push,ScreenTabType.PurchasSuccess);
+                UIController.GetInstance.ScreenEvent(ScreenType.Purchase, UIScreenEvent.Push, ScreenTabType.PurchasSuccess);
             }
             else
             {
@@ -125,7 +187,7 @@ namespace BeachHero
         private void RealMoneyPurchaseButton(int index)
         {
             currentPurchaseIndex = index;
-            GameController.GetInstance.StoreController.PurchaseWithRealMoney(currentPurchaseIndex,PurchaseItemType.StoreProduct);
+            GameController.GetInstance.StoreController.PurchaseWithRealMoney(currentPurchaseIndex, PurchaseItemType.StoreProduct);
         }
     }
 }

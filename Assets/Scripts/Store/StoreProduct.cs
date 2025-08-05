@@ -29,7 +29,6 @@ namespace BeachHero
         Magnet,
         SpeedBoost,
         NoAds,
-        Starfish,
         GameCurrency
     }
 
