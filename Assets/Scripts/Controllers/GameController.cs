@@ -41,17 +41,6 @@ namespace BeachHero
         #endregion
 
         #region Unity Methods
-        private void Start()
-        {
-            Application.targetFrameRate = 30;
-            AudioController.GetInstance.Init();
-            AdController.GetInstance.Init();
-            DOTween.Init();
-            HapticsManager.GetInstance.Init();
-            powerupController.Init();
-            storeController.Init();
-            SpawnLevel();
-        }
         private void Update()
         {
             if (GameState == GameState.Playing || GameState == GameState.LevelPassed)
@@ -66,6 +55,11 @@ namespace BeachHero
         #endregion
 
         #region Initialization
+        public void Init()
+        {
+            powerupController.Init();
+            storeController.Init();
+        }
         public void CacheCameraController(CameraController _cameraController)
         {
             cameraController = _cameraController;
@@ -74,18 +68,18 @@ namespace BeachHero
                 DebugUtils.LogError("CameraController is null");
             }
         }
+        public void SpawnLevel()
+        {
+            currentLevelIndex = SaveSystem.LoadInt(StringUtils.LEVELNUMBER, IntUtils.DEFAULT_LEVEL) - 1;
+            InitializeLevel();
+            UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
+        }
         private void InitializeLevel()
         {
             SetGameState(GameState.NotStarted);
             levelController.StartState(levelDatabaseSO.GetLevelByIndex(currentLevelIndex));
             cameraController.Init();
             levelDatabaseSO.Init();
-        }
-        private void SpawnLevel()
-        {
-            currentLevelIndex = SaveSystem.LoadInt(StringUtils.LEVELNUMBER, IntUtils.DEFAULT_LEVEL) - 1;
-            InitializeLevel();
-            UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
         }
         #endregion
 
