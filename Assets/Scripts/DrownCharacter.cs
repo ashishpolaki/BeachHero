@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 namespace BeachHero
 {
@@ -9,14 +10,19 @@ namespace BeachHero
         [SerializeField] private GameObject graphicsSkin;
         [SerializeField] private GameObject graphicsUI;
         [SerializeField] private Animator animatorRef;
+        [SerializeField] private SkinnedMeshRenderer meshRenderer;
+        [SerializeField] private Color defaultColor = Color.white;
+        [SerializeField] private Color drownColor = Color.red;
         [SerializeField] private float waitTimePercentage;
+
+        private Vector3 graphicsSkinPosition;
         private float waitTime;
         private float levelTime;
         private bool isPickedUp = false;
         private bool isDrown;
 
-        private int DRAWN_HASH = Animator.StringToHash("Drown");
-        private int IDLE_HASH = Animator.StringToHash("Idle");
+        private int DRAWN_HASH = Animator.StringToHash(StringUtils.DROWN_ANIM);
+        private int IDLE_HASH = Animator.StringToHash(StringUtils.IDLE_ANIM);
 
         private void OnTriggerEnter(Collider other)
         {
@@ -28,6 +34,11 @@ namespace BeachHero
                     OnMovingObstacleTrigger();
                 }
             }
+        }
+        public void ResetState()
+        {
+            animatorRef.enabled = false;
+            graphicsSkin.transform.localPosition = graphicsSkinPosition;
         }
 
         private void OnMovingObstacleTrigger()
@@ -42,12 +53,17 @@ namespace BeachHero
 
         public void Init(Vector3 _position, float _waitTimePercentage, float levelTime)
         {
+            if (graphicsSkinPosition == Vector3.zero)
+            {
+                graphicsSkinPosition = graphicsSkin.transform.localPosition;
+            }
             bloodParticle.Stop();
             pickUpParticle.Stop();
             bloodParticle.gameObject.SetActive(false);
             pickUpParticle.gameObject.SetActive(false);
             graphicsUI.SetActive(true);
             graphicsSkin.SetActive(true);
+            animatorRef.enabled = true;
             animatorRef.SetTrigger(IDLE_HASH);
             isPickedUp = false;
             isDrown = false;
@@ -55,6 +71,7 @@ namespace BeachHero
             waitTimePercentage = _waitTimePercentage;
             this.levelTime = levelTime;
             waitTime = (levelTime * waitTimePercentage * 100) / 100f;
+            meshRenderer.material.SetColor(Shader.PropertyToID(StringUtils.TINT_COLOR), defaultColor);
             drownCharacterUI.UpdateTimer(waitTimePercentage);
         }
 
@@ -72,6 +89,8 @@ namespace BeachHero
             }
             float waitPercentage = Mathf.Clamp01(waitTime / levelTime);
             drownCharacterUI.UpdateTimer(waitPercentage);
+            Color color = Color.Lerp(drownColor, defaultColor, waitPercentage);
+            meshRenderer.material.SetColor(Shader.PropertyToID(StringUtils.TINT_COLOR), color);
         }
         public void OnTimeUp()
         {

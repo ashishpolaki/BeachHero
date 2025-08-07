@@ -12,6 +12,8 @@ namespace BeachHero
         //Trail Renderer
         public const string TRAIL_SPEED = "_Speed";
 
+        //ToonShader (ShaderGraph Properties)
+        public const string TINT_COLOR = "_Tint";
         //Tags
         public const string PLAYER_TAG = "Player";
         public const string OBSTACLE_TAG = "Obstacle";
@@ -29,6 +31,7 @@ namespace BeachHero
         public const string SINKING_ANIM = "Sinking";
         public const string IDLE_ANIM = "Idle";
         public const string VICTORY_ANIM = "Victory";
+        public const string DROWN_ANIM = "Drown";
 
         //Powerups
         public const string MAGNET_UNLOCKED = "MagnetUnlockLevel";
@@ -59,7 +62,7 @@ namespace BeachHero
         //ADS
         public const string NO_ADS_PURCHASED = "NoAdsPurchased";
 
-        ///Scenes
+        //Scenes
         public const string MAP_SCENE = "BeachMetaMap";
         public const string GAME_SCENE = "BeachHeroGame";
         public const string INIT_SCENE = "BeachHeroInit";

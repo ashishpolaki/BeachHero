@@ -249,6 +249,7 @@ namespace BeachHero
             //Characters
             foreach (var savedCharacter in savedCharactersList)
             {
+                savedCharacter.ResetState();
                 poolManager.SavedCharacterPool.ReturnObject(savedCharacter.gameObject);
             }
 

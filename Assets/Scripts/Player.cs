@@ -127,9 +127,9 @@ namespace BeachHero
             this.pointsList = pointsList;
         }
         public void Init()
-        {
+        { 
             DeactivateMagnetPowerup();
-            boatAnimator.Play(idleAnimHash, -1, Random.Range(0f, 1f));
+            boatAnimator.SetTrigger(idleAnimHash);
             canStartMovement = false;
             nextPointIndex = 1;
             pointsList = new Vector3[0];
