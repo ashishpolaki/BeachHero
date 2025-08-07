@@ -119,7 +119,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 464059871058872214}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -132,7 +132,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cdc8c0df0f697364bb272e02f0cde5fb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ccf3dbbb768732346a05ceacf799889b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -200,7 +200,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 880781450965480348}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 4.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -208,8 +208,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 80, y: 80}
+  m_AnchoredPosition: {x: 0, y: 11.4}
+  m_SizeDelta: {x: 120, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8783614206184760870
 CanvasRenderer:
@@ -232,20 +232,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.990566, g: 0.3317462, b: 0.3317462, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cdc8c0df0f697364bb272e02f0cde5fb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4ed507d6b1c103840be3d5ed561866ee, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 0
+  m_FillAmount: 0.5
+  m_FillClockwise: 1
   m_FillOrigin: 2
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
@@ -367,7 +367,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a0660cc886c36094dbca07e1ef85df5a, type: 2}
+  - {fileID: 2100000, guid: 5d40619e2067a17479251530374e0e32, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -500,6 +500,9 @@ MonoBehaviour:
   graphicsSkin: {fileID: 4112018115558781028}
   graphicsUI: {fileID: 3623709195493922988}
   animatorRef: {fileID: 7258446663383494820}
+  meshRenderer: {fileID: 8619771573081117061}
+  defaultColor: {r: 0.8784314, g: 0.8784314, b: 0.8784314, a: 1}
+  drownColor: {r: 0.990566, g: 0.23829652, b: 0.23829652, a: 1}
   waitTimePercentage: 0
 --- !u!114 &4519252882675288244
 MonoBehaviour:
@@ -727,7 +730,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3623709195493922988}
   m_LocalRotation: {x: 0.5735764, y: -0, z: -0, w: 0.8191521}
-  m_LocalPosition: {x: 0, y: 0, z: 0.71}
+  m_LocalPosition: {x: 0, y: 0, z: 1.022}
   m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -737,7 +740,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 70, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 3.56}
+  m_AnchoredPosition: {x: -0.083, y: 0.87}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &7910415329841724408
@@ -922,7 +925,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4112018115558781028}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.99466866, z: 0.103122436, w: 0}
+  m_LocalRotation: {x: 0, y: 0.97723114, z: 0.21217771, w: 0}
   m_LocalPosition: {x: -0.061378, y: -0.20446987, z: -0.0073509}
   m_LocalScale: {x: 0.38494045, y: 0.4688959, z: 0.38494045}
   m_ConstrainProportionsScale: 0
@@ -930,7 +933,7 @@ Transform:
   - {fileID: 3612981676134772183}
   - {fileID: 9193899653328335127}
   m_Father: {fileID: 5957577468228825448}
-  m_LocalEulerAnglesHint: {x: -11.838, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: -24.5, y: 180, z: 0}
 --- !u!95 &7258446663383494820
 Animator:
   serializedVersion: 7
@@ -941,7 +944,7 @@ Animator:
   m_GameObject: {fileID: 4112018115558781028}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: c409d516cfa77274ab17e8c5fe4e8892, type: 3}
-  m_Controller: {fileID: 9100000, guid: a5b81be5e92cb0349aa19619fdff5cb1, type: 2}
+  m_Controller: {fileID: 9100000, guid: 113a7dcd3f6e7364891c29e3215a78f5, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
