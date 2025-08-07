@@ -76,8 +76,8 @@ SpriteRenderer:
   m_SortingLayerID: -1453750307
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: ae8cb8690fe189945bba3ff95cf2d38b, type: 3}
-  m_Color: {r: 0, g: 0, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 087d7ac9412bdb549ad621a538aa9a3c, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -133,6 +133,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9675b2b6e783fac4b98b63932f058598, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rippleRenderer: {fileID: 9119127952093772632}
+  maxScale: 0.4
+  minScale: 0.1
+  duration: 1.5
+  fadeValue: 0.1
+  easeType: 9
 --- !u!135 &4784139008528459504
 SphereCollider:
   m_ObjectHideFlags: 0

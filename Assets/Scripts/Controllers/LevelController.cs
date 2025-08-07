@@ -182,6 +182,7 @@ namespace BeachHero
         {
             player.StartMovement(smoothedDrawnPoints.ToArray());
             playerPathDrawTrail.SetTrailSpeed(player.MovementSpeed / 2f);
+            startPointBehaviour.Stop();
             levelPhase = LevelPhase.Simulating;
             if (playerMode == PlayerMode.FTUE)
             {
@@ -605,6 +606,7 @@ namespace BeachHero
         {
             startPointBehaviour = poolManager.StartPointPool.GetObject().GetComponent<StartPointBehaviour>();
             startPointBehaviour.transform.SetPositionAndRotation(pos, Quaternion.Euler(rot));
+            startPointBehaviour.Init();
         }
 
         private void SpawnPlayer(Vector3 pos, Vector3 rot)

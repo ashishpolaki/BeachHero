@@ -72,7 +72,7 @@ namespace BeachHero
         private void SetLevelNumber()
         {
             int currentLevelNumber = GameController.GetInstance.CurrentLevelIndex + 1;
-            levelNumberText.text = $"Level {currentLevelNumber}";
+            levelNumberText.text = $"LEVEL {currentLevelNumber}";
         }
         private void OnPowerupButtonPressed()
         {
