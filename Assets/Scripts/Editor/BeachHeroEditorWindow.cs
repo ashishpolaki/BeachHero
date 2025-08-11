@@ -132,6 +132,7 @@ public class BeachHeroEditorWindow : EditorWindow
     private string EDITOR_SCENE_NAME = "BeachHeroEditorScene";
     private string EDITOR_SCENE_PATH = "Assets/Scenes/BeachHeroEditorScene.unity";
     private string GAME_SCENE_PATH = "Assets/Scenes/BeachHeroGame.unity";
+    private string INIT_SCENE_PATH = "Assets/Scenes/BeachHeroInit.unity";
     private string FILE_STRING = "file :";
     private int selectedTab = 0;
     private string[] tabTitles = { "Levels", "Items" };
@@ -346,10 +347,10 @@ public class BeachHeroEditorWindow : EditorWindow
         int itemsPerRow = Mathf.Max(1, Mathf.FloorToInt((rightPanelContentWidth + spacing) / (previewSize + spacing)));
 
         EditorGUI.BeginChangeCheck();
-        //Go to the Game Level Scene
-        if (GUILayout.Button("Game Scene", EditorStyles.miniButton, GUILayout.Width(EditorGUIUtility.labelWidth + EditorGUIUtility.standardVerticalSpacing)))
+        //Go to the Init Scene
+        if (GUILayout.Button("Init Scene", EditorStyles.miniButton, GUILayout.Width(EditorGUIUtility.labelWidth + EditorGUIUtility.standardVerticalSpacing)))
         {
-            EditorSceneManager.OpenScene(GAME_SCENE_PATH);
+            EditorSceneManager.OpenScene(INIT_SCENE_PATH);
         }
 
         EditorGUILayout.PropertyField(levelDatabaseRepresentation.levelsListProperty.GetArrayElementAtIndex(selectedLevelIndex), new GUIContent(FILE_STRING));
@@ -477,7 +478,7 @@ public class BeachHeroEditorWindow : EditorWindow
     {
         SaveLevel();
         SaveSystem.SaveInt(StringUtils.LEVELNUMBER, selectedLevelIndex + 1);
-        EditorSceneManager.OpenScene(GAME_SCENE_PATH);
+        EditorSceneManager.OpenScene(INIT_SCENE_PATH);
         EditorApplication.isPlaying = true;
         window.Close();
     }

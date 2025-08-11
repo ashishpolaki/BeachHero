@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,35 +9,50 @@ namespace BeachHero
         [SerializeField] private Toggle zoomToggle;
         [SerializeField] private Button mapExitBtn;
         [SerializeField] private Button playButton;
+        [SerializeField] private Button rightArrowBtn;
+        [SerializeField] private Button leftArrowBtn;
+        [SerializeField] private TextMeshProUGUI mapNameText;
+        [SerializeField] private GameObject mapSelector;
+
+        private int currentMapNumber = 0;
+        private int previousMapNumber = -1;
+        private int totalMaps = 0;
 
         public override void Open(ScreenTabType screenTabType)
         {
             base.Open(screenTabType);
+            currentMapNumber = MapController.GetInstance.MapNumber;
+            totalMaps = MapController.GetInstance.TotalMaps;
+            UpdateMapVisual();
+            ZoomToggle(false);
+
             zoomToggle.onValueChanged.AddListener(ZoomToggle);
-            zoomToggle.isOn = false;
-            ZoomToggle(false); // Ensure map is zoomed in on open
             mapExitBtn.ButtonRegister(MapExitToHome);
             playButton.ButtonRegister(OnPlayButtonClick);
-            MapController.GetInstance.OnMapButtonsActive += () =>
+            rightArrowBtn.ButtonRegister(() => ScrollRight());
+            leftArrowBtn.ButtonRegister(() => ScrollLeft());
+
+            if (MapController.GetInstance != null)
             {
-                SetMapButtonsVisibility(true);
-            };
-            MapController.GetInstance.OnPushPowerupSelectionScreen += PushPowerupSelectionScreen;
+                MapController.GetInstance.OnMapButtonsActive += () => SetMapButtonsVisibility(true);
+                MapController.GetInstance.OnPushPowerupSelectionScreen += PushPowerupSelectionScreen;
+            }
         }
 
         public override void Close()
         {
             base.Close();
+            SetMapButtonsVisibility(false);
+
             zoomToggle.onValueChanged.RemoveListener(ZoomToggle);
             mapExitBtn.ButtonDeRegister();
             playButton.ButtonDeRegister();
-            SetMapButtonsVisibility(false);
+            rightArrowBtn.ButtonDeRegister();
+            leftArrowBtn.ButtonDeRegister();
+
             if (MapController.GetInstance != null)
             {
-                MapController.GetInstance.OnMapButtonsActive -= () =>
-                {
-                    SetMapButtonsVisibility(false);
-                };
+                MapController.GetInstance.OnMapButtonsActive -= () => SetMapButtonsVisibility(false);
                 MapController.GetInstance.OnPushPowerupSelectionScreen -= PushPowerupSelectionScreen;
             }
         }
@@ -69,9 +85,9 @@ namespace BeachHero
             UIController.GetInstance.ScreenEvent(ScreenType.PowerupSelection, UIScreenEvent.Push);
         }
 
-        private void ZoomToggle(bool value)
+        private void ZoomToggle(bool isZoomOut)
         {
-            if (value)
+            if (isZoomOut)
             {
                 MapController.GetInstance.ZoomOut();
             }
@@ -79,6 +95,29 @@ namespace BeachHero
             {
                 MapController.GetInstance.ZoomIn();
             }
+            mapSelector.gameObject.SetActive(isZoomOut);
+        }
+        private void ScrollRight()
+        {
+            previousMapNumber = currentMapNumber;
+            currentMapNumber += 1;
+            UpdateMapVisual();
+        }
+        private void ScrollLeft()
+        {
+            previousMapNumber = currentMapNumber;
+            currentMapNumber -= 1;
+            UpdateMapVisual();
+        }
+        private void UpdateMapVisual()
+        {
+            MapController.GetInstance.ChangeMapVisual(previousMapNumber, currentMapNumber);
+            mapNameText.text = "MAP " + (currentMapNumber);
+            bool isCurrentMap = MapController.GetInstance.MapNumber == currentMapNumber;
+            playButton.interactable = isCurrentMap;
+            zoomToggle.interactable = isCurrentMap;
+            leftArrowBtn.interactable = currentMapNumber > 1;
+            rightArrowBtn.interactable = currentMapNumber < totalMaps;
         }
     }
 }

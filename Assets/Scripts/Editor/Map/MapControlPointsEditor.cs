@@ -1,165 +1,173 @@
 #if UNITY_EDITOR
-
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 
-[CustomEditor(typeof(MapEditor))]
-public class MapControlPointsEditor : Editor
+namespace BeachHero
 {
-    private bool editMode;
-
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(MapEditor))]
+    public class MapControlPointsEditor : Editor
     {
-        serializedObject.Update();
-        MapEditor mapTester = (MapEditor)target;
-
-        EditorGUILayout.Space(10);
-
-        // Edit Toggle
-        if (GUILayout.Toggle(editMode, "Edit Bezier Points", "Button"))
-            editMode = true;
-        else
-            editMode = false;
-
-        EditorGUILayout.Space();
-
-        // Add Bezier Point
-        if (GUILayout.Button("Add Bezier Point"))
+        private bool editMode;
+        public override void OnInspectorGUI()
         {
-            // GameObject anchor = new GameObject($"Bezier Anchor {mapTester.bezierPoints.Count}");
-            // anchor.transform.SetParent(mapTester.bezierPointsParent);
-            // anchor.transform.position = mapTester.bezierPoints[mapTester.bezierPoints.Count - 1].anchorPoint;
+            serializedObject.Update();
+            MapEditor mapTester = (MapEditor)target;
 
-            BezierPoint point = new BezierPoint
+            EditorGUILayout.Space(10);
+
+            // Edit Toggle
+            if (GUILayout.Toggle(editMode, "Edit Bezier Points", "Button"))
+                editMode = true;
+            else
+                editMode = false;
+
+            EditorGUILayout.Space();
+
+            // Add Bezier Point
+            if (GUILayout.Button("Add Bezier Point"))
             {
-                anchorPoint = Vector2.zero,
-                inTangent = Vector3.zero,
-                outTangent = Vector3.zero
-            };
-            mapTester.bezierPoints.Add(point);
+                var anchorPoint = mapTester.bezierPoints.Count > 0 ? mapTester.bezierPoints[mapTester.bezierPoints.Count - 1].anchorPoint : Vector3.zero;
+                var inTangent = mapTester.bezierPoints.Count > 0 ? mapTester.bezierPoints[mapTester.bezierPoints.Count - 1].inTangent : Vector3.zero;
+                var outTangent = mapTester.bezierPoints.Count > 0 ? mapTester.bezierPoints[mapTester.bezierPoints.Count - 1].outTangent : Vector3.zero;
 
-            Undo.RegisterCreatedObjectUndo(mapTester, "Add Bezier Point");
-            EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
-        }
+                BezierPoint point = new BezierPoint
+                {
+                    anchorPoint = anchorPoint,
+                    inTangent = inTangent,
+                    outTangent = outTangent
+                };
+                mapTester.bezierPoints.Add(point);
 
-        // Remove Last
-        if (GUILayout.Button("Remove Last Bezier Point"))
-        {
-            if (mapTester.bezierPoints.Count > 0)
-            {
-                BezierPoint last = mapTester.bezierPoints[mapTester.bezierPoints.Count - 1];
-                mapTester.bezierPoints.RemoveAt(mapTester.bezierPoints.Count - 1);
+                Undo.RegisterCreatedObjectUndo(mapTester, "Add Bezier Point");
                 EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
             }
-        }
 
-        // Generate Map
-        if (GUILayout.Button("Generate Map"))
-        {
-            mapTester.GenerateMapPointsInEditor(false);
-            EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
-        }
-
-        //Resize Bezier Points
-        if (GUILayout.Button("Resize Bezier Points"))
-        {
-            mapTester.GenerateMapPointsInEditor(true);
-            EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
-        }
-
-        //Clear Generated Objects
-        if (GUILayout.Button("Clear Generated Objects"))
-        {
-            mapTester.ClearGeneratedObjects();
-            EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
-        }
-
-        EditorGUILayout.Space(10);
-        DrawDefaultInspector();
-        serializedObject.ApplyModifiedProperties();
-    }
-
-    private void OnSceneGUI()
-    {
-        MapEditor mapTester = (MapEditor)target;
-        if (!editMode || mapTester.bezierPoints == null)
-            return;
-
-        for (int i = 0; i < mapTester.bezierPoints.Count; i++)
-        {
-            var point = mapTester.bezierPoints[i];
-            if (point.anchorPoint == null) continue;
-
-            Vector3 oldAnchorPos = point.anchorPoint;
-            // === 1. MOVE ANCHOR FIRST ===
-            Handles.color = Color.white;
-            EditorGUI.BeginChangeCheck();
-            Vector3 newAnchorPos = Handles.FreeMoveHandle(
-                oldAnchorPos,
-                0.15f,
-                Vector3.zero,
-                Handles.SphereHandleCap
-            );
-            bool anchorMoved = EditorGUI.EndChangeCheck();
-
-            if (anchorMoved)
+            // Remove Last
+            if (GUILayout.Button("Remove Last Bezier Point"))
             {
-                Undo.RecordObject(mapTester, "Move Anchor");
-                Vector3 delta = newAnchorPos - oldAnchorPos;
-                point.anchorPoint = newAnchorPos;
+                if (mapTester.bezierPoints.Count > 0)
+                {
+                    BezierPoint last = mapTester.bezierPoints[mapTester.bezierPoints.Count - 1];
+                    mapTester.bezierPoints.RemoveAt(mapTester.bezierPoints.Count - 1);
+                    EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
+                }
             }
-            GUIStyle labelStyle = new GUIStyle(EditorStyles.boldLabel)
-            {
-                fontSize = 12,
-                normal = { textColor = Color.red }
-            };
-            Handles.Label(oldAnchorPos + Vector3.up * 0.2f, $"#{i}", labelStyle); // or $"{i}" for just index
 
-            if (!anchorMoved)
+            // Generate Map
+            if (GUILayout.Button("Generate Map"))
             {
-                // === 2. UPDATE IN/OUT TANGENTS ===
-                Vector3 anchorPos = point.anchorPoint;
+                mapTester.GenerateMapPointsInEditor(false);
+                EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
+            }
 
-                // In-Tangent
-                Handles.color = Color.green;
-                Vector3 inWorld = anchorPos + point.inTangent;
+            //Resize Bezier Points
+            if (GUILayout.Button("Resize Bezier Points"))
+            {
+                mapTester.GenerateMapPointsInEditor(true);
+                EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
+            }
+
+            //Clear Generated Objects
+            if (GUILayout.Button("Clear Generated Objects"))
+            {
+                mapTester.ClearGeneratedObjects();
+                EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
+            }
+
+            //Generate Level Visuals 
+            if (GUILayout.Button("Generate Level Visuals"))
+            {
+                mapTester.GenerateLevelVisuals();
+                EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
+            }
+
+            EditorGUILayout.Space(10);
+            DrawDefaultInspector();
+            serializedObject.ApplyModifiedProperties();
+        }
+
+        private void OnSceneGUI()
+        {
+            MapEditor mapTester = (MapEditor)target;
+            if (!editMode || mapTester.bezierPoints == null)
+                return;
+
+            for (int i = 0; i < mapTester.bezierPoints.Count; i++)
+            {
+                var point = mapTester.bezierPoints[i];
+                if (point.anchorPoint == null) continue;
+
+                Vector3 oldAnchorPos = point.anchorPoint;
+                // === 1. MOVE ANCHOR FIRST ===
+                Handles.color = Color.white;
                 EditorGUI.BeginChangeCheck();
-                Vector3 newInWorld = Handles.FreeMoveHandle(
-                    inWorld,
-                    0.1f,
+                Vector3 newAnchorPos = Handles.FreeMoveHandle(
+                    oldAnchorPos,
+                    0.15f,
                     Vector3.zero,
                     Handles.SphereHandleCap
                 );
-                if (EditorGUI.EndChangeCheck())
-                {
-                    Undo.RecordObject(mapTester, "Move In-Tangent");
-                    point.inTangent = newInWorld - anchorPos;
-                }
-                Handles.DrawLine(anchorPos, inWorld);
+                bool anchorMoved = EditorGUI.EndChangeCheck();
 
-                // Out-Tangent
-                Handles.color = Color.red;
-                Vector3 outWorld = anchorPos + point.outTangent;
-                EditorGUI.BeginChangeCheck();
-                Vector3 newOutWorld = Handles.FreeMoveHandle(
-                    outWorld,
-                    0.1f,
-                    Vector3.zero,
-                    Handles.SphereHandleCap
-                );
-                if (EditorGUI.EndChangeCheck())
+                if (anchorMoved)
                 {
-                    Undo.RecordObject(mapTester, "Move Out-Tangent");
-                    point.outTangent = newOutWorld - anchorPos;
+                    Undo.RecordObject(mapTester, "Move Anchor");
+                    Vector3 delta = newAnchorPos - oldAnchorPos;
+                    point.anchorPoint = newAnchorPos;
                 }
-                Handles.DrawLine(anchorPos, outWorld);
-            }
+                GUIStyle labelStyle = new GUIStyle(EditorStyles.boldLabel)
+                {
+                    fontSize = 12,
+                    normal = { textColor = Color.red }
+                };
+                Handles.Label(oldAnchorPos + Vector3.up * 0.2f, $"#{i}", labelStyle); // or $"{i}" for just index
 
-            // Mark scene dirty
-            if (GUI.changed)
-            {
-                EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
+                if (!anchorMoved)
+                {
+                    // === 2. UPDATE IN/OUT TANGENTS ===
+                    Vector3 anchorPos = point.anchorPoint;
+
+                    // In-Tangent
+                    Handles.color = Color.green;
+                    Vector3 inWorld = anchorPos + point.inTangent;
+                    EditorGUI.BeginChangeCheck();
+                    Vector3 newInWorld = Handles.FreeMoveHandle(
+                        inWorld,
+                        0.1f,
+                        Vector3.zero,
+                        Handles.SphereHandleCap
+                    );
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        Undo.RecordObject(mapTester, "Move In-Tangent");
+                        point.inTangent = newInWorld - anchorPos;
+                    }
+                    Handles.DrawLine(anchorPos, inWorld);
+
+                    // Out-Tangent
+                    Handles.color = Color.red;
+                    Vector3 outWorld = anchorPos + point.outTangent;
+                    EditorGUI.BeginChangeCheck();
+                    Vector3 newOutWorld = Handles.FreeMoveHandle(
+                        outWorld,
+                        0.1f,
+                        Vector3.zero,
+                        Handles.SphereHandleCap
+                    );
+                    if (EditorGUI.EndChangeCheck())
+                    {
+                        Undo.RecordObject(mapTester, "Move Out-Tangent");
+                        point.outTangent = newOutWorld - anchorPos;
+                    }
+                    Handles.DrawLine(anchorPos, outWorld);
+                }
+
+                // Mark scene dirty
+                if (GUI.changed)
+                {
+                    EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
+                }
             }
         }
     }

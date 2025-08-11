@@ -66,6 +66,9 @@ namespace BeachHero
         public const string MAP_SCENE = "BeachMetaMap";
         public const string GAME_SCENE = "BeachHeroGame";
         public const string INIT_SCENE = "BeachHeroInit";
+
+        //MAP
+        public const string MAP_NUMER = "MapNumber";
     }
 
     public class IntUtils
@@ -83,6 +86,9 @@ namespace BeachHero
 
         // Level 
         public const int DEFAULT_LEVEL = 1;
+
+        //MAP
+        public const int DEFAULT_MAP_NUMBER = 1;
 
         //Scene
         public const int MAP_SCENE_LOAD_DELAY = 500; //1000 milliseconds = 1 second
