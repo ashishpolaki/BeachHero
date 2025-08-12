@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Febucci.UI;
 
 namespace BeachHero
 {
@@ -12,11 +13,17 @@ namespace BeachHero
         [SerializeField] private Button rightArrowBtn;
         [SerializeField] private Button leftArrowBtn;
         [SerializeField] private TextMeshProUGUI mapNameText;
+        [SerializeField] private TextAnimatorPlayer unlockMapText;
         [SerializeField] private GameObject mapSelector;
+
+        [SerializeField] private float textApperanceSpeed = 3f;
+        [SerializeField] private float textDisapperanceSpeed = 3f;
+        [SerializeField] private float textDisappearDelay = 0.5f;
 
         private int currentMapNumber = 0;
         private int previousMapNumber = -1;
         private int totalMaps = 0;
+        private bool isNewMapUnlocked = false;
 
         public override void Open(ScreenTabType screenTabType)
         {
@@ -36,6 +43,7 @@ namespace BeachHero
             {
                 MapController.GetInstance.OnMapButtonsActive += () => SetMapButtonsVisibility(true);
                 MapController.GetInstance.OnPushPowerupSelectionScreen += PushPowerupSelectionScreen;
+                MapController.GetInstance.OnNewMapUnlockAction += NewMapUnlock;
             }
         }
 
@@ -43,6 +51,7 @@ namespace BeachHero
         {
             base.Close();
             SetMapButtonsVisibility(false);
+            ResetTextAnimator();
 
             zoomToggle.onValueChanged.RemoveListener(ZoomToggle);
             mapExitBtn.ButtonDeRegister();
@@ -54,6 +63,30 @@ namespace BeachHero
             {
                 MapController.GetInstance.OnMapButtonsActive -= () => SetMapButtonsVisibility(false);
                 MapController.GetInstance.OnPushPowerupSelectionScreen -= PushPowerupSelectionScreen;
+                MapController.GetInstance.OnNewMapUnlockAction -= NewMapUnlock;
+            }
+        }
+
+        private void NewMapUnlock()
+        {
+            isNewMapUnlocked = true;
+            unlockMapText.SetTypewriterSpeed(textApperanceSpeed);
+            unlockMapText.ShowText($"{StringUtils.MAP_UNLOCKED_DESCRIPTION}<waitfor={textDisappearDelay}> ");
+            unlockMapText.onTextShowed.AddListener(() =>
+            {
+                unlockMapText.SetTypewriterSpeed(textDisapperanceSpeed);
+                unlockMapText.StartDisappearingText();
+            });
+        }
+
+        private void ResetTextAnimator()
+        {
+            if (isNewMapUnlocked)
+            {
+                isNewMapUnlocked = false;
+                unlockMapText.StopShowingText();
+                unlockMapText.StopDisappearingText();
+                unlockMapText.onTextShowed.RemoveAllListeners();
             }
         }
 

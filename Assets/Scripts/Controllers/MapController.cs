@@ -26,6 +26,7 @@ namespace BeachHero
         [SerializeField] private Transform boat;
         [SerializeField] private LevelDatabaseSO levelDatabase;
         [SerializeField] private CinemachineCamera zoomOutCam, zoomInCam;
+        [SerializeField] private ParticleSystem confettiParticle;
 
         [Header("Map")]
         [SerializeField] private Transform mapBG;
@@ -178,7 +179,9 @@ namespace BeachHero
         private void NewMapUnlocked()
         {
             SetBoatInCurrentLevel();
+            confettiParticle.Play();
             isNewMapUnlocked = false;
+            OnNewMapUnlockAction?.Invoke();
         }
         private void InitializeMapData()
         {

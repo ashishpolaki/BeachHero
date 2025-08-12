@@ -69,6 +69,7 @@ namespace BeachHero
 
         //MAP
         public const string MAP_NUMER = "MapNumber";
+        public const string MAP_UNLOCKED_DESCRIPTION = "NEW MAP UNLOCKED !";
     }
 
     public class IntUtils
