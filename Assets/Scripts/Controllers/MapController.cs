@@ -133,7 +133,7 @@ namespace BeachHero
                 float time = 0;
                 boatTween.Kill();
                 boatTween = DOTween.To(
-                    () => 0, x =>
+                    () => time, x =>
                     {
                         time = x;
                         Vector3 pos = BezierCurveUtils.GetPoint(p0, p1, p2, p3, time);

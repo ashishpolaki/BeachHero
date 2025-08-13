@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 932363394992073193}
-  - component: {fileID: 932363394992073194}
   - component: {fileID: 650311150616210649}
   - component: {fileID: -7757076218396222291}
   m_Layer: 11
@@ -35,28 +34,6 @@ Transform:
   - {fileID: 1587227516408475559}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &932363394992073194
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 932363394992073192}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 67d1872a6e3230f44b8eaa78942a5e9c, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!65 &650311150616210649
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -91,7 +68,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collectableType: 1
-  graphics: {fileID: 0}
+  graphics: {fileID: 5875058656141029533}
   rotateSpeed: 200
   moveSpeed: 10
 --- !u!1 &5875058656141029533
