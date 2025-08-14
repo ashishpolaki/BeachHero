@@ -109,8 +109,8 @@ namespace BeachHero
                 GUILayout.BeginHorizontal();
                 if (GUILayout.Button("Resize Bezier Points"))
                 {
-                    mapTester.GenerateMapPointsInEditor(true);
                     mapTester.resizeLevels = resizePointsCount;
+                    mapTester.GenerateMapPointsInEditor(true);
                     EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
                 }
                 GUILayout.Label("Count", GUILayout.Width(60));
