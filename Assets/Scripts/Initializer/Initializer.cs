@@ -34,6 +34,7 @@ namespace BeachHero
             await UIController.GetInstance.LoadingUI.LoadSceneAsync(StringUtils.GAME_SCENE);
             GameController.GetInstance.SpawnLevel();
             await SceneLoader.GetInstance.UnloadScene(StringUtils.INIT_SCENE);
+            await UIController.GetInstance.LoadingUI.DisableLoadingScreen();
         }
     }
 }

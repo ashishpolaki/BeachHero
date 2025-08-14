@@ -52,6 +52,11 @@ namespace BeachHero
 
             Scene loadedScene = SceneManager.GetSceneByName(sceneName);
             SceneManager.SetActiveScene(loadedScene);
+        }
+
+        public async Task DisableLoadingScreen(float milliSeconds = 1)
+        {
+            await Task.Delay((int)milliSeconds);
             SetActiveLoadingScreen(false);
         }
     }

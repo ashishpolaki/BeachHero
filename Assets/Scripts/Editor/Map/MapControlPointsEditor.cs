@@ -9,81 +9,144 @@ namespace BeachHero
     public class MapControlPointsEditor : Editor
     {
         private bool editMode;
+        private SerializedProperty bezierPointsProperty;
+        private int addPointIndex = 0;
+        private int removePointIndex = 0;
+        private int resizePointsCount = 1;
+
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
             MapEditor mapTester = (MapEditor)target;
 
-            EditorGUILayout.Space(10);
-
             // Edit Toggle
+            EditorGUILayout.Space(10);
             if (GUILayout.Toggle(editMode, "Edit Bezier Points", "Button"))
                 editMode = true;
             else
                 editMode = false;
-
             EditorGUILayout.Space();
 
-            // Add Bezier Point
-            if (GUILayout.Button("Add Bezier Point"))
+            if (editMode)
             {
-                var anchorPoint = mapTester.bezierPoints.Count > 0 ? mapTester.bezierPoints[mapTester.bezierPoints.Count - 1].anchorPoint : Vector3.zero;
-                var inTangent = mapTester.bezierPoints.Count > 0 ? mapTester.bezierPoints[mapTester.bezierPoints.Count - 1].inTangent : Vector3.zero;
-                var outTangent = mapTester.bezierPoints.Count > 0 ? mapTester.bezierPoints[mapTester.bezierPoints.Count - 1].outTangent : Vector3.zero;
-
-                BezierPoint point = new BezierPoint
+                // Add Bezier Point at End
+                if (GUILayout.Button("Add Point at End"))
                 {
-                    anchorPoint = anchorPoint,
-                    inTangent = inTangent,
-                    outTangent = outTangent
-                };
-                mapTester.bezierPoints.Add(point);
+                    var anchorPoint = mapTester.bezierPoints.Count > 0 ? mapTester.bezierPoints[mapTester.bezierPoints.Count - 1].anchorPoint : Vector3.zero;
+                    var inTangent = mapTester.bezierPoints.Count > 0 ? mapTester.bezierPoints[mapTester.bezierPoints.Count - 1].inTangent : Vector3.zero;
+                    var outTangent = mapTester.bezierPoints.Count > 0 ? mapTester.bezierPoints[mapTester.bezierPoints.Count - 1].outTangent : Vector3.zero;
 
-                Undo.RegisterCreatedObjectUndo(mapTester, "Add Bezier Point");
-                EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
-            }
+                    BezierPoint point = new BezierPoint
+                    {
+                        anchorPoint = anchorPoint,
+                        inTangent = inTangent,
+                        outTangent = outTangent
+                    };
+                    mapTester.bezierPoints.Add(point);
 
-            // Remove Last
-            if (GUILayout.Button("Remove Last Bezier Point"))
-            {
-                if (mapTester.bezierPoints.Count > 0)
-                {
-                    BezierPoint last = mapTester.bezierPoints[mapTester.bezierPoints.Count - 1];
-                    mapTester.bezierPoints.RemoveAt(mapTester.bezierPoints.Count - 1);
+                    Undo.RegisterCreatedObjectUndo(mapTester, "Add Bezier Point");
                     EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
                 }
-            }
 
-            // Generate Map
-            if (GUILayout.Button("Generate Map"))
+                // Remove Point at End
+                if (GUILayout.Button("Remove Point At End"))
+                {
+                    if (mapTester.bezierPoints.Count > 0)
+                    {
+                        mapTester.bezierPoints.RemoveAt(mapTester.bezierPoints.Count - 1);
+                        EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
+                    }
+                }
+
+                //Add Bezier Point at Given Index
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Add Point at Index"))
+                {
+                    //  int addPointIndex = EditorGUILayout.IntField("Index", mapTester.bezierPoints.Count);
+                    if (addPointIndex < 0 || addPointIndex > mapTester.bezierPoints.Count)
+                    {
+                        DebugUtils.LogError("Index out of range. Please enter a valid index.");
+                    }
+                    else
+                    {
+                        var anchorPoint = mapTester.bezierPoints.Count > 0 ? mapTester.bezierPoints[addPointIndex].anchorPoint : Vector3.zero;
+                        var inTangent = mapTester.bezierPoints.Count > 0 ? mapTester.bezierPoints[addPointIndex].inTangent : Vector3.zero;
+                        var outTangent = mapTester.bezierPoints.Count > 0 ? mapTester.bezierPoints[addPointIndex].outTangent : Vector3.zero;
+                        BezierPoint point = new BezierPoint
+                        {
+                            anchorPoint = anchorPoint,
+                            inTangent = inTangent,
+                            outTangent = outTangent
+                        };
+                        mapTester.bezierPoints.Insert(addPointIndex, point);
+                        Undo.RegisterCreatedObjectUndo(mapTester, "Add Bezier Point at Index");
+                        EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
+                    }
+                }
+                GUILayout.Label("Index", GUILayout.Width(60));
+                addPointIndex = EditorGUILayout.IntField(addPointIndex, GUILayout.Width(60));
+                GUILayout.EndHorizontal();
+
+                //Remove Bezier Point at Given Index
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Remove Point at Index"))
+                {
+                    if (removePointIndex < 0 || removePointIndex >= mapTester.bezierPoints.Count)
+                    {
+                        DebugUtils.LogError("Index out of range. Please enter a valid index.");
+                    }
+                    else
+                    {
+                        mapTester.bezierPoints.RemoveAt(removePointIndex);
+                        EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
+                    }
+                }
+                GUILayout.Label("Index", GUILayout.Width(60));
+                removePointIndex = EditorGUILayout.IntField(removePointIndex, GUILayout.Width(60));
+                GUILayout.EndHorizontal();
+
+                //Resize Bezier Points
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Resize Bezier Points"))
+                {
+                    mapTester.GenerateMapPointsInEditor(true);
+                    mapTester.resizeLevels = resizePointsCount;
+                    EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
+                }
+                GUILayout.Label("Count", GUILayout.Width(60));
+                resizePointsCount = EditorGUILayout.IntField(resizePointsCount, GUILayout.Width(60));
+                GUILayout.EndHorizontal();
+
+                //Clear Generated Objects
+                if (GUILayout.Button("Clear"))
+                {
+                    mapTester.ClearGeneratedObjects();
+                    EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
+                }
+
+                // Generate Map
+                if (GUILayout.Button("Generate Map Path"))
+                {
+                    mapTester.GenerateMapPointsInEditor(false);
+                    EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
+                }
+
+                //Generate Level Visuals 
+                if (GUILayout.Button("Generate Level Visuals"))
+                {
+                    mapTester.GenerateLevelVisuals();
+                    EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
+                }
+
+                //Show mapTester bezier Points like a serialized Property
+                // --- Draw the List in Inspector ---
+                bezierPointsProperty = serializedObject.FindProperty("bezierPoints");
+                EditorGUILayout.PropertyField(bezierPointsProperty, new GUIContent("BezierPoints"), true);
+            }
+            else
             {
-                mapTester.GenerateMapPointsInEditor(false);
-                EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
+                DrawDefaultInspector();
             }
-
-            //Resize Bezier Points
-            if (GUILayout.Button("Resize Bezier Points"))
-            {
-                mapTester.GenerateMapPointsInEditor(true);
-                EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
-            }
-
-            //Clear Generated Objects
-            if (GUILayout.Button("Clear Generated Objects"))
-            {
-                mapTester.ClearGeneratedObjects();
-                EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
-            }
-
-            //Generate Level Visuals 
-            if (GUILayout.Button("Generate Level Visuals"))
-            {
-                mapTester.GenerateLevelVisuals();
-                EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
-            }
-
-            EditorGUILayout.Space(10);
-            DrawDefaultInspector();
             serializedObject.ApplyModifiedProperties();
         }
 

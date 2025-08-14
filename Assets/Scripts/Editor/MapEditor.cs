@@ -21,16 +21,16 @@ namespace BeachHero
 #if UNITY_EDITOR
     public class MapEditor : MonoBehaviour
     {
-        public LineRenderer visualLineRenderer;
+        [HideInInspector] public LineRenderer visualLineRenderer;
         public List<BezierPoint> bezierPoints = new List<BezierPoint>();
-        public List<Vector3> linePoints = new List<Vector3>();
+        [HideInInspector] public List<Vector3> linePoints = new List<Vector3>();
         public MapController mapController;
 
         public int mapNumber = 1; // Map number for identification
         public int curveSamples = 20;
         public int lineResolutionPerLoop = 10;
         [Tooltip("Total Number of levels")]
-        public int pointsPerSegment = 100;
+        [HideInInspector] public int resizeLevels = 100;
 
         public void GenerateMapPointsInEditor(bool isResize)
         {
@@ -101,7 +101,7 @@ namespace BeachHero
         {
             List<Vector3> sampledPoints;
             List<Vector3> tangentVectors;
-            BezierCurveUtils.SampleEvenlySpacedPointsWithTangents(bezierPoints, pointsPerSegment, out sampledPoints, out tangentVectors);
+            BezierCurveUtils.SampleEvenlySpacedPointsWithTangents(bezierPoints, resizeLevels, out sampledPoints, out tangentVectors);
 
             bezierPoints.Clear();
 
@@ -179,6 +179,7 @@ namespace BeachHero
             {
                 visualLineRenderer.positionCount = 0;
                 visualLineRenderer.SetPositions(new Vector3[0]);
+                mapController.GenerateLevelVisuals(mapNumber - 1, new List<BezierPoint>(), new Vector3[0]);
             }
         }
 
