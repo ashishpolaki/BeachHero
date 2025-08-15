@@ -4,13 +4,15 @@ using UnityEngine;
 
 namespace BeachHero
 {
-    [CustomEditor(typeof(MovingObstacleEditComponent))]
+    [CustomEditor(typeof(MovingObstacleEditTool))]
     public class MovingObstacleEditor : Editor
     {
         #region Variables
-        private MovingObstacleEditComponent movingObstacle;
+        private MovingObstacleEditTool movingObstacle;
         private bool[] showTangents;
         private bool[] showHandles;
+        private int addKeyframeIndex = 0;
+        private int removeKeyframeIndex = 0;
         public static float KeyFramePositionSize = 0.2f;
         public static float KeyFramePositionPickUpSize = 1f;
         public static float keyFrameTangetHandleSize = 0.5f;
@@ -20,7 +22,7 @@ namespace BeachHero
         #region unity methods
         private void OnEnable()
         {
-            movingObstacle = (MovingObstacleEditComponent)target;
+            movingObstacle = (MovingObstacleEditTool)target;
         }
         #endregion
 
@@ -56,18 +58,50 @@ namespace BeachHero
             EditorGUILayout.PropertyField(serializedObject.FindProperty("Keyframes"), new GUIContent("Key Frames"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("pathPoints"), new GUIContent("Path Positions"), EditorStyles.miniBoldFont);
             movingObstacle.canEditKeyFramesInScene = GUILayout.Toggle(movingObstacle.canEditKeyFramesInScene, "Edit KeyFrames");
-            if (GUILayout.Button("Add Keyframe"))
+            if (movingObstacle.canEditKeyFramesInScene)
             {
-                AddKeyframe();
-            }
-            if (GUILayout.Button("Remove Last Keyframe"))
-            {
-                RemoveKeyframe();
-            }
-            if (GUILayout.Button("Remove All Keyframes"))
-            {
-                Undo.RecordObject(movingObstacle, "Remove All Keyframes");
-                movingObstacle.RemoveAllKeyFrames();
+                // Add Keyframe
+                if (GUILayout.Button("Add Keyframe"))
+                {
+                    Undo.RecordObject(movingObstacle, "Add Keyframe");
+                    AddKeyframe();
+                }
+
+                // Remove Last Keyframe
+                if (GUILayout.Button("Remove Last Keyframe"))
+                {
+                    Undo.RecordObject(movingObstacle, "Remove Last Keyframe");
+                    RemoveKeyframe();
+                }
+
+                // Add Keyframe at Index
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Add Keyframe At Index"))
+                {
+                    Undo.RecordObject(movingObstacle, "Add Keyframe At Index");
+                    AddKeyframeAtIndex(addKeyframeIndex);
+                }
+                GUILayout.Label("Index:", GUILayout.Width(50));
+                addKeyframeIndex = EditorGUILayout.IntField(addKeyframeIndex, GUILayout.Width(50));
+                GUILayout.EndHorizontal();
+
+                // Remove Keyframe at Index
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Remove Keyframe At Index"))
+                {
+                    Undo.RecordObject(movingObstacle, "Remove Keyframe At Index");
+                    RemoveKeyframeAtIndex(removeKeyframeIndex);
+                }
+                GUILayout.Label("Index:", GUILayout.Width(50));
+                removeKeyframeIndex = EditorGUILayout.IntField(removeKeyframeIndex, GUILayout.Width(50));
+                GUILayout.EndHorizontal();
+
+                // Remove all Keyframes
+                if (GUILayout.Button("Remove All Keyframes"))
+                {
+                    Undo.RecordObject(movingObstacle, "Remove All Keyframes");
+                    movingObstacle.RemoveAllKeyFrames();
+                }
             }
             serializedObject.ApplyModifiedProperties();
         }
@@ -90,6 +124,29 @@ namespace BeachHero
 
             Undo.RecordObject(movingObstacle, "Remove Keyframe");
             movingObstacle.RemoveKeyFrame();
+        }
+        private void AddKeyframeAtIndex(int index)
+        {
+            if (movingObstacle.Keyframes == null || index < 0 || index > movingObstacle.Keyframes.Length)
+                return;
+
+            Undo.RecordObject(movingObstacle, "Add Keyframe At Index");
+
+            BezierKeyframe newKeyframe = new BezierKeyframe
+            {
+                position = Vector3.zero,
+                inTangentLocal = Vector3.left,
+                outTangentLocal = Vector3.right
+            };
+            movingObstacle.AddKeyframeAtIndex(index, newKeyframe);
+        }
+        private void RemoveKeyframeAtIndex(int index)
+        {
+            if (movingObstacle.Keyframes == null || movingObstacle.Keyframes.Length == 0 || index < 0 || index >= movingObstacle.Keyframes.Length)
+                return;
+
+            Undo.RecordObject(movingObstacle, "Remove Keyframe At Index");
+            movingObstacle.RemoveKeyframeAtIndex(index);
         }
         #endregion
 

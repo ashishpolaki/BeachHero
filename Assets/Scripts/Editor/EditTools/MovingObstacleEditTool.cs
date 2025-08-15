@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace BeachHero
 {
-    public class MovingObstacleEditComponent : MonoBehaviour
+    public class MovingObstacleEditTool : MonoBehaviour
     {
         [ReadOnly]
         public Vector3[] pathPoints;
@@ -57,6 +57,24 @@ namespace BeachHero
             // Use ArrayUtility.Clear with the backing field
             ArrayUtility.Clear(ref Keyframes);
             ArrayUtility.Clear(ref TempKeyFrames);
+        }
+        public void AddKeyframeAtIndex(int index, BezierKeyframe newKeyframe)
+        {
+            if (Keyframes == null || index < 0 || index > Keyframes.Length)
+                return;
+
+            // Use ArrayUtility.Insert with the backing field
+            ArrayUtility.Insert(ref Keyframes, index, newKeyframe);
+            ArrayUtility.Insert(ref TempKeyFrames, index, newKeyframe);
+        }
+        public void RemoveKeyframeAtIndex(int index)
+        {
+            if (Keyframes == null || Keyframes.Length == 0 || index < 0 || index >= Keyframes.Length)
+                return;
+
+            // Use ArrayUtility.RemoveAt with the backing field
+            ArrayUtility.RemoveAt(ref Keyframes, index);
+            ArrayUtility.RemoveAt(ref TempKeyFrames, index);
         }
         public void SetKeyFrames(BezierKeyframe[] _keyFrames)
         {

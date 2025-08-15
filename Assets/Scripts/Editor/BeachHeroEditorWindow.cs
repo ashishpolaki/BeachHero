@@ -129,10 +129,11 @@ public class BeachHeroEditorWindow : EditorWindow
     #region Window Variables
     private static readonly int DEFAULT_WINDOW_MIN_SIZE = 600;
     private string ASSETPATH = "Assets/ScriptableObjects/Levels/LevelsDatabase.asset";
-    private string EDITOR_SCENE_NAME = "BeachHeroEditorScene";
-    private string EDITOR_SCENE_PATH = "Assets/Scenes/BeachHeroEditorScene.unity";
-    private string GAME_SCENE_PATH = "Assets/Scenes/BeachHeroGame.unity";
-    private string INIT_SCENE_PATH = "Assets/Scenes/BeachHeroInit.unity";
+    private string EDITOR_SCENE_NAME = "EditorScene";
+    private string EDITOR_SCENE_PATH = "Assets/Scenes/EditorScene.unity";
+    private string GAME_SCENE_PATH = "Assets/Scenes/Game.unity";
+    private string INIT_SCENE_PATH = "Assets/Scenes/Init.unity";
+    private string TEST_SCENE_PATH = "Assets/Scenes/Test.unity";
     private string FILE_STRING = "file :";
     private int selectedTab = 0;
     private string[] tabTitles = { "Levels", "Items" };
@@ -478,9 +479,9 @@ public class BeachHeroEditorWindow : EditorWindow
     {
         SaveLevel();
         SaveSystem.SaveInt(StringUtils.LEVELNUMBER, selectedLevelIndex + 1);
-        EditorSceneManager.OpenScene(INIT_SCENE_PATH);
+        EditorSceneManager.OpenScene(TEST_SCENE_PATH);
         EditorApplication.isPlaying = true;
-        window.Close();
+      //  window.Close();
     }
 
     // Helper method to create a texture for the button background
@@ -514,7 +515,7 @@ public class BeachHeroEditorWindow : EditorWindow
 
     private void SaveWaterHoleObstacle()
     {
-        WaterHoleEditComponent[] waterHoleEditComponents = EditorSceneController.Instance.GetWaterHoleEditData();
+        WaterHoleEditTool[] waterHoleEditComponents = EditorSceneController.Instance.GetWaterHoleEditData();
         levelRepresentation.waterHoleObstaclesProperty.arraySize = waterHoleEditComponents.Length;
 
         for (int i = 0; i < waterHoleEditComponents.Length; i++)
@@ -557,7 +558,7 @@ public class BeachHeroEditorWindow : EditorWindow
 
     private void SaveSavedCharacters()
     {
-        DrownCharacterEditComponent[] savedCharacters = EditorSceneController.Instance.GetSavedCharacterEditData();
+        DrownCharacterEditTool[] savedCharacters = EditorSceneController.Instance.GetSavedCharacterEditData();
         levelRepresentation.savedCharactersProperty.arraySize = savedCharacters.Length;
 
         for (int i = 0; i < savedCharacters.Length; i++)
@@ -579,7 +580,7 @@ public class BeachHeroEditorWindow : EditorWindow
 
     private void SaveMovingObstacle()
     {
-        MovingObstacleEditComponent[] movingObstacleEditComponents = EditorSceneController.Instance.GetMovingObstacleEditData();
+        MovingObstacleEditTool[] movingObstacleEditComponents = EditorSceneController.Instance.GetMovingObstacleEditData();
         levelRepresentation.moveObstaclesProperty.arraySize = movingObstacleEditComponents.Length;
 
         //  moveObstales_LevelEditProperty.ClearArray();

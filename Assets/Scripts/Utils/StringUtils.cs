@@ -63,9 +63,9 @@ namespace BeachHero
         public const string NO_ADS_PURCHASED = "NoAdsPurchased";
 
         //Scenes
-        public const string MAP_SCENE = "BeachMetaMap";
-        public const string GAME_SCENE = "BeachHeroGame";
-        public const string INIT_SCENE = "BeachHeroInit";
+        public const string MAP_SCENE = "Map";
+        public const string GAME_SCENE = "Game";
+        public const string INIT_SCENE = "Init";
 
         //MAP
         public const string MAP_NUMER = "MapNumber";

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BeachHero
 {
-    public class DrownCharacterEditComponent : MonoBehaviour
+    public class DrownCharacterEditTool : MonoBehaviour
     {
         [Range(0, 1f)] public float waitTimePercentage;
         [ReadOnly]

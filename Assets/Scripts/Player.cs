@@ -124,6 +124,14 @@ namespace BeachHero
         public void StartMovement(Vector3[] pointsList)
         {
             canStartMovement = true;
+            //set boat direction 
+            if (pointsList.Length > 0)
+            {
+                Vector3 firstPoint = pointsList[0];
+                Vector3 direction = (firstPoint - transform.position).normalized;
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                transform.rotation = targetRotation;
+            }
             this.pointsList = pointsList;
         }
         public void Init()

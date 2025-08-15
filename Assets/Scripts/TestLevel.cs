@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace BeachHero
 {
-    public class Initializer : MonoBehaviour
+    public class TestLevel : MonoBehaviour
     {
         [SerializeField] private Material waterMaterial;
 
@@ -18,12 +18,12 @@ namespace BeachHero
         /// </summary>
         private void ResetWaterMaterial()
         {
-            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{0}"), 1f);
-            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{1}"), 1f);
-            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{2}"), 1f);
+            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{0}"), 0f);
+            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{1}"), 0f);
+            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{2}"), 0f);
         }
 
-        private async void Initialize()
+        private void Initialize()
         {
             Application.targetFrameRate = 30;
             GameController.GetInstance.Init();
@@ -31,10 +31,8 @@ namespace BeachHero
             AdController.GetInstance.Init();
             HapticsManager.GetInstance.Init();
             DOTween.Init();
-            await UIController.GetInstance.LoadingUI.LoadSceneAsync(StringUtils.GAME_SCENE);
             GameController.GetInstance.SpawnLevel();
-            await SceneLoader.GetInstance.UnloadScene(StringUtils.INIT_SCENE);
-            await UIController.GetInstance.LoadingUI.DisableLoadingScreen();
+            GameController.GetInstance.Play();
         }
     }
 }

@@ -49,7 +49,7 @@ public class EditorSceneController : MonoBehaviour
         if (spawnItemType == SpawnItemType.DrownCharacter)
         {
             GameObject savedCharacterobject = (GameObject)PrefabUtility.InstantiatePrefab(_object);
-            DrownCharacterEditComponent savedCharacter = savedCharacterobject.AddComponent<DrownCharacterEditComponent>();
+            DrownCharacterEditTool savedCharacter = savedCharacterobject.AddComponent<DrownCharacterEditTool>();
             savedCharacterobject.transform.parent = container.transform;
             savedCharacter.Init(Vector3.zero, 1, currentLevel.LevelTime);
         }
@@ -57,7 +57,7 @@ public class EditorSceneController : MonoBehaviour
         {
             GameObject movingObstacleObject = (GameObject)PrefabUtility.InstantiatePrefab(_object);
             MovingObstacle movingObstacleComponent = movingObstacleObject.GetComponent<MovingObstacle>();
-            MovingObstacleEditComponent movingObstacle = movingObstacleObject.AddComponent<MovingObstacleEditComponent>();
+            MovingObstacleEditTool movingObstacle = movingObstacleObject.AddComponent<MovingObstacleEditTool>();
             movingObstacleObject.transform.parent = container.transform;
             movingObstacle.Init(new MovingObstacleData() { type = movingObstacleComponent.ObstacleType });
         }
@@ -71,10 +71,10 @@ public class EditorSceneController : MonoBehaviour
         if (spawnItemType == SpawnItemType.WaterHoleObstacle)
         {
             GameObject waterHoleObject = (GameObject)PrefabUtility.InstantiatePrefab(_object);
-            WaterHoleEditComponent waterHole = waterHoleObject.AddComponent<WaterHoleEditComponent>();
+            WaterHoleEditTool waterHole = waterHoleObject.AddComponent<WaterHoleEditTool>();
             waterHoleObject.transform.parent = container.transform;
 
-            int cyclonesCount = container.transform.GetComponentsInChildren<WaterHoleEditComponent>().Length;
+            int cyclonesCount = container.transform.GetComponentsInChildren<WaterHoleEditTool>().Length;
             waterHole.Init(new WaterHoleObstacleData() { position = Vector3.zero, scale = 2 }, cyclonesCount);
         }
         if (spawnItemType == SpawnItemType.Collectable)
@@ -109,7 +109,7 @@ public class EditorSceneController : MonoBehaviour
             cycloneIndex++;
             WaterHoleObstacle waterHolePrefab = AssetDatabase.LoadAssetAtPath<WaterHoleObstacle>(waterHolePath);
             GameObject waterHoleGameobject = PrefabUtility.InstantiatePrefab(waterHolePrefab.gameObject) as GameObject;
-            WaterHoleEditComponent waterHoleEditComponent = waterHoleGameobject.AddComponent<WaterHoleEditComponent>();
+            WaterHoleEditTool waterHoleEditComponent = waterHoleGameobject.AddComponent<WaterHoleEditTool>();
             waterHoleGameobject.transform.parent = container.transform;
             waterHoleEditComponent.Init(item, cycloneIndex);
         }
@@ -125,7 +125,7 @@ public class EditorSceneController : MonoBehaviour
         {
             DrownCharacter drownCharacterPrefab = AssetDatabase.LoadAssetAtPath<DrownCharacter>(drownCharacterPath);
             GameObject drownCharacterobject = PrefabUtility.InstantiatePrefab(drownCharacterPrefab.gameObject) as GameObject;
-            DrownCharacterEditComponent drownCharacter = drownCharacterobject.AddComponent<DrownCharacterEditComponent>();
+            DrownCharacterEditTool drownCharacter = drownCharacterobject.AddComponent<DrownCharacterEditTool>();
             drownCharacterobject.transform.parent = container.transform;
             drownCharacter.Init(characterItem.Position, characterItem.WaitTimePercentage, currentLevel.LevelTime);
         }
@@ -179,7 +179,7 @@ public class EditorSceneController : MonoBehaviour
             }
             MovingObstacle sharkObstaclePrefab = AssetDatabase.LoadAssetAtPath<MovingObstacle>(path);
             GameObject sharkGameObject = (GameObject)PrefabUtility.InstantiatePrefab(sharkObstaclePrefab.gameObject);
-            MovingObstacleEditComponent movingObstacle = sharkGameObject.AddComponent<MovingObstacleEditComponent>();
+            MovingObstacleEditTool movingObstacle = sharkGameObject.AddComponent<MovingObstacleEditTool>();
             movingObstacle.transform.parent = container.transform;
             movingObstacle.Init(item);
         }
@@ -210,9 +210,9 @@ public class EditorSceneController : MonoBehaviour
     #endregion
 
     #region Get Edited Data
-    public WaterHoleEditComponent[] GetWaterHoleEditData()
+    public WaterHoleEditTool[] GetWaterHoleEditData()
     {
-        WaterHoleEditComponent[] data = container.GetComponentsInChildren<WaterHoleEditComponent>();
+        WaterHoleEditTool[] data = container.GetComponentsInChildren<WaterHoleEditTool>();
         return data;
     }
 
@@ -229,14 +229,14 @@ public class EditorSceneController : MonoBehaviour
         Vector3 rotation = data.transform.rotation.eulerAngles;
         return (position, rotation);
     }
-    public MovingObstacleEditComponent[] GetMovingObstacleEditData()
+    public MovingObstacleEditTool[] GetMovingObstacleEditData()
     {
-        MovingObstacleEditComponent[] data = container.GetComponentsInChildren<MovingObstacleEditComponent>();
+        MovingObstacleEditTool[] data = container.GetComponentsInChildren<MovingObstacleEditTool>();
         return data;
     }
-    public DrownCharacterEditComponent[] GetSavedCharacterEditData()
+    public DrownCharacterEditTool[] GetSavedCharacterEditData()
     {
-        DrownCharacterEditComponent[] data = container.GetComponentsInChildren<DrownCharacterEditComponent>();
+        DrownCharacterEditTool[] data = container.GetComponentsInChildren<DrownCharacterEditTool>();
         return data;
     }
     public Collectable[] GetCollectableEditData()

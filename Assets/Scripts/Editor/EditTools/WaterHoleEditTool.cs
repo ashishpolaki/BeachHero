@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace BeachHero
 {
-    public class WaterHoleEditComponent : MonoBehaviour
+    public class WaterHoleEditTool : MonoBehaviour
     {
         [Range(0, 10f)] public float cycloneRadius;
         [SerializeField] private GameObject waterGraphicsObject;
