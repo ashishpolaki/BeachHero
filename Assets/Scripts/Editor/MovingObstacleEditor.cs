@@ -9,10 +9,13 @@ namespace BeachHero
     {
         #region Variables
         private MovingObstacleEditTool movingObstacle;
-        private bool[] showTangents;
-        private bool[] showHandles;
+        private MovingObstacleShape movementShape;
         private int addKeyframeIndex = 0;
         private int removeKeyframeIndex = 0;
+        private int segments;
+        private float radius;
+        private bool showGenerateShapeSettings = false;
+        private bool showOffsetSettings = false;
         public static float KeyFramePositionSize = 0.2f;
         public static float KeyFramePositionPickUpSize = 1f;
         public static float keyFrameTangetHandleSize = 0.5f;
@@ -31,123 +34,236 @@ namespace BeachHero
         {
             serializedObject.Update();
             EditorGUILayout.PropertyField(serializedObject.FindProperty("obstacleType"), new GUIContent("Obstacle Type"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("movementType"), new GUIContent("Movement Type"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("movementSpeed"), new GUIContent("Movement Speed"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("offsetPosition"), new GUIContent("Offset Position"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("offsetRotation"), new GUIContent("Offset Rotation"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("resolution"), new GUIContent("Resolution"));
-            if (movingObstacle.movementType == MovingObstacleMovementType.Circular ||
-                          movingObstacle.movementType == MovingObstacleMovementType.FigureEight)
-            {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("circleRadius"), new GUIContent("Circle Radius"));
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("circleSegments"), new GUIContent("Circle Segments"));
-                if (movingObstacle.movementType == MovingObstacleMovementType.Circular)
-                {
-                    var keyFrames = BezierCurveUtils.CreateCircleShape(movingObstacle.circleRadius, (int)movingObstacle.circleSegments);
-                    movingObstacle.SetKeyFrames(keyFrames);
-                }
-                else if (movingObstacle.movementType == MovingObstacleMovementType.FigureEight)
-                {
-                    var keyFrames = BezierCurveUtils.CreateFigureEightShape(movingObstacle.circleRadius, (int)movingObstacle.circleSegments);
-                    movingObstacle.SetKeyFrames(keyFrames);
-                }
-            }
 
             EditorGUILayout.PropertyField(serializedObject.FindProperty("loopedMovement"), new GUIContent("Looped Movement"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("inverseDirection"), new GUIContent("Inverse Direction"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("canEditKeyFramesInScene"), new GUIContent("Edit KeyFrames"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("Keyframes"), new GUIContent("Key Frames"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("pathPoints"), new GUIContent("Path Positions"), EditorStyles.miniBoldFont);
-            movingObstacle.canEditKeyFramesInScene = GUILayout.Toggle(movingObstacle.canEditKeyFramesInScene, "Edit KeyFrames");
             if (movingObstacle.canEditKeyFramesInScene)
             {
-                // Add Keyframe
-                if (GUILayout.Button("Add Keyframe"))
-                {
-                    Undo.RecordObject(movingObstacle, "Add Keyframe");
-                    AddKeyframe();
-                }
-
-                // Remove Last Keyframe
-                if (GUILayout.Button("Remove Last Keyframe"))
-                {
-                    Undo.RecordObject(movingObstacle, "Remove Last Keyframe");
-                    RemoveKeyframe();
-                }
-
-                // Add Keyframe at Index
-                GUILayout.BeginHorizontal();
-                if (GUILayout.Button("Add Keyframe At Index"))
-                {
-                    Undo.RecordObject(movingObstacle, "Add Keyframe At Index");
-                    AddKeyframeAtIndex(addKeyframeIndex);
-                }
-                GUILayout.Label("Index:", GUILayout.Width(50));
-                addKeyframeIndex = EditorGUILayout.IntField(addKeyframeIndex, GUILayout.Width(50));
-                GUILayout.EndHorizontal();
-
-                // Remove Keyframe at Index
-                GUILayout.BeginHorizontal();
-                if (GUILayout.Button("Remove Keyframe At Index"))
-                {
-                    Undo.RecordObject(movingObstacle, "Remove Keyframe At Index");
-                    RemoveKeyframeAtIndex(removeKeyframeIndex);
-                }
-                GUILayout.Label("Index:", GUILayout.Width(50));
-                removeKeyframeIndex = EditorGUILayout.IntField(removeKeyframeIndex, GUILayout.Width(50));
-                GUILayout.EndHorizontal();
-
-                // Remove all Keyframes
-                if (GUILayout.Button("Remove All Keyframes"))
-                {
-                    Undo.RecordObject(movingObstacle, "Remove All Keyframes");
-                    movingObstacle.RemoveAllKeyFrames();
-                }
+                AddKeyframe();
+                RemoveKeyframe();
+                AddKeyframeAtIndex();
+                RemoveKeyframeAtIndex();
+                RemoveAllKeyframes();
+                DrawShapeGenerator();
+                DrawOffsetToggle();
             }
             serializedObject.ApplyModifiedProperties();
         }
+        #region Keyframe Management
+        private void DrawOffsetToggle()
+        {
+            // EditorGUILayout.Space(1);
+            // Toggle with Button
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button(showOffsetSettings ? "Hide Offset" : "Enable Offset", GUILayout.Height(22), GUILayout.Width(220)))
+            {
+                showOffsetSettings = !showOffsetSettings;
+            }
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+        }
+
+        private void HandleKeyframeTransform()
+        {
+            if (showOffsetSettings)
+            {
+                Vector3 center = Vector3.zero;
+                for (int i = 0; i < movingObstacle.Keyframes.Length; i++)
+                    center += movingObstacle.Keyframes[i].position;
+                center /= movingObstacle.Keyframes.Length;
+
+                // 2. Draw offset handle at the center
+                Handles.color = Color.blue;
+                EditorGUI.BeginChangeCheck();
+                Vector3 newCenter = Handles.FreeMoveHandle(center, 1f, Vector3.zero, Handles.SphereHandleCap);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    Undo.RecordObject(movingObstacle, "Move All Keyframes Offset");
+                    Vector3 delta = newCenter - center;
+                    // Apply movement to all keyframes
+                    for (int i = 0; i < movingObstacle.Keyframes.Length; i++)
+                        movingObstacle.Keyframes[i].position += delta;
+                }
+
+                // 3. Rotation handle at the same center
+                EditorGUI.BeginChangeCheck();
+                Quaternion newRot = Handles.RotationHandle(Quaternion.identity, center);
+                if (EditorGUI.EndChangeCheck())
+                {
+                    Undo.RecordObject(movingObstacle, "Rotate All Keyframes");
+                    for (int i = 0; i < movingObstacle.Keyframes.Length; i++)
+                    {
+                        Vector3 dir = movingObstacle.Keyframes[i].position - center;
+                        dir = newRot * dir; // rotate around center
+                        movingObstacle.Keyframes[i].position = center + dir;
+                        movingObstacle.Keyframes[i].inTangentLocal = newRot * movingObstacle.Keyframes[i].inTangentLocal;
+                        movingObstacle.Keyframes[i].outTangentLocal = newRot * movingObstacle.Keyframes[i].outTangentLocal;
+                    }
+                }
+            }
+        }
+
+        private void HandleShapeGeneration()
+        {
+            if (movementShape == MovingObstacleShape.Circular)
+            {
+                var keyFrames = BezierCurveUtils.CreateCircleShape(radius, segments);
+                movingObstacle.SetKeyFrames(keyFrames);
+            }
+            else if (movementShape == MovingObstacleShape.FigureEight)
+            {
+                var keyFrames = BezierCurveUtils.CreateFigureEightShape(radius, segments);
+                movingObstacle.SetKeyFrames(keyFrames);
+            }
+            EditorUtility.SetDirty(movingObstacle);
+        }
+
+        private void DrawShapeGenerator()
+        {
+            EditorGUILayout.Space(5);
+
+            // Toggle with Button
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button(showGenerateShapeSettings ? "Hide Generate Shape Settings" : "Show Generate Shape Settings", GUILayout.Height(22), GUILayout.Width(220)))
+            {
+                showGenerateShapeSettings = !showGenerateShapeSettings;
+            }
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+
+            if (showGenerateShapeSettings)
+            {
+                Rect rect = EditorGUILayout.BeginVertical();
+
+                // Header Text (centered)
+                GUIStyle centeredBoldLabel = new GUIStyle(EditorStyles.boldLabel);
+                centeredBoldLabel.alignment = TextAnchor.MiddleCenter;
+                GUILayout.Label("Generate Shape Settings", centeredBoldLabel);
+
+                EditorGUILayout.Space(3);
+                movementShape = (MovingObstacleShape)EditorGUILayout.EnumPopup("Shape Type", movementShape);
+                radius = EditorGUILayout.FloatField("Radius", radius);
+                segments = EditorGUILayout.IntField("Segments", segments);
+
+                GUILayout.BeginHorizontal();
+                GUILayout.FlexibleSpace();
+                if (GUILayout.Button("Generate", GUILayout.Height(20), GUILayout.Width(120)))
+                {
+                    Undo.RecordObject(movingObstacle, "Generate Shape");
+                    HandleShapeGeneration();
+                }
+                GUILayout.FlexibleSpace();
+                GUILayout.EndHorizontal();
+
+                EditorGUILayout.Space(3);
+                EditorGUILayout.EndVertical();
+
+                // Draw outline after layout
+                Handles.BeginGUI();
+                Handles.color = Color.yellow;
+                Handles.DrawAAPolyLine(2,
+                    new Vector3(rect.xMin, rect.yMin),
+                    new Vector3(rect.xMax, rect.yMin),
+                    new Vector3(rect.xMax, rect.yMax),
+                    new Vector3(rect.xMin, rect.yMax),
+                    new Vector3(rect.xMin, rect.yMin));
+                Handles.EndGUI();
+            }
+        }
+
         private void AddKeyframe()
         {
-            Undo.RecordObject(movingObstacle, "Add Keyframe");
-
-            BezierKeyframe newKeyframe = new BezierKeyframe
+            if (GUILayout.Button("Add Keyframe"))
             {
-                position = Vector3.zero,
-                inTangentLocal = Vector3.left,
-                outTangentLocal = Vector3.right
-            };
-            movingObstacle.AddKeyFrame(newKeyframe);
+                Undo.RecordObject(movingObstacle, "Add Keyframe");
+                Undo.RecordObject(movingObstacle, "Add Keyframe");
+
+                BezierKeyframe newKeyframe = new BezierKeyframe
+                {
+                    position = Vector3.zero,
+                    inTangentLocal = Vector3.left,
+                    outTangentLocal = Vector3.right
+                };
+                movingObstacle.AddKeyFrame(newKeyframe);
+            }
         }
+
         private void RemoveKeyframe()
         {
-            if (movingObstacle.Keyframes == null || movingObstacle.Keyframes.Length == 0)
-                return;
-
-            Undo.RecordObject(movingObstacle, "Remove Keyframe");
-            movingObstacle.RemoveKeyFrame();
-        }
-        private void AddKeyframeAtIndex(int index)
-        {
-            if (movingObstacle.Keyframes == null || index < 0 || index > movingObstacle.Keyframes.Length)
-                return;
-
-            Undo.RecordObject(movingObstacle, "Add Keyframe At Index");
-
-            BezierKeyframe newKeyframe = new BezierKeyframe
+            // Remove Last Keyframe
+            if (GUILayout.Button("Remove Last Keyframe"))
             {
-                position = Vector3.zero,
-                inTangentLocal = Vector3.left,
-                outTangentLocal = Vector3.right
-            };
-            movingObstacle.AddKeyframeAtIndex(index, newKeyframe);
-        }
-        private void RemoveKeyframeAtIndex(int index)
-        {
-            if (movingObstacle.Keyframes == null || movingObstacle.Keyframes.Length == 0 || index < 0 || index >= movingObstacle.Keyframes.Length)
-                return;
+                Undo.RecordObject(movingObstacle, "Remove Last Keyframe");
+                if (movingObstacle.Keyframes == null || movingObstacle.Keyframes.Length == 0)
+                    return;
 
-            Undo.RecordObject(movingObstacle, "Remove Keyframe At Index");
-            movingObstacle.RemoveKeyframeAtIndex(index);
+                Undo.RecordObject(movingObstacle, "Remove Keyframe");
+                movingObstacle.RemoveKeyFrame();
+            }
         }
+
+        private void AddKeyframeAtIndex()
+        {
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Add Keyframe At Index"))
+            {
+                Undo.RecordObject(movingObstacle, "Add Keyframe At Index");
+
+                if (movingObstacle.Keyframes == null || addKeyframeIndex < 0 || addKeyframeIndex > movingObstacle.Keyframes.Length)
+                    return;
+
+                Undo.RecordObject(movingObstacle, "Add Keyframe At Index");
+
+                BezierKeyframe newKeyframe = new BezierKeyframe
+                {
+                    position = Vector3.zero,
+                    inTangentLocal = Vector3.left,
+                    outTangentLocal = Vector3.right
+                };
+                movingObstacle.AddKeyframeAtIndex(addKeyframeIndex, newKeyframe);
+            }
+            GUILayout.Label("Index:", GUILayout.Width(50));
+            addKeyframeIndex = EditorGUILayout.IntField(addKeyframeIndex, GUILayout.Width(50));
+            GUILayout.EndHorizontal();
+        }
+
+        private void RemoveKeyframeAtIndex()
+        {
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Remove Keyframe At Index"))
+            {
+                Undo.RecordObject(movingObstacle, "Remove Keyframe At Index");
+                if (movingObstacle.Keyframes == null || movingObstacle.Keyframes.Length == 0 || removeKeyframeIndex < 0 || removeKeyframeIndex >= movingObstacle.Keyframes.Length)
+                    return;
+
+                Undo.RecordObject(movingObstacle, "Remove Keyframe At Index");
+                movingObstacle.RemoveKeyframeAtIndex(removeKeyframeIndex);
+            }
+            GUILayout.Label("Index:", GUILayout.Width(50));
+            removeKeyframeIndex = EditorGUILayout.IntField(removeKeyframeIndex, GUILayout.Width(50));
+            GUILayout.EndHorizontal();
+        }
+
+        private void RemoveAllKeyframes()
+        {
+            if (GUILayout.Button("Remove All Keyframes"))
+            {
+                Undo.RecordObject(movingObstacle, "Remove All Keyframes");
+                movingObstacle.RemoveAllKeyFrames();
+            }
+        }
+
+        #endregion
+
         #endregion
 
         #region Scene Window
@@ -158,17 +274,6 @@ namespace BeachHero
 
             if (movingObstacle.Keyframes == null || movingObstacle.Keyframes.Length < 2)
                 return;
-
-            // Initialize the showTangents array if needed
-            if (showTangents == null || showTangents.Length != movingObstacle.Keyframes.Length)
-            {
-                showTangents = new bool[movingObstacle.Keyframes.Length];
-            }
-            // Ensure the showHandles array is initialized
-            if (showHandles == null || showHandles.Length != movingObstacle.Keyframes.Length)
-            {
-                showHandles = new bool[movingObstacle.Keyframes.Length];
-            }
 
             for (int i = 0; i < movingObstacle.Keyframes.Length; i++)
             {
@@ -181,81 +286,47 @@ namespace BeachHero
                     });
 
                 // Draw an interactive Sphere Handle
+                Handles.color = Color.white;
+                EditorGUI.BeginChangeCheck();
+                Vector3 newKeyFramePos = Handles.FreeMoveHandle(movingObstacle.Keyframes[i].position, 0.15f, Vector3.zero, Handles.SphereHandleCap);
+                bool keyFrameMoved = EditorGUI.EndChangeCheck();
+                if (keyFrameMoved)
+                {
+                    Undo.RecordObject(movingObstacle, "Move Keyframe");
+                    movingObstacle.Keyframes[i].position = newKeyFramePos;
+
+                    // Force the Scene view to repaint
+                    SceneView.RepaintAll();
+                }
+
+                // In-Tangent
                 Handles.color = Color.green;
-                if (Handles.Button(movingObstacle.Keyframes[i].position, Quaternion.identity, KeyFramePositionSize, KeyFramePositionPickUpSize, Handles.SphereHandleCap))
+                Vector3 anchorPos = movingObstacle.Keyframes[i].position;
+                Vector3 inWorld = movingObstacle.Keyframes[i].InTangentWorld;
+                EditorGUI.BeginChangeCheck();
+                Vector3 newInWorld = Handles.FreeMoveHandle(inWorld, 0.1f, Vector3.zero, Handles.SphereHandleCap);
+                if (EditorGUI.EndChangeCheck())
                 {
-                    // Set all other showHandles to false
-                    for (int j = 0; j < showHandles.Length; j++)
-                    {
-                        showHandles[j] = false;
-                    }
-                    // Reset all tangent visibility flags
-                    for (int j = 0; j < showTangents.Length; j++)
-                    {
-                        showTangents[j] = false;
-                    }
-
-                    // Toggle the visibility of the PositionHandle for this keyframe
-                    showHandles[i] = true;
-                    // Enable tangent visibility for the current keyframe
-                    showTangents[i] = true;
+                    Undo.RecordObject(movingObstacle, "Move In-Tangent");
+                    movingObstacle.Keyframes[i].inTangentLocal = newInWorld - movingObstacle.Keyframes[i].position;
                 }
+                Handles.DrawLine(anchorPos, inWorld);
 
-                // Show the PositionHandle only if the button was clicked
-                if (showHandles[i])
+                //Out-Tangent
+                Handles.color = Color.red;
+                Vector3 outWorld = movingObstacle.Keyframes[i].OutTangentWorld;
+                EditorGUI.BeginChangeCheck();
+                Vector3 newOutWorld = Handles.FreeMoveHandle(outWorld, 0.1f, Vector3.zero, Handles.SphereHandleCap);
+                if (EditorGUI.EndChangeCheck())
                 {
-                    EditorGUI.BeginChangeCheck();
-                    Vector3 newPosition = Handles.PositionHandle(movingObstacle.Keyframes[i].position, Quaternion.identity);
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        Undo.RecordObject(movingObstacle, "Move Keyframe");
-                        movingObstacle.Keyframes[i].position = newPosition;
-
-                        // Force the Scene view to repaint
-                        SceneView.RepaintAll();
-                    }
+                    Undo.RecordObject(movingObstacle, "Move Out-Tangent");
+                    movingObstacle.Keyframes[i].outTangentLocal = newOutWorld - movingObstacle.Keyframes[i].position;
                 }
-
-                // Show tangent handlers only if the position handler was interacted with
-                if (showTangents[i])
-                {
-                    // Editable inTangentLocal (Sliders for X, Y, Z axes)
-                    Vector3 inTangentWorld = movingObstacle.Keyframes[i].InTangentWorld; // Get the current world position of the inTangent
-                    EditorGUI.BeginChangeCheck();
-                    Vector3 newInTangentWorld = CustomPositionHandle(inTangentWorld, Quaternion.identity, keyFrameTangetHandleSize, 0.15f);
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        Undo.RecordObject(movingObstacle, "Move In Tangent");
-
-                        // Update the local position of the inTangent
-                        movingObstacle.Keyframes[i].inTangentLocal = newInTangentWorld - movingObstacle.Keyframes[i].position;
-                    }
-                    Handles.color = Color.yellow;
-                    // Draw cube for inTangent
-                    Handles.CubeHandleCap(0, movingObstacle.Keyframes[i].InTangentWorld, Quaternion.identity, keyFrameTangetCubeSize, EventType.Repaint);
-
-
-                    // Editable outTangentLocal  (Sliders for X, Y, Z axes)
-                    Vector3 outTangentWorld = movingObstacle.Keyframes[i].OutTangentWorld; // Get the current world position of the outTangent
-                    EditorGUI.BeginChangeCheck();
-                    Vector3 newOutTangentWorld = CustomPositionHandle(outTangentWorld, Quaternion.identity, keyFrameTangetHandleSize, 0.15f);
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        Undo.RecordObject(movingObstacle, "Move Out Tangent");
-
-                        // Update the local position of the outTangent
-                        movingObstacle.Keyframes[i].outTangentLocal = newOutTangentWorld - movingObstacle.Keyframes[i].position;
-                    }
-                    Handles.color = Color.cyan;
-                    // Draw cube for inTangent
-                    Handles.CubeHandleCap(0, movingObstacle.Keyframes[i].OutTangentWorld, Quaternion.identity, keyFrameTangetCubeSize, EventType.Repaint);
-
-                    // Draw tangent lines
-                    Handles.color = Color.white;
-                    Handles.DrawLine(movingObstacle.Keyframes[i].position, movingObstacle.Keyframes[i].InTangentWorld);
-                    Handles.DrawLine(movingObstacle.Keyframes[i].position, movingObstacle.Keyframes[i].OutTangentWorld);
-                }
+                Handles.DrawLine(anchorPos, outWorld);
             }
+
+            //Offset
+            HandleKeyframeTransform();
         }
 
         private Vector3 CustomPositionHandle(Vector3 position, Quaternion rotation, float handleSize, float rectangleToSliderRatio = 0.15f)
@@ -293,7 +364,6 @@ namespace BeachHero
             return updatedPosition;
         }
         #endregion
-
     }
 }
 #endif

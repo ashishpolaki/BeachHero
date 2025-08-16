@@ -49,10 +49,8 @@ namespace BeachHero
         public Vector3 Rotation;
     }
 
-    public enum MovingObstacleMovementType
+    public enum MovingObstacleShape
     {
-        None,
-        Custom,
         FigureEight,
         Circular,
     }
@@ -95,8 +93,6 @@ namespace BeachHero
     public struct MovingObstacleData
     {
         public ObstacleType type;
-        public MovingObstacleMovementType movementType;
-
         public BezierKeyframe[] bezierKeyframes;
         public float resolution;
         public float movementSpeed;

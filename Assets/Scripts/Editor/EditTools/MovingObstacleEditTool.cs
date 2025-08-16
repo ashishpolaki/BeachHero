@@ -1,5 +1,4 @@
 #if UNITY_EDITOR
-
 using UnityEditor;
 using UnityEngine;
 
@@ -10,35 +9,27 @@ namespace BeachHero
         [ReadOnly]
         public Vector3[] pathPoints;
         public ObstacleType obstacleType;
-        public MovingObstacleMovementType movementType;
         public BezierKeyframe[] Keyframes;
-        public BezierKeyframe[] TempKeyFrames;
         public float resolution;
         public float movementSpeed;
         public Vector3 offsetPosition;
         public Vector3 offsetRotation;
-        public float circleRadius;
-        public int circleSegments;
         public bool loopedMovement;
         public bool inverseDirection;
         private LineRenderer pathRenderer;
         public bool canEditKeyFramesInScene;
         private bool canDrawGizmos;
 
+        #region Keyframe Management
         public void AddKeyFrame(BezierKeyframe newKeyframe)
         {
             if (Keyframes == null)
             {
                 Keyframes = new BezierKeyframe[0];
             }
-            if (TempKeyFrames == null)
-            {
-                TempKeyFrames = new BezierKeyframe[0];
-            }
 
             // Use ArrayUtility.Add with the backing field
             ArrayUtility.Add(ref Keyframes, newKeyframe);
-            ArrayUtility.Add(ref TempKeyFrames, newKeyframe);
         }
         public void RemoveKeyFrame()
         {
@@ -47,7 +38,6 @@ namespace BeachHero
 
             // Use ArrayUtility.Remove with the backing field
             ArrayUtility.RemoveAt(ref Keyframes, Keyframes.Length - 1);
-            ArrayUtility.RemoveAt(ref TempKeyFrames, TempKeyFrames.Length - 1);
         }
         public void RemoveAllKeyFrames()
         {
@@ -56,7 +46,6 @@ namespace BeachHero
 
             // Use ArrayUtility.Clear with the backing field
             ArrayUtility.Clear(ref Keyframes);
-            ArrayUtility.Clear(ref TempKeyFrames);
         }
         public void AddKeyframeAtIndex(int index, BezierKeyframe newKeyframe)
         {
@@ -65,7 +54,6 @@ namespace BeachHero
 
             // Use ArrayUtility.Insert with the backing field
             ArrayUtility.Insert(ref Keyframes, index, newKeyframe);
-            ArrayUtility.Insert(ref TempKeyFrames, index, newKeyframe);
         }
         public void RemoveKeyframeAtIndex(int index)
         {
@@ -74,7 +62,6 @@ namespace BeachHero
 
             // Use ArrayUtility.RemoveAt with the backing field
             ArrayUtility.RemoveAt(ref Keyframes, index);
-            ArrayUtility.RemoveAt(ref TempKeyFrames, index);
         }
         public void SetKeyFrames(BezierKeyframe[] _keyFrames)
         {
@@ -82,21 +69,13 @@ namespace BeachHero
                 return;
 
             Keyframes = new BezierKeyframe[_keyFrames.Length];
-            TempKeyFrames = new BezierKeyframe[_keyFrames.Length];
             for (int i = 0; i < _keyFrames.Length; i++)
             {
                 Keyframes[i] = _keyFrames[i];
-                TempKeyFrames[i] = _keyFrames[i];
             }
         }
+        #endregion
 
-        private void OnValidate()
-        {
-            if (!canEditKeyFramesInScene)
-            {
-                ApplyOffset();
-            }
-        }
         private void OnDrawGizmos()
         {
             if (!canDrawGizmos) return;
@@ -119,20 +98,20 @@ namespace BeachHero
         }
         private void ApplyOffset()
         {
-            if (Keyframes == null || Keyframes.Length < 2)
-                return;
-            for (int i = 0; i < Keyframes.Length; i++)
-            {
-                var rotationOffset = Quaternion.Euler(offsetRotation);
+            //if (Keyframes == null || Keyframes.Length < 2)
+            //    return;
+            //for (int i = 0; i < Keyframes.Length; i++)
+            //{
+            //    var rotationOffset = Quaternion.Euler(offsetRotation);
 
-                Vector3 positionWithOffset = rotationOffset * TempKeyFrames[i].position + offsetPosition;
-                Vector3 inTangentWithOffset = rotationOffset * TempKeyFrames[i].inTangentLocal;
-                Vector3 outTangentWithOffset = rotationOffset * TempKeyFrames[i].outTangentLocal;
+            //    Vector3 positionWithOffset = rotationOffset * TempKeyFrames[i].position + offsetPosition;
+            //    Vector3 inTangentWithOffset = rotationOffset * TempKeyFrames[i].inTangentLocal;
+            //    Vector3 outTangentWithOffset = rotationOffset * TempKeyFrames[i].outTangentLocal;
 
-                Keyframes[i].position = positionWithOffset;
-                Keyframes[i].inTangentLocal = inTangentWithOffset;
-                Keyframes[i].outTangentLocal = outTangentWithOffset;
-            }
+            //    Keyframes[i].position = positionWithOffset;
+            //    Keyframes[i].inTangentLocal = inTangentWithOffset;
+            //    Keyframes[i].outTangentLocal = outTangentWithOffset;
+            //}
         }
         private void GetPathRenderer()
         {
@@ -143,7 +122,6 @@ namespace BeachHero
         public void Init(MovingObstacleData movingObstacleData)
         {
             obstacleType = movingObstacleData.type;
-            movementType = movingObstacleData.movementType;
             resolution = movingObstacleData.resolution;
             movementSpeed = movingObstacleData.movementSpeed;
             loopedMovement = movingObstacleData.loopedMovement;

@@ -589,7 +589,6 @@ public class BeachHeroEditorWindow : EditorWindow
             SerializedProperty movingObstacleProperty = levelRepresentation.moveObstaclesProperty.GetArrayElementAtIndex(i);
             MoveObstacleRepresentation moveObstacleRepresentation = new MoveObstacleRepresentation(movingObstacleProperty);
             moveObstacleRepresentation.obstacleTypeProperty.enumValueIndex = (int)movingObstacleEditComponents[i].obstacleType;
-            moveObstacleRepresentation.movementTypeProperty.enumValueIndex = (int)movingObstacleEditComponents[i].movementType;
             //keyframes
             moveObstacleRepresentation.keyFrameProperty.arraySize = movingObstacleEditComponents[i].Keyframes.Length;
             for (int j = 0; j < movingObstacleEditComponents[i].Keyframes.Length; j++)
