@@ -76,7 +76,6 @@ namespace BeachHero
                         EditorGUILayout.BeginVertical(EditorStyles.helpBox);
                         // Display each field of MovingObstacleData
                         EditorGUILayout.PropertyField(element.FindPropertyRelative("type"), new GUIContent("Obstacle Type"));
-                        EditorGUILayout.PropertyField(element.FindPropertyRelative("movementType"), new GUIContent("Movement Type"));
                         EditorGUILayout.PropertyField(element.FindPropertyRelative("loopedMovement"), new GUIContent("Looped Movement"));
                         EditorGUILayout.PropertyField(element.FindPropertyRelative("inverseDirection"), new GUIContent("Inverse Direction"));
                         EditorGUILayout.PropertyField(element.FindPropertyRelative("movementSpeed"), new GUIContent("Movement Speed"));
