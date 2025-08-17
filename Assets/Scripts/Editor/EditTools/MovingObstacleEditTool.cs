@@ -89,12 +89,15 @@ namespace BeachHero
             for (int i = 0; i < pathPoints.Length - 1; i++)
             {
                 Gizmos.DrawSphere(pathPoints[i], 0.1f);
-               // Gizmos.DrawLine(pathPoints[i], pathPoints[i + 1]);
+                // Gizmos.DrawLine(pathPoints[i], pathPoints[i + 1]);
             }
             pathRenderer.positionCount = pathPoints.Length;
             pathRenderer.SetPositions(pathPoints);
-            transform.position = pathPoints[0];
-            transform.LookAt(pathPoints[1]);
+            if (pathPoints.Length > 0)
+            {
+                transform.position = pathPoints[0];
+                transform.LookAt(pathPoints[1]);
+            }
         }
         private void ApplyOffset()
         {

@@ -129,8 +129,8 @@ namespace BeachHero
                 Vector3 tangentDirection = new Vector3(-Mathf.Sin(angle), 0, Mathf.Cos(angle)).normalized;
 
                 // Calculate the tangents for smooth transitions
-                Vector3 inTangent = -tangentDirection * (radius / segmentsPerLoop); // In tangent points backward
-                Vector3 outTangent = tangentDirection * (radius / segmentsPerLoop); // Out tangent points forward
+                Vector3 inTangent = tangentDirection * (radius / segmentsPerLoop); // In tangent points backward
+                Vector3 outTangent = -tangentDirection * (radius / segmentsPerLoop); // Out tangent points forward
 
                 // Create the keyframe
                 keyframes[segmentsPerLoop + i] = new BezierKeyframe
