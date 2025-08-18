@@ -17,37 +17,30 @@ MonoBehaviour:
     Position: {x: -0.18, y: 0, z: -0.34}
     Rotation: {x: -0, y: 0, z: 0}
   obstacles:
-    staticObstacles:
-    - type: 4
-      position: {x: -7.71, y: 0, z: 17.18}
-      rotation: {x: 0, y: 0, z: 0}
-    - type: 7
-      position: {x: 3.38, y: 0, z: 9.95}
-      rotation: {x: 0, y: 0, z: 0}
-    - type: 8
-      position: {x: 3.03, y: -0.09, z: 5.01}
-      rotation: {x: 345.0647, y: 324.15973, z: -0.00000088362464}
+    staticObstacles: []
     movingObstacles:
     - type: 6
-      movementType: 1
       bezierKeyframes:
-      - position: {x: -7.830131, y: 0, z: 6.5842705}
+      - position: {x: -7.1983953, y: -0.0068359375, z: 11.95807}
         inTangentLocal: {x: -0.8513609, y: 0, z: -0.52458036}
         outTangentLocal: {x: 0.82338876, y: 0, z: 0.82252884}
-      - position: {x: -4.401838, y: 0, z: 8.989046}
-        inTangentLocal: {x: -0.72293884, y: 0, z: -0.64180773}
-        outTangentLocal: {x: 0.74305403, y: 0, z: 0.6168072}
-      - position: {x: -0.79238284, y: 0, z: 13.5287075}
-        inTangentLocal: {x: 0.65054834, y: 0, z: -0.9229059}
-        outTangentLocal: {x: 0.34946764, y: 0, z: 1.5197296}
-      - position: {x: -2.7127156, y: 0, z: 17.603374}
-        inTangentLocal: {x: 0.24176982, y: 0, z: -0.5844582}
-        outTangentLocal: {x: -0.29600012, y: 0, z: 1.1355199}
-      - position: {x: -7.6511035, y: 0, z: 21.300251}
-        inTangentLocal: {x: -0.6577031, y: 0, z: 0.3339831}
-        outTangentLocal: {x: 1.4910725, y: 0, z: 0.04216109}
-      resolution: 4
-      movementSpeed: 5
+      - position: {x: -2.7604232, y: -0.005859375, z: 12.664845}
+        inTangentLocal: {x: -0.55998087, y: -0.005859375, z: -0.15089607}
+        outTangentLocal: {x: 0.629906, y: -0.00390625, z: 0.17459583}
+      - position: {x: 4.731068, y: -0.01171875, z: 12.780922}
+        inTangentLocal: {x: -1, y: 0, z: 0}
+        outTangentLocal: {x: 1, y: 0, z: 0}
+      - position: {x: 6.852744, y: -0.021484375, z: 14.662178}
+        inTangentLocal: {x: 0.13445568, y: -0.0234375, z: -0.55698776}
+        outTangentLocal: {x: -0.111395836, y: -0.01953125, z: 1.1448021}
+      - position: {x: 5.366463, y: -0.01171875, z: 17.031511}
+        inTangentLocal: {x: 0.34511852, y: -0.00390625, z: -0.3993702}
+        outTangentLocal: {x: -0.41420698, y: -0.00390625, z: 0.33872223}
+      - position: {x: -4.372605, y: -0.00390625, z: 24.101871}
+        inTangentLocal: {x: 0.6307378, y: -0.001953125, z: -0.49672318}
+        outTangentLocal: {x: -0.6450262, y: -0.00390625, z: 0.059114456}
+      resolution: 7
+      movementSpeed: 2
       loopedMovement: 1
       inverseDirection: 0
     waterHoleObstacles: []
