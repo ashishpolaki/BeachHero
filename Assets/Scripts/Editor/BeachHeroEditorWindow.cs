@@ -80,20 +80,20 @@ public class BeachHeroEditorWindow : EditorWindow
         }
 
         public SerializedProperty obstacleTypeProperty;
-        public SerializedProperty movementTypeProperty;
         public SerializedProperty keyFrameProperty;
         public SerializedProperty resolutionProperty;
         public SerializedProperty movementSpeedProperty;
+        public SerializedProperty rotationSpeedProperty;
         public SerializedProperty isLoopMovementProperty;
         public SerializedProperty isInverseDirectionProperty;
 
         public MoveObstacleRepresentation(SerializedProperty movingObstacleProperty)
         {
             obstacleTypeProperty = movingObstacleProperty.FindPropertyRelative("type");
-            movementTypeProperty = movingObstacleProperty.FindPropertyRelative("movementType");
             keyFrameProperty = movingObstacleProperty.FindPropertyRelative("bezierKeyframes");
             resolutionProperty = movingObstacleProperty.FindPropertyRelative("resolution");
             movementSpeedProperty = movingObstacleProperty.FindPropertyRelative("movementSpeed");
+            rotationSpeedProperty = movingObstacleProperty.FindPropertyRelative("rotationSpeedMultiplier");
             isLoopMovementProperty = movingObstacleProperty.FindPropertyRelative("loopedMovement");
             isInverseDirectionProperty = movingObstacleProperty.FindPropertyRelative("inverseDirection");
         }
@@ -481,7 +481,7 @@ public class BeachHeroEditorWindow : EditorWindow
         SaveSystem.SaveInt(StringUtils.LEVELNUMBER, selectedLevelIndex + 1);
         EditorSceneManager.OpenScene(TEST_SCENE_PATH);
         EditorApplication.isPlaying = true;
-      //  window.Close();
+        //  window.Close();
     }
 
     // Helper method to create a texture for the button background
@@ -602,6 +602,7 @@ public class BeachHeroEditorWindow : EditorWindow
 
             moveObstacleRepresentation.resolutionProperty.floatValue = movingObstacleEditComponents[i].resolution;
             moveObstacleRepresentation.movementSpeedProperty.floatValue = movingObstacleEditComponents[i].movementSpeed;
+            moveObstacleRepresentation.rotationSpeedProperty.floatValue = (int)movingObstacleEditComponents[i].rotationSpeedMultiplier;
             moveObstacleRepresentation.isLoopMovementProperty.boolValue = movingObstacleEditComponents[i].loopedMovement;
             moveObstacleRepresentation.isInverseDirectionProperty.boolValue = movingObstacleEditComponents[i].inverseDirection;
         }

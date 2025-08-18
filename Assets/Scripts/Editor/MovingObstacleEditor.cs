@@ -35,6 +35,7 @@ namespace BeachHero
             serializedObject.Update();
             EditorGUILayout.PropertyField(serializedObject.FindProperty("obstacleType"), new GUIContent("Obstacle Type"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("movementSpeed"), new GUIContent("Movement Speed"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("rotationSpeedMultiplier"), new GUIContent("Rotation Speed Multiplier"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("offsetPosition"), new GUIContent("Offset Position"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("offsetRotation"), new GUIContent("Offset Rotation"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("resolution"), new GUIContent("Resolution"));

@@ -12,6 +12,7 @@ namespace BeachHero
         public BezierKeyframe[] Keyframes;
         public float resolution;
         public float movementSpeed;
+        public float rotationSpeedMultiplier = 0.3f;
         public Vector3 offsetPosition;
         public Vector3 offsetRotation;
         public bool loopedMovement;
@@ -127,6 +128,7 @@ namespace BeachHero
             obstacleType = movingObstacleData.type;
             resolution = movingObstacleData.resolution;
             movementSpeed = movingObstacleData.movementSpeed;
+            rotationSpeedMultiplier = movingObstacleData.rotationSpeedMultiplier;
             loopedMovement = movingObstacleData.loopedMovement;
             inverseDirection = movingObstacleData.inverseDirection;
             SetKeyFrames(movingObstacleData.bezierKeyframes);

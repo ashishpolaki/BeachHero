@@ -31,6 +31,7 @@ namespace BeachHero
             isLoopedMovement = movingObstacleData.loopedMovement;
             isInverseDirection = movingObstacleData.inverseDirection;
             movementSpeed = movingObstacleData.movementSpeed;
+            rotationSpeedMultiplier = movingObstacleData.rotationSpeedMultiplier;   
             currentIndex = 0;
             direction = 1;
             transform.position = keyframes[0].position;

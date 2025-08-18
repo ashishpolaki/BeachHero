@@ -25,7 +25,7 @@ MonoBehaviour:
       position: {x: -6.43, y: -0.97, z: 16.43}
       rotation: {x: 19.165533, y: 350.86508, z: 306.47934}
     movingObstacles:
-    - type: 1
+    - type: 2
       bezierKeyframes:
       - position: {x: 2.0917828, y: -0.01171875, z: 9.205457}
         inTangentLocal: {x: -0.37099636, y: 0, z: -0.05465072}
@@ -78,10 +78,11 @@ MonoBehaviour:
       - position: {x: 2.0917828, y: -0.01171875, z: 9.205457}
         inTangentLocal: {x: -0.37099636, y: 0, z: -0.05465072}
         outTangentLocal: {x: 0.37099636, y: 0, z: 0.05465072}
-      resolution: 3.76
-      movementSpeed: 9
+      resolution: 4
+      movementSpeed: 8
+      rotationSpeedMultiplier: 1
       loopedMovement: 1
-      inverseDirection: 1
+      inverseDirection: 0
     waterHoleObstacles: []
   drownCharacters:
   - position: {x: -6.09, y: 0, z: 10.01}

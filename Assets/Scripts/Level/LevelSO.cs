@@ -96,6 +96,7 @@ namespace BeachHero
         public BezierKeyframe[] bezierKeyframes;
         public float resolution;
         public float movementSpeed;
+        public float rotationSpeedMultiplier;
 
         [Space]
         public bool loopedMovement;

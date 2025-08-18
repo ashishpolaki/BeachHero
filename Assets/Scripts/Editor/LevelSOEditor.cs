@@ -79,6 +79,7 @@ namespace BeachHero
                         EditorGUILayout.PropertyField(element.FindPropertyRelative("loopedMovement"), new GUIContent("Looped Movement"));
                         EditorGUILayout.PropertyField(element.FindPropertyRelative("inverseDirection"), new GUIContent("Inverse Direction"));
                         EditorGUILayout.PropertyField(element.FindPropertyRelative("movementSpeed"), new GUIContent("Movement Speed"));
+                        EditorGUILayout.PropertyField(element.FindPropertyRelative("rotationSpeedMultiplier"), new GUIContent("Rotation Speed Multiplier"));
                         EditorGUILayout.PropertyField(element.FindPropertyRelative("resolution"), new GUIContent("Resolution"));
 
                         EditorGUILayout.PropertyField(element.FindPropertyRelative("bezierKeyframes"), new GUIContent("Bezier Keyframes"));
