@@ -31,7 +31,7 @@ namespace BeachHero
             isLoopedMovement = movingObstacleData.loopedMovement;
             isInverseDirection = movingObstacleData.inverseDirection;
             movementSpeed = movingObstacleData.movementSpeed;
-            rotationSpeedMultiplier = movingObstacleData.rotationSpeedMultiplier;   
+            rotationSpeedMultiplier = movingObstacleData.rotationSpeedMultiplier;
             currentIndex = 0;
             direction = 1;
             transform.position = keyframes[0].position;
@@ -73,8 +73,20 @@ namespace BeachHero
             while ((direction == 1 && distanceTravelled > segLength) ||
                    (direction == -1 && distanceTravelled < 0f))
             {
-                distanceTravelled = (direction == 1) ? distanceTravelled - segLength : distanceTravelled + segLength;
                 currentIndex += direction;
+                if (direction == 1)
+                {
+                    distanceTravelled = distanceTravelled - segLength;
+                }
+                else
+                {
+                    if (currentIndex < 0)
+                    {
+                        distanceTravelled = 0f; // reset to start
+                    }
+                    else
+                        distanceTravelled = segmentLengths[currentIndex];
+                }
 
                 bool loopPassedEnd = (direction == 1 && currentIndex >= keyframes.Length - 1) ||
                                      (direction == -1 && currentIndex < 0);
