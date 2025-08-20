@@ -4,6 +4,10 @@ namespace BeachHero
     {
         public const string LEVELNUMBER = "LevelNumber";
 
+        //Tutorial
+        public const string TAP_AND_DRAG_TUTORIAL = "TAP & DRAG THE BOAT";
+        public const string RESCUE_ALL_TUTORIAL = "RESCUE THEM ALL !";
+
         //Whirlpool (ShaderGraph Properties)
         public const string WHIRLPOOL_DISTANCE = "_WP_Distance";
         public const string WHIRLPOOL_POSITION = "_WP_Position";

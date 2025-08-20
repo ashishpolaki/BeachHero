@@ -17,82 +17,18 @@ MonoBehaviour:
     Position: {x: 0.63, y: 0, z: -1.59}
     Rotation: {x: 0, y: 0, z: 0}
   obstacles:
-    staticObstacles:
-    - type: 5
-      position: {x: -3.87, y: -0.55, z: 14.62}
-      rotation: {x: 9.555329, y: 22.685036, z: 37.266094}
-    - type: 5
-      position: {x: -6.43, y: -0.97, z: 16.43}
-      rotation: {x: 19.165533, y: 350.86508, z: 306.47934}
-    movingObstacles:
-    - type: 2
-      bezierKeyframes:
-      - position: {x: 2.0917828, y: -0.01171875, z: 9.205457}
-        inTangentLocal: {x: -0.37099636, y: 0, z: -0.05465072}
-        outTangentLocal: {x: 0.37099636, y: 0, z: 0.05465072}
-      - position: {x: 4.062396, y: -0.01171875, z: 10.383905}
-        inTangentLocal: {x: -0.22369006, y: 0, z: -0.30097792}
-        outTangentLocal: {x: 0.22369006, y: 0, z: 0.30097792}
-      - position: {x: 4.622546, y: -0.01171875, z: 12.610632}
-        inTangentLocal: {x: 0.068844795, y: -0.001953125, z: -0.38519192}
-        outTangentLocal: {x: 0.030511856, y: -0.001953125, z: 0.3993845}
-      - position: {x: 3.4440963, y: -0.01171875, z: 14.581253}
-        inTangentLocal: {x: 0.37194705, y: -0.001953125, z: -0.12433243}
-        outTangentLocal: {x: -0.18742633, y: -0.001953125, z: 0.36562824}
-      - position: {x: 1.2173723, y: -0.01171875, z: 15.141399}
-        inTangentLocal: {x: 0.41357863, y: -0.00390625, z: 0.15400791}
-        outTangentLocal: {x: -0.41357815, y: -0.001953125, z: -0.0120687485}
-      - position: {x: -0.7532457, y: -0.01171875, z: 13.962952}
-        inTangentLocal: {x: 0.18110788, y: -0.001953125, z: 0.38614082}
-        outTangentLocal: {x: -0.30885375, y: -0.001953125, z: -0.28678417}
-      - position: {x: -1.3133916, y: -0.01171875, z: 11.736219}
-        inTangentLocal: {x: -0.13981473, y: -0.001953125, z: 0.37099648}
-        outTangentLocal: {x: 0.012068629, y: -0.001953125, z: -0.38519096}
-      - position: {x: -0.13494289, y: -0.01171875, z: 9.765602}
-        inTangentLocal: {x: -0.3009779, y: 0, z: 0.22369011}
-        outTangentLocal: {x: 0.3009779, y: 0, z: -0.22369011}
-      - position: {x: 2.0917833, y: -0.01171875, z: 9.205457}
-        inTangentLocal: {x: -0.3709963, y: 0, z: -0.05465077}
-        outTangentLocal: {x: 0.3709963, y: 0, z: 0.05465077}
-      - position: {x: 4.318507, y: -0.01171875, z: 8.645309}
-        inTangentLocal: {x: -0.30097792, y: 0, z: 0.22369006}
-        outTangentLocal: {x: 0.30097792, y: 0, z: -0.22369006}
-      - position: {x: 5.496958, y: -0.01171875, z: 6.674692}
-        inTangentLocal: {x: -0.026263714, y: -0.001953125, z: 0.54132414}
-        outTangentLocal: {x: 0.11142683, y: -0.001953125, z: -0.34260893}
-      - position: {x: 4.9368105, y: -0.01171875, z: 4.447963}
-        inTangentLocal: {x: 0.33724117, y: -0.001953125, z: 0.25839567}
-        outTangentLocal: {x: -0.12433243, y: -0.001953125, z: -0.4003358}
-      - position: {x: 2.9661953, y: -0.01171875, z: 3.2695184}
-        inTangentLocal: {x: 0.41357827, y: -0.001953125, z: -0.016319036}
-        outTangentLocal: {x: -0.35680175, y: -0.001953125, z: -0.1256206}
-      - position: {x: 0.7394693, y: -0.01171875, z: 3.8296628}
-        inTangentLocal: {x: 0.23000789, y: -0.001953125, z: -0.2946601}
-        outTangentLocal: {x: -0.37194765, y: -0.001953125, z: 0.15271974}
-      - position: {x: -0.4389807, y: -0.01171875, z: 5.800278}
-        inTangentLocal: {x: -0.04470706, y: -0.001953125, z: -0.4135785}
-        outTangentLocal: {x: -0.18239641, y: -0.001953125, z: 0.370996}
-      - position: {x: 0.121166945, y: -0.01171875, z: 8.027009}
-        inTangentLocal: {x: -0.26627195, y: -0.001953125, z: -0.27259016}
-        outTangentLocal: {x: 0.05336249, y: -0.00390625, z: 0.4145279}
-      - position: {x: 2.0917828, y: -0.01171875, z: 9.205457}
-        inTangentLocal: {x: -0.37099636, y: 0, z: -0.05465072}
-        outTangentLocal: {x: 0.37099636, y: 0, z: 0.05465072}
-      resolution: 4
-      movementSpeed: 8
-      rotationSpeedMultiplier: 1
-      loopedMovement: 1
-      inverseDirection: 0
+    staticObstacles: []
+    movingObstacles: []
     waterHoleObstacles: []
   drownCharacters:
-  - position: {x: -6.09, y: 0, z: 10.01}
-    waitTimePercentage: 0.71
-  - position: {x: -6.44, y: 0, z: 4.91}
-    waitTimePercentage: 0.385
+  - position: {x: 0.56, y: 0, z: 3.9}
+    waitTimePercentage: 1
+  - position: {x: 0.3, y: 0, z: 10.63}
+    waitTimePercentage: 1
   collectables:
   - type: 1
-    position: {x: -4.88, y: 0, z: 2.96}
+    position: {x: 0.32, y: 0, z: 8.68}
     count: 0
   - type: 1
-    position: {x: -3.12, y: 0, z: 0.8}
+    position: {x: 0.38, y: 0, z: 6.75}
     count: 0

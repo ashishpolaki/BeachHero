@@ -3,25 +3,41 @@ using UnityEngine;
 
 namespace BeachHero
 {
+    public enum FTUETutorialType
+    {
+        None,
+        TapAndDrag,    // Tap + drag to save
+        RescueAll,       // Save all drowning characters
+    }
     public class TutorialController : MonoBehaviour
     {
-        [Tooltip("First Time User Experience Level Number")]
-        private int ftueLevelNumber = 1;
-        public event Action OnFTUEPlayerTouchAction;
-        public event Action OnFTUEPathDrawnAction;
+        [SerializeField] private FTUEConfigSO fTUEConfig;
+        public event Action OnPlayerTapAction;
+        public event Action OnPathDrawnAction;
         public event Action OnPowerupPressAction;
+
+        public FTUETutorialType CurrentFTUEType { private set; get; }
 
         public bool IsFTUE(int levelNumber)
         {
-            return ftueLevelNumber == levelNumber;
+            foreach (var item in fTUEConfig.entries)
+            {
+                if (item.levelNumber == levelNumber)
+                {
+                    CurrentFTUEType = item.tutorialType;
+                    return true;
+                }
+            }
+            return false;
         }
-        public void OnFTUEPlayerTouch()
+       
+        public void OnPlayerTap()
         {
-            OnFTUEPlayerTouchAction?.Invoke();
+            OnPlayerTapAction?.Invoke();
         }
-        public void OnFTUEPathDrawn()
+        public void OnPathDrawn()
         {
-            OnFTUEPathDrawnAction?.Invoke();
+            OnPathDrawnAction?.Invoke();
         }
         public void OnPowerupPressed()
         {

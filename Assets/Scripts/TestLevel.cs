@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using DG.Tweening;
 using UnityEngine;
 
@@ -36,3 +37,4 @@ namespace BeachHero
         }
     }
 }
+#endif

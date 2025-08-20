@@ -134,7 +134,7 @@ namespace BeachHero
         #region Collect
         public void OnCharacterPickUp()
         {
-            levelController.OnCharacterPickUp();
+            levelController.OnDrownCharacterPickUp();
         }
         public void OnGameCurrencyPickup()
         {

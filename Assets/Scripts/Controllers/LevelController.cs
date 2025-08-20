@@ -61,7 +61,6 @@ namespace BeachHero
 
         #region Properties
         public Transform PlayerTransform => player != null ? player.transform : null;
-        public Transform DrownCharacter => savedCharactersList.Count > 0 ? savedCharactersList[0].transform : null;
         public bool IsLevelPassed => levelPhase == LevelPhase.CompletedSuccess;
         public int GameCurrencyCount => gameCurrencyCount;
 
@@ -99,7 +98,7 @@ namespace BeachHero
                     isPathDrawingAllowed = true;
                     if (playerMode == PlayerMode.FTUE)
                     {
-                        GameController.GetInstance.TutorialController.OnFTUEPlayerTouch();
+                        GameController.GetInstance.TutorialController.OnPlayerTap();
                     }
                     //   raycastHit.collider.GetComponent<StartPointBehaviour>();
                     // lastStartPointPosition = raycastHit.collider.gameObject.transform.position;
@@ -186,12 +185,12 @@ namespace BeachHero
             levelPhase = LevelPhase.Simulating;
             if (playerMode == PlayerMode.FTUE)
             {
-                GameController.GetInstance.TutorialController.OnFTUEPathDrawn();
+                GameController.GetInstance.TutorialController.OnPathDrawn();
             }
         }
-        public void InitializePlayerData(bool isFirstTimeUser)
+        public void InitializePlayerData(bool isFTUE)
         {
-            playerMode = isFirstTimeUser ? PlayerMode.FTUE : PlayerMode.Normal;
+            playerMode = isFTUE ? PlayerMode.FTUE : PlayerMode.Normal;
             levelPhase = LevelPhase.DrawingPath;
 
             int boatIndex = GameController.GetInstance.SkinController.GetSavedBoatIndex();
@@ -205,13 +204,23 @@ namespace BeachHero
             if (!passed)
                 player.StopMovement();
         }
-        public void OnCharacterPickUp()
+        #endregion
+
+        #region Drown Character
+        public void OnDrownCharacterPickUp()
         {
             drownCharactersCounter++;
             if (drownCharactersCounter >= targetDrownCharacters)
             {
                 GameController.GetInstance.OnLevelPass();
             }
+        }
+        public Transform GetDrowningCharacter(int index)
+        {
+            if (index >= 0 && index < savedCharactersList.Count)
+                return savedCharactersList[index].transform;
+
+            return null;
         }
         #endregion
 
