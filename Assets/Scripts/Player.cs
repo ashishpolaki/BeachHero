@@ -124,18 +124,18 @@ namespace BeachHero
         public void StartMovement(Vector3[] pointsList)
         {
             canStartMovement = true;
+
             //set boat direction 
-            if (pointsList.Length > 0)
-            {
-                Vector3 firstPoint = pointsList[0];
-                Vector3 direction = (firstPoint - transform.position).normalized;
-                Quaternion targetRotation = Quaternion.LookRotation(direction);
-                transform.rotation = targetRotation;
-            }
+            Vector3 p0 = pointsList[0];
+            Vector3 p1 = pointsList[1];
+            Vector3 direction = (p1 - p0).normalized;
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = targetRotation;
+
             this.pointsList = pointsList;
         }
         public void Init()
-        { 
+        {
             DeactivateMagnetPowerup();
             boatAnimator.SetTrigger(idleAnimHash);
             canStartMovement = false;
