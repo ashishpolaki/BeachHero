@@ -39,6 +39,7 @@ namespace BeachHero
 
         public void ShowMagnetPowerupTutorial(Transform _powerupButton, Transform _playButton)
         {
+            powerUpMaskRect.sizeDelta = Vector2.zero;
             powerUpMaskRect.gameObject.SetActive(true);
             rayCastPanel.SetActive(true); // Enable the raycast panel to block input during the tutorial
             powerUpMaskRect.position = _powerupButton.position;
@@ -54,6 +55,7 @@ namespace BeachHero
 
         public void ShowSpeedBoostPowerupTutorial(Transform _powerupButton, Transform _playButton)
         {
+            powerUpMaskRect.sizeDelta = Vector2.zero;
             powerUpMaskRect.gameObject.SetActive(true);
             rayCastPanel.SetActive(true);
             powerUpMaskRect.position = _powerupButton.position;
@@ -72,6 +74,7 @@ namespace BeachHero
             tutorialHandRect.gameObject.SetActive(false);
             playButtonMaskRect.gameObject.SetActive(true);
             currentPowerupTransform.SetParent(_buttonsParent);
+            playButtonMaskRect.sizeDelta = Vector2.zero;
             playButtonMaskRect.position = playButtonTransform.position;
             playButtonMaskRect.DOSizeDelta(playButtonSizeRect, buttonScaleDuration).SetEase(buttonScaleEase).OnComplete
               (() =>
