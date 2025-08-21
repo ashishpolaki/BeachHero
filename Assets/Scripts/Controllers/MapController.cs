@@ -107,6 +107,15 @@ namespace BeachHero
             OnMapButtonsActive?.Invoke();
         }
 
+        public void SetBoatInPreviousLevel()
+        {
+            // Set Boat Position to Previous Level
+            int previousLevelNumber = GameController.GetInstance.CurrentLevelIndex;
+            Transform target = mapDatas[mapNumber - 1].GetLevelVisual(previousLevelNumber).transform;
+            mapDatas[mapNumber - 1].CalculateOffsetDirection(target, out Vector3 boatOffsetDirection);
+            boat.SetPositionAndRotation(target.position + boatOffsetDirection * boatOffset, target.rotation);
+        }
+
         public void MoveBoatFromPrevToCurrentLevel()
         {
             if(isNewMapUnlocked)
