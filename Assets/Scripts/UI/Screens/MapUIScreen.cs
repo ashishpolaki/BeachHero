@@ -14,6 +14,7 @@ namespace BeachHero
         [SerializeField] private Button leftArrowBtn;
         [SerializeField] private TextMeshProUGUI mapNameText;
         [SerializeField] private TextAnimatorPlayer unlockMapText;
+        [SerializeField] private TextAnimatorPlayer titleDescriptionText;
         [SerializeField] private GameObject mapSelector;
 
         [SerializeField] private float textApperanceSpeed = 3f;
@@ -31,6 +32,7 @@ namespace BeachHero
             currentMapNumber = MapController.GetInstance.MapNumber;
             totalMaps = MapController.GetInstance.TotalMaps;
             UpdateMapVisual();
+            zoomToggle.isOn = false;
             ZoomToggle(false);
 
             zoomToggle.onValueChanged.AddListener(ZoomToggle);
@@ -87,7 +89,21 @@ namespace BeachHero
                 unlockMapText.StopShowingText();
                 unlockMapText.StopDisappearingText();
                 unlockMapText.onTextShowed.RemoveAllListeners();
+                titleDescriptionText.StopShowingText();
+                titleDescriptionText.StopDisappearingText();
+                titleDescriptionText.ShowText("");
             }
+        }
+
+        private void ShowTitleDescription()
+        {
+            titleDescriptionText.ShowText($"{MapController.GetInstance.GetMapDescription(currentMapNumber)}");
+        }
+
+        private void HideTitleDescription()
+        {
+            titleDescriptionText.StopShowingText();
+            titleDescriptionText.StartDisappearingText();
         }
 
         private void SetMapButtonsVisibility(bool _val)
@@ -123,9 +139,11 @@ namespace BeachHero
             if (isZoomOut)
             {
                 MapController.GetInstance.ZoomOut();
+                ShowTitleDescription();
             }
             else
             {
+                HideTitleDescription();
                 MapController.GetInstance.ZoomIn();
             }
             mapSelector.gameObject.SetActive(isZoomOut);
@@ -144,13 +162,14 @@ namespace BeachHero
         }
         private void UpdateMapVisual()
         {
-            MapController.GetInstance.ChangeMapVisual(previousMapNumber, currentMapNumber);
-            mapNameText.text = "MAP " + (currentMapNumber);
+            mapNameText.text = $"{MapController.GetInstance.GetMapName(currentMapNumber)}";
             bool isCurrentMap = MapController.GetInstance.MapNumber == currentMapNumber;
             playButton.interactable = isCurrentMap;
             zoomToggle.interactable = isCurrentMap;
             leftArrowBtn.interactable = currentMapNumber > 1;
             rightArrowBtn.interactable = currentMapNumber < totalMaps;
+            ShowTitleDescription();
+            MapController.GetInstance.ChangeMapVisual(previousMapNumber, currentMapNumber);
         }
     }
 }

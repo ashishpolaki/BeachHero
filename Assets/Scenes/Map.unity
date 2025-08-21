@@ -33974,6 +33974,8 @@ MonoBehaviour:
   mapDatas:
   - index: 0
     mapNumber: 1
+    name: SANDORA
+    description: "SANDORA \u2013 The Golden Shore"
     startLevelNumber: 1
     endLevelNumber: 70
     boatOffsetDirection: 1
@@ -34384,8 +34386,10 @@ MonoBehaviour:
     - {fileID: 1000979581}
   - index: 1
     mapNumber: 2
-    startLevelNumber: 4
-    endLevelNumber: 5
+    name: KELORA
+    description: "KELORA \u2013 Reef of Colors"
+    startLevelNumber: 0
+    endLevelNumber: 0
     boatOffsetDirection: 0
     mapObject: {fileID: 589088553}
     levelsParent: {fileID: 1659163688}
@@ -34394,8 +34398,10 @@ MonoBehaviour:
     levelVisuals: []
   - index: 2
     mapNumber: 3
-    startLevelNumber: 6
-    endLevelNumber: 10
+    name: CORVIA
+    description: "CORVIA \u2013 The Shimmering Bay"
+    startLevelNumber: 0
+    endLevelNumber: 0
     boatOffsetDirection: 1
     mapObject: {fileID: 1306869504}
     levelsParent: {fileID: 166542465}
@@ -36860,7 +36866,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &670755074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41848,7 +41854,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &839931413
 Transform:
   m_ObjectHideFlags: 0
@@ -53518,6 +53524,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: MapUIScreen
+      objectReference: {fileID: 0}
+    - target: {fileID: 337457283996438784, guid: a14bb0062bcf4f54fa47b0f58e2f310e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8662708570389737909, guid: a14bb0062bcf4f54fa47b0f58e2f310e,
         type: 3}
@@ -108114,7 +108125,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -134074,7 +134085,7 @@ Camera:
   far clip plane: 100
   field of view: 46.4
   orthographic: 1
-  orthographic size: 31
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -134099,7 +134110,7 @@ Transform:
   m_GameObject: {fileID: 2097050726}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10, y: 10.16, z: -10}
+  m_LocalPosition: {x: 6.21, y: -5.54, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

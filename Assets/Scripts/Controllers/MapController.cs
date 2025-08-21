@@ -77,7 +77,7 @@ namespace BeachHero
             {
                 if (levelNumber >= mapDatas[i].startLevelNumber && levelNumber <= mapDatas[i].endLevelNumber)
                 {
-                    if(savedMapNumber != mapDatas[i].mapNumber)
+                    if (savedMapNumber != mapDatas[i].mapNumber)
                     {
                         isNewMapUnlocked = true;
                     }
@@ -118,7 +118,7 @@ namespace BeachHero
 
         public void MoveBoatFromPrevToCurrentLevel()
         {
-            if(isNewMapUnlocked)
+            if (isNewMapUnlocked)
             {
                 NewMapUnlocked();
                 return;
@@ -185,6 +185,28 @@ namespace BeachHero
         #endregion
 
         #region Map
+        public string GetMapName(int mapNumber)
+        {
+            for (int i = 0; i < mapDatas.Length; i++)
+            {
+                if (mapDatas[i].mapNumber == mapNumber)
+                {
+                    return mapDatas[i].name;
+                }
+            }
+            return string.Empty;
+        }
+        public string GetMapDescription(int mapNumber)
+        {
+            for (int i = 0; i < mapDatas.Length; i++)
+            {
+                if (mapDatas[i].mapNumber == mapNumber)
+                {
+                    return mapDatas[i].description;
+                }
+            }
+            return string.Empty;
+        }
         private void NewMapUnlocked()
         {
             SetBoatInCurrentLevel();

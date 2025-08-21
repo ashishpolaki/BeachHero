@@ -13,6 +13,8 @@ namespace BeachHero
     {
         public int index;
         public int mapNumber;
+        public string name;
+        public string description;
         public int startLevelNumber;
         public int endLevelNumber;
 
