@@ -96,6 +96,7 @@ namespace BeachHero
         {
             isDrown = true;
             animatorRef.SetTrigger(DRAWN_HASH);
+            AudioController.GetInstance.PlaySound(AudioType.Die);
             GameController.GetInstance.OnLevelFailed();
             graphicsUI.SetActive(false);
         }
