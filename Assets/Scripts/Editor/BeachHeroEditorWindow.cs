@@ -129,7 +129,7 @@ public class BeachHeroEditorWindow : EditorWindow
     #region Window Variables
     private static readonly int DEFAULT_WINDOW_MIN_SIZE = 600;
     private string ASSETPATH = "Assets/ScriptableObjects/Levels/LevelsDatabase.asset";
-    private string EDITOR_SCENE_NAME = "EditorScene";
+    private string EDITOR_SCENE_NAME = "GameEditorScene";
     private string EDITOR_SCENE_PATH = "Assets/Scenes/GameEditorScene.unity";
     private string GAME_SCENE_PATH = "Assets/Scenes/Game.unity";
     private string INIT_SCENE_PATH = "Assets/Scenes/Init.unity";
@@ -393,6 +393,12 @@ public class BeachHeroEditorWindow : EditorWindow
         #endregion
 
         GUILayout.EndHorizontal();
+
+        //mark scene as dirty
+        if (GUI.changed)
+        {
+            EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+        }
     }
 
     private void SpawnPrefabItems(SerializedProperty spawnItemsProperty, int itemsPerRow, float previewSize)

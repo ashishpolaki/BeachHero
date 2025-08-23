@@ -186,7 +186,7 @@ public class EditorSceneController : MonoBehaviour
 
     private void SpawnCollectable()
     {
-        if (currentLevel.Collectables.Length == 0)
+        if (currentLevel.Collectables == null || currentLevel.Collectables.Length == 0)
         {
             return;
         }

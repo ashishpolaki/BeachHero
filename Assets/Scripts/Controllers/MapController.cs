@@ -23,6 +23,7 @@ namespace BeachHero
 
         #region Inspector Variables
         [SerializeField] private Transform boat;
+        [SerializeField] private Collider2D confineCollider; 
         [SerializeField] private LevelDatabaseSO levelDatabase;
         [SerializeField] private ParticleSystem confettiParticle;
 
@@ -85,6 +86,8 @@ namespace BeachHero
             }
             InitializeMapData();
             ChangeMapVisual(-1, MapNumber);
+            CameraController.GetInstance.SetCollider(confineCollider,GameCameraType.MapFar);
+            CameraController.GetInstance.SetCollider(confineCollider,GameCameraType.MapNear);
         }
         private void OnDestroy()
         {
