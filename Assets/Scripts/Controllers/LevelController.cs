@@ -212,7 +212,7 @@ namespace BeachHero
             drownCharactersCounter++;
             if (drownCharactersCounter >= targetDrownCharacters)
             {
-                GameController.GetInstance.OnLevelPass();
+                GameController.GetInstance.OnLevelWin();
             }
         }
         public Transform GetDrowningCharacter(int index)

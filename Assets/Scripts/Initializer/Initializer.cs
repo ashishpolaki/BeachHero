@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace BeachHero
@@ -10,7 +11,28 @@ namespace BeachHero
         private void Start()
         {
             ResetWaterMaterial();
-            Initialize();
+            AsyncLazyInit();
+        }
+
+        private async void AsyncLazyInit()
+        {
+            // small delay so the first frame renders smoothly
+            await Task.Yield();
+            Application.targetFrameRate = 30;
+            GameController.GetInstance.Init();
+            AudioController.GetInstance.Init();
+            CameraController.GetInstance.Init();
+            AdController.GetInstance.Init();
+            HapticsManager.GetInstance.Init();
+            DOTween.Init();
+            Febucci.UI.Core.TAnimBuilder.InitializeGlobalDatabase();
+
+            // wait a little to avoid freezing all at once
+            await Task.Delay(100);
+            await UIController.GetInstance.LoadingUI.LoadSceneAsync(StringUtils.GAME_SCENE);
+            GameController.GetInstance.SpawnLevel();
+            await SceneLoader.GetInstance.UnloadScene(StringUtils.INIT_SCENE);
+            await UIController.GetInstance.LoadingUI.DisableLoadingScreen();
         }
 
         /// <summary>
@@ -21,20 +43,6 @@ namespace BeachHero
             waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{0}"), 1f);
             waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{1}"), 1f);
             waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{2}"), 1f);
-        }
-
-        private async void Initialize()
-        {
-            Application.targetFrameRate = 30;
-            GameController.GetInstance.Init();
-            AudioController.GetInstance.Init();
-            AdController.GetInstance.Init();
-            HapticsManager.GetInstance.Init();
-            DOTween.Init();
-            await UIController.GetInstance.LoadingUI.LoadSceneAsync(StringUtils.GAME_SCENE);
-            GameController.GetInstance.SpawnLevel();
-            await SceneLoader.GetInstance.UnloadScene(StringUtils.INIT_SCENE);
-            await UIController.GetInstance.LoadingUI.DisableLoadingScreen();
         }
     }
 }

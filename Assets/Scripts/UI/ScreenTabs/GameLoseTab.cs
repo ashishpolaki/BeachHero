@@ -45,8 +45,7 @@ namespace BeachHero
         {
             await UIController.GetInstance.FadeInASync();
             GameController.GetInstance.SkipLevel();
-            await SceneLoader.GetInstance.LoadScene(StringUtils.MAP_SCENE);
-            GameController.GetInstance.CameraController.DisableCameras();
+           // await SceneLoader.GetInstance.LoadScene(StringUtils.MAP_SCENE);
             UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);
             MapController.GetInstance.SetBoatInPreviousLevel();
             await UIController.GetInstance.FadeOutASync();

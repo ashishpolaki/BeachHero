@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace BeachHero
@@ -107,9 +108,12 @@ namespace BeachHero
         }
         #endregion
 
-        public void PlayVictoryAnimation()
+        public async void PlayVictoryAnimation()
         {
             currentBoat.PlayVictoryAnimation();
+            CameraController.GetInstance.OnPlayerBlendCamera(this.transform);
+            await Task.Delay(1000); // Wait for 1 seconds to allow the animation to play
+            UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Open, ScreenTabType.LevelWin);
         }
         public void StopMovement()
         {
@@ -215,8 +219,7 @@ namespace BeachHero
                     {
                         if (GameController.GetInstance.LevelController.IsLevelPassed)
                         {
-                            GameController.GetInstance.OnLevelPassedCameraEffect();
-                            PlayVictoryAnimation();
+                           PlayVictoryAnimation();
                         }
                         else
                         {

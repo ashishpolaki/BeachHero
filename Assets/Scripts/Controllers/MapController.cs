@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using System;
-using Unity.Cinemachine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -25,7 +24,6 @@ namespace BeachHero
         #region Inspector Variables
         [SerializeField] private Transform boat;
         [SerializeField] private LevelDatabaseSO levelDatabase;
-        [SerializeField] private CinemachineCamera zoomOutCam, zoomInCam;
         [SerializeField] private ParticleSystem confettiParticle;
 
         [Header("Map")]
@@ -86,6 +84,7 @@ namespace BeachHero
                 }
             }
             InitializeMapData();
+            ChangeMapVisual(-1, MapNumber);
         }
         private void OnDestroy()
         {
@@ -164,9 +163,8 @@ namespace BeachHero
         public void ZoomIn()
         {
             Vector2 position = mapDatas[mapNumber - 1].GetLevelVisual(GameController.GetInstance.CurrentLevelIndex + 1).WorldPosition;
-            zoomOutCam.gameObject.SetActive(false);
-            zoomInCam.gameObject.SetActive(true);
-            zoomInCam.transform.position = new Vector3(position.x, position.y, zoomInCam.transform.position.z);
+            CameraController.GetInstance.SetActiveCamera(GameCameraType.MapNear);
+            CameraController.GetInstance.SetCameraPosition(position, false);
             var pathLine = mapDatas[mapNumber - 1].pathLine;
             DOTween.To(() => pathLine.startWidth, (x) => pathLine.startWidth = x, zoomInThick, 1.5f);
             DOTween.To(() => pathLine.endWidth, (x) => pathLine.endWidth = x, zoomInThick, 1.5f);
@@ -174,9 +172,8 @@ namespace BeachHero
         }
         public void ZoomOut()
         {
+            CameraController.GetInstance.SetActiveCamera(GameCameraType.MapFar);
             UpdateMapBGScale();
-            zoomOutCam.gameObject.SetActive(true);
-            zoomInCam.gameObject.SetActive(false);
             var pathLine = mapDatas[mapNumber - 1].pathLine;
             DOTween.To(() => pathLine.startWidth, (x) => pathLine.startWidth = x, zoomOutThick, 1.5f);
             DOTween.To(() => pathLine.endWidth, (x) => pathLine.endWidth = x, zoomOutThick, 1.5f);
@@ -233,7 +230,7 @@ namespace BeachHero
         }
         private void UpdateMapBGScale()
         {
-            zoomOutCam.Lens.OrthographicSize = ScreenResolutionUtils.GetOrthographicSize(referenceOrthoSize);
+            CameraController.GetInstance.SetOrthoSize(ScreenResolutionUtils.GetOrthographicSize(referenceOrthoSize), GameCameraType.MapFar);
             if (mapBG != null)
             {
                 var scale = ScreenResolutionUtils.GetObjectScale(referenceMapScale, referenceOrthoSize);

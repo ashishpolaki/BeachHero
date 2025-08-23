@@ -6,7 +6,7 @@ namespace BeachHero
     {
         None,
         FTUE,
-        LevelPass,
+        LevelWin,
         LevelFail,
         GamePause,
         PurchasSuccess,

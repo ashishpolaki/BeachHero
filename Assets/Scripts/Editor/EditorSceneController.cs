@@ -2,7 +2,6 @@
 using BeachHero;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class EditorSceneController : MonoBehaviour
 {

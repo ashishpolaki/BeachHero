@@ -15,7 +15,7 @@ namespace BeachHero
             base.Hit();
             if (isShakeEffectEnabled)
             {
-                GameController.GetInstance.CameraController.StartShake();
+                CameraController.GetInstance.ShakeActiveCamera();
             }
         }
     }

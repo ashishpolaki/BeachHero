@@ -55,7 +55,7 @@ namespace BeachHero
         private void AddListeners()
         {
             boatCustomisationButton.ButtonRegister(OnBoatCustomisationButtonClicked);
-            levelPanelButton.ButtonRegister(OnLevelPanelButtonClicked);
+            levelPanelButton.ButtonRegister(OnPlayButtonClicked);
             storeButton.ButtonRegister(OnStoreButtonClicked);
             settingsButton.ButtonRegister(OnSettingsButtonClick);
         }
@@ -77,14 +77,13 @@ namespace BeachHero
             UIController.GetInstance.ScreenEvent(ScreenType.BoatCustomisation, UIScreenEvent.Open);
         }
 
-        private async void OnLevelPanelButtonClicked()
+        private void OnPlayButtonClicked()
         {
-            await UIController.GetInstance.LoadingUI.LoadSceneAsync(StringUtils.MAP_SCENE);
+            // await UIController.GetInstance.LoadingUI.LoadSceneAsync(StringUtils.MAP_SCENE);
             UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);
             GameController.GetInstance.SetGameState(GameState.Map);
-            GameController.GetInstance.CameraController.DisableCameras();
             MapController.GetInstance.SetBoatInCurrentLevel();
-            await UIController.GetInstance.LoadingUI.DisableLoadingScreen(loadScreenDelayMs);
+            // await UIController.GetInstance.LoadingUI.DisableLoadingScreen(loadScreenDelayMs);
         }
         private void OnStoreButtonClicked()
         {

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CustomBlends:
   - From: '**ANY CAMERA**'
-    To: GameViewCamera
+    To: GameView
     Blend:
       Style: 0
       Time: 0
@@ -24,8 +24,8 @@ MonoBehaviour:
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 4
-  - From: '**ANY CAMERA**'
-    To: PlayerFarTargetCamera
+  - From: GameView
+    To: PlayerFar
     Blend:
       Style: 0
       Time: 1
@@ -35,11 +35,33 @@ MonoBehaviour:
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 4
-  - From: PlayerFarTargetCamera
-    To: PlayerNearTargetCamera
+  - From: PlayerFar
+    To: PlayerNear
     Blend:
       Style: 3
       Time: 1
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 4
+  - From: MapFar
+    To: MapNear
+    Blend:
+      Style: 3
+      Time: 1.2
+      CustomCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 0
+        m_PostInfinity: 0
+        m_RotationOrder: 4
+  - From: MapNear
+    To: MapFar
+    Blend:
+      Style: 3
+      Time: 1.2
       CustomCurve:
         serializedVersion: 2
         m_Curve: []

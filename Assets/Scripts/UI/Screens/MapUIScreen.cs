@@ -31,9 +31,9 @@ namespace BeachHero
             base.Open(screenTabType);
             currentMapNumber = MapController.GetInstance.MapNumber;
             totalMaps = MapController.GetInstance.TotalMaps;
-            UpdateMapVisual();
             zoomToggle.isOn = false;
             ZoomToggle(false);
+            MapController.GetInstance.ChangeMapVisual(previousMapNumber, currentMapNumber);
 
             zoomToggle.onValueChanged.AddListener(ZoomToggle);
             mapExitBtn.ButtonRegister(MapExitToHome);
@@ -97,7 +97,7 @@ namespace BeachHero
 
         private void ShowTitleDescription()
         {
-            titleDescriptionText.ShowText($"{MapController.GetInstance.GetMapDescription(currentMapNumber)}");
+           titleDescriptionText.ShowText($"{MapController.GetInstance.GetMapDescription(currentMapNumber)}");
         }
 
         private void HideTitleDescription()
@@ -119,12 +119,11 @@ namespace BeachHero
             SetMapButtonsVisibility(true);
         }
 
-        private async void MapExitToHome()
+        private void MapExitToHome()
         {
-            await UIController.GetInstance.FadeInASync();
-            GameController.GetInstance.CameraController.EnableCameras();
-            await SceneLoader.GetInstance.UnloadScene(StringUtils.MAP_SCENE, IntUtils.MAP_SCENE_LOAD_DELAY);
-            UIController.GetInstance.FadeOut();
+            //await UIController.GetInstance.FadeInASync();
+            //await SceneLoader.GetInstance.UnloadScene(StringUtils.MAP_SCENE, IntUtils.MAP_SCENE_LOAD_DELAY);
+            //  UIController.GetInstance.FadeOut();
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
             GameController.GetInstance.SetGameState(GameState.NotStarted);
         }

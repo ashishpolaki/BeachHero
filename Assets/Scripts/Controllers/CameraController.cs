@@ -4,94 +4,121 @@ using Unity.Cinemachine;
 
 namespace BeachHero
 {
-    public class CameraController : MonoBehaviour
+    public class CameraController : SingleTon<CameraController>
     {
-        [SerializeField] private CinemachineCamera gameViewCamera;
-        [SerializeField] private CinemachineCamera playerNearTargetCamera;
-        [SerializeField] private CinemachineCamera playerFarTargetCamera;
+        [SerializeField] private Camera mainCamera;
+        [SerializeField] private GameCameraConfig[] cameraConfigs;
+        [SerializeField] private int activePriority = 1;
+        [SerializeField] private int inactivePriority = 0;
+        [SerializeField] private float playerFarToNearBlendDelay = 0.1f;
 
-        [SerializeField] private float shakeDuration = 0.3f;
-        [SerializeField] private float shakeMagnitude = 0.2f;
-        [SerializeField] private float shakeFrequency = 25f;
-        [SerializeField] private float cameraBlendDuration = 0.1f;
+        private GameCameraType currentCameraType = GameCameraType.None;
+        private GameCameraType previousCameraType = GameCameraType.None;
 
-        private Vector3 originalPos;
-        private Transform mainCameraTransform;
-        private Coroutine shakeCoroutine;
-
-        private void Awake()
-        {
-            // Cache the main camera transform
-            mainCameraTransform = Camera.main.transform;
-            originalPos = mainCameraTransform.position;
-            GameController.GetInstance.CacheCameraController(this);
-            Init();
-        }
-
-        public void OnLevelPass(Transform playerTarget)
-        {
-            //Vector3 shoulderOffset = playerTarget.TransformPoint(playerTargetCameraSettings.Position);
-            //mainCameraTransform.position = shoulderOffset;
-            //mainCameraTransform.LookAt(playerTarget.position); 
-            //mainCameraTransform.rotation *= Quaternion.Euler(playerTargetCameraSettings.Rotation);
-            StartCoroutine(CameraBlend(playerTarget));
-        }
-        IEnumerator CameraBlend(Transform playerTarget)
-        {
-            playerFarTargetCamera.Priority = 1; // Set far camera to active
-            playerFarTargetCamera.Follow = playerTarget;
-            gameViewCamera.Priority = 0;
-            yield return new WaitForSeconds(cameraBlendDuration);
-            playerNearTargetCamera.Priority = 2;
-            playerNearTargetCamera.Follow = playerTarget;
-        }
-
+        #region Initialization
         public void Init()
         {
-            gameViewCamera.Priority = 1;
-            playerNearTargetCamera.Priority = 0;
-            playerFarTargetCamera.Priority = 0;
+            SetActiveCamera(GameCameraType.GameView);
         }
+        #endregion
 
-        public void StartShake()
+        #region Player Camera Blend Switch
+        public void OnPlayerBlendCamera(Transform playerTarget)
         {
-            if (shakeCoroutine != null)
-            {
-                StopCoroutine(shakeCoroutine); // Stop any ongoing shake to prevent overlap
-            }
-            shakeCoroutine = StartCoroutine(IShakeCamera());
+            SetCameraFollow(playerTarget, GameCameraType.PlayerFar);
+            SetCameraFollow(playerTarget, GameCameraType.PlayerNear);
+            SetActiveCamera(GameCameraType.PlayerFar);
+            StartCoroutine(PlayerCameraBlend());
         }
-
-        private IEnumerator IShakeCamera()
+        IEnumerator PlayerCameraBlend()
         {
-            float elapsed = 0f;
-            while (elapsed < shakeDuration)
+            yield return new WaitForSeconds(playerFarToNearBlendDelay);
+            SetActiveCamera(GameCameraType.PlayerNear);
+        }
+        #endregion
+
+        #region Camera Modifications
+        public void SetActiveCamera(GameCameraType type)
+        {
+            if (currentCameraType == type)
             {
-                elapsed += Time.deltaTime;
-                float percentComplete = elapsed / shakeDuration;
-
-                float damper = 1.0f - Mathf.Clamp(4.0f * percentComplete - 3.0f, 0.0f, 1.0f);
-
-                float x = (Mathf.PerlinNoise(Time.time * shakeFrequency, 0.0f) - 0.5f) * 2.0f * shakeMagnitude * damper;
-                float y = (Mathf.PerlinNoise(0.0f, Time.time * shakeFrequency) - 0.5f) * 2.0f * shakeMagnitude * damper;
-
-                gameViewCamera.transform.localPosition = originalPos + new Vector3(x, y, 0);
-
-                yield return null; // Wait for the next frame
+                return;
             }
 
-            // Reset position after shaking
-            gameViewCamera.transform.localPosition = originalPos;
-        }
+            previousCameraType = currentCameraType;
+            currentCameraType = type;
 
-        public void DisableCameras()
-        {
-            gameObject.SetActive(false);
+            foreach (var config in cameraConfigs)
+            {
+                if(currentCameraType == config.cameraType)
+                {
+                    config.camera.Priority = activePriority;
+                    mainCamera.cullingMask = config.cullingMask;
+                }
+                else if (config.cameraType == previousCameraType)
+                {
+                    config.camera.Priority = inactivePriority;
+                }
+            }
+            currentCameraType = type;
         }
+        public void SetCameraPosition(Vector3 pos, bool setZ = true)
+        {
+            foreach (var config in cameraConfigs)
+            {
+                if (config.cameraType == currentCameraType)
+                {
+                    Transform t = config.camera.transform;
+                    Vector3 current = t.position;
+                    t.position = new Vector3(pos.x, pos.y, setZ ? pos.z : current.z);
+                    break;
+                }
+            }
+        }
+        public void SetOrthoSize(float size,GameCameraType gameCameraType)
+        {
+            foreach (var config in cameraConfigs)
+            {
+                if (config.cameraType == gameCameraType)
+                {
+                    config.camera.Lens.OrthographicSize = size;
+                    break;
+                }
+            }
+        }
+        public void SetCameraFollow(Transform target, GameCameraType cameraType)
+        {
+            foreach (var config in cameraConfigs)
+            {
+                if (config.cameraType == cameraType)
+                {
+                    config.camera.Follow = target;
+                    break;
+                }
+            }
+        }
+        public void ShakeActiveCamera()
+        {
 
-        public void EnableCameras()
-        {
-            gameObject.SetActive(true);
         }
+        #endregion
+
+    }
+    public enum GameCameraType
+    {
+        PlayerFar,
+        PlayerNear,
+        MapFar,
+        MapNear,
+        GameView,
+        None
+    }
+
+    [System.Serializable]
+    public struct GameCameraConfig
+    {
+        public GameCameraType cameraType;
+        public CinemachineCamera camera;
+        public LayerMask cullingMask;
     }
 }

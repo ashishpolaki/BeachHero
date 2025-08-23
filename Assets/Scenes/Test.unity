@@ -2183,13 +2183,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 968a0c9391b510c4fafed8759dbcb253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameViewCamera: {fileID: 426336864}
-  playerNearTargetCamera: {fileID: 362131871}
-  playerFarTargetCamera: {fileID: 1826009346}
-  shakeDuration: 0.3
-  shakeMagnitude: 0.2
-  shakeFrequency: 25
-  cameraBlendDuration: 0.1
+  mainCamera: {fileID: 0}
+  cameraConfigs: []
+  activePriority: 1
+  inactivePriority: 0
+  playerFarToNearBlendDelay: 0.1
 --- !u!4 &1173297669
 Transform:
   m_ObjectHideFlags: 0
