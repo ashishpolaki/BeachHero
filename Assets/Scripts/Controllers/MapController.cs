@@ -15,15 +15,16 @@ namespace BeachHero
         #region Readonly Variables 
         private static readonly Vector2 originalTextureScale = new Vector2(1, 1);
         private static readonly Vector2 zoomInTextureScale = new Vector2(3, 1);
-        private static readonly float zoomInThick = 0.05f;
-        private static readonly float zoomOutThick = 0.35f;
+        private static readonly float zoomInThick = 0.2f;
+        private static readonly float zoomOutThick = 0.55f;
+        private static readonly float zoomDuration = 1.5f;
         private static readonly float referenceOrthoSize = 31f;
         private static readonly Vector2 referenceMapScale = new Vector2(4.5f, 4f);
         #endregion
 
         #region Inspector Variables
         [SerializeField] private Transform boat;
-        [SerializeField] private Collider2D confineCollider; 
+        [SerializeField] private Collider2D confineCollider;
         [SerializeField] private LevelDatabaseSO levelDatabase;
         [SerializeField] private ParticleSystem confettiParticle;
 
@@ -86,8 +87,8 @@ namespace BeachHero
             }
             InitializeMapData();
             ChangeMapVisual(-1, MapNumber);
-            CameraController.GetInstance.SetCollider(confineCollider,GameCameraType.MapFar);
-            CameraController.GetInstance.SetCollider(confineCollider,GameCameraType.MapNear);
+            CameraController.GetInstance.SetCollider(confineCollider, GameCameraType.MapFar);
+            CameraController.GetInstance.SetCollider(confineCollider, GameCameraType.MapNear);
         }
         private void OnDestroy()
         {
@@ -169,18 +170,18 @@ namespace BeachHero
             CameraController.GetInstance.SetActiveCamera(GameCameraType.MapNear);
             CameraController.GetInstance.SetCameraPosition(position, false);
             var pathLine = mapDatas[mapNumber - 1].pathLine;
-            DOTween.To(() => pathLine.startWidth, (x) => pathLine.startWidth = x, zoomInThick, 1.5f);
-            DOTween.To(() => pathLine.endWidth, (x) => pathLine.endWidth = x, zoomInThick, 1.5f);
-            DOTween.To(() => pathLine.textureScale, (x) => pathLine.textureScale = x, zoomInTextureScale, 1.5f);
+            DOTween.To(() => pathLine.startWidth, (x) => pathLine.startWidth = x, zoomInThick, zoomDuration);
+            DOTween.To(() => pathLine.endWidth, (x) => pathLine.endWidth = x, zoomInThick, zoomDuration);
+            DOTween.To(() => pathLine.textureScale, (x) => pathLine.textureScale = x, zoomInTextureScale, zoomDuration);
         }
         public void ZoomOut()
         {
             CameraController.GetInstance.SetActiveCamera(GameCameraType.MapFar);
             UpdateMapBGScale();
             var pathLine = mapDatas[mapNumber - 1].pathLine;
-            DOTween.To(() => pathLine.startWidth, (x) => pathLine.startWidth = x, zoomOutThick, 1.5f);
-            DOTween.To(() => pathLine.endWidth, (x) => pathLine.endWidth = x, zoomOutThick, 1.5f);
-            DOTween.To(() => pathLine.textureScale, (x) => pathLine.textureScale = x, originalTextureScale, 1.5f);
+            DOTween.To(() => pathLine.startWidth, (x) => pathLine.startWidth = x, zoomOutThick, zoomDuration);
+            DOTween.To(() => pathLine.endWidth, (x) => pathLine.endWidth = x, zoomOutThick, zoomDuration);
+            DOTween.To(() => pathLine.textureScale, (x) => pathLine.textureScale = x, originalTextureScale, zoomDuration);
         }
         #endregion
 
@@ -222,14 +223,18 @@ namespace BeachHero
                 mapData.mapObject.SetActive(false);
             }
         }
-        public void ChangeMapVisual(int previous, int current)
+        public void ChangeMapVisual(int previousMap, int currentMap)
         {
-            mapDatas[current - 1].mapObject.SetActive(true);
-            if (previous != -1)
+            //If startLevelIndex is -1, it means no levels are set for this map
+            if (mapDatas[currentMap - 1].startLevelNumber != -1)
             {
-                mapDatas[previous - 1].mapObject.SetActive(false);
+                mapDatas[currentMap - 1].mapObject.SetActive(true);
+                if (previousMap != -1)
+                {
+                    mapDatas[previousMap - 1].mapObject.SetActive(false);
+                }
+                mapDatas[currentMap - 1].LevelSetup(levelDatabase);
             }
-            mapDatas[current - 1].LevelSetup(levelDatabase);
         }
         private void UpdateMapBGScale()
         {

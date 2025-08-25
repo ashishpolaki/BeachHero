@@ -2,6 +2,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 using Febucci.UI;
+using System.Threading.Tasks;
 
 namespace BeachHero
 {
@@ -21,8 +22,7 @@ namespace BeachHero
         private Color handImageColor;
         private FTUETutorialType currentFTUEType;
 
-
-        public override void Open()
+        public override async void Open()
         {
             base.Open();
             if (GameController.GetInstance != null)
@@ -32,6 +32,9 @@ namespace BeachHero
             currentFTUEType = GameController.GetInstance.TutorialController.CurrentFTUEType;
             cam = GameController.GetInstance.LevelController.Cam;
             handImageColor = handImage.color;
+            handImageColor.a = 1f;
+            handImage.color = handImageColor;
+            await Task.Delay(100); // Wait for a frame to ensure the camera is set up
             OnHandTap();
             ShowInstructionText();
         }
@@ -80,22 +83,33 @@ namespace BeachHero
         private void OnHandTap()
         {
             Vector3 playerWorldPos = GameController.GetInstance.LevelController.PlayerTransform.position;
-            Vector3 playerScreenPos = cam.WorldToScreenPoint(playerWorldPos);
-            handObject.localScale = Vector3.one; // Reset scale before applying punch
-            handObject.position = playerScreenPos;
+            Vector3 screenPos = cam.WorldToScreenPoint(playerWorldPos);
+            var canvas = UIController.GetInstance.Canvas;
+            Vector3 worldOnCanvas = cam.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, canvas.planeDistance));  // Convert screen world on canvas plane (plane distance = 1)
+            Vector3 localPos = (canvas.transform as RectTransform).InverseTransformPoint(worldOnCanvas);
+            localPos = new Vector3(localPos.x, localPos.y, 0f); // Ensure z is zero for 2D canvas
+
+            handObject.localPosition = localPos;
             handObject.DOKill();
             handObject.DOPunchScale(Vector3.one * handScalePunch, handScaleDuration, 0, handScaleElasticity).OnComplete(() =>
             {
                 OnHandMove();
             });
+
         }
 
         private void OnHandMove()
         {
             handObject.DOKill();
             int characterIndex = currentFTUEType == FTUETutorialType.TapAndDrag ? 0 : 1;
-            Vector3 drowningCharacterPos = cam.WorldToScreenPoint(GameController.GetInstance.LevelController.GetDrowningCharacter(characterIndex).position);
-            handObject.DOMove(drowningCharacterPos, handMoveDuration).OnComplete(() =>
+            var canvas = UIController.GetInstance.Canvas;
+            Vector3 characterWorldPos = GameController.GetInstance.LevelController.GetDrowningCharacter(characterIndex).position;
+            Vector3 screenPos = cam.WorldToScreenPoint(characterWorldPos);
+            Vector3 worldOnCanvas = cam.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, canvas.planeDistance)); // Convert screen world on canvas plane (plane distance = 1)
+            Vector3 localPos = (canvas.transform as RectTransform).InverseTransformPoint(worldOnCanvas);
+            DebugUtils.Log($"[Tutorial] Character World Pos: {characterWorldPos}, Screen Pos: {screenPos}, World on Canvas: {worldOnCanvas}, Local Pos: {localPos}");
+            localPos = new Vector3(localPos.x, localPos.y, 0f); // Ensure z is zero for 2D canvas
+            handObject.DOAnchorPos(localPos, handMoveDuration).OnComplete(() =>
             {
                 OnHandTap();
             });

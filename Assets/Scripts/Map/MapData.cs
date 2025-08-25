@@ -61,10 +61,14 @@ namespace BeachHero
             int startLevelIndex = startLevelNumber - 1;
             int endLevelIndex = endLevelNumber - 1;
             int index = 0;
-            for (var i = startLevelIndex; i <= endLevelIndex; i++)
+            //If startLevelNumber is 0, it means no levels are set up for this map
+            if (startLevelNumber > 0)
             {
-                levelVisuals[index].Setup(levelDatabaseSO.LevelDatas[i]);
-                index++;
+                for (var i = startLevelIndex; i <= endLevelIndex; i++)
+                {
+                    levelVisuals[index].Setup(levelDatabaseSO.LevelDatas[i]);
+                    index++;
+                }
             }
         }
         public LevelVisual GetLevelVisual(int levelNumber)

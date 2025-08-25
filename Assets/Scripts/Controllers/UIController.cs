@@ -17,6 +17,7 @@ namespace BeachHero
     public class UIController : SingleTon<UIController>
     {
         #region Inspector Variables
+        [SerializeField] private Canvas canvas;
         [SerializeField] private UIScreenManager screenManager;
 
         [Header("Fade")]
@@ -31,8 +32,11 @@ namespace BeachHero
         [SerializeField] private LoadingUI loadingUI;
         #endregion
 
+        #region Properties
         public NotchSafeArea NotchSafeArea => notchSafeArea;
         public LoadingUI LoadingUI => loadingUI;
+        public Canvas Canvas => canvas;
+        #endregion
 
         #region Public Methods
         public void ScreenEvent(ScreenType screenType, UIScreenEvent uIScreenEvent, ScreenTabType screenTabType = ScreenTabType.None)

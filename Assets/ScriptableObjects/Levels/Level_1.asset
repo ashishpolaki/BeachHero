@@ -19,7 +19,10 @@ MonoBehaviour:
   obstacles:
     staticObstacles: []
     movingObstacles: []
-    waterHoleObstacles: []
+    waterHoleObstacles:
+    - position: {x: 4.24, y: 0, z: 6.27}
+      shaderPosition: {x: 0.394, y: 0.69075}
+      scale: 2
   drownCharacters:
   - position: {x: -0.18, y: 0, z: 7.89}
     waitTimePercentage: 0.878

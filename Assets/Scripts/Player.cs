@@ -43,17 +43,21 @@ namespace BeachHero
             {
                 return;
             }
+            //Collide with DrownCharacter
             if (other.CompareTag(StringUtils.CHARACTER_TAG))
             {
                 DrownCharacter drownCharacter = other.GetComponent<DrownCharacter>();
                 drownCharacter.OnPickUp();
             }
+
+            //Collide with Collectable
             ICollectable collectable = other.GetComponent<ICollectable>();
             if (collectable != null)
             {
                 collectable.Collect();
             }
 
+            //Collide with Obstacle
             if (other.CompareTag(StringUtils.OBSTACLE_TAG))
             {
                 IObstacle obstacle = other.GetComponent<IObstacle>();
@@ -64,16 +68,15 @@ namespace BeachHero
                 if (obstacle != null)
                 {
                     StopMovement();
-                    obstacle.Hit();
                     if (obstacle.ObstacleType == ObstacleType.WaterHole)
                     {
                         boatAnimator.enabled = false;
-                        other.GetComponent<WaterHoleObstacle>().OnPlayerHit(transform);
                     }
                     else
                     {
                         OnBoatCollided();
                     }
+                    obstacle.Hit();
                 }
             }
 
@@ -219,7 +222,7 @@ namespace BeachHero
                     {
                         if (GameController.GetInstance.LevelController.IsLevelPassed)
                         {
-                           PlayVictoryAnimation();
+                            PlayVictoryAnimation();
                         }
                         else
                         {

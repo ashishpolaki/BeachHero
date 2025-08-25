@@ -139,6 +139,7 @@ namespace BeachHero
             {
                 MapController.GetInstance.ZoomOut();
                 ShowTitleDescription();
+                UpdateMapVisual();
             }
             else
             {
@@ -167,7 +168,6 @@ namespace BeachHero
             zoomToggle.interactable = isCurrentMap;
             leftArrowBtn.interactable = currentMapNumber > 1;
             rightArrowBtn.interactable = currentMapNumber < totalMaps;
-            ShowTitleDescription();
             MapController.GetInstance.ChangeMapVisual(previousMapNumber, currentMapNumber);
         }
     }

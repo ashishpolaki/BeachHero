@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace BeachHero
@@ -16,6 +17,9 @@ namespace BeachHero
         [SerializeField] private float depth = -10; // Target depth (y position) the object should reach
         [SerializeField] private float descendSpeed = 1; // Speed at which the object descends
         [SerializeField] private float radiusMultiplier = 0.8f; // Multiplier for the radius of the cyclone effect
+        [SerializeField] private float gameOverdelay = 1; // Delay before the hit effect is applied
+        [SerializeField] private float failureHapticDuration = 0.5f; 
+        [SerializeField] private float failureHapticCooldown = 0.3f; 
 
         private bool canStartCyclone = false; // Flag to check if the cyclone can start
         private float radius;
@@ -24,7 +28,7 @@ namespace BeachHero
         private Coroutine cycloneCoroutine;
         private int index = -1;
 
-        public void Init(WaterHoleObstacleData obstacleData,int index)
+        public void Init(WaterHoleObstacleData obstacleData, int index)
         {
             this.index = index;
             StopCycloneEffect();
@@ -38,8 +42,11 @@ namespace BeachHero
             waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{index}"), 1f);
         }
 
-        public override void Hit()
+        public override async void Hit()
         {
+            OnPlayerHit(GameController.GetInstance.LevelController.PlayerTransform);
+            PlayVibration();
+            await Task.Delay((int)(gameOverdelay * 1000)); // Wait for 1 second before hitting
             base.Hit();
         }
         public void OnDisable()
@@ -50,6 +57,16 @@ namespace BeachHero
         {
             ResetWaterMaterial();
         }
+
+        private async void PlayVibration()
+        {
+            float startCooldownTime = Time.time;
+            while (Time.time - startCooldownTime < failureHapticDuration)
+            {
+                HapticsManager.GetInstance.FailureHapticWithCooldown(failureHapticCooldown);
+                await Task.Yield();
+            }
+        }
         private void ResetWaterMaterial()
         {
             if (index < 0)
@@ -57,9 +74,8 @@ namespace BeachHero
                 return;
             }
             waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{index}"), 0f);
-            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_DISTANCE}_{index}"), 0f);
         }
-        public void OnPlayerHit(Transform playerTransform)
+        private void OnPlayerHit(Transform playerTransform)
         {
             targetTransform = playerTransform;
             Vector3 offset = targetTransform.position - this.transform.position;
