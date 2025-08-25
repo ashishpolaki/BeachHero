@@ -14,9 +14,48 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelTime: 6
   startPoint:
-    Position: {x: 0, y: 0, z: 0}
+    Position: {x: 0.27, y: 0, z: 3.92}
     Rotation: {x: 0, y: 0, z: 0}
   obstacles:
     staticObstacles: []
-    movingObstacles: []
-  savedCharacters: []
+    movingObstacles:
+    - type: 2
+      bezierKeyframes:
+      - position: {x: -7.208448, y: -0.01171875, z: 11.102319}
+        inTangentLocal: {x: -1, y: 0, z: 0}
+        outTangentLocal: {x: 0.6257887, y: -0.00390625, z: -0.6182575}
+      - position: {x: -1.677587, y: -0.00390625, z: 8.026419}
+        inTangentLocal: {x: -0.9511895, y: -0.01171875, z: -0.24404812}
+        outTangentLocal: {x: 1, y: 0, z: 0}
+      - position: {x: 1.1781068, y: -0.0078125, z: 8.753673}
+        inTangentLocal: {x: -0.804759, y: -0.00390625, z: -0.4392891}
+        outTangentLocal: {x: 0.75595, y: -0.0078125, z: 0.48810005}
+      - position: {x: 2.638879, y: -0.01953125, z: 12.424221}
+        inTangentLocal: {x: -0.05634308, y: -0.00390625, z: -1.0087376}
+        outTangentLocal: {x: 0.30039167, y: -0.00390625, z: 1.0738211}
+      - position: {x: 1.0373425, y: -0.013671875, z: 15.14584}
+        inTangentLocal: {x: 0.57395315, y: -0.01171875, z: -0.5941076}
+        outTangentLocal: {x: -0.44561005, y: -0.02734375, z: 0.843379}
+      - position: {x: -3.3625402, y: -0.021484375, z: 16.675425}
+        inTangentLocal: {x: 0.43506384, y: -0.02734375, z: 1.0343685}
+        outTangentLocal: {x: -0.6453223, y: -0.02734375, z: -0.13720131}
+      - position: {x: -5.7782493, y: -0.03125, z: 13.546018}
+        inTangentLocal: {x: 0.45033932, y: -0.03125, z: 0.6356363}
+        outTangentLocal: {x: -0.24423122, y: -0.03125, z: -0.40133}
+      - position: {x: -7.272245, y: -0.0390625, z: 11.329834}
+        inTangentLocal: {x: 0.16145468, y: -0.033203125, z: 0.26866722}
+        outTangentLocal: {x: -0.35487318, y: -0.033203125, z: 0.02279663}
+      resolution: 4
+      movementSpeed: 4
+      rotationSpeedMultiplier: 2
+      loopedMovement: 1
+      inverseDirection: 0
+    waterHoleObstacles: []
+  drownCharacters:
+  - position: {x: -2.91, y: 0, z: 13.13}
+    waitTimePercentage: 1
+  - position: {x: -1.62, y: 0, z: 19.36}
+    waitTimePercentage: 1
+  - position: {x: 4.56, y: 0, z: 14.95}
+    waitTimePercentage: 1
+  collectables: []

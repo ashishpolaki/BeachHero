@@ -186,14 +186,17 @@ namespace BeachHero
         {
             if (GUILayout.Button("Add Keyframe"))
             {
-                Undo.RecordObject(movingObstacle, "Add Keyframe");
+                var anchorPoint = movingObstacle.Keyframes.Length > 0 ? movingObstacle.Keyframes[movingObstacle.Keyframes.Length - 1].position : Vector3.zero;
+                var inTangent = movingObstacle.Keyframes.Length > 0 ? movingObstacle.Keyframes[movingObstacle.Keyframes.Length - 1].outTangentLocal : Vector3.left;
+                var outTangent = movingObstacle.Keyframes.Length > 0 ? movingObstacle.Keyframes[movingObstacle.Keyframes.Length - 1].outTangentLocal : Vector3.right;
+
                 Undo.RecordObject(movingObstacle, "Add Keyframe");
 
                 BezierKeyframe newKeyframe = new BezierKeyframe
                 {
-                    position = Vector3.zero,
-                    inTangentLocal = Vector3.left,
-                    outTangentLocal = Vector3.right
+                    position = anchorPoint,
+                    inTangentLocal = inTangent,
+                    outTangentLocal = outTangent
                 };
                 movingObstacle.AddKeyFrame(newKeyframe);
             }
@@ -225,11 +228,15 @@ namespace BeachHero
 
                 Undo.RecordObject(movingObstacle, "Add Keyframe At Index");
 
+                var anchorPoint = movingObstacle.Keyframes.Length > 0 ? movingObstacle.Keyframes[addKeyframeIndex].position : Vector3.zero;
+                var inTangent = movingObstacle.Keyframes.Length > 0 ? movingObstacle.Keyframes[addKeyframeIndex].inTangentLocal : Vector3.left;
+                var outTangent = movingObstacle.Keyframes.Length > 0 ? movingObstacle.Keyframes[addKeyframeIndex].outTangentLocal : Vector3.right;
+
                 BezierKeyframe newKeyframe = new BezierKeyframe
                 {
-                    position = Vector3.zero,
-                    inTangentLocal = Vector3.left,
-                    outTangentLocal = Vector3.right
+                    position = anchorPoint,
+                    inTangentLocal = inTangent,
+                    outTangentLocal = outTangent
                 };
                 movingObstacle.AddKeyframeAtIndex(addKeyframeIndex, newKeyframe);
             }
