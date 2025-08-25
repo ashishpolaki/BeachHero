@@ -88,7 +88,6 @@ namespace BeachHero
             Vector3 worldOnCanvas = cam.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, canvas.planeDistance));  // Convert screen world on canvas plane (plane distance = 1)
             Vector3 localPos = (canvas.transform as RectTransform).InverseTransformPoint(worldOnCanvas);
             localPos = new Vector3(localPos.x, localPos.y, 0f); // Ensure z is zero for 2D canvas
-
             handObject.localPosition = localPos;
             handObject.DOKill();
             handObject.DOPunchScale(Vector3.one * handScalePunch, handScaleDuration, 0, handScaleElasticity).OnComplete(() =>
@@ -107,13 +106,11 @@ namespace BeachHero
             Vector3 screenPos = cam.WorldToScreenPoint(characterWorldPos);
             Vector3 worldOnCanvas = cam.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, canvas.planeDistance)); // Convert screen world on canvas plane (plane distance = 1)
             Vector3 localPos = (canvas.transform as RectTransform).InverseTransformPoint(worldOnCanvas);
-            DebugUtils.Log($"[Tutorial] Character World Pos: {characterWorldPos}, Screen Pos: {screenPos}, World on Canvas: {worldOnCanvas}, Local Pos: {localPos}");
             localPos = new Vector3(localPos.x, localPos.y, 0f); // Ensure z is zero for 2D canvas
             handObject.DOAnchorPos(localPos, handMoveDuration).OnComplete(() =>
             {
                 OnHandTap();
             });
         }
-
     }
 }

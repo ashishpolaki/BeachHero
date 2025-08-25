@@ -154,6 +154,7 @@ namespace BeachHero
                 movementShape = (MovingObstacleShape)EditorGUILayout.EnumPopup("Shape Type", movementShape);
                 radius = EditorGUILayout.FloatField("Radius", radius);
                 segments = EditorGUILayout.IntField("Segments", segments);
+                movingObstacle.resolution = EditorGUILayout.FloatField("Resolution", movingObstacle.resolution);
 
                 GUILayout.BeginHorizontal();
                 GUILayout.FlexibleSpace();

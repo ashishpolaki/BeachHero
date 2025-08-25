@@ -100,23 +100,6 @@ namespace BeachHero
                 transform.LookAt(pathPoints[1]);
             }
         }
-        private void ApplyOffset()
-        {
-            //if (Keyframes == null || Keyframes.Length < 2)
-            //    return;
-            //for (int i = 0; i < Keyframes.Length; i++)
-            //{
-            //    var rotationOffset = Quaternion.Euler(offsetRotation);
-
-            //    Vector3 positionWithOffset = rotationOffset * TempKeyFrames[i].position + offsetPosition;
-            //    Vector3 inTangentWithOffset = rotationOffset * TempKeyFrames[i].inTangentLocal;
-            //    Vector3 outTangentWithOffset = rotationOffset * TempKeyFrames[i].outTangentLocal;
-
-            //    Keyframes[i].position = positionWithOffset;
-            //    Keyframes[i].inTangentLocal = inTangentWithOffset;
-            //    Keyframes[i].outTangentLocal = outTangentWithOffset;
-            //}
-        }
         private void GetPathRenderer()
         {
             GameObject pathRendererPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/PathLineRenderer.prefab");
