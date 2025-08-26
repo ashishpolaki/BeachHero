@@ -135,6 +135,7 @@ public class BeachHeroEditorWindow : EditorWindow
     private string INIT_SCENE_PATH = "Assets/Scenes/Init.unity";
     private string TEST_SCENE_PATH = "Assets/Scenes/Test.unity";
     private string FILE_STRING = "file :";
+    private string LEVELS_PATH = "Assets/ScriptableObjects/Levels/Level_";
     private int selectedTab = 0;
     private string[] tabTitles = { "Levels", "Items" };
     private GUIStyle tabStyle;
@@ -267,8 +268,14 @@ public class BeachHeroEditorWindow : EditorWindow
         GUILayout.BeginHorizontal();
 
         #region Left Panel
+        float bottomHeight = 170f; // fixed
+        float topHeight = position.height - bottomHeight;
+
         // LEFT PANEL
         GUILayout.BeginVertical(GUILayout.Width(levelsTab_LeftPanelWidth));
+
+        //Top Section
+        GUILayout.BeginVertical(GUILayout.Height(topHeight));
         GUILayout.Label("Levels", EditorStyles.boldLabel);
 
         levelsTab_LeftPanelscrollPos = GUILayout.BeginScrollView(levelsTab_LeftPanelscrollPos, false, true);
@@ -306,7 +313,46 @@ public class BeachHeroEditorWindow : EditorWindow
         }
         GUILayout.EndScrollView();
         GUILayout.EndVertical();
+        //End of top section
 
+
+        //Bottom Section
+        GUILayout.BeginVertical("box", GUILayout.Height(bottomHeight));
+
+        if (GUILayout.Button("Add New Level"))
+        {
+            levelDatabaseRepresentation.levelsListProperty.arraySize++;
+            //create a new scriptable object asset with previous level data
+            LevelSO level = levelDatabaseRepresentation.levelsListProperty.GetArrayElementAtIndex(levelDatabaseRepresentation.levelsListProperty.arraySize - 2).objectReferenceValue as LevelSO;
+            var newLevel = Object.Instantiate(level);
+            string newLevelPath = $"{LEVELS_PATH}{levelDatabaseRepresentation.levelsListProperty.arraySize}.asset";
+            AssetDatabase.CreateAsset(newLevel, newLevelPath);
+            AssetDatabase.SaveAssets();
+            levelDatabaseRepresentation.levelsListProperty.GetArrayElementAtIndex(levelDatabaseRepresentation.levelsListProperty.arraySize - 1).objectReferenceValue = newLevel;
+            levelDatabaseRepresentation.serializedLevelDatabaseObject.ApplyModifiedProperties();
+            selectedLevelIndex = levelDatabaseRepresentation.levelsListProperty.arraySize - 1;
+            previousSelectedLevelIndex = -1; // Force refresh
+            OpenLevel();
+        }
+        if (GUILayout.Button("Test Level"))
+        {
+            TestLevel();
+        }
+        if (GUILayout.Button("Save Level"))
+        {
+            SaveLevel();
+        }
+        //Go to the Init Scene
+        // if (GUILayout.Button("Init Scene", EditorStyles.miniButton, GUILayout.Width(EditorGUIUtility.labelWidth + EditorGUIUtility.standardVerticalSpacing)))
+        if (GUILayout.Button("Open Init Scene"))
+        {
+            EditorSceneManager.OpenScene(INIT_SCENE_PATH);
+        }
+        GUILayout.EndVertical();
+
+        GUILayout.EndVertical();
+
+        //end of bottom section
         // Calculate drag handler area height to match left panel height
         Rect lastRect = GUILayoutUtility.GetLastRect();
         float dragHeight = lastRect.yMax; // End of the left panel
@@ -348,28 +394,9 @@ public class BeachHeroEditorWindow : EditorWindow
         int itemsPerRow = Mathf.Max(1, Mathf.FloorToInt((rightPanelContentWidth + spacing) / (previewSize + spacing)));
 
         EditorGUI.BeginChangeCheck();
-        //Go to the Init Scene
-        if (GUILayout.Button("Init Scene", EditorStyles.miniButton, GUILayout.Width(EditorGUIUtility.labelWidth + EditorGUIUtility.standardVerticalSpacing)))
-        {
-            EditorSceneManager.OpenScene(INIT_SCENE_PATH);
-        }
 
         EditorGUILayout.PropertyField(levelDatabaseRepresentation.levelsListProperty.GetArrayElementAtIndex(selectedLevelIndex), new GUIContent(FILE_STRING));
         EditorGUILayout.PropertyField(levelRepresentation.levelTimeProperty);
-
-        //Play Test Level
-        EditorGUILayout.Space(5);
-        if (GUILayout.Button("Test Level", EditorStyles.toolbarButton, GUILayout.Width(EditorGUIUtility.labelWidth)))
-        {
-            TestLevel();
-        }
-
-        //Save the Current Editing Level
-        EditorGUILayout.Space(5);
-        if (GUILayout.Button("Save Level", EditorStyles.toolbarButton, GUILayout.Width(EditorGUIUtility.labelWidth)))
-        {
-            SaveLevel();
-        }
 
         //SpawnItems Header
         GUIStyle customStyle = new GUIStyle(EditorStyles.boldLabel)
