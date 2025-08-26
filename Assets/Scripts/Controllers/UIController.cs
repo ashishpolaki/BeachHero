@@ -1,7 +1,4 @@
-using DG.Tweening;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace BeachHero
 {
@@ -21,9 +18,7 @@ namespace BeachHero
         [SerializeField] private UIScreenManager screenManager;
 
         [Header("Fade")]
-        [SerializeField] private Image fadePanel;
-        [SerializeField] private float fadeInDuration = 0.5f;
-        [SerializeField] private float fadeOutDuration = 0.5f;
+        [SerializeField] private FadeUI fadeUI;
 
         [Header("Notch SafeArea")]
         [SerializeField] private NotchSafeArea notchSafeArea;
@@ -35,6 +30,7 @@ namespace BeachHero
         #region Properties
         public NotchSafeArea NotchSafeArea => notchSafeArea;
         public LoadingUI LoadingUI => loadingUI;
+        public FadeUI FadeUI => fadeUI;
         public Canvas Canvas => canvas;
         #endregion
 
@@ -43,32 +39,9 @@ namespace BeachHero
         {
             screenManager.ScreenEvent(screenType, uIScreenEvent, screenTabType);
         }
-        public void Close()
+        public void CloseAllScreens()
         {
             screenManager.CloseAll();
-        }
-        public void FadeIn() => StartFade(1f, fadeInDuration);
-        public void FadeOut() => StartFade(0f, fadeOutDuration);
-        public Task FadeInASync() => StartFadeAsync(1f, fadeInDuration);
-        public Task FadeOutASync() => StartFadeAsync(0f, fadeOutDuration);
-        #endregion
-
-        #region Private Methods
-        private void StartFade(float endValue, float duration)
-        {
-            if (fadePanel != null)
-            {
-                fadePanel.DOKill();
-                fadePanel.DOFade(endValue, duration).SetEase(Ease.InOutSine);
-            }
-        }
-        private async Task StartFadeAsync(float endValue, float duration)
-        {
-            if (fadePanel != null)
-            {
-                fadePanel.DOKill();
-                await fadePanel.DOFade(endValue, duration).SetEase(Ease.InOutSine).AsyncWaitForCompletion();
-            }
         }
         #endregion
     }
