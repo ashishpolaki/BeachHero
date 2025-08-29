@@ -188,21 +188,30 @@ namespace BeachHero
                 GameController.GetInstance.TutorialController.OnPathDrawn();
             }
         }
+
+        public void SetLevelCompletionResult(bool passed)
+        {
+            levelPhase = passed ? LevelPhase.CompletedSuccess : LevelPhase.CompletedFail;
+            if (!passed)
+                player.StopMovement();
+        }
+        #endregion
+
+        #region Player
         public void InitializePlayerData(bool isFTUE)
         {
             playerMode = isFTUE ? PlayerMode.FTUE : PlayerMode.Normal;
             levelPhase = LevelPhase.DrawingPath;
 
             int boatIndex = GameController.GetInstance.SkinController.GetSavedBoatIndex();
+            int boatColorIndex = GameController.GetInstance.SkinController.GetSavedBoatColorIndex(boatIndex);
             float speed = GameController.GetInstance.SkinController.GetSelectedBoatSpeed();
             GameObject boatPRefab = GameController.GetInstance.SkinController.GetSelectedBoatPrefab();
-            player.SpawnBoat(boatIndex, speed, boatPRefab);
+            player.UpdateBoat(boatIndex, boatColorIndex, speed, boatPRefab);
         }
-        public void SetLevelCompletionResult(bool passed)
+        public void UpdateBoat(int index, int boatColorIndex)
         {
-            levelPhase = passed ? LevelPhase.CompletedSuccess : LevelPhase.CompletedFail;
-            if (!passed)
-                player.StopMovement();
+            player.UpdateBoat(index, boatColorIndex,0, GameController.GetInstance.SkinController.GetBoatSkinByIndex(index).BoatPrefab);
         }
         #endregion
 

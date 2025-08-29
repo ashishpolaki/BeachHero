@@ -51,7 +51,8 @@ namespace BeachHero
 
         //Replace Boat Colors (ShaderGraph Properties)
         public const string BOAT_REPLACEABLE_COLORS_KEY = "_CanReplaceColors";
-        public const string BOAT_COLOR_PREFIX = "_Color_";
+        public const string BOAT_TARGETCOLOR_PREFIX = "_TargetColor_";
+        public const string BOAT_REPLACECOLOR_PREFIX = "_ReplaceColor_";
 
         //Audio
         public const string GAME_MUSIC_VOLUME = "GameMusicVolume";
@@ -100,7 +101,7 @@ namespace BeachHero
         public const int GAME_SCENE_LOAD_DELAY = 1000;
 
         //Boat
-        public const int DEFAULT_BOAT_INDEX = 1;
+        public const int DEFAULT_BOAT_INDEX = 0;
         public const int DEFAULT_BOAT_COLOR_INDEX = 0;
     }
     

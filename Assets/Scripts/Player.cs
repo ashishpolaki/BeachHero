@@ -111,46 +111,16 @@ namespace BeachHero
         }
         #endregion
 
-        public async void PlayVictoryAnimation()
-        {
-            currentBoat.PlayVictoryAnimation();
-            CameraController.GetInstance.OnPlayerBlendCamera(this.transform);
-            await Task.Delay(1000); // Wait for 1 seconds to allow the animation to play
-            UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Open, ScreenTabType.LevelWin);
-        }
-        public void StopMovement()
-        {
-            canStartMovement = false;
-            this.pointsList = new Vector3[0];
-            DeactivateMagnetPowerup();
-        }
+        #region Boat
         private void OnBoatCollided()
         {
             boatAnimator.SetTrigger(sinkingAnimHash);
         }
-        public void StartMovement(Vector3[] pointsList)
+        public void UpdateBoat(int boatIndex,int boatColorIndex, float speed, GameObject boatPrefab)
         {
-            canStartMovement = true;
+            movementSpeed = speed;
 
-            //set boat direction 
-            Vector3 p0 = pointsList[0];
-            Vector3 p1 = pointsList[1];
-            Vector3 direction = (p1 - p0).normalized;
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = targetRotation;
-
-            this.pointsList = pointsList;
-        }
-        public void Init()
-        {
-            DeactivateMagnetPowerup();
-            boatAnimator.SetTrigger(idleAnimHash);
-            canStartMovement = false;
-            nextPointIndex = 1;
-            pointsList = new Vector3[0];
-        }
-        public void SpawnBoat(int boatIndex, float speed, GameObject boatPrefab)
-        {
+            //Boat
             foreach (var boatObject in boatObjects.Values)
             {
                 if (boatObject.activeSelf)
@@ -158,7 +128,6 @@ namespace BeachHero
                     boatObject.SetActive(false);
                 }
             }
-            //Spawn Boat
             if (boatObjects.ContainsKey(boatIndex))
             {
                 boatObjects.TryGetValue(boatIndex, out GameObject existingBoat);
@@ -174,8 +143,49 @@ namespace BeachHero
                     currentBoat = boat.GetComponent<Boat>();
                 }
             }
-            movementSpeed = speed;
-            currentBoat.SetBoatInit();
+            currentBoat.SetBoatInit(boatIndex, boatColorIndex);
+        }
+        #endregion
+
+        #region Animation
+        public async void PlayVictoryAnimation()
+        {
+            currentBoat.PlayVictoryAnimation();
+            CameraController.GetInstance.OnPlayerBlendCamera(this.transform);
+            await Task.Delay(1000); // Wait for 1 seconds to allow the animation to play
+            UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Open, ScreenTabType.LevelWin);
+        }
+        #endregion
+
+        #region Start/Stop Movement
+        public void StopMovement()
+        {
+            canStartMovement = false;
+            this.pointsList = new Vector3[0];
+            DeactivateMagnetPowerup();
+        }
+        public void StartMovement(Vector3[] pointsList)
+        {
+            canStartMovement = true;
+
+            //set boat direction 
+            Vector3 p0 = pointsList[0];
+            Vector3 p1 = pointsList[1];
+            Vector3 direction = (p1 - p0).normalized;
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = targetRotation;
+
+            this.pointsList = pointsList;
+        }
+        #endregion
+
+        public void Init()
+        {
+            DeactivateMagnetPowerup();
+            boatAnimator.SetTrigger(idleAnimHash);
+            canStartMovement = false;
+            nextPointIndex = 1;
+            pointsList = new Vector3[0];
         }
         public void UpdateState()
         {

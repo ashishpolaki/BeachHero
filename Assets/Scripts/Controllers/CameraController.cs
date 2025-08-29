@@ -121,7 +121,6 @@ namespace BeachHero
             }
         }
         #endregion
-
     }
     public enum GameCameraType
     {

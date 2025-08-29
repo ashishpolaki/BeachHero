@@ -26,7 +26,7 @@ namespace BeachHero
         public void InitSkinColor(BoatCustomisationUIScreen _boatCustomisationUIScreen, BoatSkinColorData skinColorData, int _index, bool _isSelected = false)
         {
             colorIndex = _index;
-            iconImage.color = skinColorData.ShaderColors[0];
+            iconImage.color = skinColorData.previewColor;
             boatCustomisationUIScreen = _boatCustomisationUIScreen;
             isSelected = _isSelected;
             selectButton.interactable = !_isSelected;

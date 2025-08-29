@@ -15,29 +15,34 @@ namespace BeachHero
     {
         #region Inspector Variables
         [SerializeField] private BoatPurchasePanel purchasePanel;
-        [SerializeField] private BoatSkinUI boatSkinPrefab;
         [SerializeField] private BoatSkinColorUI boatSkinColorUIPrefab;
-        [SerializeField] private Transform boatListContainer;
         [SerializeField] private Transform boatColorListContainer;
+        // [SerializeField] private BoatSkinUI boatSkinPrefab;
+        //  [SerializeField] private Transform boatListContainer;
+        //  private Dictionary<int, BoatSkinUI> boatSkinMap = new Dictionary<int, BoatSkinUI>();
+        //  [SerializeField] private Image selectedBoatImage;
 
         [SerializeField] private RectTransform screenBounds;
         [SerializeField] private RectTransform boatScrollView;
         [SerializeField] private Button homeButton;
         [SerializeField] private Button purchaseButton;
-        [SerializeField] private Button nextColorButton;
-        [SerializeField] private Button prevColorButton;
+        [SerializeField] private Button nextBoatButton;
+        [SerializeField] private Button prevBoatButton;
         [SerializeField] private TextMeshProUGUI purchaseBtnText;
+        [SerializeField] private TextMeshProUGUI boatNameText;
         [SerializeField] private Slider speedBar;
-        [SerializeField] private Image selectedBoatImage;
+
+        [Header("Camera Settings")]
+        [SerializeField] private Camera customisationCamera;
+        [SerializeField] private Vector3 camPositionOffset = new Vector3(2.55f, 2.82f, 4.87f);
+        [SerializeField] private Vector3 camRotationOffset = new Vector3(17.191f, 205.917f, 357.561f);
         #endregion
 
         #region Private Variables
         private BoatSelectionAction boatSelectionAction = BoatSelectionAction.SelectSkin;
         private int selectedBoatIndex = -1;
-        private int lastBoatIndex = -1;
         private int selectedColorIndex = 0;
         private bool isSetupComplete = false;
-        private Dictionary<int, BoatSkinUI> boatSkinMap = new Dictionary<int, BoatSkinUI>();
         private List<BoatSkinColorUI> colorUIList = new List<BoatSkinColorUI>();
         #endregion
 
@@ -46,15 +51,12 @@ namespace BeachHero
         {
             base.Open(screenTabType);
             selectedBoatIndex = -1;
-            lastBoatIndex = -1;
             AddListeners();
-            AdjustBoatScrollViewHeight();
             SetupCustomisation();
         }
         public override void Close()
         {
             base.Close();
-            boatSkinMap[selectedBoatIndex].SetUnSelected();
             RemoveListeneres();
             purchasePanel.Close();
         }
@@ -65,8 +67,8 @@ namespace BeachHero
         {
             homeButton.ButtonRegister(OnHomePressed);
             purchaseButton.ButtonRegister(OnPurchasePressed);
-            nextColorButton.ButtonRegister(() => ChangeBoatColor(1));
-            prevColorButton.ButtonRegister(() => ChangeBoatColor(-1));
+            nextBoatButton.ButtonRegister(() => ChangeBoat(1));
+            prevBoatButton.ButtonRegister(() => ChangeBoat(-1));
             purchasePanel.AddListeners();
             GameController.GetInstance.SkinController.OnSkinPurchased += BoatSkinPurchased;
             GameController.GetInstance.SkinController.OnSkinColorPurchased += BoatSkinColorPurchased;
@@ -76,8 +78,8 @@ namespace BeachHero
         {
             homeButton.ButtonDeRegister();
             purchaseButton.ButtonDeRegister();
-            nextColorButton.ButtonDeRegister();
-            prevColorButton.ButtonDeRegister();
+            nextBoatButton.ButtonDeRegister();
+            prevBoatButton.ButtonDeRegister();
             purchasePanel.RemoveListeners();
             GameController.GetInstance.SkinController.OnSkinPurchased -= BoatSkinPurchased;
             GameController.GetInstance.SkinController.OnSkinColorPurchased -= BoatSkinColorPurchased;
@@ -100,22 +102,28 @@ namespace BeachHero
         {
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
         }
-        private void ChangeBoatColor(int direction)
+        //private void ChangeBoatColor(int direction)
+        //{
+        //    int colorCount = GameController.GetInstance.SkinController.GetBoatSkinByIndex(selectedBoatIndex).SkinColors.Length;
+        //    selectedColorIndex = (selectedColorIndex + direction) % colorCount;
+        //    ApplyBoatColor(selectedColorIndex);
+        //}
+        private void ChangeBoat(int direction)
         {
-            int colorCount = GameController.GetInstance.SkinController.GetBoatSkinByIndex(selectedBoatIndex).SkinColors.Length;
-            selectedColorIndex = (selectedColorIndex + direction) % colorCount;
-            ApplyBoatColor(selectedColorIndex);
+            int boatCount = GameController.GetInstance.SkinController.BoatSkinsDatabase.BoatSkins.Length;
+            selectedBoatIndex = (selectedBoatIndex + direction + boatCount) % boatCount;
+            UpdateSelectedBoat(selectedBoatIndex);
         }
         #endregion
 
         #region Setup/Init
-        private void AdjustBoatScrollViewHeight()
-        {
-            float actualScreenHeight = screenBounds.rect.height;
-            float boatsScrollPosY = boatScrollView.anchoredPosition.y;
-            float adjustedHeight = actualScreenHeight + boatsScrollPosY;
-            boatScrollView.sizeDelta = new Vector2(boatScrollView.sizeDelta.x, adjustedHeight);
-        }
+        //private void AdjustBoatScrollViewHeight()
+        //{
+        //    float actualScreenHeight = screenBounds.rect.height;
+        //    float boatsScrollPosY = boatScrollView.anchoredPosition.y;
+        //    float adjustedHeight = actualScreenHeight + boatsScrollPosY;
+        //    boatScrollView.sizeDelta = new Vector2(boatScrollView.sizeDelta.x, adjustedHeight);
+        //}
         private void SetupCustomisation()
         {
             if (!isSetupComplete)
@@ -123,12 +131,12 @@ namespace BeachHero
                 isSetupComplete = true;
 
                 //Initialize the Boat Skins
-                foreach (var skinData in GameController.GetInstance.SkinController.BoatSkinsDatabase.BoatSkins)
-                {
-                    var boatSkinUI = Instantiate(boatSkinPrefab, boatListContainer);
-                    boatSkinUI.SetSkin(this, skinData);
-                    boatSkinMap.Add(skinData.Index, boatSkinUI);
-                }
+                //foreach (var skinData in GameController.GetInstance.SkinController.BoatSkinsDatabase.BoatSkins)
+                //{
+                //    var boatSkinUI = Instantiate(boatSkinPrefab, boatListContainer);
+                //    boatSkinUI.SetSkin(this, skinData);
+                //    boatSkinMap.Add(skinData.Index, boatSkinUI);
+                //}
                 for (int i = 0; i < 5; i++)
                 {
                     var boatColorUI = Instantiate(boatSkinColorUIPrefab, boatColorListContainer);
@@ -143,21 +151,23 @@ namespace BeachHero
         }
         #endregion
 
+        private void ApplyCameraTransform()
+        {
+            var target = GameController.GetInstance.LevelController.PlayerTransform;
+            Vector3 rotatedOffset = target.rotation * camPositionOffset;
+            customisationCamera.transform.position = target.position + rotatedOffset;
+            customisationCamera.transform.rotation = target.rotation * Quaternion.Euler(camRotationOffset);
+        }
+
         private void HighlightSelectedBoat()
         {
-            boatSkinMap[selectedBoatIndex].SetSelected();
+            GameController.GetInstance.LevelController.UpdateBoat(selectedBoatIndex,selectedColorIndex);
+            ApplyCameraTransform();
 
             //Set Boat in Detail Panel
             var boatSkinSO = GameController.GetInstance.SkinController.GetBoatSkinByIndex(selectedBoatIndex);
             speedBar.value = boatSkinSO.SpeedMeter;
-            selectedBoatImage.sprite = boatSkinSO.SkinColors[selectedColorIndex].sprite;
-
-            //Set the previous boat skin to unselected
-            if (lastBoatIndex != -1)
-            {
-                boatSkinMap[lastBoatIndex].SetUnSelected();
-            }
-            lastBoatIndex = selectedBoatIndex;
+            boatNameText.text = boatSkinSO.Name;
         }
 
         private void UpdatePurchaseButton()
@@ -241,8 +251,9 @@ namespace BeachHero
             {
                 boatColorUI.UnSelect();
             }
-            selectedBoatImage.sprite = GameController.GetInstance.SkinController.GetBoatSkinByIndex(selectedBoatIndex).SkinColors[selectedColorIndex].sprite;
+          //  selectedBoatImage.sprite = GameController.GetInstance.SkinController.GetBoatSkinByIndex(selectedBoatIndex).SkinColors[selectedColorIndex].sprite;
             colorUIList[selectedColorIndex].Select();
+            HighlightSelectedBoat();
             UpdatePurchaseButton();
         }
         private BoatSkinColorUI GetReusableColorUI()
@@ -272,9 +283,9 @@ namespace BeachHero
         {
             purchasePanel.Close();
             selectedBoatIndex = index;
-            boatSkinMap[selectedBoatIndex].UpdateLockState();
+            //  boatSkinMap[selectedBoatIndex].UpdateLockState();
             ApplyBoatColor(0); // Default to the first color after purchase
-            UIController.GetInstance.ScreenEvent(ScreenType.Purchase, UIScreenEvent.Push,ScreenTabType.PurchasSuccess);
+            UIController.GetInstance.ScreenEvent(ScreenType.Purchase, UIScreenEvent.Push, ScreenTabType.PurchasSuccess);
         }
         private void BoatSkinPurchasedFail()
         {

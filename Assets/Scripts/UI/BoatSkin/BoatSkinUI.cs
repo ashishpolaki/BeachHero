@@ -37,7 +37,7 @@ namespace BeachHero
             boatCustomisationUIScreen = _boatCustomisationUIScreen;
             index = newBoatSkin.Index;
             currentColorIndex = GameController.GetInstance.SkinController.GetSavedBoatColorIndex(newBoatSkin.Index);
-            SetIcon(newBoatSkin.SkinColors[currentColorIndex].sprite);
+          //  SetIcon(newBoatSkin.SkinColors[currentColorIndex].sprite);
             UpdateLockState();
         }
         private void SetIcon(Sprite sprite)

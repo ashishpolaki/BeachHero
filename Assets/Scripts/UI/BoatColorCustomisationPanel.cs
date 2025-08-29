@@ -71,9 +71,9 @@ namespace BeachHero
         {
             currentBoatColorIndex = colorIndex;
             var boatSkin = GameController.GetInstance.SkinController.GetBoatSkinByIndex(currentBoatIndex);
-            boatImage.sprite = boatSkin.SkinColors[colorIndex].sprite;
+           // boatImage.sprite = boatSkin.SkinColors[colorIndex].sprite;
 
-            bool isDefaultColor = boatSkin.SkinColors[colorIndex].isDefault;
+            bool isDefaultColor = boatSkin.SkinColors[colorIndex].isUnlocked;
 
             //Set the buttons Text
             bool isAds = boatSkin.SkinColors[currentBoatColorIndex].isAds;

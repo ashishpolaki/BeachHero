@@ -88,7 +88,7 @@ namespace BeachHero
         {
             HideAllPurchaseOptions();
             BoatSkinSO boatSkin = GameController.GetInstance.SkinController.GetBoatSkinByIndex(selectedBoatIndex);
-            selectedBoatImg.sprite = boatSkin.SkinColors[selectedColorIndex].sprite;
+         //   selectedBoatImg.sprite = boatSkin.SkinColors[selectedColorIndex].sprite;
             this.selectedBoatIndex = selectedBoatIndex;
             this.selectedColorIndex = selectedColorIndex;
             this.selectionAction = selectionAction;

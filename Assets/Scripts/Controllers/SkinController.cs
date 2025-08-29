@@ -33,7 +33,7 @@ namespace BeachHero
         public bool IsBoatSkinColorUnlocked(int boatIndex, int colorIndex)
         {
             BoatSkinSO boatSkin = GetBoatSkinByIndex(boatIndex);
-            if (boatSkin.SkinColors[colorIndex].isDefault)
+            if (boatSkin.SkinColors[colorIndex].isUnlocked)
             {
                 return true;
             }
@@ -84,18 +84,15 @@ namespace BeachHero
         {
             return SaveSystem.LoadInt(StringUtils.CURRENT_BOAT_COLOR_INDEX + boatIndex, IntUtils.DEFAULT_BOAT_COLOR_INDEX);
         }
-        public Color[] GetCurrentBoatColors()
+        public Color[] GetBoatPartColors(int currentBoatIndex,int currentColorIndex)
         {
-            int currentBoatIndex = GetSavedBoatIndex();
-            int currentColorIndex = GetSavedBoatColorIndex(currentBoatIndex);
-            BoatSkinSO boatSkin = GetBoatSkinByIndex(currentBoatIndex);
+           BoatSkinSO boatSkin = GetBoatSkinByIndex(currentBoatIndex);
             if (boatSkin != null && boatSkin.SkinColors.Length > currentColorIndex)
             {
                 return boatSkin.SkinColors[currentColorIndex].ShaderColors;
             }
             DebugUtils.LogError($"No colors found for boat index {currentBoatIndex} and color index {currentColorIndex}.");
             return Array.Empty<Color>();
-
         }
         #endregion
 
