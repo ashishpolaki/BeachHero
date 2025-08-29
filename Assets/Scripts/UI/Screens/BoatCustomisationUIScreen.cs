@@ -14,10 +14,10 @@ namespace BeachHero
     public class BoatCustomisationUIScreen : BaseScreen
     {
         #region Inspector Variables
-        [SerializeField] private BoatPurchasePanel purchasePanel;
         [SerializeField] private BoatSkinColorUI boatSkinColorUIPrefab;
         [SerializeField] private Transform boatColorListContainer;
-        // [SerializeField] private BoatSkinUI boatSkinPrefab;
+        //  [SerializeField] private BoatPurchasePanel purchasePanel;
+        //  [SerializeField] private BoatSkinUI boatSkinPrefab;
         //  [SerializeField] private Transform boatListContainer;
         //  private Dictionary<int, BoatSkinUI> boatSkinMap = new Dictionary<int, BoatSkinUI>();
         //  [SerializeField] private Image selectedBoatImage;
@@ -58,7 +58,7 @@ namespace BeachHero
         {
             base.Close();
             RemoveListeneres();
-            purchasePanel.Close();
+            //    purchasePanel.Close();
         }
         #endregion
 
@@ -69,7 +69,7 @@ namespace BeachHero
             purchaseButton.ButtonRegister(OnPurchasePressed);
             nextBoatButton.ButtonRegister(() => ChangeBoat(1));
             prevBoatButton.ButtonRegister(() => ChangeBoat(-1));
-            purchasePanel.AddListeners();
+            //   purchasePanel.AddListeners();
             GameController.GetInstance.SkinController.OnSkinPurchased += BoatSkinPurchased;
             GameController.GetInstance.SkinController.OnSkinColorPurchased += BoatSkinColorPurchased;
             GameController.GetInstance.StoreController.OnBoatPurchaseFail += BoatSkinPurchasedFail;
@@ -80,7 +80,7 @@ namespace BeachHero
             purchaseButton.ButtonDeRegister();
             nextBoatButton.ButtonDeRegister();
             prevBoatButton.ButtonDeRegister();
-            purchasePanel.RemoveListeners();
+            //  purchasePanel.RemoveListeners();
             GameController.GetInstance.SkinController.OnSkinPurchased -= BoatSkinPurchased;
             GameController.GetInstance.SkinController.OnSkinColorPurchased -= BoatSkinColorPurchased;
             GameController.GetInstance.StoreController.OnBoatPurchaseFail -= BoatSkinPurchasedFail;
@@ -93,9 +93,9 @@ namespace BeachHero
                 purchaseBtnText.text = "SELECT";
                 purchaseButton.interactable = false;
             }
-            else
+            else 
             {
-                purchasePanel.InitPurchase(selectedBoatIndex, selectedColorIndex, boatSelectionAction);
+                //   purchasePanel.InitPurchase(selectedBoatIndex, selectedColorIndex, boatSelectionAction);
             }
         }
         private void OnHomePressed()
@@ -161,7 +161,7 @@ namespace BeachHero
 
         private void HighlightSelectedBoat()
         {
-            GameController.GetInstance.LevelController.UpdateBoat(selectedBoatIndex,selectedColorIndex);
+            GameController.GetInstance.LevelController.UpdateBoat(selectedBoatIndex, selectedColorIndex);
             ApplyCameraTransform();
 
             //Set Boat in Detail Panel
@@ -179,9 +179,8 @@ namespace BeachHero
                 boatSelectionAction = BoatSelectionAction.PurchaseSkin;
                 purchaseBtnText.text = "BUY";
                 purchaseButton.interactable = true;
-
                 bool isBoatColorUnlocked = GameController.GetInstance.SkinController.IsBoatSkinColorUnlocked(selectedBoatIndex, selectedColorIndex);
-                if (!isBoatColorUnlocked)
+                if (isBoatColorUnlocked)
                 {
                     purchaseButton.interactable = false;
                 }
@@ -251,7 +250,7 @@ namespace BeachHero
             {
                 boatColorUI.UnSelect();
             }
-          //  selectedBoatImage.sprite = GameController.GetInstance.SkinController.GetBoatSkinByIndex(selectedBoatIndex).SkinColors[selectedColorIndex].sprite;
+            //  selectedBoatImage.sprite = GameController.GetInstance.SkinController.GetBoatSkinByIndex(selectedBoatIndex).SkinColors[selectedColorIndex].sprite;
             colorUIList[selectedColorIndex].Select();
             HighlightSelectedBoat();
             UpdatePurchaseButton();
@@ -274,14 +273,14 @@ namespace BeachHero
         #region Purchase
         private void BoatSkinColorPurchased(int boatIndex, int colorIndex)
         {
-            purchasePanel.Close();
+            //  purchasePanel.Close();
             UIController.GetInstance.ScreenEvent(ScreenType.Purchase, UIScreenEvent.Push, ScreenTabType.PurchasSuccess);
             selectedBoatIndex = boatIndex;
             ApplyBoatColor(colorIndex);
         }
         private void BoatSkinPurchased(int index)
         {
-            purchasePanel.Close();
+            //  purchasePanel.Close();
             selectedBoatIndex = index;
             //  boatSkinMap[selectedBoatIndex].UpdateLockState();
             ApplyBoatColor(0); // Default to the first color after purchase
@@ -289,7 +288,7 @@ namespace BeachHero
         }
         private void BoatSkinPurchasedFail()
         {
-            purchasePanel.Close();
+            //   purchasePanel.Close();
             UIController.GetInstance.ScreenEvent(ScreenType.Purchase, UIScreenEvent.Push, ScreenTabType.PurchasFail);
         }
         #endregion
