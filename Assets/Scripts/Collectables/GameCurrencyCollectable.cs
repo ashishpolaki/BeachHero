@@ -7,6 +7,7 @@ namespace BeachHero
         [SerializeField] private GameObject graphics;
         [SerializeField] private float rotateSpeed = 200f;
         [SerializeField] private float moveSpeed = 10f;
+        [SerializeField] private StarFish starFish;
 
         private Transform moveTarget;
         private bool canMoveToTarget;
@@ -23,13 +24,14 @@ namespace BeachHero
             base.Init(collectableData);
             graphics.SetActive(true);
             canMoveToTarget = false;
+            starFish.Init();
         }
         public override void UpdateState()
         {
             base.UpdateState();
             if (canMoveToTarget)
             {
-                // Smoothly move the coin toward the player
+                // Smoothly move towards the player
                 transform.position = Vector3.MoveTowards(
                     transform.position,
                     moveTarget.position,
@@ -40,7 +42,12 @@ namespace BeachHero
                 transform.Rotate(Vector3.up, rotateSpeed * Time.deltaTime);
             }
         }
-
+        public override void ResetState()
+        {
+            base.ResetState();
+            canMoveToTarget = false;
+            starFish.StopAnimation();
+        }
         public override void Collect()
         {
             base.Collect();
@@ -48,6 +55,7 @@ namespace BeachHero
             var particle = GameController.GetInstance.PoolManager.GameCurrencyParticlePool.GetObject().GetComponent<ParticleAutoDisable>();
             particle.PlayParticle(transform.position);
             GameController.GetInstance.OnGameCurrencyPickup();
+            starFish.StopAnimation();
             gameObject.SetActive(false);
         }
     }

@@ -9,7 +9,6 @@ namespace BeachHero
     {
         [SerializeField] private Image loadingFillImage;
         [SerializeField] private GameObject backgroundPanel;
-        [SerializeField] private RectTransform tutorialCharacter;
         [SerializeField] private float minimumLoadingDuration = 1;
         [SerializeField] private Vector2 referenceCharacterSize = new Vector2(820, 820);
 
@@ -18,15 +17,14 @@ namespace BeachHero
             backgroundPanel.SetActive(enable);
         }
 
-        private void UpdateTutorialCharacterSize()
-        {
-            Vector2 scaledSize = ScreenResolutionUtils.GetSizeDeltaFromOrthoReference(referenceCharacterSize.x, referenceCharacterSize.y);
-            tutorialCharacter.sizeDelta = scaledSize;
-        }
+        //private void UpdateTutorialCharacterSize()
+        //{
+        //    Vector2 scaledSize = ScreenResolutionUtils.GetSizeDeltaFromOrthoReference(referenceCharacterSize.x, referenceCharacterSize.y);
+        //    tutorialCharacter.sizeDelta = scaledSize;
+        //}
 
         public async Task LoadSceneAsync(string sceneName)
         {
-            UpdateTutorialCharacterSize();
             SetActiveLoadingScreen(true);
             var asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
             asyncOperation.allowSceneActivation = false;

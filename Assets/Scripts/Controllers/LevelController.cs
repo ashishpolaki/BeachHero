@@ -249,6 +249,7 @@ namespace BeachHero
             {
                 foreach (var collectable in collectableList)
                 {
+                    collectable.ResetState();
                     if (collectable.CollectableType == CollectableType.GameCurrency)
                     {
                         poolManager.GameCurrencyPool.ReturnObject(collectable.gameObject);
@@ -586,7 +587,7 @@ namespace BeachHero
                 switch (collectable.type)
                 {
                     case CollectableType.GameCurrency:
-                        SpawnCoin(collectable);
+                        SpawnGameCurrency(collectable);
                         break;
                     case CollectableType.Magnet:
                         SpawnMagnet(collectable);
@@ -614,7 +615,7 @@ namespace BeachHero
             collectableDictionary[collectableData.type].Add(speed);
         }
 
-        private void SpawnCoin(CollectableData collectableData)
+        private void SpawnGameCurrency(CollectableData collectableData)
         {
             Collectable collectable = poolManager.GameCurrencyPool.GetObject().GetComponent<Collectable>();
             collectable.Init(collectableData);

@@ -112,6 +112,7 @@ namespace BeachHero
             // If the level is already passed, do not allow to fail again.
             if (GameState == GameState.LevelWin)
             {
+                UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Open, ScreenTabType.LevelWin);
                 return; 
             }
             SetGameState(GameState.LevelFail);

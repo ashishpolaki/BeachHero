@@ -39,5 +39,9 @@ namespace BeachHero
         public virtual void UpdateState()
         {
         }
+        public virtual void ResetState()
+        {
+            count = 0;
+        }
     }
 }
