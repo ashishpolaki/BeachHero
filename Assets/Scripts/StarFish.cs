@@ -26,14 +26,12 @@ namespace BeachHero
             animationsList.Add(winkHash);
             PlayRandomAnimation();
         }
-
         public void PlayRandomAnimation()
         {
             if (animationCount <= 0)
             {
                 return;
             }
-            DebugUtils.Log("StarFish: PlayRandomAnimation");
             playAnimationCoroutine = StartCoroutine(PlayAnimationsLoop());
         }
         public void StopAnimation()

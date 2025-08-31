@@ -49,7 +49,7 @@ namespace FIMSpace.FTail
                     if (!rig) rig = gameObject.AddComponent<Rigidbody2D>();
                     rig.interpolation = RigidbodyInterpolation2D.Interpolate;
                     rig.gravityScale = 0f;
-                    rig.isKinematic = kinematic;
+                    rig.bodyType = RigidbodyType2D.Kinematic;
                     rig.constraints = RigidbodyConstraints2D.FreezeAll;
                     rig.mass = mass;
                     RigBody2D = rig;
