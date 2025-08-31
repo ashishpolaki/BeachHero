@@ -15,7 +15,7 @@ namespace BeachHero
             Scene currentScene = SceneManager.GetActiveScene();
             if (currentScene.name != "Init")
             {
-                ("If You want to Play BeachHero Game, Please open Scene \"Init\" and Hit Play ").LogError();
+                DebugUtils.LogError("If You want to Play BeachHero Game, Please open Scene \"Init\" and Hit Play ");
                 return;
             }
             // if (currentScene.name == CoreSettings.InitSceneName)

@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -7,24 +5,11 @@ namespace BeachHero
 {
     public static class CommonOps
     {
-        public static void Log(this string msg, GameObject go = null)
-        {
-            Debug.Log($"<color=white>[BeachHero]:{msg}</color>", go);
-        }
-        public static void LogError(this string msg, GameObject go = null)
-        {
-            Debug.Log($"<color=red>[BeachHero]:{msg}</color>", go);
-        }
-        public static void LogWarning(this string msg, GameObject go = null)
-        {
-            Debug.Log($"<color=yellow>[BeachHero]:{msg}</color>", go);
-        }
-
         public static void ButtonRegister(this Button btn, UnityAction action)
         {
             if (!btn)
             {
-                $"No Button Exists".LogError();
+                DebugUtils.LogError("No Button Exists");
                 return;
             }
             btn.onClick.RemoveAllListeners();
@@ -35,7 +20,7 @@ namespace BeachHero
         {
             if (!button)
             {
-                $"No Button Exists".LogError();
+                DebugUtils.LogError("No Button Exists");
                 return;
             }
             button.onClick.RemoveAllListeners();

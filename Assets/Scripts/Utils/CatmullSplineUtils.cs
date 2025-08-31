@@ -73,7 +73,9 @@ namespace BeachHero
         public static List<Vector3> GetEvenlySpacedPointsByCount(List<Vector3> pathPoints, int count)
         {
             if (count < 2 || pathPoints.Count < 4)
-                ("Need at least 4 path points and count >= 2").LogError();
+            {
+                DebugUtils.LogError("Need at least 4 path points and count >= 2");
+            }
 
             List<Vector3> densePoints = new List<Vector3>();
             for (int i = 0; i < pathPoints.Count - 3; i++)
