@@ -37,7 +37,6 @@ namespace BeachHero
             //    fadePanel.DOKill();
             //    await fadePanel.DOFade(endValue, duration).SetEase(Ease.InOutSine).AsyncWaitForCompletion();
             //}
-            await Task.Delay((int)(delay * 1000));
             fadeAnimator.profile.invert = endValue == 0 ? true : false;
             fadeAnimator.profile.duration = duration;
             fadeAnimator.Play();

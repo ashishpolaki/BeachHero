@@ -9,6 +9,8 @@ namespace BeachHero
         [SerializeField] private Animator boatAnimator;
         [SerializeField] private MagnetEffect magnetEffect;
         [SerializeField] private Transform boatGraphicsHolder;
+        [SerializeField] private GameObject normalBoostObj;
+        [SerializeField] private GameObject speedBoostObj;
         [SerializeField] private float movementSpeed;
         [SerializeField] private float rotationSpeed;
         [SerializeField] private float speedMultiplier;
@@ -16,6 +18,8 @@ namespace BeachHero
         private Boat currentBoat;
         private Vector3[] pointsList;
         private bool canStartMovement;
+        private bool isSpeedBoostEnabled;
+        private float boatRotationSpeed;
         private int nextPointIndex;
         private int sinkingAnimHash = Animator.StringToHash(StringUtils.SINKING_ANIM);
         private int idleAnimHash = Animator.StringToHash(StringUtils.IDLE_ANIM);
@@ -93,8 +97,9 @@ namespace BeachHero
         #region Powerups
         public void ActivateSpeedPowerup()
         {
+            isSpeedBoostEnabled = true;
             movementSpeed *= speedMultiplier;
-            rotationSpeed *= speedMultiplier;
+            boatRotationSpeed *= speedMultiplier;
         }
         public void ActivateMagnetPowerup()
         {
@@ -116,9 +121,10 @@ namespace BeachHero
         {
             boatAnimator.SetTrigger(sinkingAnimHash);
         }
-        public void UpdateBoat(int boatIndex,int boatColorIndex, float speed, GameObject boatPrefab)
+        public void UpdateBoat(int boatIndex, int boatColorIndex, float speed, GameObject boatPrefab)
         {
             movementSpeed = speed;
+            boatRotationSpeed = rotationSpeed;
 
             //Boat
             foreach (var boatObject in boatObjects.Values)
@@ -160,12 +166,16 @@ namespace BeachHero
         #region Start/Stop Movement
         public void StopMovement()
         {
-            canStartMovement = false;
-            this.pointsList = new Vector3[0];
-            DeactivateMagnetPowerup();
+            ResetState();
         }
         public void StartMovement(Vector3[] pointsList)
         {
+            if (isSpeedBoostEnabled)
+            {
+                normalBoostObj.SetActive(false);
+                speedBoostObj.SetActive(true);
+            }
+
             canStartMovement = true;
 
             //set boat direction 
@@ -179,13 +189,23 @@ namespace BeachHero
         }
         #endregion
 
+        private void ResetState()
+        {
+            canStartMovement = false;
+            if (isSpeedBoostEnabled)
+            {
+                normalBoostObj.SetActive(true);
+                speedBoostObj.SetActive(false);
+                isSpeedBoostEnabled = false;
+            }
+            pointsList = new Vector3[0];
+            nextPointIndex = 1;
+            DeactivateMagnetPowerup();
+        }
         public void Init()
         {
-            DeactivateMagnetPowerup();
             boatAnimator.SetTrigger(idleAnimHash);
-            canStartMovement = false;
-            nextPointIndex = 1;
-            pointsList = new Vector3[0];
+            ResetState();
         }
         public void UpdateState()
         {
@@ -219,7 +239,7 @@ namespace BeachHero
                     transform.rotation = Quaternion.Slerp(
                         transform.rotation,
                         targetRotation,
-                        Time.deltaTime * rotationSpeed // rotationSpeed controls how quickly the rotation happens
+                        Time.deltaTime * boatRotationSpeed // rotationSpeed controls how quickly the rotation happens
                     );
                 }
 

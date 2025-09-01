@@ -150,6 +150,7 @@ namespace TransitionsPlus {
         private void OnDisable() {
             if (profile != null) {
                 profile.onSettingsChanged -= UpdateMaterialProperties;
+                profile.invert = false;
             }
         }
 
