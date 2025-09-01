@@ -16,6 +16,7 @@ namespace QFSW.QC
     /// Provides the UI and I/O interface for the QuantumConsoleProcessor. Invokes commands on the processor and displays the output.
     /// </summary>
     [DisallowMultipleComponent]
+    [DefaultExecutionOrder(-50)]
     public class QuantumConsole : MonoBehaviour
     {
         /// <summary>
