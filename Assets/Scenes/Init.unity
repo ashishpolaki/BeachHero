@@ -564,19 +564,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 6631174607394499551, guid: 59a95909a6811b248a5809ee9d6a6dd6,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 40236685}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59a95909a6811b248a5809ee9d6a6dd6, type: 3}
---- !u!4 &3390476 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6631174607394499551, guid: 59a95909a6811b248a5809ee9d6a6dd6,
-    type: 3}
-  m_PrefabInstance: {fileID: 3390475}
-  m_PrefabAsset: {fileID: 0}
 --- !u!20 &10904044 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 6657573512175329085, guid: e76a62356041eae47b1adfec2c47be66,
@@ -607,7 +597,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _GradientTex:
-        m_Texture: {fileID: 2027149154}
+        m_Texture: {fileID: 953510752}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -648,12 +638,6 @@ Material:
     - _Color: {r: 0, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!224 &40236685 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 5898364546079676711, guid: 29030e083ce14c2499a45e4f015572ac,
-    type: 3}
-  m_PrefabInstance: {fileID: 4003980194419941433}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &76730789
 GameObject:
   m_ObjectHideFlags: 0
@@ -972,51 +956,7 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 500959292}
   m_Enabled: 1
---- !u!1 &1117133347
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1117133348}
-  - component: {fileID: 1117133349}
-  m_Layer: 0
-  m_Name: InputManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1117133348
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1117133347}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1117133349
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1117133347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 026e9bf6022a444e0a5b0d3bb455254d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!28 &2027149154
+--- !u!28 &953510752
 Texture2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1062,6 +1002,50 @@ Texture2D:
     offset: 0
     size: 0
     path: 
+--- !u!1 &1117133347
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1117133348}
+  - component: {fileID: 1117133349}
+  m_Layer: 0
+  m_Name: InputManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1117133348
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1117133347}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1117133349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1117133347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 026e9bf6022a444e0a5b0d3bb455254d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2070268412
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1337,22 +1321,12 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 3390476}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1556182352953974639, guid: 29030e083ce14c2499a45e4f015572ac,
         type: 3}
       propertyPath: m_Name
       value: CheatCode Console
-      objectReference: {fileID: 0}
-    - target: {fileID: 4310647780374035587, guid: 29030e083ce14c2499a45e4f015572ac,
-        type: 3}
-      propertyPath: m_Color.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4353910065605995975, guid: 29030e083ce14c2499a45e4f015572ac,
-        type: 3}
-      propertyPath: m_Colors.m_PressedColor.a
-      value: 0.45490196
       objectReference: {fileID: 0}
     - target: {fileID: 5898364546079676711, guid: 29030e083ce14c2499a45e4f015572ac,
         type: 3}
@@ -1538,4 +1512,5 @@ SceneRoots:
   - {fileID: 404070988}
   - {fileID: 2070268412}
   - {fileID: 3390475}
+  - {fileID: 4003980194419941433}
   - {fileID: 76730791}

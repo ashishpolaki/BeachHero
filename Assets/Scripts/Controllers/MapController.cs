@@ -64,7 +64,7 @@ namespace BeachHero
         #endregion
 
         #region Unity Methods
-        private void Awake()
+        public void Awake()
         {
             if (GetInstance == null)
             {

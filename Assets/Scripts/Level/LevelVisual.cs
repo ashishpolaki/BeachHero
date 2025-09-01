@@ -32,7 +32,7 @@ namespace BeachHero
             levelData.WorldPosition = transform.position;
         }
 
-        void UpdateVisual()
+        private void UpdateVisual()
         {
             complete.SetActive(false);
             current.SetActive(false);

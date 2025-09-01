@@ -17,6 +17,12 @@ namespace BeachHero
             IsCompleted = true;
         }
 
+        public void MarkIncomplete()
+        {
+            IsCurrentLevel = false;
+            IsCompleted = false;
+        }
+
         public void MarkCurrentLevel()
         {
             IsCurrentLevel = true;

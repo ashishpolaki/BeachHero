@@ -57,13 +57,21 @@ namespace BeachHero
         public void Init()
         {
             int currentLevelIndex = GameController.GetInstance.CurrentLevelIndex;
-            int i = 0;
-            while (i < currentLevelIndex)
+            for (int i = 0; i < levelDatas.Count; i++)
             {
-                levelDatas[i++].MarkComplete();
+                if (i < currentLevelIndex)
+                {
+                    levelDatas[i].MarkComplete();
+                }
+                else if (i == currentLevelIndex)
+                {
+                    levelDatas[i].MarkCurrentLevel();
+                }
+                else
+                {
+                    levelDatas[i].MarkIncomplete();
+                }
             }
-            if (i < levelDatas.Count)
-                levelDatas[i].MarkCurrentLevel();
         }
 
         public LevelSO GetLevelByIndex(int index)
@@ -71,7 +79,6 @@ namespace BeachHero
             return levelsList[index % levelsList.Length];
         }
         #endregion
-
     }
 
     [System.Serializable]
