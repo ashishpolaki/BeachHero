@@ -18,7 +18,6 @@ namespace BeachHero
         {
             // small delay so the first frame renders smoothly
             await Task.Yield();
-            Application.targetFrameRate = 30;
             GameController.GetInstance.Init();
             AudioController.GetInstance.Init();
             CameraController.GetInstance.Init();
