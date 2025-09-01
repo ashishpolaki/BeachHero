@@ -5,7 +5,7 @@ namespace QFSW.QC.Extras
 {
     public static class GraphicsCommands
     {
-        [Command("max-fps", "the maximum FPS imposed on the application. Set to -1 for unlimited.")]
+        [Command("set-fps", "the maximum FPS imposed on the application. Set to -1 for unlimited.")]
         private static int MaxFPS
         {
             get => Application.targetFrameRate;

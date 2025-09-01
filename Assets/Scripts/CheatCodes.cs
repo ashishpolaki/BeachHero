@@ -50,7 +50,17 @@ namespace BeachHero
         }
         #endregion
 
+        #region FPS
+        public GameObject fpsObject;
+        [Command("enable-fps")]
+        public void EnableFPSCounter(bool val)
+        {
+            fpsObject.SetActive(val);
+        }
+        #endregion
+
         #region Commands
+
         [Command("level-win")]
         public static void WinLevel()
         {
