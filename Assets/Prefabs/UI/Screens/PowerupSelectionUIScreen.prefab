@@ -185,13 +185,13 @@ MonoBehaviour:
   screenType: 7
   defaultOpenTab: 0
   tabs: []
-  powerupTutorialPanel: {fileID: 7029953569860127651}
-  magnetPowerup: {fileID: 3636575030536423212}
-  speedPowerup: {fileID: 4489962214280904090}
+  tutorialPanel: {fileID: 7029953569860127651}
+  magnetButton: {fileID: 3636575030536423212}
+  speedButton: {fileID: 4489962214280904090}
   playButton: {fileID: 3341441240902022548}
   closeButton: {fileID: 8906281367012212818}
-  levelNumberText: {fileID: 5183436358018329260}
-  buttonsParentTransform: {fileID: 7324011518483749185}
+  levelNumberLabel: {fileID: 5183436358018329260}
+  buttonsContainer: {fileID: 7324011518483749185}
 --- !u!1 &139184882614853065
 GameObject:
   m_ObjectHideFlags: 0
@@ -995,8 +995,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 84, y: 85}
-  m_SizeDelta: {x: 77.1342, y: 71.1044}
+  m_AnchoredPosition: {x: 106.35, y: 84}
+  m_SizeDelta: {x: 97.83, y: 71.1044}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6290335483286807900
 CanvasRenderer:
@@ -1026,10 +1026,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 2
+  m_text: 213
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b37fcac4a65b16446911098729a2e811, type: 2}
-  m_sharedMaterial: {fileID: -3707072339102680950, guid: c2ee9bf6e65695d48ba9d4b5a346538f,
+  m_sharedMaterial: {fileID: -8307289339249815117, guid: b37fcac4a65b16446911098729a2e811,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1054,15 +1054,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
-  m_fontSizeBase: 72
+  m_fontSize: 58
+  m_fontSizeBase: 58
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 60
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -1095,7 +1095,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &2130324333577779874
@@ -2166,8 +2166,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 84, y: 85}
-  m_SizeDelta: {x: 77.1342, y: 71.1044}
+  m_AnchoredPosition: {x: 106.35, y: 84}
+  m_SizeDelta: {x: 97.83, y: 71.1044}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1309714088994318931
 CanvasRenderer:
@@ -2197,10 +2197,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 2
+  m_text: 12
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b37fcac4a65b16446911098729a2e811, type: 2}
-  m_sharedMaterial: {fileID: -3707072339102680950, guid: c2ee9bf6e65695d48ba9d4b5a346538f,
+  m_sharedMaterial: {fileID: -8307289339249815117, guid: b37fcac4a65b16446911098729a2e811,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -2225,15 +2225,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
-  m_fontSizeBase: 72
+  m_fontSize: 58
+  m_fontSizeBase: 58
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
-  m_VerticalAlignment: 512
+  m_HorizontalAlignment: 1
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -2266,7 +2266,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &5682574679436908733
@@ -2279,7 +2279,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7324011518483749185}
   m_Layer: 5
-  m_Name: Buttons
+  m_Name: Buttons Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

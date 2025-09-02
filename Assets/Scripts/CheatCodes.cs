@@ -78,6 +78,12 @@ namespace BeachHero
         public static void SetLevel(int levelNumber)
         {
             SaveSystem.SaveInt(StringUtils.LEVELNUMBER, levelNumber);
+            SaveSystem.SaveBool(StringUtils.MAGNET_UNLOCKED, false);
+            SaveSystem.SaveBool(StringUtils.SPEEDBOOST_UNLOCKED, false);
+            SaveSystem.SaveInt(StringUtils.MAGNET_BALANCE, IntUtils.DEFAULT_MAGNET_BALANCE);
+            SaveSystem.SaveInt(StringUtils.SPEEDBOOST_BALANCE, IntUtils.DEFAULT_SPEEDBOOST_BALANCE);
+            GameController.GetInstance.PowerupController.UpdateMagnetBalance(IntUtils.DEFAULT_MAGNET_BALANCE);
+            GameController.GetInstance.PowerupController.UpdateSpeedBoostBalance(IntUtils.DEFAULT_SPEEDBOOST_BALANCE);
             MapController.GetInstance.Awake();
             GameController.GetInstance.SpawnLevel();
         }

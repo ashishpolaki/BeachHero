@@ -37,37 +37,27 @@ namespace BeachHero
             playButtonMaskRect.DOKill();
         }
 
-        public void ShowMagnetPowerupTutorial(Transform _powerupButton, Transform _playButton)
+        public void ShowPowerupTutorial(Transform powerupButton, Transform playButton)
         {
-            powerUpMaskRect.sizeDelta = Vector2.zero;
-            powerUpMaskRect.gameObject.SetActive(true);
-            rayCastPanel.SetActive(true); // Enable the raycast panel to block input during the tutorial
-            powerUpMaskRect.position = _powerupButton.position;
-            currentPowerupTransform = _powerupButton;
-            playButtonTransform = _playButton;
-            powerUpMaskRect.DOSizeDelta(powerupButtonSizeRect, buttonScaleDuration).SetDelay(buttonScaleDelay).SetEase(buttonScaleEase).OnComplete
-                (() =>
-                {
-                    powerUpMaskRect.DOKill();
-                    PlayTutorialHandAnimation(_powerupButton);
-                });
-        }
-
-        public void ShowSpeedBoostPowerupTutorial(Transform _powerupButton, Transform _playButton)
-        {
+            // Reset & enable UI
             powerUpMaskRect.sizeDelta = Vector2.zero;
             powerUpMaskRect.gameObject.SetActive(true);
             rayCastPanel.SetActive(true);
-            powerUpMaskRect.position = _powerupButton.position;
-            playButtonTransform = _playButton;
-            currentPowerupTransform = _powerupButton;
-            powerUpMaskRect.DOSizeDelta(powerupButtonSizeRect, buttonScaleDuration).SetEase(buttonScaleEase).OnComplete
-              (() =>
-              {
-                  powerUpMaskRect.DOKill();
-                  PlayTutorialHandAnimation(_powerupButton);
-              });
+
+            // Track references
+            powerUpMaskRect.position = powerupButton.position;
+            currentPowerupTransform = powerupButton;
+            playButtonTransform = playButton;
+
+            // Animate mask & show hand
+            powerUpMaskRect.DOSizeDelta(powerupButtonSizeRect, buttonScaleDuration).SetDelay(buttonScaleDelay).SetEase(buttonScaleEase).OnComplete
+           (() =>
+           {
+               powerUpMaskRect.DOKill();
+               PlayTutorialHandAnimation(powerupButton);
+           });
         }
+
         public void OnPowerupButtonPressed(Transform _buttonsParent)
         {
             powerUpMaskRect.gameObject.SetActive(false);

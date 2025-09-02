@@ -34,7 +34,6 @@ namespace BeachHero
                 OnMagnetBalanceChange?.Invoke();
             }
         }
-
         public int SpeedBoostBalance
         {
             get => speedBoostBalance;
@@ -117,6 +116,67 @@ namespace BeachHero
         public void UpdateSpeedBoostBalance(int count)
         {
             SpeedBoostBalance += count;
+        }
+        public int GetPowerupBalance(PowerupType powerupType)
+        {
+            return powerupType switch
+            {
+                PowerupType.Magnet => MagnetBalance,
+                PowerupType.SpeedBoost => SpeedBoostBalance,
+                _ => 0
+            };
+        }
+        #endregion
+
+        #region Lock/Unlock
+        public bool IsUnlockLevelForPowerup(PowerupType powerupType, int levelNumber)
+        {
+            int unlockLevel = powerupType switch
+            {
+                PowerupType.Magnet => IntUtils.MAGNET_UNLOCK_LEVEL,
+                PowerupType.SpeedBoost => IntUtils.SPEEDBOOST_UNLOCK_LEVEL,
+                _ => -1
+            };
+
+            if (unlockLevel == -1)
+            {
+                Debug.LogError($" No unlock level defined for PowerupType: {powerupType}");
+                return false;
+            }
+
+            return levelNumber == unlockLevel;
+        }
+        public bool IsPowerupUnlocked(PowerupType powerupType)
+        {
+            string key = powerupType switch
+            {
+                PowerupType.Magnet => StringUtils.MAGNET_UNLOCKED,
+                PowerupType.SpeedBoost => StringUtils.SPEEDBOOST_UNLOCKED,
+                _ => null
+            };
+
+            if (string.IsNullOrEmpty(key))
+            {
+                Debug.LogError($" No unlock key defined for PowerupType: {powerupType}");
+                return false; // default safe value
+            }
+
+            return SaveSystem.LoadBool(key, false);
+        }
+        public void UnlockPowerup(PowerupType powerupType)
+        {
+            switch (powerupType)
+            {
+                case PowerupType.Magnet:
+                    SaveSystem.SaveBool(StringUtils.MAGNET_UNLOCKED, true);
+                    break;
+                case PowerupType.SpeedBoost:
+                    SaveSystem.SaveBool(StringUtils.SPEEDBOOST_UNLOCKED, true);
+                    break;
+                default:
+                    DebugUtils.LogError($"Powerup {powerupType} not recognized.");
+                    break;
+            }
         }
         #endregion
     }

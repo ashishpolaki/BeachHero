@@ -6,50 +6,58 @@ namespace BeachHero
 {
     public class PowerupSelectionUIScreen : BaseScreen
     {
-        [SerializeField] private PowerupTutorialPanel powerupTutorialPanel;
-        [SerializeField] private PowerupButton magnetPowerup;
-        [SerializeField] private PowerupButton speedPowerup;
+        #region Inspector Variables
+        [SerializeField] private PowerupTutorialPanel tutorialPanel;
+        [SerializeField] private PowerupButton magnetButton;
+        [SerializeField] private PowerupButton speedButton;
         [SerializeField] private Button playButton;
         [SerializeField] private Button closeButton;
-        [SerializeField] private TextMeshProUGUI levelNumberText;
-        [SerializeField] private Transform buttonsParentTransform;
+        [SerializeField] private TextMeshProUGUI levelNumberLabel;
+        [SerializeField] private Transform buttonsContainer;
+        #endregion
 
-        private bool isPowerupTutorialEnabled = false;
+        #region Private Variables
+        private bool tutorialActive = false;
+        #endregion
 
+        #region Lifecycle
         public override void Open(ScreenTabType screenTabType)
         {
             base.Open(screenTabType);
             AddListeners();
-            isPowerupTutorialEnabled = false; // Reset the tutorial state
-            powerupTutorialPanel.Deactivate();
-            SetLevelNumber();
-            InitMagnetPowerup();
-            InitSpeedBoostPowerup();
+            tutorialActive = false; // Reset the tutorial state.
+            tutorialPanel.Deactivate();
+            UpdateLevelNumber();
+            SetupPowerup(PowerupType.Magnet, magnetButton, speedButton);
+            SetupPowerup(PowerupType.SpeedBoost, speedButton, magnetButton);
         }
         public override void Close()
         {
             base.Close();
             RemoveListeners();
-            magnetPowerup.DeInitialize();
-            speedPowerup.DeInitialize();
+            magnetButton.DeInitialize();
+            speedButton.DeInitialize();
         }
+        #endregion
+
+        #region Event Handling
         private void AddListeners()
         {
-            playButton.onClick.AddListener(OnPlayButtonClicked);
+            playButton.onClick.AddListener(OnPlayClicked);
             closeButton.ButtonRegister(ClosePanel);
-            GameController.GetInstance.TutorialController.OnPowerupPressAction += OnPowerupButtonPressed;
+            GameController.GetInstance.TutorialController.OnPowerupPressAction += OnPowerupPressed;
         }
         private void RemoveListeners()
         {
-            playButton.onClick.RemoveListener(OnPlayButtonClicked);
+            playButton.onClick.RemoveListener(OnPlayClicked);
             closeButton.ButtonDeRegister();
-            GameController.GetInstance.TutorialController.OnPowerupPressAction -= OnPowerupButtonPressed;
+            GameController.GetInstance.TutorialController.OnPowerupPressAction -= OnPowerupPressed;
         }
         private void ClosePanel()
         {
             Close();
         }
-        private async void OnPlayButtonClicked()
+        private async void OnPlayClicked()
         {
             var gameState = GameController.GetInstance.GameState;
 
@@ -63,56 +71,43 @@ namespace BeachHero
             GameController.GetInstance.Play();
             await UIController.GetInstance.FadeUI.FadeOutASync();
         }
-        private void SetLevelNumber()
+
+        private void OnPowerupPressed()
         {
-            int currentLevelNumber = GameController.GetInstance.CurrentLevelIndex + 1;
-            levelNumberText.text = $"LEVEL {currentLevelNumber}";
-        }
-        private void OnPowerupButtonPressed()
-        {
-            if (!isPowerupTutorialEnabled)
+            if (!tutorialActive)
                 return;
-            powerupTutorialPanel.OnPowerupButtonPressed(buttonsParentTransform);
+            tutorialPanel.OnPowerupButtonPressed(buttonsContainer);
         }
-        private void InitMagnetPowerup()
+        #endregion
+
+        #region UI Setup
+        private void UpdateLevelNumber()
         {
             int currentLevelNumber = GameController.GetInstance.CurrentLevelIndex + 1;
-            bool isMagnetPowerupLocked = !GameController.GetInstance.TutorialController.IsMagnetPowerupUnlocked();
-            if (isMagnetPowerupLocked)
-            {
-                bool isMagnetUnlockLevel = GameController.GetInstance.TutorialController.IsMagnetUnlockLevel(currentLevelNumber);
-                if (isMagnetUnlockLevel)
-                {
-                    SaveSystem.SaveBool(StringUtils.MAGNET_UNLOCKED, true);
-                    isMagnetPowerupLocked = false;
-                    isPowerupTutorialEnabled = true;
-                    speedPowerup.transform.SetParent(buttonsParentTransform);
-                    playButton.transform.SetParent(buttonsParentTransform);
-                    powerupTutorialPanel.ShowMagnetPowerupTutorial(magnetPowerup.transform, playButton.transform);
-                }
-            }
-            int magnetPowerupCount = GameController.GetInstance.PowerupController.MagnetBalance;
-            magnetPowerup.Init(PowerupType.Magnet, magnetPowerupCount, isMagnetPowerupLocked);
+            levelNumberLabel.text = $"LEVEL {currentLevelNumber}";
         }
-        private void InitSpeedBoostPowerup()
+
+        private void SetupPowerup(PowerupType type, PowerupButton targetButton, PowerupButton otherButton)
         {
             int currentLevelNumber = GameController.GetInstance.CurrentLevelIndex + 1;
-            bool isSpeedPowerupLocked = !GameController.GetInstance.TutorialController.IsSpeedBoostPowerupUnlocked();
-            if (isSpeedPowerupLocked)
+            bool isLocked = !GameController.GetInstance.PowerupController.IsPowerupUnlocked(type);
+
+            if (isLocked && GameController.GetInstance.PowerupController.IsUnlockLevelForPowerup(type, currentLevelNumber))
             {
-                bool isSpeedBoostUnlockLevel = GameController.GetInstance.TutorialController.IsSpeedBoostUnlockLevel(currentLevelNumber);
-                if (isSpeedBoostUnlockLevel)
-                {
-                    SaveSystem.SaveBool(StringUtils.SPEEDBOOST_UNLOCKED, true);
-                    isSpeedPowerupLocked = false;
-                    isPowerupTutorialEnabled = true;
-                    magnetPowerup.transform.SetParent(buttonsParentTransform);
-                    playButton.transform.SetParent(buttonsParentTransform);
-                    powerupTutorialPanel.ShowSpeedBoostPowerupTutorial(speedPowerup.transform, playButton.transform);
-                }
+                GameController.GetInstance.PowerupController.UnlockPowerup(type);
+                isLocked = false;
+
+                tutorialActive = true;
+                otherButton.transform.SetParent(buttonsContainer);
+                playButton.transform.SetParent(buttonsContainer);
+
+                tutorialPanel.ShowPowerupTutorial(targetButton.transform, playButton.transform);
             }
-            int speedPowerupCount = GameController.GetInstance.PowerupController.SpeedBoostBalance;
-            speedPowerup.Init(PowerupType.SpeedBoost, speedPowerupCount, isSpeedPowerupLocked);
+
+            int balance = GameController.GetInstance.PowerupController.GetPowerupBalance(type);
+            targetButton.Init(type, balance, isLocked);
         }
+        #endregion
+
     }
 }

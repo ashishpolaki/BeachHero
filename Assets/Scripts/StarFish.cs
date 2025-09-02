@@ -7,46 +7,54 @@ namespace BeachHero
     public class StarFish : MonoBehaviour
     {
         [SerializeField] private Animator animator;
-        [SerializeField] private int animationCount;
         [SerializeField] private float animationInterval = 3f;
-
-        private int blinkHash = Animator.StringToHash("Blink");
-        private int sideLookHash = Animator.StringToHash("SideLook");
-        private int lookCornersHash = Animator.StringToHash("LookCorners");
-        private int winkHash = Animator.StringToHash("Wink");
+        [SerializeField] private float thresholdNormalizedTime = 0.99f;
 
         private Coroutine playAnimationCoroutine;
-        private List<int> animationsList = new List<int>();
+        private List<int> animationClipsLength = new List<int>();
 
+        private void Awake()
+        {
+            foreach (AnimationClip clip in animator.runtimeAnimatorController.animationClips)
+            {
+                int hash = Animator.StringToHash(clip.name);
+                animationClipsLength.Add(hash);
+            }
+        }
         public void Init()
         {
-            animationsList.Add(blinkHash);
-            animationsList.Add(sideLookHash);
-            animationsList.Add(lookCornersHash);
-            animationsList.Add(winkHash);
             PlayRandomAnimation();
         }
         public void PlayRandomAnimation()
         {
-            if (animationCount <= 0)
+            if (playAnimationCoroutine == null)
             {
-                return;
+                playAnimationCoroutine = StartCoroutine(PlayAnimationsLoop());
             }
-            playAnimationCoroutine = StartCoroutine(PlayAnimationsLoop());
+        }
+        private IEnumerator PlayAnimationsLoop()
+        {
+            while (true)
+            {
+                int randomAnimationHash = animationClipsLength[Random.Range(0, animationClipsLength.Count)];
+                animator.Play(randomAnimationHash, 0, 0);
+                yield return null;
+
+                // Wait until we reach the threshold 
+                while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < thresholdNormalizedTime)
+                {
+                    yield return null;
+                }
+                yield return new WaitForSeconds(animationInterval);
+            }
         }
         public void StopAnimation()
         {
             if (playAnimationCoroutine != null)
             {
                 StopCoroutine(playAnimationCoroutine);
+                playAnimationCoroutine = null;
             }
-        }
-        private IEnumerator PlayAnimationsLoop()
-        {
-            int randomAnimIndex = Random.Range(0, animationCount);
-            animator.CrossFade(animationsList[randomAnimIndex], 0.1f);
-            yield return new WaitForSeconds(animationInterval);
-            PlayRandomAnimation();
         }
     }
 }

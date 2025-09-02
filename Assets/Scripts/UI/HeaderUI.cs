@@ -59,7 +59,7 @@ namespace BeachHero
             if (magnetBalanceObject != null)
             {
                 // Magnet
-                bool isMagnetUnlocked = playerLevel > IntUtils.MAGNET_UNLOCK_LEVEL;
+                bool isMagnetUnlocked = GameController.GetInstance.PowerupController.IsPowerupUnlocked(PowerupType.Magnet);
                 magnetBalanceObject.SetActive(isMagnetUnlocked);
                 if (isMagnetUnlocked)
                 {
@@ -71,7 +71,7 @@ namespace BeachHero
             if (speedBoostBalanceObject != null)
             {
                 //Speed Boost
-                bool isSpeedBoostUnlocked = playerLevel > IntUtils.SPEEDBOOST_UNLOCK_LEVEL;
+                bool isSpeedBoostUnlocked = GameController.GetInstance.PowerupController.IsPowerupUnlocked(PowerupType.SpeedBoost);
                 speedBoostBalanceObject.SetActive(isSpeedBoostUnlocked);
                 if (isSpeedBoostUnlocked)
                 {
