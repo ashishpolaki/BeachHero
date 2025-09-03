@@ -7,16 +7,16 @@ namespace BeachHero
 {
     public class LoadingUI : MonoBehaviour
     {
-        [SerializeField] private Image loadingFillImage;
+        [SerializeField] private Slider loadingFillSlider;
         [SerializeField] private GameObject backgroundPanel;
         [SerializeField] private float minimumLoadingDuration = 1;
-        [SerializeField] private Vector2 referenceCharacterSize = new Vector2(820, 820);
 
         private void SetActiveLoadingScreen(bool enable)
         {
             backgroundPanel.SetActive(enable);
         }
 
+        //  [SerializeField] private Vector2 referenceCharacterSize = new Vector2(820, 820);
         //private void UpdateTutorialCharacterSize()
         //{
         //    Vector2 scaledSize = ScreenResolutionUtils.GetSizeDeltaFromOrthoReference(referenceCharacterSize.x, referenceCharacterSize.y);
@@ -34,7 +34,7 @@ namespace BeachHero
             {
                 barProgress += Time.deltaTime;
                 float progress = Mathf.Clamp01(barProgress / minimumLoadingDuration);
-                loadingFillImage.fillAmount = progress;
+                loadingFillSlider.value = progress;
                 await Task.Yield();
             }
 
@@ -42,7 +42,7 @@ namespace BeachHero
             {
                 await Task.Yield();
             }
-            loadingFillImage.fillAmount = 1f; // Ensure the bar is full
+            loadingFillSlider.value = 1f; // Ensure the bar is full
             asyncOperation.allowSceneActivation = true;
 
             while (!asyncOperation.isDone)

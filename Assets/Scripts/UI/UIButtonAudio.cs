@@ -39,17 +39,19 @@ namespace BeachHero
         [SerializeField] private Button button;
         [SerializeField] private RectTransform rect;
 
-        private void OnEnable()
+        private void Awake()
         {
             if (button != null)
             {
-                button.onClick.AddListener(PlayAudio);
+                button.ButtonRegister(PlayAudio);
             }
         }
-
-        private void OnDisable()
+        private void OnDestroy()
         {
-            button.onClick.RemoveListener(PlayAudio);
+            if (button != null)
+            {
+                button.ButtonDeRegister();
+            }
         }
 
         private void PlayAudio()

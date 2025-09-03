@@ -26,7 +26,6 @@ namespace BeachHero
             float delay = animationData.Delay + animationData.Duration;
             DOVirtual.DelayedCall(delay, ButtonTweenAnimations);
             // ButtonTweenAnimations();
-
         }
         private void ButtonTweenAnimations()
         {

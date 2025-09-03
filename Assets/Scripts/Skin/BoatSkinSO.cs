@@ -20,7 +20,6 @@ namespace BeachHero
         [Show("isRealMoney"), SerializeField] private ProductType productType;
         [Show("isRealMoney"), SerializeField] private string realMoneyCost;
         [SerializeField] private BoatSkinColorData[] skinColors;
-
         #endregion
 
         #region Properties
