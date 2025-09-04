@@ -16,6 +16,7 @@ namespace BeachHero
         [SerializeField] private TextAnimatorPlayer unlockMapText;
         [SerializeField] private TextAnimatorPlayer titleDescriptionText;
         [SerializeField] private GameObject mapSelector;
+        [SerializeField] private ParticleSystem confettiParticleSystem;
 
         [SerializeField] private float textApperanceSpeed = 3f;
         [SerializeField] private float textDisapperanceSpeed = 3f;
@@ -43,9 +44,9 @@ namespace BeachHero
 
             if (MapController.GetInstance != null)
             {
-                MapController.GetInstance.OnMapButtonsActive += () => SetMapButtonsVisibility(true);
-                MapController.GetInstance.OnPushPowerupSelectionScreen += PushPowerupSelectionScreen;
-                MapController.GetInstance.OnNewMapUnlockAction += NewMapUnlock;
+                MapController.GetInstance.OnMapButtonsEnabled += () => SetMapButtonsVisibility(true);
+                MapController.GetInstance.OnShowPowerupSelection += PushPowerupSelectionScreen;
+                MapController.GetInstance.OnMapUnlocked += NewMapUnlock;
             }
         }
 
@@ -63,15 +64,17 @@ namespace BeachHero
 
             if (MapController.GetInstance != null)
             {
-                MapController.GetInstance.OnMapButtonsActive -= () => SetMapButtonsVisibility(false);
-                MapController.GetInstance.OnPushPowerupSelectionScreen -= PushPowerupSelectionScreen;
-                MapController.GetInstance.OnNewMapUnlockAction -= NewMapUnlock;
+                MapController.GetInstance.OnMapButtonsEnabled -= () => SetMapButtonsVisibility(false);
+                MapController.GetInstance.OnShowPowerupSelection -= PushPowerupSelectionScreen;
+                MapController.GetInstance.OnMapUnlocked -= NewMapUnlock;
             }
         }
 
         private void NewMapUnlock()
         {
             isNewMapUnlocked = true;
+            confettiParticleSystem.gameObject.SetActive(true);
+            confettiParticleSystem.Play();
             unlockMapText.SetTypewriterSpeed(textApperanceSpeed);
             unlockMapText.ShowText($"{StringUtils.MAP_UNLOCKED_DESCRIPTION}<waitfor={textDisappearDelay}> ");
             unlockMapText.onTextShowed.AddListener(() =>
@@ -121,9 +124,6 @@ namespace BeachHero
 
         private void MapExitToHome()
         {
-            //await UIController.GetInstance.FadeInASync();
-            //await SceneLoader.GetInstance.UnloadScene(StringUtils.MAP_SCENE, IntUtils.MAP_SCENE_LOAD_DELAY);
-            //  UIController.GetInstance.FadeOut();
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
             GameController.GetInstance.SetGameState(GameState.NotStarted);
         }

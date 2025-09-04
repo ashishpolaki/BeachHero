@@ -634,18 +634,53 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3417644169411030238, guid: 87e8de575743d404393b76fe75e30ebe,
         type: 3}
-      propertyPath: mapDatas.Array.data[0].endLevelNumber
-      value: 1
-      objectReference: {fileID: 0}
+      propertyPath: boatTransform
+      value: 
+      objectReference: {fileID: 1513440202}
     - target: {fileID: 3417644169411030238, guid: 87e8de575743d404393b76fe75e30ebe,
         type: 3}
-      propertyPath: mapDatas.Array.data[1].endLevelNumber
+      propertyPath: mapDataList.Array.size
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3417644169411030238, guid: 87e8de575743d404393b76fe75e30ebe,
         type: 3}
-      propertyPath: mapDatas.Array.data[1].startLevelNumber
+      propertyPath: mapDataList.Array.data[1].index
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3417644169411030238, guid: 87e8de575743d404393b76fe75e30ebe,
+        type: 3}
+      propertyPath: mapDataList.Array.data[2].index
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3417644169411030238, guid: 87e8de575743d404393b76fe75e30ebe,
+        type: 3}
+      propertyPath: mapDataList.Array.data[0].mapNumber
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3417644169411030238, guid: 87e8de575743d404393b76fe75e30ebe,
+        type: 3}
+      propertyPath: mapDataList.Array.data[1].mapNumber
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3417644169411030238, guid: 87e8de575743d404393b76fe75e30ebe,
+        type: 3}
+      propertyPath: mapDataList.Array.data[2].mapNumber
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3417644169411030238, guid: 87e8de575743d404393b76fe75e30ebe,
+        type: 3}
+      propertyPath: mapDatas.Array.data[0].endLevelNumber
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3417644169411030238, guid: 87e8de575743d404393b76fe75e30ebe,
+        type: 3}
+      propertyPath: mapDatas.Array.data[1].endLevelNumber
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3417644169411030238, guid: 87e8de575743d404393b76fe75e30ebe,
+        type: 3}
+      propertyPath: mapDatas.Array.data[1].startLevelNumber
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8300844924590906632, guid: 87e8de575743d404393b76fe75e30ebe,
         type: 3}
@@ -1102,6 +1137,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: 87e8de575743d404393b76fe75e30ebe, type: 3}
+--- !u!4 &1513440202 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2735820109994943778, guid: 87e8de575743d404393b76fe75e30ebe,
+    type: 3}
+  m_PrefabInstance: {fileID: 1513440201}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2115798424
 GameObject:
   m_ObjectHideFlags: 0

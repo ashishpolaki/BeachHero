@@ -94,5 +94,17 @@ namespace BeachHero
             }
             return 0;
         }
+
+        public bool IsLevelExists(int levelNumber)
+        {
+            foreach (var levelVisual in levelVisuals)
+            {
+                if (levelVisual.LevelNumber == levelNumber)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

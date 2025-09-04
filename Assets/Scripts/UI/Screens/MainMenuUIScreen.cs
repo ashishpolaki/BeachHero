@@ -79,9 +79,10 @@ namespace BeachHero
         private void OnPlayButtonClicked()
         {
             // await UIController.GetInstance.LoadingUI.LoadSceneAsync(StringUtils.MAP_SCENE);
+            MapController.GetInstance.CheckForMapUpdate();
             UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);
             GameController.GetInstance.SetGameState(GameState.Map);
-            MapController.GetInstance.SetBoatInCurrentLevel();
+            MapController.GetInstance.PlaceBoatAtCurrentLevel();
             // await UIController.GetInstance.LoadingUI.DisableLoadingScreen(loadScreenDelayMs);
         }
         private void OnStoreButtonClicked()

@@ -12,29 +12,29 @@ namespace BeachHero
     {
         public static MapController GetInstance { get; private set; }
 
-        #region Readonly Variables 
-        private static readonly Vector2 originalTextureScale = new Vector2(1, 1);
-        private static readonly Vector2 zoomInTextureScale = new Vector2(3, 1);
-        private static readonly float zoomInThick = 0.2f;
-        private static readonly float zoomOutThick = 0.55f;
-        private static readonly float zoomDuration = 1.5f;
-        private static readonly float referenceOrthoSize = 31f;
-        private static readonly Vector2 referenceMapScale = new Vector2(4.5f, 4f);
+        #region Constants 
+        private static readonly Vector2 DefaultTextureScale = new Vector2(1, 1);
+        private static readonly Vector2 ZoomInTextureScale = new Vector2(3, 1);
+        private static readonly Vector2 ReferenceMapScale = new Vector2(4.5f, 4f);
+
+        private static readonly float ZoomInThick = 0.2f;
+        private static readonly float ZoomOutThick = 0.55f;
+        private static readonly float ZoomDuration = 1.5f;
+        private static readonly float ReferenceOrthoSize = 31f;
         #endregion
 
         #region Inspector Variables
-        [SerializeField] private Transform boat;
-        [SerializeField] private Collider2D confineCollider;
         [SerializeField] private LevelDatabaseSO levelDatabase;
-        [SerializeField] private ParticleSystem confettiParticle;
+        [SerializeField] private Collider2D confineCollider;
 
         [Header("Map")]
         [SerializeField] private Transform mapBG;
         [SerializeField] private MapData[] mapDatas;
 
         [Header("Boat")]
+        [SerializeField] private Transform boatTransform;
         [SerializeField] private float boatDuration = 1f;
-        [SerializeField] private float boatOffset = 0.5f;
+        [SerializeField] private float boatOffsetDistance = 0.5f;
         [SerializeField] private Ease boatEase = Ease.OutCubic;
         #endregion
 
@@ -58,9 +58,9 @@ namespace BeachHero
         #endregion
 
         #region Events
-        public event Action OnMapButtonsActive;
-        public event Action OnPushPowerupSelectionScreen;
-        public event Action OnNewMapUnlockAction;
+        public event Action OnMapButtonsEnabled;
+        public event Action OnShowPowerupSelection;
+        public event Action OnMapUnlocked;
         #endregion
 
         #region Unity Methods
@@ -70,7 +70,50 @@ namespace BeachHero
             {
                 GetInstance = this;
             }
-            //Parse Map number
+            InitializeMapVisuals();
+            CameraController.GetInstance.SetCollider(confineCollider, GameCameraType.MapFar);
+            CameraController.GetInstance.SetCollider(confineCollider, GameCameraType.MapNear);
+        }
+        private void OnDestroy()
+        {
+            if (GetInstance == this)
+            {
+                GetInstance = null;
+            }
+        }
+        #endregion
+
+        #region Initialization
+        private void InitializeMapVisuals()
+        {
+            // Initialize Map Data
+            foreach (var mapData in mapDatas)
+            {
+                mapData.mapObject.SetActive(false);
+            }
+
+            //Set Map Visuals
+            int savedMapNumber = SaveSystem.LoadInt(StringUtils.MAP_NUMER, IntUtils.DEFAULT_MAP_NUMBER);
+            var levelNumber = GameController.GetInstance.CurrentLevelIndex + 1;
+
+            for (int i = 0; i < mapDatas.Length; i++)
+            {
+                if (levelNumber >= mapDatas[i].startLevelNumber && levelNumber <= mapDatas[i].endLevelNumber)
+                {
+                    if (savedMapNumber != mapDatas[i].mapNumber)
+                    {
+                        savedMapNumber = mapDatas[i].mapNumber;
+                    }
+                    break;
+                }
+            }
+            ChangeMapVisual(-1, savedMapNumber);
+        }
+        #endregion
+
+        #region Map State Checking
+        public void CheckForMapUpdate()
+        {
             int savedMapNumber = SaveSystem.LoadInt(StringUtils.MAP_NUMER, IntUtils.DEFAULT_MAP_NUMBER);
             var levelNumber = GameController.GetInstance.CurrentLevelIndex + 1;
             for (int i = 0; i < mapDatas.Length; i++)
@@ -85,45 +128,48 @@ namespace BeachHero
                     break;
                 }
             }
-            InitializeMapData();
-            ChangeMapVisual(-1, MapNumber);
-            CameraController.GetInstance.SetCollider(confineCollider, GameCameraType.MapFar);
-            CameraController.GetInstance.SetCollider(confineCollider, GameCameraType.MapNear);
-        }
-        private void OnDestroy()
-        {
-            if (GetInstance == this)
+
+            if (isNewMapUnlocked)
             {
-                GetInstance = null;
+                ChangeMapVisual(savedMapNumber, MapNumber);
             }
         }
         #endregion
 
-        #region Boat 
-        public void SetBoatInCurrentLevel()
-        {
-            // Set Boat Position to Current Level
-            int currentLevelNumber = GameController.GetInstance.CurrentLevelIndex + 1;
-            Transform target = mapDatas[mapNumber - 1].GetLevelVisual(currentLevelNumber).transform;
-            mapDatas[mapNumber - 1].CalculateOffsetDirection(target, out Vector3 boatOffsetDirection);
-            boat.SetPositionAndRotation(target.position + boatOffsetDirection * boatOffset, target.rotation);
-            OnMapButtonsActive?.Invoke();
-        }
-
-        public void SetBoatInPreviousLevel()
-        {
-            // Set Boat Position to Previous Level
-            int previousLevelNumber = GameController.GetInstance.CurrentLevelIndex;
-            Transform target = mapDatas[mapNumber - 1].GetLevelVisual(previousLevelNumber).transform;
-            mapDatas[mapNumber - 1].CalculateOffsetDirection(target, out Vector3 boatOffsetDirection);
-            boat.SetPositionAndRotation(target.position + boatOffsetDirection * boatOffset, target.rotation);
-        }
-
-        public void MoveBoatFromPrevToCurrentLevel()
+        #region Boat Movement
+        public void PlaceBoatAtCurrentLevel()
         {
             if (isNewMapUnlocked)
             {
-                NewMapUnlocked();
+                UnlockNewMap();
+            }
+            int levelNumber = GameController.GetInstance.CurrentLevelIndex + 1;
+            PositionBoatAtLevel(levelNumber);
+            OnMapButtonsEnabled?.Invoke();
+        }
+
+        public void PlaceBoatAtPreviousLevel()
+        {
+            int previousLevelNumber = GameController.GetInstance.CurrentLevelIndex;
+            PositionBoatAtLevel(previousLevelNumber);
+        }
+
+        private void PositionBoatAtLevel(int levelNumber)
+        {
+            if (mapDatas[mapNumber - 1].IsLevelExists(levelNumber))
+            {
+                Transform levelVisual = mapDatas[mapNumber - 1].GetLevelVisual(levelNumber).transform;
+                mapDatas[mapNumber - 1].CalculateOffsetDirection(levelVisual, out Vector3 offsetDir);
+                boatTransform.SetPositionAndRotation(
+                    levelVisual.position + offsetDir * boatOffsetDistance,
+                    levelVisual.rotation);
+            }
+        }
+        public void AnimateBoatToCurrentLevel()
+        {
+            if (isNewMapUnlocked)
+            {
+                PlaceBoatAtCurrentLevel();
                 return;
             }
 
@@ -150,14 +196,14 @@ namespace BeachHero
                         time = x;
                         Vector3 pos = BezierCurveUtils.GetPoint(p0, p1, p2, p3, time);
                         Vector3 forward = BezierCurveUtils.GetTangent(p0, p1, p2, p3, time).normalized;
-                        boat.up = forward;
+                        boatTransform.up = forward;
                         mapDatas[mapNumber - 1].CalculateOffsetDirectionFromCross(forward, out Vector3 boatOffsetDirection);
-                        boat.position = pos + boatOffsetDirection * boatOffset;
+                        boatTransform.position = pos + boatOffsetDirection * boatOffsetDistance;
                     },
                     1,
                     boatDuration).SetEase(boatEase).OnComplete(() =>
                     {
-                        OnPushPowerupSelectionScreen?.Invoke();
+                        OnShowPowerupSelection?.Invoke();
                     });
             }
         }
@@ -170,18 +216,18 @@ namespace BeachHero
             CameraController.GetInstance.SetActiveCamera(GameCameraType.MapNear);
             CameraController.GetInstance.SetCameraPosition(position, false);
             var pathLine = mapDatas[mapNumber - 1].pathLine;
-            DOTween.To(() => pathLine.startWidth, (x) => pathLine.startWidth = x, zoomInThick, zoomDuration);
-            DOTween.To(() => pathLine.endWidth, (x) => pathLine.endWidth = x, zoomInThick, zoomDuration);
-            DOTween.To(() => pathLine.textureScale, (x) => pathLine.textureScale = x, zoomInTextureScale, zoomDuration);
+            DOTween.To(() => pathLine.startWidth, (x) => pathLine.startWidth = x, ZoomInThick, ZoomDuration);
+            DOTween.To(() => pathLine.endWidth, (x) => pathLine.endWidth = x, ZoomInThick, ZoomDuration);
+            DOTween.To(() => pathLine.textureScale, (x) => pathLine.textureScale = x, ZoomInTextureScale, ZoomDuration);
         }
         public void ZoomOut()
         {
             CameraController.GetInstance.SetActiveCamera(GameCameraType.MapFar);
             UpdateMapBGScale();
             var pathLine = mapDatas[mapNumber - 1].pathLine;
-            DOTween.To(() => pathLine.startWidth, (x) => pathLine.startWidth = x, zoomOutThick, zoomDuration);
-            DOTween.To(() => pathLine.endWidth, (x) => pathLine.endWidth = x, zoomOutThick, zoomDuration);
-            DOTween.To(() => pathLine.textureScale, (x) => pathLine.textureScale = x, originalTextureScale, zoomDuration);
+            DOTween.To(() => pathLine.startWidth, (x) => pathLine.startWidth = x, ZoomOutThick, ZoomDuration);
+            DOTween.To(() => pathLine.endWidth, (x) => pathLine.endWidth = x, ZoomOutThick, ZoomDuration);
+            DOTween.To(() => pathLine.textureScale, (x) => pathLine.textureScale = x, DefaultTextureScale, ZoomDuration);
         }
         #endregion
 
@@ -208,21 +254,12 @@ namespace BeachHero
             }
             return string.Empty;
         }
-        private void NewMapUnlocked()
+        private void UnlockNewMap()
         {
-            SetBoatInCurrentLevel();
-            confettiParticle.Play();
             isNewMapUnlocked = false;
-            OnNewMapUnlockAction?.Invoke();
+            OnMapUnlocked?.Invoke();
         }
-        private void InitializeMapData()
-        {
-            // Initialize Map Data
-            foreach (var mapData in mapDatas)
-            {
-                mapData.mapObject.SetActive(false);
-            }
-        }
+
         public void ChangeMapVisual(int previousMap, int currentMap)
         {
             //If startLevelIndex is -1, it means no levels are set for this map
@@ -238,10 +275,10 @@ namespace BeachHero
         }
         private void UpdateMapBGScale()
         {
-            CameraController.GetInstance.SetOrthoSize(ScreenResolutionUtils.GetOrthographicSize(referenceOrthoSize), GameCameraType.MapFar);
+            CameraController.GetInstance.SetOrthoSize(ScreenResolutionUtils.GetOrthographicSize(ReferenceOrthoSize), GameCameraType.MapFar);
             if (mapBG != null)
             {
-                var scale = ScreenResolutionUtils.GetObjectScale(referenceMapScale, referenceOrthoSize);
+                var scale = ScreenResolutionUtils.GetObjectScale(ReferenceMapScale, ReferenceOrthoSize);
                 mapBG.localScale = new Vector3(scale.x, scale.y, 1f);
             }
         }

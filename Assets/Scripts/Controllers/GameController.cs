@@ -54,6 +54,7 @@ namespace BeachHero
         #region Initialization
         public void Init()
         {
+            currentLevelIndex = SaveSystem.LoadInt(StringUtils.LEVELNUMBER, IntUtils.DEFAULT_LEVEL) - 1;
             powerupController.Init();
             storeController.Init();
         }
