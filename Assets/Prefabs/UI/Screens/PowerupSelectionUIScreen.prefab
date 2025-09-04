@@ -279,6 +279,7 @@ GameObject:
   - component: {fileID: 4025660982589008423}
   - component: {fileID: 1534867648132152150}
   - component: {fileID: 4005015816727672685}
+  - component: {fileID: 4728968206008074774}
   m_Layer: 5
   m_Name: ActivateButton
   m_TagString: Untagged
@@ -387,6 +388,30 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4728968206008074774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 734424116926032690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openingAnimation:
+    Type: 0
+    Ease: 0
+    Duration: 0
+    Strength: 0
+    Delay: 0
+    Vibration: 0
+    Offset: 0
+    Elasticity: 0
+  buttonAudioType: 1
+  button: {fileID: 4005015816727672685}
+  rect: {fileID: 0}
 --- !u!1 &873153750107901456
 GameObject:
   m_ObjectHideFlags: 0
@@ -500,6 +525,7 @@ GameObject:
   - component: {fileID: 4243574520491236691}
   - component: {fileID: 6164678883548487505}
   - component: {fileID: 8906281367012212818}
+  - component: {fileID: 3282418666442703111}
   m_Layer: 5
   m_Name: ClosePanelButton
   m_TagString: Untagged
@@ -608,6 +634,30 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3282418666442703111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1470174032730189981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openingAnimation:
+    Type: 0
+    Ease: 0
+    Duration: 0
+    Strength: 0
+    Delay: 0
+    Vibration: 0
+    Offset: 0
+    Elasticity: 0
+  buttonAudioType: 1
+  button: {fileID: 8906281367012212818}
+  rect: {fileID: 0}
 --- !u!1 &1761210790792339726
 GameObject:
   m_ObjectHideFlags: 0
@@ -1185,6 +1235,7 @@ GameObject:
   - component: {fileID: 1106087098921750578}
   - component: {fileID: 8599515032090811659}
   - component: {fileID: 5449183031456707673}
+  - component: {fileID: 6224330704937130836}
   m_Layer: 5
   m_Name: AddMoreButton
   m_TagString: Untagged
@@ -1293,6 +1344,30 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6224330704937130836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2260057360442188219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openingAnimation:
+    Type: 0
+    Ease: 0
+    Duration: 0
+    Strength: 0
+    Delay: 0
+    Vibration: 0
+    Offset: 0
+    Elasticity: 0
+  buttonAudioType: 1
+  button: {fileID: 5449183031456707673}
+  rect: {fileID: 0}
 --- !u!1 &3141818541027517539
 GameObject:
   m_ObjectHideFlags: 0
@@ -1380,6 +1455,7 @@ GameObject:
   - component: {fileID: 9136862424059316652}
   - component: {fileID: 3426604250572506452}
   - component: {fileID: 3341441240902022548}
+  - component: {fileID: 2139252831697914524}
   m_Layer: 5
   m_Name: Play Button
   m_TagString: Untagged
@@ -1489,6 +1565,30 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2139252831697914524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3294797091434040065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openingAnimation:
+    Type: 0
+    Ease: 0
+    Duration: 0
+    Strength: 0
+    Delay: 0
+    Vibration: 0
+    Offset: 0
+    Elasticity: 0
+  buttonAudioType: 1
+  button: {fileID: 3341441240902022548}
+  rect: {fileID: 0}
 --- !u!1 &3332856445115532565
 GameObject:
   m_ObjectHideFlags: 0
@@ -2745,6 +2845,7 @@ GameObject:
   - component: {fileID: 7532078265893089795}
   - component: {fileID: 2923522961840424789}
   - component: {fileID: 2552755202613257296}
+  - component: {fileID: 3102811064882218807}
   m_Layer: 5
   m_Name: AddMoreButton
   m_TagString: Untagged
@@ -2853,6 +2954,30 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3102811064882218807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7235806367804835033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openingAnimation:
+    Type: 0
+    Ease: 0
+    Duration: 0
+    Strength: 0
+    Delay: 0
+    Vibration: 0
+    Offset: 0
+    Elasticity: 0
+  buttonAudioType: 1
+  button: {fileID: 2552755202613257296}
+  rect: {fileID: 0}
 --- !u!1 &7963564262379519079
 GameObject:
   m_ObjectHideFlags: 0
@@ -3002,6 +3127,7 @@ GameObject:
   - component: {fileID: 530398643574635158}
   - component: {fileID: 2229020247314635626}
   - component: {fileID: 268068854696627224}
+  - component: {fileID: 2048574100823880739}
   m_Layer: 5
   m_Name: ActivateButton
   m_TagString: Untagged
@@ -3110,3 +3236,27 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2048574100823880739
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8931609582371810649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openingAnimation:
+    Type: 0
+    Ease: 0
+    Duration: 0
+    Strength: 0
+    Delay: 0
+    Vibration: 0
+    Offset: 0
+    Elasticity: 0
+  buttonAudioType: 1
+  button: {fileID: 268068854696627224}
+  rect: {fileID: 0}

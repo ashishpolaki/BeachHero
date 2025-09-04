@@ -61,10 +61,10 @@ namespace BeachHero
 
         private void RemoveListeners()
         {
-            boatCustomisationButton.ButtonDeRegister();
-            levelPanelButton.ButtonDeRegister();
-            storeButton.ButtonDeRegister();
-            settingsButton.ButtonDeRegister();
+            boatCustomisationButton.ButtonDeRegister(OnBoatCustomisationButtonClicked);
+            levelPanelButton.ButtonDeRegister(OnPlayButtonClicked);
+            storeButton.ButtonDeRegister(OnStoreButtonClicked);
+            settingsButton.ButtonDeRegister(OnSettingsButtonClick);
         }
         private void OnSettingsButtonClick()
         {

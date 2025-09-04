@@ -36,7 +36,7 @@ namespace BeachHero
             ZoomToggle(false);
             MapController.GetInstance.ChangeMapVisual(previousMapNumber, currentMapNumber);
 
-            zoomToggle.onValueChanged.AddListener(ZoomToggle);
+            zoomToggle.onValueChanged.AddListener((val) => { ZoomToggle(val); AudioController.GetInstance.PlaySound(AudioType.Button); });
             mapExitBtn.ButtonRegister(MapExitToHome);
             playButton.ButtonRegister(OnPlayButtonClick);
             rightArrowBtn.ButtonRegister(() => ScrollRight());
@@ -56,11 +56,11 @@ namespace BeachHero
             SetMapButtonsVisibility(false);
             ResetTextAnimator();
 
-            zoomToggle.onValueChanged.RemoveListener(ZoomToggle);
-            mapExitBtn.ButtonDeRegister();
-            playButton.ButtonDeRegister();
-            rightArrowBtn.ButtonDeRegister();
-            leftArrowBtn.ButtonDeRegister();
+            zoomToggle.onValueChanged.RemoveAllListeners();
+            mapExitBtn.ButtonDeRegister(MapExitToHome);
+            playButton.ButtonDeRegister(OnPlayButtonClick);
+            rightArrowBtn.ButtonDeRegister(() => ScrollRight());
+            leftArrowBtn.ButtonDeRegister(() => ScrollLeft());
 
             if (MapController.GetInstance != null)
             {
@@ -100,7 +100,7 @@ namespace BeachHero
 
         private void ShowTitleDescription()
         {
-           titleDescriptionText.ShowText($"{MapController.GetInstance.GetMapDescription(currentMapNumber)}");
+            titleDescriptionText.ShowText($"{MapController.GetInstance.GetMapDescription(currentMapNumber)}");
         }
 
         private void HideTitleDescription()

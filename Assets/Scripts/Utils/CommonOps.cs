@@ -12,11 +12,10 @@ namespace BeachHero
                 DebugUtils.LogError("No Button Exists");
                 return;
             }
-            btn.onClick.RemoveAllListeners();
             btn.onClick.AddListener(action);
         }
 
-        public static void ButtonDeRegister(this Button button)
+        public static void ButtonDeRegisterAll(this Button button)
         {
             if (!button)
             {
@@ -24,6 +23,15 @@ namespace BeachHero
                 return;
             }
             button.onClick.RemoveAllListeners();
+        }
+        public static void ButtonDeRegister(this Button button, UnityAction action)
+        {
+            if (!button)
+            {
+                DebugUtils.LogError("No Button Exists");
+                return;
+            }
+            button.onClick.RemoveListener(action);
         }
     }
 }

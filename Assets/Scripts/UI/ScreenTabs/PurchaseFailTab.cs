@@ -16,7 +16,7 @@ namespace BeachHero
         public override void Close()
         {
             base.Close();
-            retryPurchaseBtn.ButtonDeRegister();
+            retryPurchaseBtn.ButtonDeRegisterAll();
         }
 
         private void OnRetryPurchaseButtonClicked()

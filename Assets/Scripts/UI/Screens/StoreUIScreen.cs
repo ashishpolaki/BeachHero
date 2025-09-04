@@ -90,7 +90,7 @@ namespace BeachHero
         private void AddListener()
         {
             GameController.GetInstance.StoreController.OnStoreItemPurchaseAction += OnPurchaseSuccess;
-            homeButton.onClick.AddListener(OpenHome);
+            homeButton.ButtonRegister(OpenHome);
             //Store Products
             for (int i = 0; i < storeProducts.Length; i++)
             {
@@ -124,17 +124,17 @@ namespace BeachHero
         private void RemoveListener()
         {
             GameController.GetInstance.StoreController.OnStoreItemPurchaseAction -= OnPurchaseSuccess;
-            homeButton.onClick.RemoveAllListeners();
+            homeButton.ButtonDeRegister(OpenHome);
             //Store Products
             for (int i = 0; i < storeProducts.Length; i++)
             {
                 if (storeProducts[i].gameCurrencyPurchaseButton != null)
                 {
-                    storeProducts[i].gameCurrencyPurchaseButton.ButtonDeRegister();
+                    storeProducts[i].gameCurrencyPurchaseButton.ButtonDeRegisterAll();
                 }
                 if (storeProducts[i].realMoneyPurchaseButton != null)
                 {
-                    storeProducts[i].realMoneyPurchaseButton.ButtonDeRegister();
+                    storeProducts[i].realMoneyPurchaseButton.ButtonDeRegisterAll();
                 }
             }
             // Rewarded AD Items
@@ -142,7 +142,7 @@ namespace BeachHero
             {
                 if (rewardAdItems[i].watchAdButton != null)
                 {
-                    rewardAdItems[i].watchAdButton.ButtonDeRegister();
+                    rewardAdItems[i].watchAdButton.ButtonDeRegisterAll();
                 }
             }
         }

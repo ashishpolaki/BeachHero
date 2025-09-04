@@ -50,7 +50,7 @@ namespace BeachHero
         {
             if (button != null)
             {
-                button.ButtonDeRegister();
+                button.ButtonDeRegisterAll();
             }
         }
 

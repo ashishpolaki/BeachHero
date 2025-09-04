@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 using DG.Tweening;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace BeachHero
@@ -11,7 +12,7 @@ namespace BeachHero
         private void Start()
         {
             ResetWaterMaterial();
-            Initialize();
+            AsyncLazyInit();
         }
 
         /// <summary>
@@ -24,16 +25,24 @@ namespace BeachHero
             waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{2}"), 0f);
         }
 
-        private void Initialize()
+        private async void AsyncLazyInit()
         {
-            Application.targetFrameRate = 30;
+            DebugUtils.Log("Loading Game Scene");
+            // small delay so the first frame renders smoothly
+            await Task.Yield();
             GameController.GetInstance.Init();
             AudioController.GetInstance.Init();
+            CameraController.GetInstance.Init();
             AdController.GetInstance.Init();
             HapticsManager.GetInstance.Init();
             DOTween.Init();
+            Febucci.UI.Core.TAnimBuilder.InitializeGlobalDatabase();
+
+            // wait a little to avoid freezing all at once
+            await Task.Delay(100);
+         //   await UIController.GetInstance.LoadingUI.LoadSceneAsync(StringUtils.GAME_SCENE);
             GameController.GetInstance.SpawnLevel();
-            GameController.GetInstance.Play();
+            await UIController.GetInstance.LoadingUI.DisableLoadingScreen();
         }
     }
 }

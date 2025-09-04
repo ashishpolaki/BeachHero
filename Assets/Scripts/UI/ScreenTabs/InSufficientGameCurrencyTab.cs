@@ -14,7 +14,7 @@ namespace BeachHero
         public override void Close()
         {
             base.Close();
-            goToStoreBtn.ButtonDeRegister();
+            goToStoreBtn.ButtonDeRegisterAll();
         }
         private void OnGoToStoreButtonClicked()
         {

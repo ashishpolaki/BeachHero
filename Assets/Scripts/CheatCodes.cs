@@ -60,6 +60,12 @@ namespace BeachHero
         #endregion
 
         #region Commands
+        [Command("unlock-powerups")]
+        public static void UnlockPowerups()
+        {
+            GameController.GetInstance.PowerupController.UnlockPowerup(PowerupType.Magnet);
+            GameController.GetInstance.PowerupController.UnlockPowerup(PowerupType.SpeedBoost);
+        }
 
         [Command("level-win")]
         public static void WinLevel()

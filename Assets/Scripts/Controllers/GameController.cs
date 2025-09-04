@@ -114,6 +114,7 @@ namespace BeachHero
             if (GameState == GameState.LevelWin)
             {
                 UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Open, ScreenTabType.LevelWin);
+                AudioController.GetInstance.PlaySound(AudioType.Gamewin);
                 return; 
             }
             SetGameState(GameState.LevelFail);

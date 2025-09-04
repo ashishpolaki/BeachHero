@@ -11,6 +11,7 @@ namespace BeachHero
         Gamewin,
         GameCurrency,
         Die,
+        Swoosh,
         None
     }
     public enum AudioVolumeType

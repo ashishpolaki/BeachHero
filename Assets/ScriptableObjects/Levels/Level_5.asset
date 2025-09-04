@@ -14,9 +14,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelTime: 6
   startPoint:
-    Position: {x: 0, y: 0, z: 0}
-    Rotation: {x: 0, y: 0, z: 0}
+    Position: {x: -1.14, y: 0, z: 19.46}
+    Rotation: {x: 0, y: 180, z: 0}
   obstacles:
-    staticObstacles: []
+    staticObstacles:
+    - type: 8
+      position: {x: 3.24, y: 0, z: 7.55}
+      rotation: {x: 340.299, y: 352.72592, z: -0.000000113357096}
     movingObstacles: []
-  savedCharacters: []
+    waterHoleObstacles:
+    - position: {x: 2.46, y: 0, z: 12.91}
+      shaderPosition: {x: 0.4385, y: 0.52475}
+      scale: 2.48
+    - position: {x: -3.78, y: 0, z: 7.02}
+      shaderPosition: {x: 0.5945, y: 0.672}
+      scale: 2.34
+    - position: {x: 2.51, y: 0, z: 2.05}
+      shaderPosition: {x: 0.43725, y: 0.79625}
+      scale: 2
+  drownCharacters:
+  - position: {x: -2.71, y: 0, z: 1.06}
+    waitTimePercentage: 1
+  - position: {x: 0.26, y: 0, z: 6.16}
+    waitTimePercentage: 0.683
+  - position: {x: -2.05, y: 0, z: 11.85}
+    waitTimePercentage: 0.317
+  collectables: []

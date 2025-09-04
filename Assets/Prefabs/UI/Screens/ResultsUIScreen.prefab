@@ -1346,6 +1346,7 @@ GameObject:
   - component: {fileID: 2105361315556382126}
   - component: {fileID: 7273780220299250429}
   - component: {fileID: 6760971370150223506}
+  - component: {fileID: 2569908461597717581}
   m_Layer: 5
   m_Name: HomeBtn
   m_TagString: Untagged
@@ -1455,6 +1456,30 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2569908461597717581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2636657117635667203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openingAnimation:
+    Type: 0
+    Ease: 0
+    Duration: 0
+    Strength: 0
+    Delay: 0
+    Vibration: 0
+    Offset: 0
+    Elasticity: 0
+  buttonAudioType: 1
+  button: {fileID: 6760971370150223506}
+  rect: {fileID: 0}
 --- !u!1 &2673396143075772989
 GameObject:
   m_ObjectHideFlags: 0
@@ -1467,6 +1492,7 @@ GameObject:
   - component: {fileID: 7531162189884952723}
   - component: {fileID: 4532172594709298451}
   - component: {fileID: 2928612932552191741}
+  - component: {fileID: 2630952846653783049}
   m_Layer: 5
   m_Name: SkipButton
   m_TagString: Untagged
@@ -1577,6 +1603,30 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2630952846653783049
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2673396143075772989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openingAnimation:
+    Type: 0
+    Ease: 0
+    Duration: 0
+    Strength: 0
+    Delay: 0
+    Vibration: 0
+    Offset: 0
+    Elasticity: 0
+  buttonAudioType: 1
+  button: {fileID: 2928612932552191741}
+  rect: {fileID: 0}
 --- !u!1 &3002577255961081674
 GameObject:
   m_ObjectHideFlags: 0
@@ -2201,6 +2251,7 @@ GameObject:
   - component: {fileID: 2388801215343590575}
   - component: {fileID: 6209500861029671829}
   - component: {fileID: 3082090003068600180}
+  - component: {fileID: 526934781065255685}
   m_Layer: 5
   m_Name: MultipleGC-Btn
   m_TagString: Untagged
@@ -2311,6 +2362,30 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &526934781065255685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4796647751772889430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openingAnimation:
+    Type: 0
+    Ease: 0
+    Duration: 0
+    Strength: 0
+    Delay: 0
+    Vibration: 0
+    Offset: 0
+    Elasticity: 0
+  buttonAudioType: 1
+  button: {fileID: 3082090003068600180}
+  rect: {fileID: 0}
 --- !u!1 &5076803227104300264
 GameObject:
   m_ObjectHideFlags: 0
@@ -2323,6 +2398,7 @@ GameObject:
   - component: {fileID: 1362473093705537590}
   - component: {fileID: 1766663476316894713}
   - component: {fileID: 2193048526620779735}
+  - component: {fileID: 8793385410255741042}
   m_Layer: 5
   m_Name: NextLevel-Btn
   m_TagString: Untagged
@@ -2432,6 +2508,30 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8793385410255741042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5076803227104300264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openingAnimation:
+    Type: 0
+    Ease: 0
+    Duration: 0
+    Strength: 0
+    Delay: 0
+    Vibration: 0
+    Offset: 0
+    Elasticity: 0
+  buttonAudioType: 1
+  button: {fileID: 2193048526620779735}
+  rect: {fileID: 0}
 --- !u!1 &5419024083020565057
 GameObject:
   m_ObjectHideFlags: 0
@@ -2632,6 +2732,7 @@ GameObject:
   - component: {fileID: 5606869546363289162}
   - component: {fileID: 7082249811453641991}
   - component: {fileID: 3452618623661052865}
+  - component: {fileID: 5864464688600155821}
   m_Layer: 5
   m_Name: HomeBtn
   m_TagString: Untagged
@@ -2741,6 +2842,30 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5864464688600155821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5977899447285349253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openingAnimation:
+    Type: 0
+    Ease: 0
+    Duration: 0
+    Strength: 0
+    Delay: 0
+    Vibration: 0
+    Offset: 0
+    Elasticity: 0
+  buttonAudioType: 1
+  button: {fileID: 3452618623661052865}
+  rect: {fileID: 0}
 --- !u!1 &6561344017644255272
 GameObject:
   m_ObjectHideFlags: 0
@@ -3040,6 +3165,7 @@ GameObject:
   - component: {fileID: 4857575856856015165}
   - component: {fileID: 1387901372402978943}
   - component: {fileID: 5954081752792045038}
+  - component: {fileID: 5183748402412397594}
   m_Layer: 5
   m_Name: RetryBtn
   m_TagString: Untagged
@@ -3150,6 +3276,30 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5183748402412397594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7000658635848594418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openingAnimation:
+    Type: 0
+    Ease: 0
+    Duration: 0
+    Strength: 0
+    Delay: 0
+    Vibration: 0
+    Offset: 0
+    Elasticity: 0
+  buttonAudioType: 1
+  button: {fileID: 5954081752792045038}
+  rect: {fileID: 0}
 --- !u!1 &7013811507621454451
 GameObject:
   m_ObjectHideFlags: 0

@@ -25,7 +25,7 @@ namespace BeachHero
             base.Close();
             retryButton.onClick.RemoveListener(OnRetryClick);
             skipLevelButton.onClick.RemoveListener(OnSkipLevelClick);
-            homeButton.ButtonDeRegister();
+            homeButton.ButtonDeRegisterAll();
         }
         private void SetGameCurrency()
         {

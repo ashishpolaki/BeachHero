@@ -38,16 +38,16 @@ namespace BeachHero
                 activateButton.interactable = _powerUpCounter > 0;
                 counterText.gameObject.SetActive(_powerUpCounter > 0);
                 addMoreButton.gameObject.SetActive(_powerUpCounter <= 0);
-                activateButton.onClick.AddListener(OnPowerupButtonClicked);
-                addMoreButton.onClick.AddListener(AddMorePowerup);
+                activateButton.ButtonRegister(OnPowerupButtonClicked);
+                addMoreButton.ButtonRegister(AddMorePowerup);
             }
         }
         public void DeInitialize()
         {
             if (!isLocked)
             {
-                activateButton.onClick.RemoveListener(OnPowerupButtonClicked);
-                addMoreButton.onClick.RemoveListener(AddMorePowerup);
+                activateButton.ButtonDeRegister(OnPowerupButtonClicked);
+                addMoreButton.ButtonDeRegister(AddMorePowerup);
             }
         }
         private void SetCountText(int count)

@@ -15,7 +15,7 @@ namespace BeachHero
         public override void Close()
         {
             base.Close();
-            closePanelButton.ButtonDeRegister();
+            closePanelButton.ButtonDeRegisterAll();
         }
         private void OnCloseButtonClicked()
         {

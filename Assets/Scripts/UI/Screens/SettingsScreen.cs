@@ -32,11 +32,8 @@ namespace BeachHero
             soundToggle.OnToggleChanged -= OnSoundToggleChanged;
             musicToggle.OnToggleChanged -= OnMusicToggleChanged;
             hapticToggle.OnToggleChanged -= OnHapticToggleChanged;
-            privacyPolicyButton.ButtonDeRegister();
-            closePanelbutton.ButtonDeRegister();
-            soundToggle.Close();
-            musicToggle.Close();
-            hapticToggle.Close();
+            privacyPolicyButton.ButtonDeRegister(OnPrivacyPolicy);
+            closePanelbutton.ButtonDeRegister(ClosePanel);
         }
 
         private void OnSoundToggleChanged(bool isOn)

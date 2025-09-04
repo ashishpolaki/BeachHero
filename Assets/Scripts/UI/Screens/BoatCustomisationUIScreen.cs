@@ -76,10 +76,10 @@ namespace BeachHero
         }
         private void RemoveListeneres()
         {
-            homeButton.ButtonDeRegister();
-            purchaseButton.ButtonDeRegister();
-            nextBoatButton.ButtonDeRegister();
-            prevBoatButton.ButtonDeRegister();
+            homeButton.ButtonDeRegister(OnHomePressed);
+            purchaseButton.ButtonDeRegister(OnPurchasePressed);
+            nextBoatButton.ButtonDeRegister(() => ChangeBoat(1));
+            prevBoatButton.ButtonDeRegister(() => ChangeBoat(-1));
             //  purchasePanel.RemoveListeners();
             GameController.GetInstance.SkinController.OnSkinPurchased -= BoatSkinPurchased;
             GameController.GetInstance.SkinController.OnSkinColorPurchased -= BoatSkinColorPurchased;

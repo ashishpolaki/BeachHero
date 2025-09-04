@@ -27,9 +27,9 @@ namespace BeachHero
         public override void Close()
         {
             base.Close();
-            nextLevelButton.ButtonDeRegister();
-            multiplyGameCurrencyButton.ButtonDeRegister();
-            homeButton.ButtonDeRegister();
+            nextLevelButton.ButtonDeRegisterAll();
+            multiplyGameCurrencyButton.ButtonDeRegisterAll();
+            homeButton.ButtonDeRegisterAll();
         }
         private void SetGameCurrency()
         {

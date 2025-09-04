@@ -11,15 +11,15 @@ namespace BeachHero
         public override void Open(ScreenTabType screenTabType)
         {
             base.Open(screenTabType);
-            pauseButton.onClick.AddListener(OnPause);
-            retryButton.onClick.AddListener(OnRetry);
+            pauseButton.ButtonRegister(OnPause);
+            retryButton.ButtonRegister(OnRetry);
         }
 
         public override void Close()
         {
             base.Close();
-            pauseButton.onClick.RemoveListener(OnPause);
-            retryButton.onClick.RemoveListener(OnRetry);
+            pauseButton.ButtonDeRegister(OnPause);
+            retryButton.ButtonDeRegister(OnRetry);
         }
 
         private void OnPause()

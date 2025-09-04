@@ -20,6 +20,7 @@ namespace BeachHero
         public void OnPointerClick(PointerEventData eventData)
         {
             toggled = !toggled;
+            AudioController.GetInstance.PlaySound(AudioType.Swoosh);
             SetToggle(toggled, true);
         }
 
@@ -27,15 +28,10 @@ namespace BeachHero
         {
             if (knobRect != null)
             {
-                knobAnchorX = knobRect.anchoredPosition.x;
+                knobAnchorX = Math.Abs(knobRect.anchoredPosition.x);
             }
             toggled = value;
             SetToggle(value, false); // Set initial state without animation
-        }
-
-        public void Close()
-        {
-           // knobRect.anchoredPosition = KnobAnchorPos; // Reset position if needed
         }
 
         /// <summary>
@@ -54,6 +50,7 @@ namespace BeachHero
             }
             else
             {
+                DebugUtils.Log("SetToggle without animation: " + toggled);
                 knobRect.anchoredPosition = new Vector2(toggled ? -knobAnchorX : knobAnchorX, knobRect.anchoredPosition.y);
                 fillSlider.value = toggled ? 1f : 0f;
             }

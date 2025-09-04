@@ -43,14 +43,14 @@ namespace BeachHero
         #region Event Handling
         private void AddListeners()
         {
-            playButton.onClick.AddListener(OnPlayClicked);
+            playButton.ButtonRegister(OnPlayClicked);
             closeButton.ButtonRegister(ClosePanel);
             GameController.GetInstance.TutorialController.OnPowerupPressAction += OnPowerupPressed;
         }
         private void RemoveListeners()
         {
-            playButton.onClick.RemoveListener(OnPlayClicked);
-            closeButton.ButtonDeRegister();
+            playButton.ButtonDeRegister(OnPlayClicked);
+            closeButton.ButtonDeRegister(ClosePanel);
             GameController.GetInstance.TutorialController.OnPowerupPressAction -= OnPowerupPressed;
         }
         private void ClosePanel()

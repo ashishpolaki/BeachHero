@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41ec7b45cdb520b4fb3b55ccaac3e1fc, type: 3}
+  m_Name: Level_6
+  m_EditorClassIdentifier: 
+  levelTime: 6
+  startPoint:
+    Position: {x: -1.14, y: 0, z: 19.46}
+    Rotation: {x: 0, y: 180, z: 0}
+  obstacles:
+    staticObstacles:
+    - type: 8
+      position: {x: 4.35, y: 0.18, z: 7.03}
+      rotation: {x: 343.68893, y: 27.916475, z: 348.79755}
+    - type: 8
+      position: {x: -2.57, y: 0, z: 5.72}
+      rotation: {x: -0, y: 0, z: 0}
+    movingObstacles:
+    - type: 6
+      bezierKeyframes:
+      - position: {x: 6.508712, y: -0.0140625, z: 10.274534}
+        inTangentLocal: {x: -1, y: 0, z: 0}
+        outTangentLocal: {x: 1, y: 0, z: 0}
+      - position: {x: -0.7377635, y: -0.01796875, z: 9.219905}
+        inTangentLocal: {x: 0.85824907, y: -0.001953125, z: -0.08100021}
+        outTangentLocal: {x: -0.74151015, y: -0.001953125, z: 0.020250201}
+      - position: {x: -4.6940594, y: -0.0296875, z: 9.319686}
+        inTangentLocal: {x: 0.684535, y: -0.013671875, z: -0.3308239}
+        outTangentLocal: {x: -1.5602274, y: -0.01171875, z: 0.557362}
+      - position: {x: -6.7824764, y: -0.0296875, z: 11.371466}
+        inTangentLocal: {x: 0.26318645, y: -0.013671875, z: -0.6239349}
+        outTangentLocal: {x: -0.49769878, y: -0.01171875, z: 1.1619048}
+      - position: {x: -6.1825, y: -0.02578125, z: 14.862133}
+        inTangentLocal: {x: -0.084691525, y: -0.005859375, z: -0.4631331}
+        outTangentLocal: {x: 0.27099562, y: -0.001953125, z: 0.72900367}
+      resolution: 4
+      movementSpeed: 5
+      rotationSpeedMultiplier: 2
+      loopedMovement: 1
+      inverseDirection: 1
+    waterHoleObstacles: []
+  drownCharacters:
+  - position: {x: -2.71, y: 0, z: 1.06}
+    waitTimePercentage: 1
+  - position: {x: 0.26, y: 0, z: 6.16}
+    waitTimePercentage: 0.683
+  - position: {x: -2.05, y: 0, z: 11.85}
+    waitTimePercentage: 0.317
+  collectables: []

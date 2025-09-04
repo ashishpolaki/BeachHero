@@ -635,7 +635,7 @@ public class BeachHeroEditorWindow : EditorWindow
 
             moveObstacleRepresentation.resolutionProperty.floatValue = movingObstacleEditComponents[i].resolution;
             moveObstacleRepresentation.movementSpeedProperty.floatValue = movingObstacleEditComponents[i].movementSpeed;
-            moveObstacleRepresentation.rotationSpeedProperty.floatValue = (int)movingObstacleEditComponents[i].rotationSpeedMultiplier;
+            moveObstacleRepresentation.rotationSpeedProperty.floatValue = movingObstacleEditComponents[i].rotationSpeedMultiplier;
             moveObstacleRepresentation.isLoopMovementProperty.boolValue = movingObstacleEditComponents[i].loopedMovement;
             moveObstacleRepresentation.isInverseDirectionProperty.boolValue = movingObstacleEditComponents[i].inverseDirection;
         }

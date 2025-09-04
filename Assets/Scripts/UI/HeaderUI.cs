@@ -45,7 +45,6 @@ namespace BeachHero
 
         private void UpdateBalances()
         {
-            int playerLevel = GameController.GetInstance.CurrentLevelIndex + 1;
             var store = GameController.GetInstance.StoreController;
 
             if (gameCurrencyBalanceObject != null)
@@ -90,18 +89,20 @@ namespace BeachHero
         {
             if (button != null)
             {
-                button.onClick.AddListener(() =>
+                button.ButtonRegister(() =>
                 {
                     UIController.GetInstance.ScreenEvent(ScreenType.Store, UIScreenEvent.Open);
                 });
             }
         }
-
         private void UnSetupAddButton(Button button)
         {
             if (button != null)
             {
-                button.onClick.RemoveAllListeners();
+                button.ButtonDeRegister(() =>
+                {
+                    UIController.GetInstance.ScreenEvent(ScreenType.Store, UIScreenEvent.Open);
+                });
             }
         }
 

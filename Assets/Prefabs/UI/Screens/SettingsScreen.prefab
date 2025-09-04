@@ -2770,6 +2770,7 @@ GameObject:
   - component: {fileID: 6964649723878822611}
   - component: {fileID: 8997859581438117005}
   - component: {fileID: 129021766877805885}
+  - component: {fileID: 5096216141411216496}
   m_Layer: 5
   m_Name: Privacy Button
   m_TagString: Untagged
@@ -2879,6 +2880,30 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5096216141411216496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7777530131385278569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openingAnimation:
+    Type: 0
+    Ease: 0
+    Duration: 0
+    Strength: 0
+    Delay: 0
+    Vibration: 0
+    Offset: 0
+    Elasticity: 0
+  buttonAudioType: 1
+  button: {fileID: 129021766877805885}
+  rect: {fileID: 7273895237178289311}
 --- !u!1 &7860264593645571477
 GameObject:
   m_ObjectHideFlags: 0

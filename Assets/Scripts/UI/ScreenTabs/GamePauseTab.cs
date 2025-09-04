@@ -21,10 +21,10 @@ namespace BeachHero
         public override void Close()
         {
             base.Close();
-            panelCloseButton.ButtonDeRegister();
-            resumeButton.ButtonDeRegister();
-            homeButton.ButtonDeRegister();
-            settingsButton.ButtonDeRegister();
+            panelCloseButton.ButtonDeRegisterAll();
+            resumeButton.ButtonDeRegisterAll();
+            homeButton.ButtonDeRegisterAll();
+            settingsButton.ButtonDeRegisterAll();
         }
         private void OnSettings()
         {

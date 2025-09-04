@@ -34,10 +34,10 @@ namespace BeachHero
         }
         public void RemoveListeners()
         {
-            realMoneyButton.ButtonDeRegister();
-            gameCurrencyButton.ButtonDeRegister();
-            adButton.ButtonDeRegister();
-            closeButton.ButtonDeRegister();
+            realMoneyButton.ButtonDeRegisterAll();
+            gameCurrencyButton.ButtonDeRegisterAll();
+            adButton.ButtonDeRegisterAll();
+            closeButton.ButtonDeRegisterAll();
         }
         public void Close()
         {
