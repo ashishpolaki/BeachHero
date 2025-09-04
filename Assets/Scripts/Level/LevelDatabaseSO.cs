@@ -93,7 +93,7 @@ namespace BeachHero
         Collectable,
         MovingObstacle,
         StaticObstacle,
-        WaterHoleObstacle,
+        WhirlpoolObstacle,
         DrownCharacter,
     }
 }

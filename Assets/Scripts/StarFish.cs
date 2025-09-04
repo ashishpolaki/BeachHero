@@ -11,14 +11,14 @@ namespace BeachHero
         [SerializeField] private float thresholdNormalizedTime = 0.99f;
 
         private Coroutine playAnimationCoroutine;
-        private List<int> animationClipsLength = new List<int>();
+        private List<int> animationClips = new List<int>();
 
         private void Awake()
         {
             foreach (AnimationClip clip in animator.runtimeAnimatorController.animationClips)
             {
                 int hash = Animator.StringToHash(clip.name);
-                animationClipsLength.Add(hash);
+                animationClips.Add(hash);
             }
         }
         public void Init()
@@ -27,7 +27,7 @@ namespace BeachHero
         }
         public void PlayRandomAnimation()
         {
-            if (playAnimationCoroutine == null)
+            if (playAnimationCoroutine == null && animationClips.Count > 0)
             {
                 playAnimationCoroutine = StartCoroutine(PlayAnimationsLoop());
             }
@@ -36,7 +36,7 @@ namespace BeachHero
         {
             while (true)
             {
-                int randomAnimationHash = animationClipsLength[Random.Range(0, animationClipsLength.Count)];
+                int randomAnimationHash = animationClips[Random.Range(0, animationClips.Count)];
                 animator.Play(randomAnimationHash, 0, 0);
                 yield return null;
 

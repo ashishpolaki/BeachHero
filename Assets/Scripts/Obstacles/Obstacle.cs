@@ -7,7 +7,7 @@ namespace BeachHero
         None,
         Shark,
         Eel,
-        WaterHole,
+        Whirlpool,
         Rock,
         Barrel,
         MantaRay,

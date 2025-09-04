@@ -298,7 +298,7 @@ namespace BeachHero
                         case ObstacleType.MantaRay:
                             poolManager.MantaRayPool.ReturnObject(obstacle.gameObject);
                             break;
-                        case ObstacleType.WaterHole:
+                        case ObstacleType.Whirlpool:
                             poolManager.WaterHolePool.ReturnObject(obstacle.gameObject);
                             break;
                         case ObstacleType.Rock:
@@ -540,23 +540,23 @@ namespace BeachHero
         }
         #endregion
 
-        #region WaterHole Obstacle
-        private void SpawnWaterHoleObstacle(WaterHoleObstacleData[] waterHoleObstacleData)
+        #region Whirlpool Obstacle
+        private void SpawnWaterHoleObstacle(WhirlpoolObstacleData[] whirlpoolObstacleData)
         {
             int cycloneIndex = 0;
-            if (waterHoleObstacleData != null && waterHoleObstacleData.Length > 0)
+            if (whirlpoolObstacleData != null && whirlpoolObstacleData.Length > 0)
             {
-                foreach (var waterHole in waterHoleObstacleData)
+                foreach (var whirlpool in whirlpoolObstacleData)
                 {
                     cycloneIndex++;
-                    if (!obstaclesDictionary.ContainsKey(ObstacleType.WaterHole))
+                    if (!obstaclesDictionary.ContainsKey(ObstacleType.Whirlpool))
                     {
-                        obstaclesDictionary[ObstacleType.WaterHole] = new List<Obstacle>();
+                        obstaclesDictionary[ObstacleType.Whirlpool] = new List<Obstacle>();
                     }
-                    WaterHoleObstacle waterHoleObstacle = poolManager.WaterHolePool.GetObject().GetComponent<WaterHoleObstacle>();
-                    waterHoleObstacle.transform.position = waterHole.position;
-                    waterHoleObstacle.Init(waterHole, cycloneIndex);
-                    obstaclesDictionary[ObstacleType.WaterHole].Add(waterHoleObstacle);
+                    WhirlpoolObstacle waterHoleObstacle = poolManager.WaterHolePool.GetObject().GetComponent<WhirlpoolObstacle>();
+                    waterHoleObstacle.transform.position = whirlpool.position;
+                    waterHoleObstacle.Init(whirlpool, cycloneIndex);
+                    obstaclesDictionary[ObstacleType.Whirlpool].Add(waterHoleObstacle);
                 }
             }
         }

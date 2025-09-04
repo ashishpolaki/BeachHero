@@ -72,7 +72,7 @@ namespace BeachHero
                 if (obstacle != null)
                 {
                     StopMovement();
-                    if (obstacle.ObstacleType == ObstacleType.WaterHole)
+                    if (obstacle.ObstacleType == ObstacleType.Whirlpool)
                     {
                         boatAnimator.enabled = false;
                     }

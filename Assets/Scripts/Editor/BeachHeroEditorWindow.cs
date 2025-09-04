@@ -445,7 +445,7 @@ public class BeachHeroEditorWindow : EditorWindow
                     EditorGUILayout.LabelField(" Moving Obstacles ", new GUIStyle(EditorStyles.boldLabel) { fontSize = 14 }, GUILayout.Height(10 + EditorGUIUtility.singleLineHeight));
                     SpawnPrefabItem(spawnItemsProperty.GetArrayElementAtIndex(i).FindPropertyRelative("Prefab"), itemsPerRow, previewSize, spawnItemType);
                     break;
-                case SpawnItemType.WaterHoleObstacle:
+                case SpawnItemType.WhirlpoolObstacle:
                     EditorGUILayout.Space(5);
                     EditorGUILayout.LabelField(" Cyclone Obstacle ", new GUIStyle(EditorStyles.boldLabel) { fontSize = 14 }, GUILayout.Height(10 + EditorGUIUtility.singleLineHeight));
                     SpawnPrefabItem(spawnItemsProperty.GetArrayElementAtIndex(i).FindPropertyRelative("Prefab"), itemsPerRow, previewSize, spawnItemType);
@@ -548,7 +548,7 @@ public class BeachHeroEditorWindow : EditorWindow
 
     private void SaveWaterHoleObstacle()
     {
-        WaterHoleEditTool[] waterHoleEditComponents = EditorSceneController.Instance.GetWaterHoleEditData();
+        WhirlpoolEditTool[] waterHoleEditComponents = EditorSceneController.Instance.GetWaterHoleEditData();
         levelRepresentation.waterHoleObstaclesProperty.arraySize = waterHoleEditComponents.Length;
 
         for (int i = 0; i < waterHoleEditComponents.Length; i++)

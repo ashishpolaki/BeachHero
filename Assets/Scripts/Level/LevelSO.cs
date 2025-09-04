@@ -72,13 +72,13 @@ namespace BeachHero
     {
         [SerializeField] private StaticObstacleData[] staticObstacles;
         [SerializeField] private MovingObstacleData[] movingObstacles;
-        [SerializeField] private WaterHoleObstacleData[] waterHoleObstacles;
+        [SerializeField] private WhirlpoolObstacleData[] waterHoleObstacles;
 
         public StaticObstacleData[] StaticObstacles => staticObstacles;
 
         public MovingObstacleData[] MovingObstacles => movingObstacles;
 
-        public WaterHoleObstacleData[] WaterHoleObstacles => waterHoleObstacles;
+        public WhirlpoolObstacleData[] WaterHoleObstacles => waterHoleObstacles;
     }
 
     [System.Serializable]
@@ -104,7 +104,7 @@ namespace BeachHero
     }
 
     [System.Serializable]
-    public struct WaterHoleObstacleData
+    public struct WhirlpoolObstacleData
     {
         public Vector3 position;
         public Vector2 shaderPosition; // Position used for the shader effect

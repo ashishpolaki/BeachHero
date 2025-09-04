@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace BeachHero
 {
-    public class WaterHoleObstacle : Obstacle
+    public class WhirlpoolObstacle : Obstacle
     {
         [SerializeField] private Material waterMaterial;
         [SerializeField] private SphereCollider sphereCollider;
@@ -29,7 +29,7 @@ namespace BeachHero
         private Coroutine cycloneCoroutine;
         private int index = -1;
 
-        public void Init(WaterHoleObstacleData obstacleData, int index)
+        public void Init(WhirlpoolObstacleData obstacleData, int index)
         {
             this.index = index;
             StopCycloneEffect();
@@ -47,7 +47,7 @@ namespace BeachHero
         {
             OnPlayerHit();
             PlayVibration();
-            await Task.Delay((int)(gameOverdelay * 1000)); // Wait for 1 second before hitting
+            await Task.Delay((int)(gameOverdelay * 1000)); // Wait before calling game over panel
             base.Hit();
         }
         public void OnDisable()
