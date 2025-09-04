@@ -46,6 +46,7 @@ namespace BeachHero
             {
                 GameController.GetInstance.TutorialController.OnPathDrawnAction -= OnPathDrawn;
             }
+            handObject.localScale = Vector3.one;
             handObject.DOKill();
             handImage.DOKill();
         }

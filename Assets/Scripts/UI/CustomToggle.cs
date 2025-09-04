@@ -8,16 +8,12 @@ namespace BeachHero
 {
     public class CustomToggle : MonoBehaviour, IPointerClickHandler
     {
-        [SerializeField] private RectTransform knobObject;
-        [SerializeField] private Image fillColorImg;
-        [SerializeField] private Color defaultColor = Color.gray;
-        [SerializeField] private Color toggledColor = Color.green;
-        [SerializeField] private float moveDistance = 50f;
+        [SerializeField] private RectTransform knobRect;
+        [SerializeField] private Slider fillSlider;
         [SerializeField] private float moveDuration = 0.25f;
 
         private bool toggled = false;
-        private float initialX;
-        private Vector2 initialPosition;
+        private float knobAnchorX;
 
         public Action<bool> OnToggleChanged;
 
@@ -25,44 +21,21 @@ namespace BeachHero
         {
             toggled = !toggled;
             SetToggle(toggled, true);
-
-            //if (knobObject != null)
-            //{
-            //    float targetX = toggled ? initialX + moveDistance : initialX;
-            //    knobObject.DOAnchorPosX(targetX, moveDuration).SetEase(Ease.OutQuad);
-
-            //    if (fillColorImg != null)
-            //    {
-            //        fillColorImg.DOColor(toggled ? toggledColor : defaultColor, moveDuration);
-            //    }
-            //}
-            //OnToggleChanged?.Invoke(toggled); // Notify listeners about the toggle change
         }
 
         public void Init(bool value)
         {
-            if (knobObject != null)
+            if (knobRect != null)
             {
-                initialX = knobObject.anchoredPosition.x;
-                initialPosition = knobObject.anchoredPosition;
+                knobAnchorX = knobRect.anchoredPosition.x;
             }
             toggled = value;
             SetToggle(value, false); // Set initial state without animation
-
-            //if (knobObject != null)
-            //{
-            //    float targetX = toggled ? initialX + moveDistance : initialX;
-            //    knobObject.anchoredPosition = new Vector2(targetX, knobObject.anchoredPosition.y);
-            //}
-            //if (fillColorImg != null)
-            //{
-            //    fillColorImg.color = toggled ? toggledColor : defaultColor;
-            //}
         }
 
         public void Close()
         {
-            knobObject.anchoredPosition = initialPosition; // Reset position if needed
+           // knobRect.anchoredPosition = KnobAnchorPos; // Reset position if needed
         }
 
         /// <summary>
@@ -71,23 +44,18 @@ namespace BeachHero
         private void SetToggle(bool value, bool animate)
         {
             toggled = value;
-            float targetX = toggled ? initialX + moveDistance : initialX;
 
             if (animate)
             {
-                knobObject.DOAnchorPosX(targetX, moveDuration).SetEase(Ease.OutQuad).OnComplete(() =>
-                {
-                    if (fillColorImg != null)
-                    {
-                        fillColorImg.color = toggled ? toggledColor : defaultColor;
-                    }
-                });
+                //Set slider with move duration
+                fillSlider.DOValue(toggled ? 1f : 0f, moveDuration).SetEase(Ease.OutQuad);
+                knobRect.DOAnchorPosX(toggled ? -knobAnchorX : knobAnchorX, moveDuration).SetEase(Ease.Linear);
                 OnToggleChanged?.Invoke(toggled);
             }
             else
             {
-                knobObject.anchoredPosition = new Vector2(targetX, knobObject.anchoredPosition.y);
-                fillColorImg.color = toggled ? toggledColor : defaultColor;
+                knobRect.anchoredPosition = new Vector2(toggled ? -knobAnchorX : knobAnchorX, knobRect.anchoredPosition.y);
+                fillSlider.value = toggled ? 1f : 0f;
             }
         }
     }

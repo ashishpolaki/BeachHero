@@ -24,6 +24,7 @@ namespace BeachHero
         private bool canStartCyclone = false; // Flag to check if the cyclone can start
         private float radius;
         private float angle;
+        private float targetSpeed;
         private Transform targetTransform;
         private Coroutine cycloneCoroutine;
         private int index = -1;
@@ -44,7 +45,7 @@ namespace BeachHero
 
         public override async void Hit()
         {
-            OnPlayerHit(GameController.GetInstance.LevelController.PlayerTransform);
+            OnPlayerHit();
             PlayVibration();
             await Task.Delay((int)(gameOverdelay * 1000)); // Wait for 1 second before hitting
             base.Hit();
@@ -57,7 +58,6 @@ namespace BeachHero
         {
             ResetWaterMaterial();
         }
-
         private async void PlayVibration()
         {
             float startCooldownTime = Time.time;
@@ -75,9 +75,10 @@ namespace BeachHero
             }
             waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{index}"), 0f);
         }
-        private void OnPlayerHit(Transform playerTransform)
+        private void OnPlayerHit()
         {
-            targetTransform = playerTransform;
+            targetTransform = GameController.GetInstance.LevelController.PlayerTransform;
+            targetSpeed = GameController.GetInstance.LevelController.GetPlayerSpeed();
             Vector3 offset = targetTransform.position - this.transform.position;
             angle = Mathf.Atan2(offset.z, offset.x) * Mathf.Rad2Deg;
             radius = Vector3.Distance(transform.position, targetTransform.position);
@@ -102,36 +103,48 @@ namespace BeachHero
         }
         private IEnumerator CycloneEffectCoroutine()
         {
+            Vector3 cycloneCenter = transform.position;
+
             while (canStartCyclone)
             {
                 // Gradually reduce the radius to simulate being pulled toward the center
                 radius = Mathf.Max(0, radius - pullToCenterSpeed * Time.deltaTime);
 
-                // Calculate the new position in a circular path
+                // Calculate the cyclone spiral target position
                 angle -= rotationSpeed * Time.deltaTime;
-                float x = transform.position.x + Mathf.Cos(angle * Mathf.Deg2Rad) * Mathf.Max(radius, 0.1f);
-                float z = transform.position.z + Mathf.Sin(angle * Mathf.Deg2Rad) * Mathf.Max(radius, 0.1f);
+                float targetX = cycloneCenter.x + Mathf.Cos(angle * Mathf.Deg2Rad) * Mathf.Max(radius, 0.1f);
+                float targetZ = cycloneCenter.z + Mathf.Sin(angle * Mathf.Deg2Rad) * Mathf.Max(radius, 0.1f);
 
                 // Gradually move the object toward the target depth
-                float y = Mathf.MoveTowards(targetTransform.position.y, depth, descendSpeed * Time.deltaTime);
+                float targetY = Mathf.MoveTowards(targetTransform.position.y, depth, descendSpeed * Time.deltaTime);
 
-                // Add turbulence for a more dynamic effect
+                // Add turbulence
                 float turbulenceX = Mathf.PerlinNoise(Time.time * turbulenceFrequency, 0) * turbulenceIntensity;
                 float turbulenceZ = Mathf.PerlinNoise(0, Time.time * turbulenceFrequency) * turbulenceIntensity;
 
-                // Update the player's position with turbulence
-                targetTransform.position = new Vector3(x + turbulenceX, y, z + turbulenceZ);
+                Vector3 cycloneTargetPos = new Vector3(targetX + turbulenceX, targetY, targetZ + turbulenceZ);
 
-                // Add rotation changes to simulate the boat being tossed around
-                float tiltX = Mathf.Sin(Time.time * tiltSpeed) * tiltIntensity; // Tilting forward and backward
-                float tiltZ = Mathf.Cos(Time.time * tiltSpeed) * tiltIntensity; // Tilting side to side
+                // Move boat toward cyclone target at its own speed
+                targetTransform.position = Vector3.MoveTowards(
+                    targetTransform.position,
+                    cycloneTargetPos,
+                    targetSpeed * Time.deltaTime
+                );
 
-                // Apply the rotation to the boat
+                // Tilting effect
+                float tiltX = Mathf.Sin(Time.time * tiltSpeed) * tiltIntensity;
+                float tiltZ = Mathf.Cos(Time.time * tiltSpeed) * tiltIntensity;
+
                 Quaternion targetRotation = Quaternion.Euler(tiltX, angle, tiltZ);
-                targetTransform.rotation = Quaternion.Slerp(targetTransform.rotation, targetRotation, Time.deltaTime * tiltSpeed);
+                targetTransform.rotation = Quaternion.Slerp(
+                    targetTransform.rotation,
+                    targetRotation,
+                    Time.deltaTime * tiltSpeed
+                );
 
-                yield return null; // Wait for the next frame
+                yield return null;
             }
         }
+
     }
 }

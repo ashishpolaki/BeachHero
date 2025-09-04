@@ -51,6 +51,10 @@ namespace BeachHero
         {
             SaveSystem.SaveBool(StringUtils.HAPTICS_ON, isOn);
             HapticsManager.GetInstance.ToggleHaptics(isOn);
+            if (isOn)
+            {
+                HapticsManager.GetInstance.SelectionHaptic();
+            }
         }
         private void OnPrivacyPolicy()
         {

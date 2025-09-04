@@ -213,6 +213,10 @@ namespace BeachHero
         {
             player.UpdateBoat(index, boatColorIndex,0, GameController.GetInstance.SkinController.GetBoatSkinByIndex(index).BoatPrefab);
         }
+        public float GetPlayerSpeed()
+        {
+            return player != null ? player.MovementSpeed : 0f;
+        }
         #endregion
 
         #region Drown Character
