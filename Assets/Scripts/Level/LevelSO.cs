@@ -72,13 +72,13 @@ namespace BeachHero
     {
         [SerializeField] private StaticObstacleData[] staticObstacles;
         [SerializeField] private MovingObstacleData[] movingObstacles;
-        [SerializeField] private WhirlpoolObstacleData[] waterHoleObstacles;
+        [SerializeField] private WhirlpoolObstacleData[] whirlpoolObstacles;
 
         public StaticObstacleData[] StaticObstacles => staticObstacles;
 
         public MovingObstacleData[] MovingObstacles => movingObstacles;
 
-        public WhirlpoolObstacleData[] WaterHoleObstacles => waterHoleObstacles;
+        public WhirlpoolObstacleData[] WhirlpoolObstacles => whirlpoolObstacles;
     }
 
     [System.Serializable]

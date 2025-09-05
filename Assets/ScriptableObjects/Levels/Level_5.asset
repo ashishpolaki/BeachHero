@@ -14,29 +14,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelTime: 6
   startPoint:
-    Position: {x: -1.14, y: 0, z: 19.46}
-    Rotation: {x: 0, y: 180, z: 0}
+    Position: {x: 0.05, y: 0, z: 0.12}
+    Rotation: {x: 0, y: 0, z: 0}
   obstacles:
     staticObstacles:
     - type: 8
-      position: {x: 3.24, y: 0, z: 7.55}
+      position: {x: -1.72, y: 0, z: 9.44}
       rotation: {x: 340.299, y: 352.72592, z: -0.000000113357096}
     movingObstacles: []
-    waterHoleObstacles:
-    - position: {x: 2.46, y: 0, z: 12.91}
-      shaderPosition: {x: 0.4385, y: 0.52475}
-      scale: 2.48
-    - position: {x: -3.78, y: 0, z: 7.02}
-      shaderPosition: {x: 0.5945, y: 0.672}
-      scale: 2.34
-    - position: {x: 2.51, y: 0, z: 2.05}
-      shaderPosition: {x: 0.43725, y: 0.79625}
+    whirlpoolObstacles:
+    - position: {x: 4.4, y: 0, z: 5.9}
+      shaderPosition: {x: 0.39, y: 0.7}
+      scale: 2.19
+    - position: {x: -0.87, y: 0, z: 12.19}
+      shaderPosition: {x: 0.52175, y: 0.54275}
+      scale: 2
+    - position: {x: 2.92, y: 0, z: 18.4}
+      shaderPosition: {x: 0.427, y: 0.3875}
       scale: 2
   drownCharacters:
-  - position: {x: -2.71, y: 0, z: 1.06}
+  - position: {x: -0.19, y: 0, z: 16.32}
     waitTimePercentage: 1
-  - position: {x: 0.26, y: 0, z: 6.16}
+  - position: {x: 3.01, y: 0, z: 10.33}
     waitTimePercentage: 0.683
-  - position: {x: -2.05, y: 0, z: 11.85}
+  - position: {x: 0.15, y: 0, z: 5.09}
     waitTimePercentage: 0.317
   collectables: []

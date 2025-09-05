@@ -2645,7 +2645,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6354123813200545903
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2876,6 +2876,7 @@ GameObject:
   - component: {fileID: 9163612435254408446}
   - component: {fileID: 1648413691737729332}
   - component: {fileID: 8740369399590210878}
+  - component: {fileID: 8282751075820152641}
   m_Layer: 5
   m_Name: RightButton
   m_TagString: Untagged
@@ -2984,6 +2985,30 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8282751075820152641
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4059904887894784431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openingAnimation:
+    Type: 0
+    Ease: 0
+    Duration: 0
+    Strength: 0
+    Delay: 0
+    Vibration: 0
+    Offset: 0
+    Elasticity: 0
+  buttonAudioType: 7
+  button: {fileID: 8740369399590210878}
+  rect: {fileID: 0}
 --- !u!1 &4451953379518729841
 GameObject:
   m_ObjectHideFlags: 0
@@ -3107,7 +3132,7 @@ RectTransform:
   m_Father: {fileID: 5645035115366272348}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5850,6 +5875,7 @@ GameObject:
   - component: {fileID: 2264652603469994414}
   - component: {fileID: 4250696566957908093}
   - component: {fileID: 5010387286955176349}
+  - component: {fileID: 1744632709306379418}
   m_Layer: 5
   m_Name: LeftButton
   m_TagString: Untagged
@@ -5958,6 +5984,30 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1744632709306379418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8344741609902759462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openingAnimation:
+    Type: 0
+    Ease: 0
+    Duration: 0
+    Strength: 0
+    Delay: 0
+    Vibration: 0
+    Offset: 0
+    Elasticity: 0
+  buttonAudioType: 7
+  button: {fileID: 5010387286955176349}
+  rect: {fileID: 0}
 --- !u!1 &8431639760793196934
 GameObject:
   m_ObjectHideFlags: 0

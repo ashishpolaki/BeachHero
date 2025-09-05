@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1289134449561210772}
   - component: {fileID: 1626599407424933228}
   - component: {fileID: 2197957893336026270}
+  - component: {fileID: 6753825531057767847}
   m_Layer: 5
   m_Name: BoatColorUIPrefab
   m_TagString: Untagged
@@ -138,6 +139,30 @@ MonoBehaviour:
   iconImage: {fileID: 4209653195943427133}
   selectButton: {fileID: 1626599407424933228}
   unSelectedFadeAlpha: 0.25
+--- !u!114 &6753825531057767847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 132912270874850389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openingAnimation:
+    Type: 0
+    Ease: 0
+    Duration: 0
+    Strength: 0
+    Delay: 0
+    Vibration: 0
+    Offset: 0
+    Elasticity: 0
+  buttonAudioType: 7
+  button: {fileID: 1626599407424933228}
+  rect: {fileID: 0}
 --- !u!1 &5935137992374925809
 GameObject:
   m_ObjectHideFlags: 0

@@ -443,7 +443,7 @@ namespace BeachHero
         {
             SpawnStaticObstacles(obstacle);
             SpawnMoveableObstacles(obstacle);
-            SpawnWaterHoleObstacle(obstacle.WaterHoleObstacles);
+            SpawnWaterHoleObstacle(obstacle.WhirlpoolObstacles);
         }
 
         private void UpdateObstacles()

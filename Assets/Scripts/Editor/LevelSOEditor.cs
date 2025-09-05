@@ -23,7 +23,7 @@ namespace BeachHero
             EditorGUILayout.PropertyField(serializedObject.FindProperty("drownCharacters"), new GUIContent("Drown Characters"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("collectables"), new GUIContent("Collectables"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("obstacles").FindPropertyRelative("staticObstacles"), new GUIContent("Static Obstacles"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("obstacles").FindPropertyRelative("waterHoleObstacles"), new GUIContent("Cyclone Obstacles"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("obstacles").FindPropertyRelative("whirlpoolObstacles"), new GUIContent("Cyclone Obstacles"));
             EditMovingObstacleProperty(serializedObject.FindProperty("obstacles").FindPropertyRelative("movingObstacles"));
             serializedObject.ApplyModifiedProperties();
         }

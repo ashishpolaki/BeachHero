@@ -14,16 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelTime: 6
   startPoint:
-    Position: {x: -1.14, y: 0, z: 19.46}
-    Rotation: {x: 0, y: 180, z: 0}
+    Position: {x: 0.51, y: 0, z: -0.12}
+    Rotation: {x: 0, y: 0, z: 0}
   obstacles:
     staticObstacles:
     - type: 8
-      position: {x: 4.35, y: 0.18, z: 7.03}
+      position: {x: 1.91, y: 0.18, z: 16.78}
       rotation: {x: 343.68893, y: 27.916475, z: 348.79755}
     - type: 8
-      position: {x: -2.57, y: 0, z: 5.72}
-      rotation: {x: -0, y: 0, z: 0}
+      position: {x: 3.33, y: 0, z: 8.79}
+      rotation: {x: 353.6961, y: 321.03156, z: 352.26953}
     movingObstacles:
     - type: 6
       bezierKeyframes:
@@ -47,12 +47,12 @@ MonoBehaviour:
       rotationSpeedMultiplier: 2
       loopedMovement: 1
       inverseDirection: 1
-    waterHoleObstacles: []
+    whirlpoolObstacles: []
   drownCharacters:
-  - position: {x: -2.71, y: 0, z: 1.06}
+  - position: {x: 4.13, y: 0, z: 14.27}
     waitTimePercentage: 1
-  - position: {x: 0.26, y: 0, z: 6.16}
+  - position: {x: 0.42, y: 0, z: 7.73}
     waitTimePercentage: 0.683
-  - position: {x: -2.05, y: 0, z: 11.85}
+  - position: {x: 3.93, y: 0, z: 3.44}
     waitTimePercentage: 0.317
   collectables: []

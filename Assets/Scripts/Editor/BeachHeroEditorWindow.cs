@@ -36,7 +36,7 @@ public class BeachHeroEditorWindow : EditorWindow
         public SerializedProperty startPointProperty;
         public SerializedProperty moveObstaclesProperty;
         public SerializedProperty staticObstaclesProperty;
-        public SerializedProperty waterHoleObstaclesProperty;
+        public SerializedProperty whirlpoolObstaclesProperty;
         public SerializedProperty savedCharactersProperty;
         public SerializedProperty collectablesProperty;
 
@@ -57,7 +57,7 @@ public class BeachHeroEditorWindow : EditorWindow
             startPointProperty = serializedLevelObject.FindProperty("startPoint");
             moveObstaclesProperty = serializedLevelObject.FindProperty("obstacles").FindPropertyRelative("movingObstacles");
             staticObstaclesProperty = serializedLevelObject.FindProperty("obstacles").FindPropertyRelative("staticObstacles");
-            waterHoleObstaclesProperty = serializedLevelObject.FindProperty("obstacles").FindPropertyRelative("waterHoleObstacles");
+            whirlpoolObstaclesProperty = serializedLevelObject.FindProperty("obstacles").FindPropertyRelative("whirlpoolObstacles");
             savedCharactersProperty = serializedLevelObject.FindProperty("drownCharacters");
             collectablesProperty = serializedLevelObject.FindProperty("collectables");
         }
@@ -175,9 +175,9 @@ public class BeachHeroEditorWindow : EditorWindow
         var waterMaterial = AssetDatabase.LoadAssetAtPath<Material>("Assets/Materials/WaterOptimized.mat");
         if (waterMaterial != null)
         {
-            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{0}"), 0f);
             waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{1}"), 0f);
             waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{2}"), 0f);
+            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{3}"), 0f);
             DebugUtils.Log("WhirlPools has been reseted");
         }
         else
@@ -556,24 +556,24 @@ public class BeachHeroEditorWindow : EditorWindow
         SaveStartPoint();
         SaveMovingObstacle();
         SaveStaticObstacles();
-        SaveWaterHoleObstacle();
+        SaveWhirlpoolObstacle();
         SaveCollectables();
         SaveSavedCharacters();
         levelRepresentation.ApplyModifiedProperties();
         AssetDatabase.SaveAssets();
     }
 
-    private void SaveWaterHoleObstacle()
+    private void SaveWhirlpoolObstacle()
     {
-        WhirlpoolEditTool[] waterHoleEditComponents = EditorSceneController.Instance.GetWaterHoleEditData();
-        levelRepresentation.waterHoleObstaclesProperty.arraySize = waterHoleEditComponents.Length;
+        WhirlpoolEditTool[] whirlpoolEditComponents = EditorSceneController.Instance.GetWhirlpoolEditData();
+        levelRepresentation.whirlpoolObstaclesProperty.arraySize = whirlpoolEditComponents.Length;
 
-        for (int i = 0; i < waterHoleEditComponents.Length; i++)
+        for (int i = 0; i < whirlpoolEditComponents.Length; i++)
         {
-            SerializedProperty waterHoleProperty = levelRepresentation.waterHoleObstaclesProperty.GetArrayElementAtIndex(i);
-            waterHoleProperty.FindPropertyRelative("position").vector3Value = waterHoleEditComponents[i].transform.position;
-            waterHoleProperty.FindPropertyRelative("scale").floatValue = waterHoleEditComponents[i].cycloneRadius;
-            waterHoleProperty.FindPropertyRelative("shaderPosition").vector2Value = waterHoleEditComponents[i].shaderPosition;
+            SerializedProperty whirlPoolProperty = levelRepresentation.whirlpoolObstaclesProperty.GetArrayElementAtIndex(i);
+            whirlPoolProperty.FindPropertyRelative("position").vector3Value = whirlpoolEditComponents[i].transform.position;
+            whirlPoolProperty.FindPropertyRelative("scale").floatValue = whirlpoolEditComponents[i].cycloneRadius;
+            whirlPoolProperty.FindPropertyRelative("shaderPosition").vector2Value = whirlpoolEditComponents[i].shaderPosition;
         }
     }
 

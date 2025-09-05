@@ -21,7 +21,7 @@ namespace BeachHero
         }
         private void OnDisable()
         {
-            selectButton.ButtonDeRegisterAll();
+            selectButton.ButtonDeRegister(OnSelectButtonClicked);
         }
         public void InitSkinColor(BoatCustomisationUIScreen _boatCustomisationUIScreen, BoatSkinColorData skinColorData, int _index, bool _isSelected = false)
         {

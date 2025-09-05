@@ -19,7 +19,7 @@ public class EditorSceneController : MonoBehaviour
     private static string magnetPath = "Assets/Prefabs/Collectables/Magnet.prefab";
     private static string speedBoostPath = "Assets/Prefabs/Collectables/SpeedBoost.prefab";
 
-    private static string waterHolePath = "Assets/Prefabs/Obstacles/Whirlpool.prefab";
+    private static string whirlpoolPath = "Assets/Prefabs/Obstacles/Whirlpool.prefab";
     private static string rockObstaclePath = "Assets/Prefabs/Obstacles/Rock.prefab";
     private static string barrelObstaclePath = "Assets/Prefabs/Obstacles/Barrel.prefab";
     private static string sharkObstaclePath = "Assets/Prefabs/Obstacles/Shark.prefab";
@@ -91,26 +91,26 @@ public class EditorSceneController : MonoBehaviour
         SpawnStartPoint();
         SpawnMovingObstacles();
         SpawnStaticObstacles();
-        SpawnWaterHoleObstacle();
+        SpawnWhirlpoolObstacle();
         SpawnCharacter();
         SpawnCollectable();
     }
 
-    private void SpawnWaterHoleObstacle()
+    private void SpawnWhirlpoolObstacle()
     {
-        if (currentLevel.Obstacle.WaterHoleObstacles == null || currentLevel.Obstacle.WaterHoleObstacles.Length == 0)
+        if (currentLevel.Obstacle.WhirlpoolObstacles == null || currentLevel.Obstacle.WhirlpoolObstacles.Length == 0)
         {
             return;
         }
         int cycloneIndex = 0;
-        foreach (var item in currentLevel.Obstacle.WaterHoleObstacles)
+        foreach (var item in currentLevel.Obstacle.WhirlpoolObstacles)
         {
             cycloneIndex++;
-            WhirlpoolObstacle waterHolePrefab = AssetDatabase.LoadAssetAtPath<WhirlpoolObstacle>(waterHolePath);
-            GameObject waterHoleGameobject = PrefabUtility.InstantiatePrefab(waterHolePrefab.gameObject) as GameObject;
-            WhirlpoolEditTool waterHoleEditComponent = waterHoleGameobject.AddComponent<WhirlpoolEditTool>();
-            waterHoleGameobject.transform.parent = container.transform;
-            waterHoleEditComponent.Init(item, cycloneIndex);
+            WhirlpoolObstacle whirlpoolPrefab = AssetDatabase.LoadAssetAtPath<WhirlpoolObstacle>(whirlpoolPath);
+            GameObject whirlpoolGameobject = PrefabUtility.InstantiatePrefab(whirlpoolPrefab.gameObject) as GameObject;
+            WhirlpoolEditTool whirlpoolEditComponent = whirlpoolGameobject.AddComponent<WhirlpoolEditTool>();
+            whirlpoolGameobject.transform.parent = container.transform;
+            whirlpoolEditComponent.Init(item, cycloneIndex);
         }
     }
 
@@ -209,7 +209,7 @@ public class EditorSceneController : MonoBehaviour
     #endregion
 
     #region Get Edited Data
-    public WhirlpoolEditTool[] GetWaterHoleEditData()
+    public WhirlpoolEditTool[] GetWhirlpoolEditData()
     {
         WhirlpoolEditTool[] data = container.GetComponentsInChildren<WhirlpoolEditTool>();
         return data;
