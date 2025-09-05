@@ -140,7 +140,7 @@ namespace BeachHero
 
             if (unlockLevel == -1)
             {
-                Debug.LogError($" No unlock level defined for PowerupType: {powerupType}");
+                DebugUtils.LogError($" No unlock level defined for PowerupType: {powerupType}");
                 return false;
             }
 
@@ -157,7 +157,7 @@ namespace BeachHero
 
             if (string.IsNullOrEmpty(key))
             {
-                Debug.LogError($" No unlock key defined for PowerupType: {powerupType}");
+                DebugUtils.LogError($" No unlock key defined for PowerupType: {powerupType}");
                 return false; // default safe value
             }
 

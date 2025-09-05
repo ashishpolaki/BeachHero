@@ -34,7 +34,7 @@ namespace BeachHero
             //         }
             //         else
             //         {
-            //             Debug.LogError("[Game]: Initializer prefab is missing!");
+            //             DebugUtils.LogError("[Game]: Initializer prefab is missing!");
             //         }
             //     }
             // }

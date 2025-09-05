@@ -20,7 +20,7 @@ namespace BeachHero
             waterGraphicsObject = GameObject.Find("Water Graphics");
             if (waterGraphicsObject == null)
             {
-                Debug.LogError("Water Graphics object not found in the scene. Please ensure it exists before initializing WaterHoleObstacle.");
+                DebugUtils.LogError("Water Graphics object not found in the scene. Please ensure it exists before initializing WaterHoleObstacle.");
                 return;
             }
             // Set the position of the water graphics object to match the whirlpool obstacle data

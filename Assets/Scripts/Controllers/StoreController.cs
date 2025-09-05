@@ -288,7 +288,7 @@ namespace BeachHero
             //        //MobileNativePopups.OpenAlertDialog(
             //        //        "PURCHASE FAIL", failureReason.ToString(),
             //        //        "OK",
-            //        //        () => { Debug.Log("Ok was pressed"); });
+            //        //        () => { DebugUtils.Log("Ok was pressed"); });
             //#endif
             //            }
             //            return;
@@ -319,7 +319,7 @@ namespace BeachHero
             //        //MobileNativePopups.OpenAlertDialog(
             //        //        "PURCHASE FAIL", failureReason.ToString(),
             //        //        "OK",
-            //        //        () => { Debug.Log("Ok was pressed"); });
+            //        //        () => { DebugUtils.Log("Ok was pressed"); });
             //#endif
             //            }
             //            return;
