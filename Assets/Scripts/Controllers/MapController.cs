@@ -265,11 +265,15 @@ namespace BeachHero
             //If startLevelIndex is -1, it means no levels are set for this map
             if (mapDatas[currentMap - 1].startLevelNumber != -1)
             {
-                mapDatas[currentMap - 1].mapObject.SetActive(true);
-                if (previousMap != -1)
+                //PRevious
+                if (previousMap > 0)
                 {
+                    DebugUtils.Log("Previous Map: " + previousMap);
                     mapDatas[previousMap - 1].mapObject.SetActive(false);
                 }
+
+                //Current
+                mapDatas[currentMap - 1].mapObject.SetActive(true);
                 mapDatas[currentMap - 1].LevelSetup(levelDatabase);
             }
         }
