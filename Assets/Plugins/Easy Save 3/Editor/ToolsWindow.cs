@@ -39,7 +39,7 @@ namespace ES3Editor
             EditorUtility.RevealInFinder(Application.persistentDataPath);
         }
 
-        [MenuItem("Beach Hero/Clear Level Data")]
+        [MenuItem("Beach Hero/Clear Data")]
         private static void ClearLevelData()
         {
 			ClearPersistentDataPath();

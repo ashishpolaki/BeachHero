@@ -20,8 +20,8 @@ namespace BeachHero
         public void OnPointerClick(PointerEventData eventData)
         {
             toggled = !toggled;
-            AudioController.GetInstance.PlaySound(AudioType.Swoosh);
             SetToggle(toggled, true);
+            AudioController.GetInstance.PlaySound(AudioType.Swipe);
         }
 
         public void Init(bool value)

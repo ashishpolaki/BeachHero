@@ -100,8 +100,7 @@ namespace BeachHero
                     {
                         GameController.GetInstance.TutorialController.OnPlayerTap();
                     }
-                    //   raycastHit.collider.GetComponent<StartPointBehaviour>();
-                    // lastStartPointPosition = raycastHit.collider.gameObject.transform.position;
+                    AudioController.GetInstance.PlaySoundInLoop(AudioType.PathDraw);
                 }
             }
         }
@@ -122,6 +121,7 @@ namespace BeachHero
                     hasDrawnPath = false;
                     drawnPoints.Clear();
                 }
+                AudioController.GetInstance.StopSound(AudioType.PathDraw);
             }
         }
         #endregion

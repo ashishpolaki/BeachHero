@@ -131,7 +131,7 @@ public class BeachHeroEditorWindow : EditorWindow
     private string ASSETPATH = "Assets/ScriptableObjects/Levels/LevelsDatabase.asset";
     private string EDITOR_SCENE_NAME = "GameEditorScene";
     private string EDITOR_SCENE_PATH = "Assets/Scenes/GameEditorScene.unity";
-    private string GAME_SCENE_PATH = "Assets/Scenes/Game.unity";
+  //  private string GAME_SCENE_PATH = "Assets/Scenes/Game.unity";
     private string INIT_SCENE_PATH = "Assets/Scenes/Init.unity";
     private string TEST_SCENE_PATH = "Assets/Scenes/Test.unity";
     private string FILE_STRING = "file :";

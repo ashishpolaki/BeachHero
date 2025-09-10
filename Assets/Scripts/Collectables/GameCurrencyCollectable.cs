@@ -51,9 +51,9 @@ namespace BeachHero
         public override void Collect()
         {
             base.Collect();
-            graphics.SetActive(false);
             var particle = GameController.GetInstance.PoolManager.GameCurrencyParticlePool.GetObject().GetComponent<ParticleAutoDisable>();
             particle.PlayParticle(transform.position);
+            AudioController.GetInstance.PlaySound(AudioType.Collect1);
             GameController.GetInstance.OnGameCurrencyPickup();
             starFish.StopAnimation();
             gameObject.SetActive(false);

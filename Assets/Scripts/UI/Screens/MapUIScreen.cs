@@ -18,6 +18,7 @@ namespace BeachHero
         [SerializeField] private GameObject mapSelector;
         [SerializeField] private ParticleSystem confettiParticleSystem;
 
+        [SerializeField] private float confettiDelay = 1f;
         [SerializeField] private float textApperanceSpeed = 3f;
         [SerializeField] private float textDisapperanceSpeed = 3f;
         [SerializeField] private float textDisappearDelay = 0.5f;
@@ -33,6 +34,9 @@ namespace BeachHero
             currentMapNumber = MapController.GetInstance.MapNumber;
             totalMaps = MapController.GetInstance.TotalMaps;
             zoomToggle.isOn = false;
+
+            var particle = confettiParticleSystem.main;
+            particle.startDelay = confettiDelay;
             ZoomToggle(false);
             MapController.GetInstance.ChangeMapVisual(previousMapNumber, currentMapNumber);
 
@@ -79,6 +83,7 @@ namespace BeachHero
             confettiParticleSystem.gameObject.SetActive(true);
             confettiParticleSystem.Play();
             unlockMapText.SetTypewriterSpeed(textApperanceSpeed);
+            AudioController.GetInstance.PlaySound(AudioType.MapUnlock);
             unlockMapText.ShowText($"{StringUtils.MAP_UNLOCKED_DESCRIPTION}<waitfor={textDisappearDelay}> ");
             unlockMapText.onTextShowed.AddListener(() =>
             {

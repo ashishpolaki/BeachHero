@@ -16,6 +16,8 @@ namespace BeachHero
 
         private async void AsyncLazyInit()
         {
+            Application.targetFrameRate = 60;
+
             // small delay so the first frame renders smoothly
             await Task.Yield();
             GameController.GetInstance.Init();

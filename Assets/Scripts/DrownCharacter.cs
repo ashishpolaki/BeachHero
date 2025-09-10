@@ -24,31 +24,32 @@ namespace BeachHero
         private int DRAWN_HASH = Animator.StringToHash(StringUtils.DROWN_ANIM);
         private int IDLE_HASH = Animator.StringToHash(StringUtils.IDLE_ANIM);
 
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.CompareTag("Obstacle"))
-            {
-                IObstacle obstacle = other.GetComponent<IObstacle>();
-                if (obstacle.ObstacleType == ObstacleType.Shark || obstacle.ObstacleType == ObstacleType.Eel)
-                {
-                    OnMovingObstacleTrigger();
-                }
-            }
-        }
+        //private void OnTriggerEnter(Collider other)
+        //{
+        //    if (other.CompareTag("Obstacle"))
+        //    {
+        //        IObstacle obstacle = other.GetComponent<IObstacle>();
+        //        if (obstacle.ObstacleType == ObstacleType.Shark || obstacle.ObstacleType == ObstacleType.Eel)
+        //        {
+        //            OnMovingObstacleTrigger();
+        //        }
+        //    }
+        //}
+
+        //private void OnMovingObstacleTrigger()
+        //{
+        //    graphicsSkin.SetActive(false);
+        //    bloodParticle.gameObject.SetActive(true);
+        //    bloodParticle.Play();
+        //    isDrown = true;
+        //    GameController.GetInstance.OnLevelFailed();
+        //    graphicsUI.SetActive(false);
+        //}
+
         public void ResetState()
         {
             animatorRef.enabled = false;
             graphicsSkin.transform.localPosition = graphicsSkinPosition;
-        }
-
-        private void OnMovingObstacleTrigger()
-        {
-            graphicsSkin.SetActive(false);
-            bloodParticle.gameObject.SetActive(true);
-            bloodParticle.Play();
-            isDrown = true;
-            GameController.GetInstance.OnLevelFailed();
-            graphicsUI.SetActive(false);
         }
 
         public void Init(Vector3 _position, float _waitTimePercentage, float levelTime)
@@ -102,6 +103,7 @@ namespace BeachHero
         }
         public void OnPickUp()
         {
+            AudioController.GetInstance.PlaySound(AudioType.Collect2);
             pickUpParticle.gameObject.SetActive(true);
             pickUpParticle.Play();
             graphicsSkin.SetActive(false);

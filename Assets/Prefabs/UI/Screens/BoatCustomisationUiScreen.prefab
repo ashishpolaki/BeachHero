@@ -2443,6 +2443,7 @@ GameObject:
   - component: {fileID: 3380276714280799711}
   - component: {fileID: 733252901548205465}
   - component: {fileID: 6989249675713585657}
+  - component: {fileID: 6842968106282914393}
   m_Layer: 5
   m_Name: PurchaseBtn
   m_TagString: Untagged
@@ -2552,6 +2553,30 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6842968106282914393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2798717657809155663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openingAnimation:
+    Type: 0
+    Ease: 0
+    Duration: 0
+    Strength: 0
+    Delay: 0
+    Vibration: 0
+    Offset: 0
+    Elasticity: 0
+  buttonAudioType: 1
+  button: {fileID: 6989249675713585657}
+  rect: {fileID: 0}
 --- !u!1 &2843097246753306914
 GameObject:
   m_ObjectHideFlags: 0
@@ -2645,7 +2670,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6354123813200545903
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3006,7 +3031,7 @@ MonoBehaviour:
     Vibration: 0
     Offset: 0
     Elasticity: 0
-  buttonAudioType: 7
+  buttonAudioType: 8
   button: {fileID: 8740369399590210878}
   rect: {fileID: 0}
 --- !u!1 &4451953379518729841
@@ -3132,7 +3157,7 @@ RectTransform:
   m_Father: {fileID: 5645035115366272348}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6005,7 +6030,7 @@ MonoBehaviour:
     Vibration: 0
     Offset: 0
     Elasticity: 0
-  buttonAudioType: 7
+  buttonAudioType: 8
   button: {fileID: 5010387286955176349}
   rect: {fileID: 0}
 --- !u!1 &8431639760793196934

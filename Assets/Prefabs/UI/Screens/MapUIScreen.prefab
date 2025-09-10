@@ -120,7 +120,7 @@ MonoBehaviour:
   titleDescriptionText: {fileID: 3683674801583646684}
   mapSelector: {fileID: 506820998897901874}
   confettiParticleSystem: {fileID: 6790760403455357771}
-  textApperanceSpeed: 1
+  textApperanceSpeed: 2
   textDisapperanceSpeed: 10
   textDisappearDelay: 1
 --- !u!1 &506820998897901874
@@ -855,7 +855,7 @@ MonoBehaviour:
     Vibration: 0
     Offset: 0
     Elasticity: 0
-  buttonAudioType: 7
+  buttonAudioType: 9
   button: {fileID: 8846772873582122788}
   rect: {fileID: 2504819655089508101}
 --- !u!1 &4592843336146976139
@@ -1011,7 +1011,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4292670719
-  m_fontColor: {r: 1, g: 0.9576136, b: 0.8632076, a: 1}
+  m_fontColor: {r: 1, g: 0.90588236, b: 0.10980392, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1891,7 +1891,7 @@ MonoBehaviour:
     Vibration: 0
     Offset: 0
     Elasticity: 0
-  buttonAudioType: 7
+  buttonAudioType: 9
   button: {fileID: 1552274342069632436}
   rect: {fileID: 4003048227186030654}
 --- !u!1 &7929171453010926158
@@ -2472,6 +2472,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6612450999103003155, guid: f1eeb6a6a877c814582f812a755dedd6,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6612450999103003155, guid: f1eeb6a6a877c814582f812a755dedd6,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1453750307
+      objectReference: {fileID: 0}
     - target: {fileID: 7211351702224707380, guid: f1eeb6a6a877c814582f812a755dedd6,
         type: 3}
       propertyPath: lengthInSec
@@ -2485,7 +2495,7 @@ PrefabInstance:
     - target: {fileID: 7211351702224707380, guid: f1eeb6a6a877c814582f812a755dedd6,
         type: 3}
       propertyPath: startDelay.scalar
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7211351702224707380, guid: f1eeb6a6a877c814582f812a755dedd6,
         type: 3}

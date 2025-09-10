@@ -6,12 +6,18 @@ namespace BeachHero
     {
         GameMusic,
         Button,
-        CharacterPickup,
         Gamelose,
         Gamewin,
         GameCurrency,
         Die,
         Swoosh,
+        Joy,
+        Swipe,
+        Collect1,
+        Collect2,
+        Collect3,
+        PathDraw,
+        MapUnlock,
         None
     }
     public enum AudioVolumeType

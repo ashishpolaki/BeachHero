@@ -93,7 +93,7 @@ namespace BeachHero
                 purchaseBtnText.text = "SELECT";
                 purchaseButton.interactable = false;
             }
-            else 
+            else
             {
                 //   purchasePanel.InitPurchase(selectedBoatIndex, selectedColorIndex, boatSelectionAction);
             }
@@ -179,10 +179,12 @@ namespace BeachHero
                 boatSelectionAction = BoatSelectionAction.PurchaseSkin;
                 purchaseBtnText.text = "BUY";
                 purchaseButton.interactable = true;
+                purchaseButton.gameObject.SetActive(true);
                 bool isBoatColorUnlocked = GameController.GetInstance.SkinController.IsBoatSkinColorUnlocked(selectedBoatIndex, selectedColorIndex);
                 if (isBoatColorUnlocked)
                 {
                     purchaseButton.interactable = false;
+                    purchaseButton.gameObject.SetActive(false);
                 }
             }
             else
@@ -193,6 +195,7 @@ namespace BeachHero
                     boatSelectionAction = BoatSelectionAction.PurchaseSkinColor;
                     purchaseBtnText.text = "BUY";
                     purchaseButton.interactable = true;
+                    purchaseButton.gameObject.SetActive(true);
                 }
                 else
                 {
@@ -202,12 +205,14 @@ namespace BeachHero
                     {
                         purchaseBtnText.text = "SELECT";
                         purchaseButton.interactable = false;
+                        purchaseButton.gameObject.SetActive(false);
                     }
                     else
                     {
                         // If the color is not selected, allow selection
                         purchaseBtnText.text = "SELECT";
                         purchaseButton.interactable = true;
+                        purchaseButton.gameObject.SetActive(true);
                     }
                 }
             }

@@ -15,7 +15,6 @@ namespace BeachHero
         [SerializeField] private UIButtonAudio[] buttonAnimationDatas;
         [SerializeField] private Transform titleFont;
         [SerializeField] private Transform tree;
-        [SerializeField] private float loadScreenDelayMs = 500f;
 
         private Sequence treeShakeSequence;
 
@@ -83,7 +82,6 @@ namespace BeachHero
             UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);
             GameController.GetInstance.SetGameState(GameState.Map);
             MapController.GetInstance.PlaceBoatAtCurrentLevel();
-            // await UIController.GetInstance.LoadingUI.DisableLoadingScreen(loadScreenDelayMs);
         }
         private void OnStoreButtonClicked()
         {

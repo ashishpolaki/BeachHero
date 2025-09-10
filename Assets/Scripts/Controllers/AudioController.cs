@@ -133,6 +133,41 @@ namespace BeachHero
                 sourceCase.Play(clip, GetVolume(audioType));
             }
         }
+        public void PlaySoundInLoop(AudioType audioType)
+        {
+            if (!isSoundOn)
+            {
+                return;
+            }
+            AudioSourceCase sourceCase = GetAudioSource();
+            AudioSource source = sourceCase.AudioSource;
+
+            source.spatialBlend = 0.0f; // 2D sound
+            source.pitch = audioSettings.GetAudioPitch(audioType);
+
+            // Assuming you have a method to get the appropriate audio clip for the type
+            AudioClip clip = audioSettings.GetAudioClip(audioType);
+            if (clip != null)
+            {
+                sourceCase.PlayInLoop(clip, GetVolume(audioType));
+            }
+        }
+        public void StopSound(AudioType audioType)
+        {
+            foreach (var audioSourceCase in audioSourcesPool)
+            {
+                if (audioSourceCase == null || audioSourceCase.AudioSource == null || audioSourceCase.AudioSource.clip == null)
+                {
+                    continue;
+                }
+                AudioClip clip = audioSettings.GetAudioClip(audioType);
+                if (audioSourceCase.IsPlaying && audioSourceCase.AudioSource.clip == clip)
+                {
+                    audioSourceCase.Stop();
+                    break;
+                }
+            }
+        }
         private void ReleaseSources()
         {
             foreach (var audioSourceCase in audioSourcesPool)
@@ -189,13 +224,31 @@ namespace BeachHero
 
         public void Play(AudioClip audioClip, float clipVolume)
         {
+            this.clipVolume = clipVolume;
             audioSource.clip = audioClip;
             audioSource.volume = clipVolume;
             audioSource.loop = false; // Assuming SFX are not looped
             audioSource.Play();
         }
 
-        public void OverrideVolume(AudioType type, float volume)
+        public void PlayInLoop(AudioClip audioClip, float clipVolume)
+        {
+            this.clipVolume = clipVolume;
+            audioSource.clip = audioClip;
+            audioSource.volume = clipVolume;
+            audioSource.loop = true; // Assuming SFX are not looped
+            audioSource.Play();
+        }
+
+        public void Stop()
+        {
+            if (audioSource.isPlaying)
+            {
+                audioSource.Stop();
+            }
+        }
+
+        public void OverrideVolume(float volume)
         {
             // if (!audioSource.isPlaying || audioType != type) return;
 

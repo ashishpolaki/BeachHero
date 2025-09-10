@@ -19,6 +19,7 @@ namespace BeachHero
             var particle = GameController.GetInstance.PoolManager.GameCurrencyParticlePool.GetObject().GetComponent<ParticleAutoDisable>();
             particle.PlayParticle(transform.position);
             GameController.GetInstance.PowerupController.OnPowerupCollected(powerupType,Count);
+            AudioController.GetInstance.PlaySound(AudioType.Collect3);
             gameObject.SetActive(false);
         }
     }
