@@ -6,7 +6,7 @@ namespace BeachHero
     {
         [SerializeField] private DrownCharacterUI drownCharacterUI;
         [SerializeField] private ParticleSystem pickUpParticle;
-        [SerializeField] private ParticleSystem bloodParticle;
+      //  [SerializeField] private ParticleSystem bloodParticle;
         [SerializeField] private GameObject graphicsSkin;
         [SerializeField] private GameObject graphicsUI;
         [SerializeField] private Animator animatorRef;
@@ -58,9 +58,9 @@ namespace BeachHero
             {
                 graphicsSkinPosition = graphicsSkin.transform.localPosition;
             }
-            bloodParticle.Stop();
+          //  bloodParticle.Stop();
+           // bloodParticle.gameObject.SetActive(false);
             pickUpParticle.Stop();
-            bloodParticle.gameObject.SetActive(false);
             pickUpParticle.gameObject.SetActive(false);
             graphicsUI.SetActive(true);
             graphicsSkin.SetActive(true);
