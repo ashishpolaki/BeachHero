@@ -1,5 +1,5 @@
-using System;
 using UnityEngine;
+
 namespace BeachHero
 {
     public class DrownCharacter : MonoBehaviour
