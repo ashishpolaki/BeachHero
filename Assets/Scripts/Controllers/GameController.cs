@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 namespace BeachHero
@@ -11,6 +12,19 @@ namespace BeachHero
         LevelFail,
         Map
     }
+    [System.Serializable]
+    public struct LevelFailDelay
+    {
+        public LevelFailDelayType type;
+        public float seconds;
+    }
+    public enum LevelFailDelayType
+    {
+        None,
+        Short,
+        Medium,
+        Long
+    }
     public class GameController : SingleTon<GameController>
     {
         [SerializeField] private LevelDatabaseSO levelDatabaseSO;
@@ -20,6 +34,7 @@ namespace BeachHero
         [SerializeField] private TutorialController tutorialController;
         [SerializeField] private StoreController storeController;
         [SerializeField] private SkinController skinController;
+        [SerializeField] private LevelFailDelay[] levelFailDelays;
 
         [Tooltip("The Index Starts from 0")]
         private int currentLevelIndex;
@@ -108,19 +123,44 @@ namespace BeachHero
             SetGameState(GameState.LevelWin);
             levelController.SetLevelCompletionResult(true);
         }
-        public void OnLevelFailed()
+        public void OnLevelFailed(LevelFailDelayType levelFailDelayType)
         {
             // If the level is already passed, do not allow to fail again.
             if (GameState == GameState.LevelWin)
             {
-                UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Open, ScreenTabType.LevelWin);
-                AudioController.GetInstance.PlaySound(AudioType.Gamewin);
-                return; 
+                LevelWinFeedback();
+                return;
             }
+            StartCoroutine(IELevelFailed(levelFailDelayType));
+        }
+        IEnumerator IELevelFailed(LevelFailDelayType levelFailDelayType)
+        {
             SetGameState(GameState.LevelFail);
-            AudioController.GetInstance.PlaySound(AudioType.Gamelose);
             levelController.SetLevelCompletionResult(false);
+            float delay = GetLevelFailDelayInSeconds(levelFailDelayType);
+            yield return new WaitForSeconds(delay);
+            LevelFailFeedback();
+        }
+        private void LevelFailFeedback()
+        {
+            AudioController.GetInstance.PlaySound(AudioType.Gamelose);
             UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Open, ScreenTabType.LevelFail);
+        }
+        private void LevelWinFeedback()
+        {
+            UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Open, ScreenTabType.LevelWin);
+            AudioController.GetInstance.PlaySound(AudioType.Gamewin);
+        }
+        private float GetLevelFailDelayInSeconds(LevelFailDelayType type)
+        {
+            foreach (LevelFailDelay delay in levelFailDelays)
+            {
+                if (delay.type == type)
+                {
+                    return delay.seconds;
+                }
+            }
+            return 0f;
         }
         #endregion
 

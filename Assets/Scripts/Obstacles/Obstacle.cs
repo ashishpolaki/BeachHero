@@ -32,7 +32,7 @@ namespace BeachHero
 
         public virtual void Hit()
         {
-            GameController.GetInstance.OnLevelFailed();
+            GameController.GetInstance.OnLevelFailed(LevelFailDelayType.Medium);
         }
 
         public virtual void UpdateState()

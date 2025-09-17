@@ -77,7 +77,7 @@ namespace BeachHero
         [Command("level-fail")]
         public static void LoseLevel()
         {
-            GameController.GetInstance.OnLevelFailed();
+            GameController.GetInstance.OnLevelFailed(LevelFailDelayType.None);
         }
 
         [Command("force-set-level")]

@@ -6,6 +6,7 @@ namespace BeachHero
     {
         [SerializeField] private DrownCharacterUI drownCharacterUI;
         [SerializeField] private ParticleSystem pickUpParticle;
+        [SerializeField] private ParticleSystem angryparticleSystem;
       //  [SerializeField] private ParticleSystem bloodParticle;
         [SerializeField] private GameObject graphicsSkin;
         [SerializeField] private GameObject graphicsUI;
@@ -62,6 +63,8 @@ namespace BeachHero
            // bloodParticle.gameObject.SetActive(false);
             pickUpParticle.Stop();
             pickUpParticle.gameObject.SetActive(false);
+            angryparticleSystem.Stop();
+            angryparticleSystem.gameObject.SetActive(false);
             graphicsUI.SetActive(true);
             graphicsSkin.SetActive(true);
             animatorRef.enabled = true;
@@ -97,9 +100,11 @@ namespace BeachHero
         {
             isDrown = true;
             animatorRef.SetTrigger(DRAWN_HASH);
+            angryparticleSystem.gameObject.SetActive(true);
+            angryparticleSystem.Play();
             AudioController.GetInstance.PlaySound(AudioType.Die);
-            GameController.GetInstance.OnLevelFailed();
             graphicsUI.SetActive(false);
+            GameController.GetInstance.OnLevelFailed(LevelFailDelayType.Long);
         }
         public void OnPickUp()
         {

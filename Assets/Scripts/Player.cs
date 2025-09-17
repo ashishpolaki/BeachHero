@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
 namespace BeachHero
@@ -88,7 +89,7 @@ namespace BeachHero
             if (other.CompareTag(StringUtils.GROUND_TAG))
             {
                 StopMovement();
-                GameController.GetInstance.OnLevelFailed();
+                GameController.GetInstance.OnLevelFailed(LevelFailDelayType.Short);
                 OnBoatCollided();
             }
         }
@@ -258,7 +259,7 @@ namespace BeachHero
                         }
                         else
                         {
-                            GameController.GetInstance.OnLevelFailed();
+                            GameController.GetInstance.OnLevelFailed(LevelFailDelayType.None);
                         }
                         StopMovement();
                     }
