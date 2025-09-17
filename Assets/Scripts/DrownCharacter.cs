@@ -7,7 +7,7 @@ namespace BeachHero
         [SerializeField] private DrownCharacterUI drownCharacterUI;
         [SerializeField] private ParticleSystem pickUpParticle;
         [SerializeField] private ParticleSystem angryparticleSystem;
-      //  [SerializeField] private ParticleSystem bloodParticle;
+        //  [SerializeField] private ParticleSystem bloodParticle;
         [SerializeField] private GameObject graphicsSkin;
         [SerializeField] private GameObject graphicsUI;
         [SerializeField] private Animator animatorRef;
@@ -59,8 +59,8 @@ namespace BeachHero
             {
                 graphicsSkinPosition = graphicsSkin.transform.localPosition;
             }
-          //  bloodParticle.Stop();
-           // bloodParticle.gameObject.SetActive(false);
+            //  bloodParticle.Stop();
+            // bloodParticle.gameObject.SetActive(false);
             pickUpParticle.Stop();
             pickUpParticle.gameObject.SetActive(false);
             angryparticleSystem.Stop();
@@ -93,7 +93,7 @@ namespace BeachHero
             }
             float waitPercentage = Mathf.Clamp01(waitTime / levelTime);
             drownCharacterUI.UpdateTimer(waitPercentage);
-            Color color = Color.Lerp(drownColor, defaultColor, waitPercentage);
+            Color color = Color.Lerp(drownColor, defaultColor, Mathf.InverseLerp(0f, waitTimePercentage, waitPercentage));
             meshRenderer.material.SetColor(Shader.PropertyToID(StringUtils.TINT_COLOR), color);
         }
         public void OnTimeUp()
