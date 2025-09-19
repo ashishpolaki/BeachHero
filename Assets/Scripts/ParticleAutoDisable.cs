@@ -14,6 +14,12 @@ namespace BeachHero
             Invoke(nameof(DisableObject), disableDelay);
         }
 
+        public void SetRotation(Vector3 euler)
+        {
+            var par = particle.main;
+            par.startRotation = euler.y * Mathf.Deg2Rad;
+        }
+
         public void DisableObject()
         {
             if (particle != null)

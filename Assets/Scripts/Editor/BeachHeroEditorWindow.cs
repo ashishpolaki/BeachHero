@@ -603,6 +603,7 @@ public class BeachHeroEditorWindow : EditorWindow
             SerializedProperty collectableProperty = levelRepresentation.collectablesProperty.GetArrayElementAtIndex(i);
             collectableProperty.FindPropertyRelative("type").enumValueIndex = (int)collectables[i].CollectableType;
             collectableProperty.FindPropertyRelative("position").vector3Value = collectables[i].transform.position;
+            collectableProperty.FindPropertyRelative("rotation").vector3Value = collectables[i].transform.eulerAngles;
         }
     }
 

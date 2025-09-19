@@ -50,7 +50,7 @@ MonoBehaviour:
       rotationSpeedMultiplier: 2
       loopedMovement: 1
       inverseDirection: 0
-    waterHoleObstacles: []
+    whirlpoolObstacles: []
   drownCharacters:
   - position: {x: -2.91, y: 0, z: 13.13}
     waitTimePercentage: 1
@@ -58,4 +58,36 @@ MonoBehaviour:
     waitTimePercentage: 1
   - position: {x: 4.56, y: 0, z: 14.95}
     waitTimePercentage: 1
-  collectables: []
+  collectables:
+  - type: 4
+    position: {x: -0.56, y: 0, z: 14.87}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 1.76, y: 0, z: 17.46}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 0.009999871, y: 0, z: 18.509998}
+    rotation: {x: -0, y: 45.159714, z: -0}
+    count: 0
+  - type: 1
+    position: {x: 2.89, y: 0, z: 16.13}
+    rotation: {x: -0, y: 332.10425, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -3, y: 0, z: 15.99}
+    rotation: {x: -0, y: 332.10425, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -2.72, y: 0, z: 17.74}
+    rotation: {x: -0, y: 26.1887, z: -0}
+    count: 0
+  - type: 1
+    position: {x: -2.8, y: 0, z: 11.01}
+    rotation: {x: -0, y: 40.863434, z: -0}
+    count: 0
+  - type: 1
+    position: {x: -2.03, y: 0, z: 8.77}
+    rotation: {x: -0, y: 346.6994, z: 0}
+    count: 0

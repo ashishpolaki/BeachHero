@@ -28,6 +28,7 @@ namespace BeachHero
         public virtual void Init(CollectableData collectableData)
         {
             transform.position = collectableData.position;
+            transform.rotation = Quaternion.Euler(collectableData.rotation);
             collectableType = collectableData.type;
             count = collectableData.count;
         }

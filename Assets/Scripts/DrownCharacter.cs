@@ -12,8 +12,6 @@ namespace BeachHero
         [SerializeField] private GameObject graphicsUI;
         [SerializeField] private Animator animatorRef;
         [SerializeField] private SkinnedMeshRenderer meshRenderer;
-        [SerializeField] private Color defaultColor = Color.white;
-        [SerializeField] private Color drownColor = Color.red;
         [SerializeField] private float waitTimePercentage;
 
         private Vector3 graphicsSkinPosition;
@@ -75,7 +73,7 @@ namespace BeachHero
             waitTimePercentage = _waitTimePercentage;
             this.levelTime = levelTime;
             waitTime = (levelTime * waitTimePercentage * 100) / 100f;
-            meshRenderer.material.SetColor(Shader.PropertyToID(StringUtils.TINT_COLOR), defaultColor);
+            meshRenderer.material.SetFloat(Shader.PropertyToID("_FillColorAmount"), 0);
             drownCharacterUI.UpdateTimer(waitTimePercentage);
         }
 
@@ -93,8 +91,7 @@ namespace BeachHero
             }
             float waitPercentage = Mathf.Clamp01(waitTime / levelTime);
             drownCharacterUI.UpdateTimer(waitPercentage);
-            Color color = Color.Lerp(drownColor, defaultColor, Mathf.InverseLerp(0f, waitTimePercentage, waitPercentage));
-            meshRenderer.material.SetColor(Shader.PropertyToID(StringUtils.TINT_COLOR), color);
+            meshRenderer.material.SetFloat(Shader.PropertyToID("_FillColorAmount"), Mathf.InverseLerp(waitTimePercentage, 0f, waitPercentage));
         }
         public void OnTimeUp()
         {

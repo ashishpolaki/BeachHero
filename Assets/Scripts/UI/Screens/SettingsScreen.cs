@@ -50,7 +50,7 @@ namespace BeachHero
             HapticsManager.GetInstance.ToggleHaptics(isOn);
             if (isOn)
             {
-                HapticsManager.GetInstance.SelectionHaptic();
+                HapticsManager.GetInstance.HeavyImpactHaptic();
             }
         }
         private void OnPrivacyPolicy()

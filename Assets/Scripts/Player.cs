@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
 
 namespace BeachHero
@@ -15,6 +14,7 @@ namespace BeachHero
         [SerializeField] private float movementSpeed;
         [SerializeField] private float rotationSpeed;
         [SerializeField] private float speedMultiplier;
+        [SerializeField] private ParticleSystem explosionParticle;
 
         private Boat currentBoat;
         private Vector3[] pointsList;
@@ -80,6 +80,11 @@ namespace BeachHero
                     else
                     {
                         OnBoatCollided();
+                        explosionParticle.gameObject.SetActive(true);
+                        //   explosionParticle.transform.position = other.ClosestPoint(transform.position);
+                        explosionParticle.transform.position = transform.position;
+                        explosionParticle.Play();
+                        AudioController.GetInstance.PlaySound(AudioType.BoomExplosion);
                     }
                     obstacle.Hit();
                 }
@@ -208,6 +213,8 @@ namespace BeachHero
         public void Init()
         {
             boatAnimator.SetTrigger(idleAnimHash);
+            explosionParticle.gameObject.SetActive(false);
+            explosionParticle.Stop();
             ResetState();
         }
         public void UpdateState()

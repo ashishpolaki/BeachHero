@@ -53,6 +53,7 @@ namespace BeachHero
             base.Collect();
             var particle = GameController.GetInstance.PoolManager.GameCurrencyParticlePool.GetObject().GetComponent<ParticleAutoDisable>();
             particle.PlayParticle(transform.position);
+            particle.SetRotation(transform.eulerAngles);
             AudioController.GetInstance.PlaySound(AudioType.Collect1);
             GameController.GetInstance.OnGameCurrencyPickup();
             starFish.StopAnimation();

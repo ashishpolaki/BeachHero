@@ -14,33 +14,58 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelTime: 5
   startPoint:
-    Position: {x: 0, y: 0, z: 0}
+    Position: {x: 0.35, y: 0, z: 0.84}
     Rotation: {x: 0, y: 0, z: 0}
   obstacles:
     staticObstacles:
     - type: 5
-      position: {x: -3.44, y: -0.76, z: 10.49}
-      rotation: {x: 54.324886, y: 342.88605, z: 9.096507}
+      position: {x: 5.05, y: -0.76, z: 6.91}
+      rotation: {x: 54.324886, y: 342.88605, z: 9.096508}
     - type: 5
-      position: {x: -3.16, y: -0.85, z: 12.56}
-      rotation: {x: 54.324886, y: 41.489586, z: 9.096511}
+      position: {x: 5.75, y: -0.76, z: 8.38}
+      rotation: {x: 10.425632, y: 138.00333, z: 59.51001}
+    - type: 5
+      position: {x: 0.77, y: -0.76, z: 7.26}
+      rotation: {x: 8.048616, y: 73.670395, z: 50.924355}
+    - type: 5
+      position: {x: 1.4, y: -0.85, z: 9.75}
+      rotation: {x: 54.324886, y: 41.489586, z: 9.096509}
+    - type: 4
+      position: {x: 1.96, y: 0, z: 14.17}
+      rotation: {x: -0, y: 0, z: 0}
     movingObstacles: []
     whirlpoolObstacles: []
   drownCharacters:
-  - position: {x: -5.41, y: 0, z: 8.64}
-    waitTimePercentage: 1
+  - position: {x: 4.34, y: 0, z: 10.67}
+    waitTimePercentage: 0.33
   - position: {x: -0.9, y: 0, z: 17.55}
     waitTimePercentage: 1
   collectables:
   - type: 1
-    position: {x: -4.11, y: 0, z: 5.73}
+    position: {x: 1.04, y: 0, z: 17.44}
+    rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -2.92, y: 0, z: 3.56}
+    position: {x: 3, y: 0, z: 8.6}
+    rotation: {x: -0, y: 324.68726, z: 0}
     count: 0
-  - type: 4
-    position: {x: -5.41, y: 0, z: 13.16}
+  - type: 1
+    position: {x: 2.58, y: 0, z: 6.35}
+    rotation: {x: -0, y: 39.17826, z: -0}
     count: 0
-  - type: 4
-    position: {x: -3.03, y: 0, z: 15.69}
+  - type: 1
+    position: {x: 1.74, y: 0, z: 4.31}
+    rotation: {x: -0, y: 353.05005, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 3.35, y: 0, z: 17.65}
+    rotation: {x: -0, y: 15.690654, z: -0}
+    count: 0
+  - type: 1
+    position: {x: 5.45, y: 0, z: 13.24}
+    rotation: {x: -0, y: 331.61145, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 5.1, y: 0, z: 15.55}
+    rotation: {x: -0, y: 241.19449, z: 0}
     count: 0

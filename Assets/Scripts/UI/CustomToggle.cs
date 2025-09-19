@@ -50,7 +50,6 @@ namespace BeachHero
             }
             else
             {
-                DebugUtils.Log("SetToggle without animation: " + toggled);
                 knobRect.anchoredPosition = new Vector2(toggled ? -knobAnchorX : knobAnchorX, knobRect.anchoredPosition.y);
                 fillSlider.value = toggled ? 1f : 0f;
             }
