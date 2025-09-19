@@ -50,6 +50,8 @@ namespace BeachHero
         }
         public void StopAnimation()
         {
+            animator.Rebind();
+            animator.StopPlayback();
             if (playAnimationCoroutine != null)
             {
                 StopCoroutine(playAnimationCoroutine);

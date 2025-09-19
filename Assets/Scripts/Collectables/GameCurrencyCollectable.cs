@@ -45,8 +45,9 @@ namespace BeachHero
         public override void ResetState()
         {
             base.ResetState();
-            canMoveToTarget = false;
             starFish.StopAnimation();
+            graphics.SetActive(false);
+            canMoveToTarget = false;
         }
         public override void Collect()
         {
@@ -57,7 +58,7 @@ namespace BeachHero
             AudioController.GetInstance.PlaySound(AudioType.Collect1);
             GameController.GetInstance.OnGameCurrencyPickup();
             starFish.StopAnimation();
-            gameObject.SetActive(false);
+            graphics.SetActive(false);
         }
     }
 }
