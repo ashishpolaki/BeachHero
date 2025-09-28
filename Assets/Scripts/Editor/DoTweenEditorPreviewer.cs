@@ -7,23 +7,62 @@ using UnityEditor.SceneManagement;
 
 namespace BeachHero
 {
-    [ExecuteInEditMode]
     public class DoTweenEditorPreviewer : MonoBehaviour
     {
-        [Range(0f, 1f)]
-        public float progress = 0f;
+        #region Inspector Variables
+        [SerializeField] private Vector3 fromScale = Vector3.one;
+        [SerializeField] private Vector3 toScale = Vector3.one * 1.5f;
+        [SerializeField] private float duration = 1f;
+        [SerializeField] private Ease ease = Ease.Linear;
+        #endregion
 
-        // parameters for the tween - editable in inspector
-        public Vector3 fromScale = Vector3.one;
-        public Vector3 toScale = Vector3.one * 1.5f;
-        public float duration = 1f;
-        public Ease ease = Ease.Linear;
+        #region Private Variables
+        private Tween scaleTween;
+        #endregion
 
-        // Optional runtime API to set progress (used by editor)
-        public void SetProgress(float t)
+        #region Properties
+        public Tween PreviewTween
         {
-            progress = Mathf.Clamp01(t);
-            // at runtime you could optionally create and scrub a tween, but keep that separate
+            get
+            {
+                if (scaleTween == null || !scaleTween.IsActive())
+                {
+                    scaleTween = transform.DOScale(toScale, duration).SetEase(ease).SetAutoKill(false).Pause();
+                }
+                return scaleTween;
+            }
+        }
+        public float Duration => Mathf.Max(0f, duration);
+        #endregion
+
+        #region Methods
+        public void ResetState()
+        {
+            transform.localScale = fromScale;
+        }
+        public void KillTween()
+        {
+            if (scaleTween != null && scaleTween.active)
+            {
+                scaleTween.Kill();
+                scaleTween = null;
+            }
+        }
+        /// <summary>
+        /// Kills all active tweens on this GameObject, including those targeting any component.
+        /// </summary>
+        public void KillAllTweensOnGameObject()
+        {
+            foreach (var component in GetComponents<Component>())
+            {
+                DOTween.Kill(component);
+            }
+        }
+        #endregion
+
+        private void PlayTweening()
+        {
+            PreviewTween.Restart();
         }
     }
 
@@ -34,9 +73,14 @@ namespace BeachHero
         private DoTweenEditorPreviewer editorPreviewer;
         private Tween previewTween;
         private bool isPreviewing = false;
+        private float progress = 0f;
 
         void OnEnable()
         {
+            if (Application.isPlaying)
+            {
+                return;
+            }
             editorPreviewer = (DoTweenEditorPreviewer)target;
             // ensure any previous editor preview is stopped
             try { DOTweenEditorPreview.Stop(); } catch { }
@@ -44,18 +88,28 @@ namespace BeachHero
 
         void OnDisable()
         {
+            if (Application.isPlaying)
+            {
+                return;
+            }
             StopPreviewAndCleanup();
         }
 
         public override void OnInspectorGUI()
         {
-            EditorGUILayout.Space();
+            if (Application.isPlaying)
+            {
+                DrawDefaultInspector();
+                return;
+            }
+
+            serializedObject.Update();
             EditorGUI.BeginChangeCheck();
 
             // Draw all other properties, except "m_Script"
-            serializedObject.Update();
             SerializedProperty prop = serializedObject.GetIterator();
             bool enterChildren = true;
+            progress = EditorGUILayout.Slider("Progress", progress, 0f, 1f);
             while (prop.NextVisible(enterChildren))
             {
                 if (prop.name == "m_Script") continue; // skip script field
@@ -63,15 +117,16 @@ namespace BeachHero
                 enterChildren = false;
             }
 
+            // Handle changes to progress slider 
             if (EditorGUI.EndChangeCheck())
             {
                 Undo.RecordObject(editorPreviewer, "Change progress");
-                ScrubToProgress(editorPreviewer.progress);
+                ScrubToProgress(progress);
                 EditorUtility.SetDirty(editorPreviewer);
             }
-
             serializedObject.ApplyModifiedProperties();
 
+            //Preview
             EditorGUILayout.BeginHorizontal();
             if (!isPreviewing)
             {
@@ -84,7 +139,8 @@ namespace BeachHero
                     StopPreviewAndCleanup();
             }
 
-            if (GUILayout.Button("Reset (to from)"))
+            // Reset
+            if (GUILayout.Button("Reset"))
             {
                 Undo.RecordObject(editorPreviewer, "Reset preview");
                 ApplyInstantFrom();
@@ -92,7 +148,8 @@ namespace BeachHero
             }
             EditorGUILayout.EndHorizontal();
 
-            if (GUILayout.Button("Snap to To (complete)"))
+            // Snap to end
+            if (GUILayout.Button("Snap to End"))
             {
                 CompleteAndSnap();
             }
@@ -103,16 +160,17 @@ namespace BeachHero
             if (editorPreviewer == null) return;
 
             // Cleanup any existing preview tween
-            if (previewTween != null) { previewTween.Kill(); previewTween = null; }
+            if (previewTween != null)
+            {
+                previewTween.Kill();
+                previewTween = null;
+            }
 
             // set object to 'from' state first
-            editorPreviewer.transform.localScale = editorPreviewer.fromScale;
+            editorPreviewer.ResetState();
 
             // create tween (non-looping) and keep it (autoKill=false)
-            previewTween = editorPreviewer.transform.DOScale(editorPreviewer.toScale, editorPreviewer.duration)
-                .SetEase(editorPreviewer.ease)
-                .SetAutoKill(false)
-                .Pause(); // don't play via runtime loop
+            previewTween = editorPreviewer.PreviewTween; // don't play via runtime loop
 
             // Prepare tween for editor preview and start DOTweenEditorPreview loop
             try
@@ -131,7 +189,7 @@ namespace BeachHero
             isPreviewing = true;
         }
 
-        void StopPreviewAndCleanup()
+        private void StopPreviewAndCleanup()
         {
             if (previewTween != null)
             {
@@ -145,6 +203,7 @@ namespace BeachHero
 
             // Optionally restore to 'from' state (you can change to snap-to-end instead)
             ApplyInstantFrom();
+            editorPreviewer.KillTween();
 
             isPreviewing = false;
 
@@ -158,10 +217,7 @@ namespace BeachHero
             if (previewTween == null)
             {
                 // create non-playing tween for scrubbing (autoKill=false, paused)
-                previewTween = editorPreviewer.transform.DOScale(editorPreviewer.toScale, editorPreviewer.duration)
-                    .SetEase(editorPreviewer.ease)
-                    .SetAutoKill(false)
-                    .Pause();
+                previewTween = editorPreviewer.PreviewTween;
 
                 try
                 {
@@ -171,7 +227,7 @@ namespace BeachHero
             }
 
             // scrub by Goto (time)
-            previewTween.Goto(Mathf.Clamp01(p) * editorPreviewer.duration, andPlay: false);
+            previewTween.Goto(Mathf.Clamp01(p) * editorPreviewer.Duration, andPlay: false);
 
             // repaint and mark dirty so visual updates are visible
             EditorSceneManager.MarkSceneDirty(editorPreviewer.gameObject.scene);
@@ -181,7 +237,7 @@ namespace BeachHero
         void ApplyInstantFrom()
         {
             if (editorPreviewer == null) return;
-            editorPreviewer.transform.localScale = editorPreviewer.fromScale;
+            editorPreviewer.ResetState();
         }
 
         void CompleteAndSnap()
@@ -197,7 +253,6 @@ namespace BeachHero
             UnityEditor.SceneView.RepaintAll();
         }
     }
-
     #endregion
 }
 #endif
