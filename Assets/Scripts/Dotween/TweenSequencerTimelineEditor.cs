@@ -657,7 +657,6 @@ public class TweenSequencerEditor : Editor
 
     private void StopPreviewAndCleanup()
     {
-        _sequencer.ApplyAllFromStates();
         _sequencer.Kill();
         _previewSequence.Complete(true);
         _previewSequence.Kill();
@@ -673,23 +672,14 @@ public class TweenSequencerEditor : Editor
 
     private void ScrubToProgress(float progress)
     {
-        if (_sequencer == null) return;
-
         float total = ComputeTotalDuration();
 
-        //_sequencer.BuildSequence();
-        //_previewSequence = _sequenceField?.GetValue(_sequencer) as Sequence;
-        //if (_previewSequence == null) return;
-
-        if (_previewSequence == null)
+        if (_previewSequence == null || _sequencer == null)
         {
+            _sequencer.ApplyAllFromStates();
             _sequencer.BuildSequence();
             _previewSequence = _sequencer._sequence;
-            try
-            {
-                DOTweenEditorPreview.PrepareTweenForPreview(_previewSequence, true, true, false);
-            }
-            catch { }
+            DOTweenEditorPreview.PrepareTweenForPreview(_previewSequence, true, true, false);
         }
 
         float time = Mathf.Clamp01(progress) * total;
