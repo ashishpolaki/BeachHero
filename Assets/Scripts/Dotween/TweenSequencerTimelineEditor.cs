@@ -1,9 +1,7 @@
-// Assets/Editor/TweenSequencerEditor.cs
 #if UNITY_EDITOR
 using System;
 using System.Reflection;
 using UnityEditor;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEditor.SceneManagement;
 using DG.Tweening;
@@ -13,21 +11,21 @@ using DG.DOTweenEditor;
 public class TweenSequencerEditor : Editor
 {
     private SerializedProperty _clipsProp;
+    private SerializedProperty _timelineDurationProp;
     private TweenSequencer _sequencer;
     private FieldInfo _sequenceField;
 
     // preview
     private Sequence _previewSequence;
-    private bool _isPreviewing = false;
     private float _progress = 0f;
     private bool _autoReplay = false;
     private bool _isPlaying = false;
 
     // timeline visuals
-    private const float TIMELINE_HEIGHT = 120f;
+    private const float TIMELINE_HEIGHT = 60f;
     private const float TIMELINE_LEFT_MARGIN = 20f;
     private const float TIMELINE_RIGHT_MARGIN = 20f;
-    private const float CLIP_BAR_HEIGHT = 20f;
+    private const float CLIP_BAR_HEIGHT = 30f;
     private const float CLIP_BAR_PADDING = 6f;
     private const float EDGE_HANDLE_WIDTH = 6f; // px for left/right resize handles
 
@@ -43,8 +41,13 @@ public class TweenSequencerEditor : Editor
 
     private void OnEnable()
     {
+        if (Application.isPlaying)
+        {
+            return;
+        }
         _sequencer = (TweenSequencer)target;
         _clipsProp = serializedObject.FindProperty("clips");
+        _timelineDurationProp = serializedObject.FindProperty("timelineDuration");
         _sequenceField = typeof(TweenSequencer).GetField("_sequence", BindingFlags.NonPublic | BindingFlags.Instance);
 
         if (_selectedIndex >= _clipsProp.arraySize) _selectedIndex = -1;
@@ -52,34 +55,131 @@ public class TweenSequencerEditor : Editor
 
     private void OnDisable()
     {
-        if (!Application.isPlaying)
-            StopPreviewAndCleanup();
+        if (Application.isPlaying)
+        {
+            return;
+        }
+        StopPreviewAndCleanup();
     }
 
     public override void OnInspectorGUI()
     {
+        if (Application.isPlaying)
+        {
+            return;
+        }
         serializedObject.Update();
+        HandleKeyboardShortcuts();
 
+        // top toolbar
+        EditorGUILayout.Space(6);
         DrawTopToolbar();
-        EditorGUILayout.Space(6);
-        EditorGUILayout.LabelField("Timeline", EditorStyles.boldLabel);
-        DrawTimelineArea();
-
-        EditorGUILayout.Space(6);
-        DrawSelectedClipInspector();
-
-        EditorGUILayout.Space(8);
-        DrawBottomControls();
+        EditorGUILayout.Space(2);
+        EditorGUILayout.Slider(_timelineDurationProp, 0.1f, 3f, new GUIContent("Duration (s)"));
+        EditorGUILayout.Space(2);
 
         // Progress slider
         EditorGUI.BeginChangeCheck();
         _progress = EditorGUILayout.Slider("Progress", _progress, 0f, 1f);
-        if (EditorGUI.EndChangeCheck() && !_isPlaying)
+        if (EditorGUI.EndChangeCheck())
         {
             ScrubToProgress(_progress);
         }
 
+        // Timeline label
+        GUIStyle centeredBold = new GUIStyle(EditorStyles.boldLabel);
+        centeredBold.alignment = TextAnchor.MiddleCenter;
+        EditorGUILayout.LabelField("Timeline", centeredBold, GUILayout.ExpandWidth(true));
+        DrawTimelineArea();
+        DrawBottomControls();
+
+        // Selected clip details
+        EditorGUILayout.Space(6);
+        DrawSelectedClipInspector();
+
         serializedObject.ApplyModifiedProperties();
+    }
+
+    private void HandleKeyboardShortcuts()
+    {
+        var e = Event.current;
+        if (e == null) return;
+
+        bool mod = e.control || e.command; // Ctrl on Win, Cmd on macOS
+        if (e.type == EventType.KeyDown && mod)
+        {
+            if (e.keyCode == KeyCode.D) // Ctrl/Cmd + D -> duplicate
+            {
+                DuplicateSelectedClip();
+                e.Use();
+                GUI.FocusControl(null);
+            }
+            else if (e.keyCode == KeyCode.Delete) // Ctrl/Cmd + Delete -> delete
+            {
+                DeleteSelectedClip();
+                e.Use();
+                GUI.FocusControl(null);
+            }
+        }
+    }
+
+    private void DuplicateSelectedClip()
+    {
+        if (_clipsProp == null) return;
+        if (_selectedIndex < 0 || _selectedIndex >= _clipsProp.arraySize) return;
+
+        // record undo
+        Undo.RegisterCompleteObjectUndo(_sequencer, "Duplicate Clip");
+
+        var srcProp = _clipsProp.GetArrayElementAtIndex(_selectedIndex);
+        object srcObj = srcProp.managedReferenceValue;
+
+        int insertIndex = _selectedIndex + 1;
+
+        // Insert a new element slot
+        _clipsProp.InsertArrayElementAtIndex(insertIndex);
+        var newElem = _clipsProp.GetArrayElementAtIndex(insertIndex);
+
+        if (srcObj == null)
+        {
+            // leave the new element as null/default
+            newElem.managedReferenceValue = null;
+        }
+        else
+        {
+            // deep-copy the managed reference using JSON (Editor-only)
+            Type t = srcObj.GetType();
+            string json = EditorJsonUtility.ToJson(srcObj);
+            object copy = Activator.CreateInstance(t);
+            EditorJsonUtility.FromJsonOverwrite(json, copy);
+            newElem.managedReferenceValue = copy;
+        }
+
+        serializedObject.ApplyModifiedProperties();
+        EditorUtility.SetDirty(_sequencer);
+        _selectedIndex = insertIndex;
+        // mark scene dirty so user is prompted to save
+        try { EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene); } catch { }
+    }
+
+    private void DeleteSelectedClip()
+    {
+        if (_clipsProp == null) return;
+        if (_selectedIndex < 0 || _selectedIndex >= _clipsProp.arraySize) return;
+
+        // confirm? (optional) — we perform deletion immediately
+        Undo.RegisterCompleteObjectUndo(_sequencer, "Delete Clip");
+
+        // Delete element (works for managedReference arrays as used)
+        _clipsProp.DeleteArrayElementAtIndex(_selectedIndex);
+        serializedObject.ApplyModifiedProperties();
+
+        // clamp selection
+        int newIndex = Mathf.Clamp(_selectedIndex, 0, _clipsProp.arraySize - 1);
+        _selectedIndex = (_clipsProp.arraySize == 0) ? -1 : newIndex;
+
+        EditorUtility.SetDirty(_sequencer);
+        try { EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene); } catch { }
     }
 
     private void DrawTopToolbar()
@@ -118,20 +218,46 @@ public class TweenSequencerEditor : Editor
         float total = ComputeTotalDuration();
         if (total <= 0f) total = 1f;
 
-        Rect timelineRect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, TIMELINE_HEIGHT);
+        int sequencerClipsLength = _sequencer.Clips != null ? _sequencer.Clips.Length : 1;
+        float timelineHeight = TIMELINE_HEIGHT + ((CLIP_BAR_HEIGHT + CLIP_BAR_PADDING - 2f) * sequencerClipsLength);
+        Rect timelineRect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, timelineHeight);
         GUI.Box(timelineRect, GUIContent.none);
 
-        // labels
-        Rect leftLabelRect = new Rect(timelineRect.x + 4, timelineRect.y + 4, TIMELINE_LEFT_MARGIN - 8, 20);
-        EditorGUI.LabelField(leftLabelRect, "0s");
-        Rect rightLabelRect = new Rect(timelineRect.x + timelineRect.width - TIMELINE_RIGHT_MARGIN - 60, timelineRect.y + 4, 60, 20);
-        EditorGUI.LabelField(rightLabelRect, $"{total:0.00}s");
-
-        Rect inner = new Rect(timelineRect.x + TIMELINE_LEFT_MARGIN, timelineRect.y + 28,
-            timelineRect.width - TIMELINE_LEFT_MARGIN - TIMELINE_RIGHT_MARGIN, TIMELINE_HEIGHT - 44);
+        Rect inner = new Rect(
+            timelineRect.x + TIMELINE_LEFT_MARGIN,
+            timelineRect.y + 28,
+            timelineRect.width - TIMELINE_LEFT_MARGIN - TIMELINE_RIGHT_MARGIN,
+             -40 + timelineHeight
+        );
 
         EditorGUI.DrawRect(inner, new Color(0.11f, 0.11f, 0.11f, 1f));
 
+        // Tick spacing (0.1s steps). If total is not an exact multiple of step, we ceil and clamp.
+        float step = 0.1f;
+        int steps = Mathf.CeilToInt(total / step);
+
+        for (int i = 0; i <= steps; i++)
+        {
+            float time = i * step;
+            if (time > total) time = total; // final clamp for last tick
+
+            float normalized = Mathf.Clamp01(time / total);
+            float x = inner.x + normalized * inner.width;
+
+            // make full-second ticks slightly bigger
+            bool isWholeSecond = Mathf.Abs(time - Mathf.Round(time)) < 0.0001f;
+            float tickHeight = isWholeSecond ? 12f : 6f;
+            Rect tick = new Rect(x - 0.5f, inner.y - tickHeight - 2f, 1f, tickHeight);
+            EditorGUI.DrawRect(tick, new Color(0.7f, 0.7f, 0.7f, 0.6f));
+
+            // Label in seconds (0.1s, 0.2s ...). Show up to one decimal place
+            string label = $"{time:0.0}s";
+            Vector2 size = EditorStyles.miniLabel.CalcSize(new GUIContent(label));
+            Rect lbl = new Rect(x - size.x * 0.5f, inner.y - tickHeight - 18f, size.x, size.y);
+            EditorGUI.LabelField(lbl, label, EditorStyles.miniLabel);
+        }
+
+        // draw clips
         var clipsRuntime = _sequencer.Clips;
         if (clipsRuntime != null)
         {
@@ -140,8 +266,13 @@ public class TweenSequencerEditor : Editor
                 var clip = clipsRuntime[i];
                 if (clip == null) continue;
 
+                // clip times are in seconds; display them normalized by `total`
                 float start = clip.startTime;
                 float dur = Mathf.Max(0.0001f, clip.duration);
+
+                // clamp to timeline bounds driven by total
+                start = Mathf.Clamp(start, 0f, total);
+                if (start + dur > total) dur = Mathf.Max(0.0001f, total - start);
 
                 float x = inner.x + Mathf.Clamp01(start / total) * inner.width;
                 float w = Mathf.Clamp01(dur / total) * inner.width;
@@ -154,55 +285,62 @@ public class TweenSequencerEditor : Editor
 
                 Rect barRect = new Rect(x, y, Mathf.Max(6f, w), CLIP_BAR_HEIGHT);
 
-                // main bar
-                Color col = GetColorForClip(clip);
-                EditorGUI.DrawRect(barRect, col);
+                // 1) Fill bar base and outline for crispness
+                Color baseFill = new Color(0.18f, 0.18f, 0.18f, 1f);
+                EditorGUI.DrawRect(barRect, baseFill);
+                Handles.DrawSolidRectangleWithOutline(barRect, new Color(0, 0, 0, 0), new Color(0.12f, 0.12f, 0.12f, 1f));
 
-                // edge handles
+                // 2) Label inside the bar (centered)
+                Rect lblRect = new Rect(barRect.x + 4, barRect.y + 2, Mathf.Max(16f, barRect.width - 28f), 14);
+                GUIStyle labelStyle = new GUIStyle(EditorStyles.whiteLabel) { alignment = TextAnchor.MiddleCenter, clipping = TextClipping.Clip };
+                EditorGUI.LabelField(lblRect, clip.clipType.ToString(), labelStyle);
+
+                // 3) Editor-only color: load from EditorPrefs keyed by sequencer instance + clip index + type
+                string colorKey = GetClipColorKey(_sequencer.GetInstanceID(), i, clip);
+                Color clipColor = LoadClipColorOrDefault(colorKey, new Color(0.3f, 0.6f, 1f, 1f));
+
+                // 4) Draw color stripe beneath the label (visual only; editing moved to inspector)
+                float stripeHeight = 4f;
+                Rect stripeRect = new Rect(lblRect.x, lblRect.yMax + 2f, Mathf.Clamp(lblRect.width, 12f, barRect.width - 8f), stripeHeight);
+                EditorGUI.DrawRect(stripeRect, clipColor);
+
+                // 5) Edge handle rects (for cursor and click detection)
                 Rect leftHandle = new Rect(barRect.x - EDGE_HANDLE_WIDTH / 2f, barRect.y, EDGE_HANDLE_WIDTH, CLIP_BAR_HEIGHT);
                 Rect rightHandle = new Rect(barRect.xMax - EDGE_HANDLE_WIDTH / 2f, barRect.y, EDGE_HANDLE_WIDTH, CLIP_BAR_HEIGHT);
-                EditorGUI.DrawRect(leftHandle, new Color(0, 0, 0, 0.35f));
-                EditorGUI.DrawRect(rightHandle, new Color(0, 0, 0, 0.35f));
 
-                // outline selected clip
-                if (i == _selectedIndex)
-                {
-                    Handles.DrawSolidRectangleWithOutline(barRect, new Color(0, 0, 0, 0), Color.yellow);
-                }
+                // 6) Add cursor rectangles so hovering shows the appropriate mouse cursor
+                //    Resize cursor on edges, move cursor on the body.
+                EditorGUIUtility.AddCursorRect(leftHandle, MouseCursor.ResizeHorizontal);
+                EditorGUIUtility.AddCursorRect(rightHandle, MouseCursor.ResizeHorizontal);
+                EditorGUIUtility.AddCursorRect(barRect, MouseCursor.MoveArrow);
 
-                // label
-                Rect lblRect = new Rect(barRect.x + 4, barRect.y + 2, barRect.width - 8, 14);
-                EditorGUI.LabelField(lblRect, clip.clipType.ToString(), EditorStyles.whiteLabel);
-
-                // handle mouse events: prioritize handles then body
                 Vector2 mouse = Event.current.mousePosition;
 
-                // Resize left
+                // Prioritize handle clicks
                 if (Event.current.type == EventType.MouseDown && leftHandle.Contains(mouse))
                 {
                     BeginDrag(i, DragMode.ResizeLeft);
                     Event.current.Use();
                 }
-                // Resize right
                 else if (Event.current.type == EventType.MouseDown && rightHandle.Contains(mouse))
                 {
                     BeginDrag(i, DragMode.ResizeRight);
                     Event.current.Use();
                 }
-                // Move body
+                // clicking the bar selects / moves
                 else if (Event.current.type == EventType.MouseDown && barRect.Contains(mouse))
                 {
                     BeginDrag(i, DragMode.Move);
-                    // select clip
                     _selectedIndex = i;
-                    // set progress to clip start
+                    // set progress normalized (0..1) to clip start
                     _progress = Mathf.Clamp01(start / total);
                     ScrubToProgress(_progress);
                     Event.current.Use();
                 }
 
-                // while dragging, update
-                if (_draggingIndex == i && _dragMode != DragMode.None && (Event.current.type == EventType.MouseDrag || Event.current.type == EventType.MouseUp))
+                // dragging updates
+                if (_draggingIndex == i && _dragMode != DragMode.None &&
+                    (Event.current.type == EventType.MouseDrag || Event.current.type == EventType.MouseUp))
                 {
                     if (Event.current.type == EventType.MouseDrag)
                     {
@@ -215,26 +353,56 @@ public class TweenSequencerEditor : Editor
                         Event.current.Use();
                     }
                 }
+
+                // 7) Selected highlight (white outline when selected)
+                if (i == _selectedIndex)
+                {
+                    Handles.DrawSolidRectangleWithOutline(barRect, new Color(0, 0, 0, 0), Color.white);
+                }
             }
         }
 
-        // scrub handle
+        // scrub handle (positioned by normalized _progress)
         float scrubX = inner.x + Mathf.Clamp01(_progress) * inner.width;
         Rect scrubRect = new Rect(scrubX - 1, inner.y - 4, 2, inner.height + 8);
-        EditorGUI.DrawRect(scrubRect, Color.yellow);
+        EditorGUI.DrawRect(scrubRect, Color.white);
 
-        // dragging scrub
+        // dragging scrub -> set normalized progress based on mouse X
         if ((Event.current.type == EventType.MouseDrag || Event.current.type == EventType.MouseDown) && inner.Contains(Event.current.mousePosition))
         {
-            // If dragging a clip already, don't override
+            // don't override if currently dragging a clip
             if (_dragMode == DragMode.None)
             {
-                float timeAtMouse = Mathf.Clamp01((Event.current.mousePosition.x - inner.x) / inner.width) * total;
-                _progress = Mathf.Clamp01(total == 0 ? 0 : timeAtMouse / total);
+                float normalizedAtMouse = Mathf.Clamp01((Event.current.mousePosition.x - inner.x) / inner.width);
+                _progress = normalizedAtMouse;
                 ScrubToProgress(_progress);
                 Event.current.Use();
             }
         }
+    }
+
+    // Build a stable key for a clip entry. Uses sequencer instance ID + clip index + clip type name.
+    private string GetClipColorKey(int sequencerInstanceId, int clipIndex, object clip)
+    {
+        string typeName = clip != null ? clip.GetType().FullName : "null";
+        return $"TweenSequencerColor_{sequencerInstanceId}_clip_{clipIndex}_{typeName}";
+    }
+
+    private Color LoadClipColorOrDefault(string key, Color defaultColor)
+    {
+        if (!EditorPrefs.HasKey(key)) return defaultColor;
+        string hex = EditorPrefs.GetString(key);
+        if (string.IsNullOrEmpty(hex)) return defaultColor;
+        if (ColorUtility.TryParseHtmlString("#" + hex, out Color c))
+            return c;
+        return defaultColor;
+    }
+
+    private void SaveClipColor(string key, Color color)
+    {
+        // store as RRGGBBAA hex without leading '#'
+        string hex = ColorUtility.ToHtmlStringRGBA(color);
+        EditorPrefs.SetString(key, hex);
     }
 
     private void BeginDrag(int index, DragMode mode)
@@ -268,29 +436,39 @@ public class TweenSequencerEditor : Editor
 
         if (startProp == null || durProp == null) return;
 
+        const float minDuration = 0.01f;
+
         if (_dragMode == DragMode.Move)
         {
             float newStart = _dragOriginalStart + deltaTime;
             newStart = Mathf.Max(0f, newStart);
+            // ensure clip stays within timeline bounds
+            newStart = Mathf.Min(newStart, Mathf.Max(0f, total - _dragOriginalDuration));
             startProp.floatValue = newStart;
         }
         else if (_dragMode == DragMode.ResizeLeft)
         {
-            float newStart = _dragOriginalStart + deltaTime;
-            float newDuration = _dragOriginalDuration - deltaTime;
-            // clamp
-            if (newDuration < 0.01f)
-            {
-                newDuration = 0.01f;
-                newStart = _dragOriginalStart + (_dragOriginalDuration - newDuration);
-            }
-            startProp.floatValue = Mathf.Max(0f, newStart);
+            // robust left-resize: compute original end and clamp newStart so it never crosses end
+            float originalStart = _dragOriginalStart;
+            float originalDur = _dragOriginalDuration;
+            float originalEnd = originalStart + originalDur;
+
+            float newStart = originalStart + deltaTime;
+            // Clamp newStart between 0 and (originalEnd - minDuration)
+            newStart = Mathf.Clamp(newStart, 0f, originalEnd - minDuration);
+
+            float newDuration = originalEnd - newStart;
+            newDuration = Mathf.Max(minDuration, newDuration);
+
+            startProp.floatValue = newStart;
             durProp.floatValue = newDuration;
         }
         else if (_dragMode == DragMode.ResizeRight)
         {
+            // extend/shrink duration by deltaTime, but keep end <= total and duration >= minDuration
             float newDuration = _dragOriginalDuration + deltaTime;
-            newDuration = Mathf.Max(0.01f, newDuration);
+            newDuration = Mathf.Max(minDuration, newDuration);
+            newDuration = Mathf.Min(newDuration, Mathf.Max(minDuration, total - _dragOriginalStart));
             durProp.floatValue = newDuration;
         }
 
@@ -335,12 +513,33 @@ public class TweenSequencerEditor : Editor
         EditorGUILayout.BeginVertical(GUI.skin.box);
         EditorGUILayout.LabelField("Selected Clip", EditorStyles.boldLabel);
 
+        // Show the serialized clip fields (this will include all public fields on the clip)
         EditorGUILayout.PropertyField(elem, true);
+
+        // --- Editor-only color chooser (stored in EditorPrefs) ---
+        // Load color using same key as used in timeline drawing
+        var clipObj = _sequencer.Clips[_selectedIndex];
+        string colorKey = GetClipColorKey(_sequencer.GetInstanceID(), _selectedIndex, clipObj);
+        Color currentColor = LoadClipColorOrDefault(colorKey, new Color(0.3f, 0.6f, 1f, 1f));
+
+        EditorGUILayout.Space(6);
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("Clip Color", GUILayout.Width(80));
+        EditorGUI.BeginChangeCheck();
+        Color picked = EditorGUILayout.ColorField(currentColor, GUILayout.Width(120));
+        if (EditorGUI.EndChangeCheck())
+        {
+            SaveClipColor(colorKey, picked);
+            // make inspector reflect changes immediately
+            EditorUtility.SetDirty(target);
+        }
+        GUILayout.FlexibleSpace();
+        EditorGUILayout.EndHorizontal();
+        // --- end color chooser ---
 
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Capture From"))
         {
-            var clipObj = _sequencer.Clips[_selectedIndex];
             var mi = clipObj.GetType().GetMethod("CaptureFromState", BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
             if (mi != null) mi.Invoke(clipObj, null);
             else
@@ -362,6 +561,8 @@ public class TweenSequencerEditor : Editor
             serializedObject.ApplyModifiedProperties();
             EditorUtility.SetDirty(_sequencer);
             EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene);
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.EndVertical();
             return;
         }
         EditorGUILayout.EndHorizontal();
@@ -408,10 +609,10 @@ public class TweenSequencerEditor : Editor
         try { DOTweenEditorPreview.Stop(); } catch { }
 
         _sequencer.ApplyAllFromStates();
-        _sequencer.KillAllClips();
+        _sequencer.Kill();
         _sequencer.BuildSequence();
 
-        _previewSequence = _sequenceField?.GetValue(_sequencer) as Sequence;
+        _previewSequence = _sequencer._sequence;
         if (_previewSequence == null)
         {
             Debug.LogWarning("No sequence built - check clips configuration.");
@@ -456,16 +657,15 @@ public class TweenSequencerEditor : Editor
 
     private void StopPreviewAndCleanup()
     {
-        try { _previewSequence?.Kill(); } catch { }
+        _sequencer.ApplyAllFromStates();
+        _sequencer.Kill();
+        _previewSequence.Complete(true);
+        _previewSequence.Kill();
         _previewSequence = null;
 
-        try { DOTweenEditorPreview.Stop(); } catch { }
-
-        _sequencer.KillAllClips();
-        _sequencer.ApplyAllFromStates();
+        DOTweenEditorPreview.Stop();
 
         _isPlaying = false;
-        _isPreviewing = false;
 
         EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene);
         SceneView.RepaintAll();
@@ -476,19 +676,39 @@ public class TweenSequencerEditor : Editor
         if (_sequencer == null) return;
 
         float total = ComputeTotalDuration();
-        _sequencer.BuildSequence();
-        _previewSequence = _sequenceField?.GetValue(_sequencer) as Sequence;
-        if (_previewSequence == null) return;
 
-        float time = Mathf.Clamp01(progress) * Mathf.Max(0.0001f, total);
+        //_sequencer.BuildSequence();
+        //_previewSequence = _sequenceField?.GetValue(_sequencer) as Sequence;
+        //if (_previewSequence == null) return;
+
+        if (_previewSequence == null)
+        {
+            _sequencer.BuildSequence();
+            _previewSequence = _sequencer._sequence;
+            try
+            {
+                DOTweenEditorPreview.PrepareTweenForPreview(_previewSequence, true, true, false);
+            }
+            catch { }
+        }
+
+        float time = Mathf.Clamp01(progress) * total;
         _previewSequence.Goto(time, andPlay: false);
 
         EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene);
         SceneView.RepaintAll();
     }
 
+
     private float ComputeTotalDuration()
     {
+        // if user provided a positive timelineDuration, prefer it (user requested timelineDuration-driven length)
+        if (_sequencer != null && _sequencer.timelineDuration > 0f)
+        {
+            return _sequencer.timelineDuration;
+        }
+
+        // fallback: compute from clips
         float max = 0f;
         var clipsRuntime = _sequencer.Clips;
         if (clipsRuntime == null) return 0f;
@@ -500,17 +720,5 @@ public class TweenSequencerEditor : Editor
         return max;
     }
 
-    private Color GetColorForClip(TweenClipBase clip)
-    {
-        switch (clip.clipType)
-        {
-            case TweenClipType.Move: return new Color(0.15f, 0.6f, 0.9f, 1f);
-            case TweenClipType.Scale: return new Color(0.3f, 0.9f, 0.4f, 1f);
-            case TweenClipType.Rotate: return new Color(0.9f, 0.6f, 0.15f, 1f);
-            case TweenClipType.AnchorPos: return new Color(0.8f, 0.3f, 0.9f, 1f);
-            case TweenClipType.Fade: return new Color(0.9f, 0.3f, 0.3f, 1f);
-            default: return new Color(0.6f, 0.6f, 0.6f, 1f);
-        }
-    }
 }
 #endif

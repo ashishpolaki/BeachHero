@@ -10,7 +10,7 @@ public class TweenSequencer : MonoBehaviour
     public float timelineDuration = 1f; 
     public TweenClipBase[] Clips => clips;
 
-    private Sequence _sequence;
+    public Sequence _sequence;
 
     public void BuildSequence()
     {
@@ -67,7 +67,7 @@ public class TweenSequencer : MonoBehaviour
             _sequence = null;
         }
     }
-    public void KillAllClips()
+    private void KillAllClips()
     {
         if (clips == null) return;
         foreach (var c in clips) c?.KillTween();
