@@ -291,24 +291,27 @@ public class TweenSequencerEditor : Editor
                 Handles.DrawSolidRectangleWithOutline(barRect, new Color(0, 0, 0, 0), new Color(0.12f, 0.12f, 0.12f, 1f));
 
                 // 2) Label inside the bar (centered)
+                GUIStyle labelStyle = new GUIStyle(EditorStyles.whiteLabel)
+                {
+                    alignment = TextAnchor.MiddleCenter,
+                    clipping = TextClipping.Clip,
+                    richText = true   // <<-- IMPORTANT: enable rich text so <color> tags work
+                };
                 Rect lblRect = new Rect(barRect.x + 4, barRect.y + 2, Mathf.Max(16f, barRect.width - 28f), 14);
-                GUIStyle labelStyle = new GUIStyle(EditorStyles.whiteLabel) { alignment = TextAnchor.MiddleCenter, clipping = TextClipping.Clip };
-                EditorGUI.LabelField(lblRect, clip.clipType.ToString(), labelStyle);
+                string clipName = GetTweenDisplayName(clip);
+                EditorGUI.LabelField(lblRect, clipName, labelStyle);
 
-                // 3) Editor-only color: load from EditorPrefs keyed by sequencer instance + clip index + type
-                string colorKey = GetClipColorKey(_sequencer.GetInstanceID(), i, clip);
-                Color clipColor = LoadClipColorOrDefault(colorKey, new Color(0.3f, 0.6f, 1f, 1f));
-
-                // 4) Draw color stripe beneath the label (visual only; editing moved to inspector)
+                // 3) Draw color stripe beneath the label (visual only; editing moved to inspector)
+                Color clipColor = LoadClipColor(clip);
                 float stripeHeight = 4f;
-                Rect stripeRect = new Rect(lblRect.x, lblRect.yMax + 2f, Mathf.Clamp(lblRect.width, 12f, barRect.width - 8f), stripeHeight);
+                Rect stripeRect = new Rect(lblRect.x + 8, lblRect.yMax + 3f, Mathf.Clamp(lblRect.width, 12f, barRect.width - 8f), stripeHeight);
                 EditorGUI.DrawRect(stripeRect, clipColor);
 
-                // 5) Edge handle rects (for cursor and click detection)
+                // 4) Edge handle rects (for cursor and click detection)
                 Rect leftHandle = new Rect(barRect.x - EDGE_HANDLE_WIDTH / 2f, barRect.y, EDGE_HANDLE_WIDTH, CLIP_BAR_HEIGHT);
                 Rect rightHandle = new Rect(barRect.xMax - EDGE_HANDLE_WIDTH / 2f, barRect.y, EDGE_HANDLE_WIDTH, CLIP_BAR_HEIGHT);
 
-                // 6) Add cursor rectangles so hovering shows the appropriate mouse cursor
+                // 5) Add cursor rectangles so hovering shows the appropriate mouse cursor
                 //    Resize cursor on edges, move cursor on the body.
                 EditorGUIUtility.AddCursorRect(leftHandle, MouseCursor.ResizeHorizontal);
                 EditorGUIUtility.AddCursorRect(rightHandle, MouseCursor.ResizeHorizontal);
@@ -354,7 +357,7 @@ public class TweenSequencerEditor : Editor
                     }
                 }
 
-                // 7) Selected highlight (white outline when selected)
+                // 6) Selected highlight (white outline when selected)
                 if (i == _selectedIndex)
                 {
                     Handles.DrawSolidRectangleWithOutline(barRect, new Color(0, 0, 0, 0), Color.white);
@@ -381,28 +384,39 @@ public class TweenSequencerEditor : Editor
         }
     }
 
-    // Build a stable key for a clip entry. Uses sequencer instance ID + clip index + clip type name.
-    private string GetClipColorKey(int sequencerInstanceId, int clipIndex, object clip)
+    private string GetTweenDisplayName(TweenClipBase clip)
     {
-        string typeName = clip != null ? clip.GetType().FullName : "null";
-        return $"TweenSequencerColor_{sequencerInstanceId}_clip_{clipIndex}_{typeName}";
+        if (clip == null) return "Unknown (No Clip)";
+
+        string tweenType = clip switch
+        {
+            TransformMoveClip => "Move",
+            RectTransformMoveClip => "RectMove",
+            ScaleClip => "Scale",
+            _ => "Unknown"
+        };
+
+        string targetName = clip switch
+        {
+            TransformMoveClip moveClip when moveClip.target != null => moveClip.target.gameObject.name,
+            RectTransformMoveClip rectClip when rectClip.target != null => rectClip.target.gameObject.name,
+            ScaleClip scaleClip when scaleClip.target != null => scaleClip.target.gameObject.name,
+            _ => "<color=#FF4040>No Target</color>"
+        };
+        return $"{tweenType} ({targetName})";
     }
 
-    private Color LoadClipColorOrDefault(string key, Color defaultColor)
+    private Color LoadClipColor(TweenClipBase clip)
     {
-        if (!EditorPrefs.HasKey(key)) return defaultColor;
-        string hex = EditorPrefs.GetString(key);
-        if (string.IsNullOrEmpty(hex)) return defaultColor;
-        if (ColorUtility.TryParseHtmlString("#" + hex, out Color c))
-            return c;
-        return defaultColor;
-    }
+        Color color = clip switch
+        {
+            TransformMoveClip => new Color(0.13f, 0.37f, 0.75f),   // Dark Blue
+            RectTransformMoveClip => new Color(0.44f, 0.66f, 1.0f),   // Light Blue
+            ScaleClip scaleClip => new Color(0.54f, 0.30f, 0.90f),  // Purple
+            _ => Color.gray
+        };
 
-    private void SaveClipColor(string key, Color color)
-    {
-        // store as RRGGBBAA hex without leading '#'
-        string hex = ColorUtility.ToHtmlStringRGBA(color);
-        EditorPrefs.SetString(key, hex);
+        return color;
     }
 
     private void BeginDrag(int index, DragMode mode)
@@ -515,28 +529,8 @@ public class TweenSequencerEditor : Editor
 
         // Show the serialized clip fields (this will include all public fields on the clip)
         EditorGUILayout.PropertyField(elem, true);
-
-        // --- Editor-only color chooser (stored in EditorPrefs) ---
-        // Load color using same key as used in timeline drawing
         var clipObj = _sequencer.Clips[_selectedIndex];
-        string colorKey = GetClipColorKey(_sequencer.GetInstanceID(), _selectedIndex, clipObj);
-        Color currentColor = LoadClipColorOrDefault(colorKey, new Color(0.3f, 0.6f, 1f, 1f));
-
-        EditorGUILayout.Space(6);
-        EditorGUILayout.BeginHorizontal();
-        EditorGUILayout.LabelField("Clip Color", GUILayout.Width(80));
-        EditorGUI.BeginChangeCheck();
-        Color picked = EditorGUILayout.ColorField(currentColor, GUILayout.Width(120));
-        if (EditorGUI.EndChangeCheck())
-        {
-            SaveClipColor(colorKey, picked);
-            // make inspector reflect changes immediately
-            EditorUtility.SetDirty(target);
-        }
         GUILayout.FlexibleSpace();
-        EditorGUILayout.EndHorizontal();
-        // --- end color chooser ---
-
         EditorGUILayout.BeginHorizontal();
         if (GUILayout.Button("Capture From"))
         {
@@ -596,9 +590,36 @@ public class TweenSequencerEditor : Editor
         _clipsProp.InsertArrayElementAtIndex(index);
         var elem = _clipsProp.GetArrayElementAtIndex(index);
         var instance = Activator.CreateInstance(t);
+
+        if (instance is TweenClipBase)
+        {
+            var baseClip = (TweenClipBase)instance;
+
+            if (instance is TransformMoveClip)
+            {
+                var transformClip = (TransformMoveClip)instance;
+                transformClip.clipType = TweenClipType.Move;
+                transformClip.moveTargetType = MoveTargetType.Transform;
+            }
+            else if (instance is RectTransformMoveClip)
+            {
+                var rectClip = (RectTransformMoveClip)instance;
+                rectClip.clipType = TweenClipType.Move;
+                rectClip.moveTargetType = MoveTargetType.RectTransform;
+            }
+            else if (instance is ScaleClip)
+            {
+                var scaleClip = (ScaleClip)instance;
+                scaleClip.clipType = TweenClipType.Scale;
+            }
+            else
+            {
+                // fallback
+                baseClip.clipType = TweenClipType.Move;
+            }
+        }
         elem.managedReferenceValue = instance;
         serializedObject.ApplyModifiedProperties();
-
         _selectedIndex = -1;
     }
 
@@ -684,7 +705,6 @@ public class TweenSequencerEditor : Editor
 
         float time = Mathf.Clamp01(progress) * total;
         _previewSequence.Goto(time, andPlay: false);
-
         EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene);
         SceneView.RepaintAll();
     }
