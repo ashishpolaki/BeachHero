@@ -7,7 +7,7 @@ public class TweenSequencer : MonoBehaviour
     [SerializeReference] private TweenClipBase[] clips;
     public int loopCount = 0;              // 0 = no loop, -1 = infinite loop
     public LoopType loopType = LoopType.Restart;
-    public float timelineDuration = 1f; 
+    public float timelineDuration = 1f;
     public TweenClipBase[] Clips => clips;
 
     public Sequence _sequence;
@@ -22,6 +22,13 @@ public class TweenSequencer : MonoBehaviour
         }
 
         _sequence = DOTween.Sequence().SetAutoKill(false).Pause();
+
+#if UNITY_EDITOR
+        if (!Application.isPlaying && loopCount < 0)
+        {
+            loopCount = 10; //  use a finite preview count in Edit Mode
+        }
+#endif
 
         // apply loop settings
         _sequence.SetLoops(loopCount, loopType);

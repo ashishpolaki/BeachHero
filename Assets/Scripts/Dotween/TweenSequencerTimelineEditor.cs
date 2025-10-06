@@ -10,6 +10,8 @@ using DG.DOTweenEditor;
 [CustomEditor(typeof(TweenSequencer))]
 public class TweenSequencerEditor : Editor
 {
+    public static TweenSequencerEditor Instance;
+
     private SerializedProperty _clipsProp;
     private SerializedProperty _timelineDurationProp;
     private TweenSequencer _sequencer;
@@ -36,11 +38,14 @@ public class TweenSequencerEditor : Editor
     private float _dragStartMouseX;
     private float _dragOriginalStart;
     private float _dragOriginalDuration;
+    private float minimumTimelineDuration = 0.1f;
+    private float maximumTimelineDuration = 3f;
 
     private enum DragMode { None, Move, ResizeLeft, ResizeRight }
 
     private void OnEnable()
     {
+        Instance = this;
         if (Application.isPlaying)
         {
             return;
@@ -55,6 +60,10 @@ public class TweenSequencerEditor : Editor
 
     private void OnDisable()
     {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
         if (Application.isPlaying)
         {
             return;
@@ -75,7 +84,7 @@ public class TweenSequencerEditor : Editor
         EditorGUILayout.Space(6);
         DrawTopToolbar();
         EditorGUILayout.Space(2);
-        EditorGUILayout.Slider(_timelineDurationProp, 0.1f, 3f, new GUIContent("Duration (s)"));
+        EditorGUILayout.Slider(_timelineDurationProp, minimumTimelineDuration, maximumTimelineDuration, new GUIContent("Duration (s)"));
         EditorGUILayout.Space(2);
 
         // Progress slider
@@ -85,6 +94,8 @@ public class TweenSequencerEditor : Editor
         {
             ScrubToProgress(_progress);
         }
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("loopCount"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("loopType"));
 
         // Timeline label
         GUIStyle centeredBold = new GUIStyle(EditorStyles.boldLabel);
@@ -393,6 +404,8 @@ public class TweenSequencerEditor : Editor
             TransformMoveClip => "Move",
             RectTransformMoveClip => "RectMove",
             ScaleClip => "Scale",
+            PunchScaleClip => "PunchScale",
+            BlendableScaleClip => "BlendScale",
             _ => "Unknown"
         };
 
@@ -401,6 +414,8 @@ public class TweenSequencerEditor : Editor
             TransformMoveClip moveClip when moveClip.target != null => moveClip.target.gameObject.name,
             RectTransformMoveClip rectClip when rectClip.target != null => rectClip.target.gameObject.name,
             ScaleClip scaleClip when scaleClip.target != null => scaleClip.target.gameObject.name,
+            PunchScaleClip punchClip when punchClip.target != null => punchClip.target.gameObject.name,
+            BlendableScaleClip blendClip when blendClip.target != null => blendClip.target.gameObject.name,
             _ => "<color=#FF4040>No Target</color>"
         };
         return $"{tweenType} ({targetName})";
@@ -412,7 +427,9 @@ public class TweenSequencerEditor : Editor
         {
             TransformMoveClip => new Color(0.13f, 0.37f, 0.75f),   // Dark Blue
             RectTransformMoveClip => new Color(0.44f, 0.66f, 1.0f),   // Light Blue
-            ScaleClip scaleClip => new Color(0.54f, 0.30f, 0.90f),  // Purple
+            ScaleClip => new Color(0.55f, 0.42f, 0.95f),            // Soft Violet
+            PunchScaleClip => new Color(1.00f, 0.58f, 0.20f),       // Orange
+            BlendableScaleClip => new Color(0.33f, 0.87f, 0.47f),   // Lime Green
             _ => Color.gray
         };
 
@@ -497,6 +514,7 @@ public class TweenSequencerEditor : Editor
             // keep preview playing from same progress
             float totalNow = ComputeTotalDuration();
             float time = Mathf.Clamp01(_progress) * Mathf.Max(0.0001f, totalNow);
+
             _previewSequence.Goto(time, andPlay: _isPlaying);
         }
     }
@@ -525,7 +543,7 @@ public class TweenSequencerEditor : Editor
         }
 
         EditorGUILayout.BeginVertical(GUI.skin.box);
-        EditorGUILayout.LabelField("Selected Clip", EditorStyles.boldLabel);
+      //  EditorGUILayout.LabelField("Selected Clip", EditorStyles.boldLabel);
 
         // Show the serialized clip fields (this will include all public fields on the clip)
         EditorGUILayout.PropertyField(elem, true);
@@ -580,7 +598,9 @@ public class TweenSequencerEditor : Editor
         var menu = new GenericMenu();
         menu.AddItem(new GUIContent("Move/Transform"), false, () => AddClip(typeof(TransformMoveClip)));
         menu.AddItem(new GUIContent("Move/RectTransform"), false, () => AddClip(typeof(RectTransformMoveClip)));
-        menu.AddItem(new GUIContent("Scale"), false, () => AddClip(typeof(ScaleClip)));
+        menu.AddItem(new GUIContent("Scale/Scale"), false, () => AddClip(typeof(ScaleClip)));
+        menu.AddItem(new GUIContent("Scale/PunchScale"), false, () => AddClip(typeof(PunchScaleClip)));
+        menu.AddItem(new GUIContent("Scale/BlendableScale"), false, () => AddClip(typeof(BlendableScaleClip)));
         menu.ShowAsContext();
     }
 
@@ -590,34 +610,6 @@ public class TweenSequencerEditor : Editor
         _clipsProp.InsertArrayElementAtIndex(index);
         var elem = _clipsProp.GetArrayElementAtIndex(index);
         var instance = Activator.CreateInstance(t);
-
-        if (instance is TweenClipBase)
-        {
-            var baseClip = (TweenClipBase)instance;
-
-            if (instance is TransformMoveClip)
-            {
-                var transformClip = (TransformMoveClip)instance;
-                transformClip.clipType = TweenClipType.Move;
-                transformClip.moveTargetType = MoveTargetType.Transform;
-            }
-            else if (instance is RectTransformMoveClip)
-            {
-                var rectClip = (RectTransformMoveClip)instance;
-                rectClip.clipType = TweenClipType.Move;
-                rectClip.moveTargetType = MoveTargetType.RectTransform;
-            }
-            else if (instance is ScaleClip)
-            {
-                var scaleClip = (ScaleClip)instance;
-                scaleClip.clipType = TweenClipType.Scale;
-            }
-            else
-            {
-                // fallback
-                baseClip.clipType = TweenClipType.Move;
-            }
-        }
         elem.managedReferenceValue = instance;
         serializedObject.ApplyModifiedProperties();
         _selectedIndex = -1;
@@ -627,7 +619,7 @@ public class TweenSequencerEditor : Editor
     {
         if (_sequencer == null) return;
 
-        try { DOTweenEditorPreview.Stop(); } catch { }
+        DOTweenEditorPreview.Stop();
 
         _sequencer.ApplyAllFromStates();
         _sequencer.Kill();
@@ -642,22 +634,11 @@ public class TweenSequencerEditor : Editor
 
         if (_autoReplay)
         {
-            try { _previewSequence.SetLoops(-1, LoopType.Restart); } catch { }
-        }
-        else
-        {
-            try { _previewSequence.SetLoops(1, LoopType.Restart); } catch { }
+            _previewSequence.SetLoops(10, LoopType.Restart);
         }
 
-        try
-        {
-            DOTween.Init(false, true, LogBehaviour.ErrorsOnly);
-            DOTweenEditorPreview.PrepareTweenForPreview(_previewSequence, true, true, true);
-        }
-        catch (Exception e)
-        {
-            Debug.LogWarning("DOTweenEditorPreview prepare failed: " + e.Message);
-        }
+        DOTween.Init(false, true, LogBehaviour.ErrorsOnly);
+        DOTweenEditorPreview.PrepareTweenForPreview(_previewSequence, true, true, true);
 
         DOTweenEditorPreview.Start(() => { SceneView.RepaintAll(); });
 
@@ -693,8 +674,6 @@ public class TweenSequencerEditor : Editor
 
     private void ScrubToProgress(float progress)
     {
-        float total = ComputeTotalDuration();
-
         if (_previewSequence == null || _sequencer == null)
         {
             _sequencer.ApplyAllFromStates();
@@ -702,13 +681,12 @@ public class TweenSequencerEditor : Editor
             _previewSequence = _sequencer._sequence;
             DOTweenEditorPreview.PrepareTweenForPreview(_previewSequence, true, true, false);
         }
-
-        float time = Mathf.Clamp01(progress) * total;
+        float normalized = Mathf.Clamp01(progress);
+        float time = normalized * _previewSequence.Duration();
         _previewSequence.Goto(time, andPlay: false);
         EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene);
         SceneView.RepaintAll();
     }
-
 
     private float ComputeTotalDuration()
     {
