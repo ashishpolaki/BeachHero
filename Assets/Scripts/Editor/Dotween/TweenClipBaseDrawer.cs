@@ -1,7 +1,9 @@
+#if UNITY_EDITOR
 using UnityEditor.SceneManagement;
 using UnityEditor;
 using UnityEngine;
 using System.Reflection;
+using DG.Tweening;
 
 namespace BeachHero
 {
@@ -17,7 +19,6 @@ namespace BeachHero
             GUIStyle labelStyle = new GUIStyle(EditorStyles.boldLabel)
             {
                 richText = true
-
             };
 
             // Header
@@ -34,6 +35,26 @@ namespace BeachHero
             DrawIfExists(property, ref y, position, "duration");
             DrawIfExists(property, ref y, position, "ease");
             DrawIfExists(property, ref y, position, "snapping");
+
+            //If ease is Back, show overshoot
+            var easeProp = property.FindPropertyRelative("ease");
+            if (easeProp != null)
+            {
+                if (easeProp.enumValueIndex == (int)Ease.InBack || easeProp.enumValueIndex == (int)Ease.OutBack || easeProp.enumValueIndex == (int)Ease.InOutBack)
+                {
+                    DrawIfExists(property, ref y, position, "overshoot");
+                }
+                else if (easeProp.enumValueIndex == (int)Ease.InElastic || easeProp.enumValueIndex == (int)Ease.OutElastic || easeProp.enumValueIndex == (int)Ease.InOutElastic)
+                {
+                    DrawIfExists(property, ref y, position, "amplitude");
+                    DrawIfExists(property, ref y, position, "period");
+                }
+                else if (easeProp.enumValueIndex == (int)Ease.InFlash || easeProp.enumValueIndex == (int)Ease.OutFlash || easeProp.enumValueIndex == (int)Ease.InOutFlash)
+                {
+                    DrawIfExists(property, ref y, position, "amplitude", "Flash Count");
+                    DrawIfExists(property, ref y, position, "period", "Flash Duration");
+                }
+            }
         }
 
         protected virtual string HeaderLabel()
@@ -41,21 +62,29 @@ namespace BeachHero
             return string.Empty;
         }
 
-        protected virtual string TargetLabel(SerializedProperty property)
+        protected int HasProperty(SerializedProperty parent, string path)
         {
+            return parent.FindPropertyRelative(path) != null ? 1 : 0;
+        }
+        private string TargetLabel(SerializedProperty property)
+        {
+            var targetProp = property.FindPropertyRelative("target");
+
+            if (targetProp != null && targetProp.objectReferenceValue != null)
+            {
+                return targetProp.objectReferenceValue.name;
+            }
             return "<color=#FF4040>Target Null</color>";
         }
 
-        // Helper that advances y (no lambdas capturing ref)
-        protected void DrawIfExists(SerializedProperty property, ref float y, Rect position, string propName)
+        protected void DrawIfExists(SerializedProperty parent, ref float y, Rect position, string propName, string labelOverride = null)
         {
-            var p = property.FindPropertyRelative(propName);
-            if (p != null)
+            SerializedProperty prop = parent.FindPropertyRelative(propName);
+            if (prop != null)
             {
-                float lineH = EditorGUIUtility.singleLineHeight;
-                var r = new Rect(position.x, y, position.width, lineH);
-                EditorGUI.PropertyField(r, p);
-                y += lineH + LINE_SPACING;
+                Rect fieldRect = new Rect(position.x, y, position.width, EditorGUIUtility.singleLineHeight);
+                EditorGUI.PropertyField(fieldRect, prop, new GUIContent(labelOverride ?? prop.displayName));
+                y += EditorGUIUtility.singleLineHeight + EditorGUIUtility.standardVerticalSpacing;
             }
         }
 
@@ -68,6 +97,21 @@ namespace BeachHero
             lines += Exists("duration");
             lines += Exists("ease");
             lines += Exists("snapping");
+
+            var easeProp = property.FindPropertyRelative("ease");
+            if (easeProp != null)
+            {
+                if (easeProp.enumValueIndex == (int)Ease.InBack || easeProp.enumValueIndex == (int)Ease.OutBack || easeProp.enumValueIndex == (int)Ease.InOutBack)
+                {
+                    lines += Exists("overshoot");
+                }
+                else if (easeProp.enumValueIndex == (int)Ease.InElastic || easeProp.enumValueIndex == (int)Ease.OutElastic || easeProp.enumValueIndex == (int)Ease.InOutElastic ||
+                    easeProp.enumValueIndex == (int)Ease.InFlash || easeProp.enumValueIndex == (int)Ease.OutFlash || easeProp.enumValueIndex == (int)Ease.InOutFlash)
+                {
+                    lines += Exists("amplitude");
+                    lines += Exists("period");
+                }
+            }
 
             float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;
             return lines * singleLineTotal;
@@ -122,316 +166,5 @@ namespace BeachHero
             }
         }
     }
-
-    #region Move
-
-    [CustomPropertyDrawer(typeof(MoveClipBase), true)]
-    public class MoveClipBaseDrawer : TweenClipBaseDrawer
-    {
-        protected override void DrawBaseFields(SerializedProperty property, ref float y, Rect position, GUIContent label)
-        {
-            base.DrawBaseFields(property, ref y, position, label);
-            DrawIfExists(property, ref y, position, "fromPosition");
-        }
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-        {
-            float baseHeight = base.GetPropertyHeight(property, label);
-
-            int extraLines = 1;
-            System.Func<string, int> Exists = (n) => property.FindPropertyRelative(n) != null ? 1 : 0;
-            extraLines += Exists("fromPosition");
-
-            float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;
-            return baseHeight + extraLines * singleLineTotal;
-        }
-    }
-
-    [CustomPropertyDrawer(typeof(TransformMoveClip), true)]
-    public class TransformMoveClipDrawer : MoveClipBaseDrawer
-    {
-        protected override string HeaderLabel()
-        {
-            return "Transform Move";
-        }
-
-        protected override string TargetLabel(SerializedProperty property)
-        {
-            var targetProp = property.FindPropertyRelative("target");
-
-            if (targetProp != null && targetProp.objectReferenceValue != null)
-            {
-                return targetProp.objectReferenceValue.name;
-            }
-            //Find Target Property 
-            return base.TargetLabel(property);
-        }
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-        {
-            EditorGUI.BeginProperty(position, label, property);
-            property.serializedObject.Update();
-
-            float y = position.y;
-
-            // draw base part
-            DrawBaseFields(property, ref y, position, label);
-
-            // draw MoveClipBase fields via inherited helper
-            var positionSpace = property.FindPropertyRelative("positionSpace");
-            if (positionSpace != null)
-            {
-                DrawIfExists(property, ref y, position, "positionSpace");
-                if (positionSpace.enumValueIndex == (int)SpaceType.World)
-                {
-                    var transformAxis = property.FindPropertyRelative("transformAxis");
-                    if (transformAxis != null)
-                    {
-                        DrawIfExists(property, ref y, position, "transformAxis");
-                        if (transformAxis.enumValueIndex == (int)Axis3D.X)
-                        {
-                            DrawIfExists(property, ref y, position, "toPosition.x");
-                        }
-                        else if (transformAxis.enumValueIndex == (int)Axis3D.Y)
-                        {
-                            DrawIfExists(property, ref y, position, "toPosition.y");
-                        }
-                        else if (transformAxis.enumValueIndex == (int)Axis3D.Z)
-                        {
-                            DrawIfExists(property, ref y, position, "toPosition.z");
-                        }
-                        else
-                        {
-                            DrawIfExists(property, ref y, position, "toPosition");
-                        }
-                    }
-                }
-                else if (positionSpace.enumValueIndex == (int)SpaceType.Local)
-                {
-                    var transformAxis = property.FindPropertyRelative("transformAxis");
-                    if (transformAxis != null)
-                    {
-                        DrawIfExists(property, ref y, position, "transformAxis");
-                        if (transformAxis.enumValueIndex == (int)Axis3D.X)
-                        {
-                            DrawIfExists(property, ref y, position, "toPosition.x");
-                        }
-                        else if (transformAxis.enumValueIndex == (int)Axis3D.Y)
-                        {
-                            DrawIfExists(property, ref y, position, "toPosition.y");
-                        }
-                        else if (transformAxis.enumValueIndex == (int)Axis3D.Z)
-                        {
-                            DrawIfExists(property, ref y, position, "toPosition.z");
-                        }
-                        else
-                        {
-                            DrawIfExists(property, ref y, position, "toPosition");
-                        }
-                    }
-                }
-            }
-            DrawIfExists(property, ref y, position, "target");
-            property.serializedObject.ApplyModifiedProperties();
-            EditorGUI.EndProperty();
-        }
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-        {
-            float baseHeight = base.GetPropertyHeight(property, label);
-
-            int extraLines = 0;
-            System.Func<string, int> Exists = (n) => property.FindPropertyRelative(n) != null ? 1 : 0;
-            extraLines += Exists("positionSpace");
-            extraLines += Exists("target");
-            extraLines += Exists("toPosition");
-            extraLines += Exists("transformAxis");
-            float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;
-            return baseHeight + extraLines * singleLineTotal;
-        }
-    }
-
-    [CustomPropertyDrawer(typeof(RectTransformMoveClip), true)]
-    public class RectTransformMoveClipDrawer : MoveClipBaseDrawer
-    {
-        protected override string HeaderLabel()
-        {
-            return "Rect Anchor Move";
-        }
-
-        protected override string TargetLabel(SerializedProperty property)
-        {
-            var targetProp = property.FindPropertyRelative("target");
-
-            if (targetProp != null && targetProp.objectReferenceValue != null)
-            {
-                return targetProp.objectReferenceValue.name;
-            }
-            return base.TargetLabel(property);
-        }
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-        {
-            EditorGUI.BeginProperty(position, label, property);
-            property.serializedObject.Update();
-            float y = position.y;
-
-            // draw base part
-            DrawBaseFields(property, ref y, position, label);
-
-            var rectAxis = property.FindPropertyRelative("rectAxis");
-            if (rectAxis != null)
-            {
-                DrawIfExists(property, ref y, position, "rectAxis");
-                if (rectAxis.enumValueIndex == (int)Axis2D.X)
-                {
-                    DrawIfExists(property, ref y, position, "toAnchoredPosition.x");
-                }
-                else if (rectAxis.enumValueIndex == (int)Axis2D.Y)
-                {
-                    DrawIfExists(property, ref y, position, "toAnchoredPosition.y");
-                }
-                else
-                {
-                    DrawIfExists(property, ref y, position, "toAnchoredPosition");
-                }
-            }
-
-            DrawIfExists(property, ref y, position, "target");
-
-            property.serializedObject.ApplyModifiedProperties();
-            EditorGUI.EndProperty();
-        }
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-        {
-            float baseHeight = base.GetPropertyHeight(property, label);
-
-            int extraLines = 0;
-            System.Func<string, int> Exists = (n) => property.FindPropertyRelative(n) != null ? 1 : 0;
-            extraLines += Exists("target");
-            extraLines += Exists("toAnchoredPosition");
-            extraLines += Exists("rectAxis");
-            float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;
-            return baseHeight + extraLines * singleLineTotal;
-        }
-    }
-    #endregion
-
-    #region Scale
-
-    [CustomPropertyDrawer(typeof(ScaleClip), true)]
-    public class ScaleClipBaseDrawer : TweenClipBaseDrawer
-    {
-        protected override void DrawBaseFields(SerializedProperty property, ref float y, Rect position, GUIContent label)
-        {
-            base.DrawBaseFields(property, ref y, position, label);
-            DrawIfExists(property, ref y, position, "fromScale");
-            DrawIfExists(property, ref y, position, "toScale");
-            DrawIfExists(property, ref y, position, "target");
-        }
-
-        protected override string HeaderLabel()
-        {
-            return "Scale";
-        }
-
-        protected override string TargetLabel(SerializedProperty property)
-        {
-            var targetProp = property.FindPropertyRelative("target");
-
-            if (targetProp != null && targetProp.objectReferenceValue != null)
-            {
-                return targetProp.objectReferenceValue.name;
-            }
-            //Find Target Property 
-            return base.TargetLabel(property);
-        }
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-        {
-            EditorGUI.BeginProperty(position, label, property);
-            property.serializedObject.Update();
-            float y = position.y;
-
-            // draw base part
-            DrawBaseFields(property, ref y, position, label);
-
-            property.serializedObject.ApplyModifiedProperties();
-            EditorGUI.EndProperty();
-        }
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-        {
-            float baseHeight = base.GetPropertyHeight(property, label);
-
-            int extraLines = 1;
-            System.Func<string, int> Exists = (n) => property.FindPropertyRelative(n) != null ? 1 : 0;
-            extraLines += Exists("target");
-            extraLines += Exists("fromScale");
-            extraLines += Exists("toScale");
-            float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;
-            return baseHeight + extraLines * singleLineTotal;
-        }
-    }
-
-    [CustomPropertyDrawer(typeof(PunchScaleClip), true)]
-    public class PunchScaleClipDrawer : ScaleClipBaseDrawer
-    {
-        protected override string HeaderLabel()
-        {
-            return "Punch Scale";
-        }
-
-        protected override string TargetLabel(SerializedProperty property)
-        {
-            var targetProp = property.FindPropertyRelative("target");
-
-            if (targetProp != null && targetProp.objectReferenceValue != null)
-            {
-                return targetProp.objectReferenceValue.name;
-            }
-            //Find Target Property 
-            return base.TargetLabel(property);
-        }
-
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-        {
-            EditorGUI.BeginProperty(position, label, property);
-            property.serializedObject.Update();
-            float y = position.y;
-
-            // draw base part
-            DrawBaseFields(property, ref y, position, label);
-            DrawIfExists(property, ref y, position, "vibrato");
-            DrawIfExists(property, ref y, position, "elasticity");
-
-            property.serializedObject.ApplyModifiedProperties();
-            EditorGUI.EndProperty();
-        }
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-        {
-            float baseHeight = base.GetPropertyHeight(property, label);
-
-            int extraLines = 0;
-            System.Func<string, int> Exists = (n) => property.FindPropertyRelative(n) != null ? 1 : 0;
-            extraLines += Exists("vibrato");
-            extraLines += Exists("elasticity");
-            float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;
-            return baseHeight + extraLines * singleLineTotal;
-        }
-    }
-
-
-    [CustomPropertyDrawer(typeof(BlendableScaleClip), true)]
-    public class BlendableScaleClipDrawer : ScaleClipBaseDrawer
-    {
-        protected override string HeaderLabel()
-        {
-            return "Blendable Scale";
-        }
-    }
-
-    #endregion
 }
+#endif
