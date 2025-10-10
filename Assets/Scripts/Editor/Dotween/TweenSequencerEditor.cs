@@ -16,6 +16,7 @@ namespace BeachHero
 
         private SerializedProperty _clipsProp;
         private SerializedProperty _timelineDurationProp;
+        private SerializedProperty _triggerEventsProp;
         private TweenSequencer _sequencer;
         private FieldInfo _sequenceField;
 
@@ -40,6 +41,14 @@ namespace BeachHero
         private float _dragStartMouseX;
         private float _dragOriginalStart;
         private float _dragOriginalDuration;
+
+        // trigger dragging state
+        private int _draggingTriggerIndex = -1;
+        private float _triggerDragStartMouseX = 0f;
+        private float _triggerOriginalPercent = 0f;
+        private int _selectedTriggerIndex = -1;
+
+        // timeline duration limits
         private float minimumTimelineDuration = 0.1f;
         private float maximumTimelineDuration = 3f;
 
@@ -55,6 +64,7 @@ namespace BeachHero
             _sequencer = (TweenSequencer)target;
             _clipsProp = serializedObject.FindProperty("clips");
             _timelineDurationProp = serializedObject.FindProperty("timelineDuration");
+            _triggerEventsProp = serializedObject.FindProperty("triggerEvents"); // <-- init
             _sequenceField = typeof(TweenSequencer).GetField("_sequence", BindingFlags.NonPublic | BindingFlags.Instance);
 
             if (_selectedIndex >= _clipsProp.arraySize) _selectedIndex = -1;
@@ -99,15 +109,82 @@ namespace BeachHero
             EditorGUILayout.PropertyField(serializedObject.FindProperty("loopType"));
 
             // Timeline label
-            GUIStyle centeredBold = new GUIStyle(EditorStyles.boldLabel);
-            centeredBold.alignment = TextAnchor.MiddleCenter;
-            EditorGUILayout.LabelField("Timeline", centeredBold, GUILayout.ExpandWidth(true));
             DrawTimelineArea();
             DrawBottomControls();
+
+            // Trigger events inspector (inline, editable)
+            DrawTriggerEventInspector();
 
             // Selected clip details
             EditorGUILayout.Space(6);
             DrawSelectedClipInspector();
+
+            serializedObject.ApplyModifiedProperties();
+        }
+
+        private void DrawTriggerEventInspector()
+        {
+            if (_triggerEventsProp == null)
+                _triggerEventsProp = serializedObject.FindProperty("triggerEvents");
+
+            EditorGUILayout.Space(6);
+
+            // --- Label + Buttons on same horizontal row ---
+            EditorGUILayout.BeginHorizontal();
+
+            // Label takes all remaining space
+            EditorGUILayout.LabelField("Trigger Events", EditorStyles.boldLabel, GUILayout.MinWidth(100), GUILayout.ExpandWidth(true));
+
+            // Add Event (+)
+            if (GUILayout.Button("+", GUILayout.Width(30)))
+            {
+                int idx = _triggerEventsProp.arraySize;
+                _triggerEventsProp.InsertArrayElementAtIndex(idx);
+                var newElem = _triggerEventsProp.GetArrayElementAtIndex(idx);
+
+                // Initialize timePercent to current scrub position
+                var timePercentProp = newElem.FindPropertyRelative("timePercent");
+                if (timePercentProp != null) timePercentProp.floatValue = Mathf.Clamp01(_progress) * 100f;
+
+                newElem.isExpanded = true;
+
+                serializedObject.ApplyModifiedProperties();
+                EditorUtility.SetDirty(_sequencer);
+                try { EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene); } catch { }
+
+                // select the newly added trigger
+                _selectedTriggerIndex = idx;
+            }
+
+            // Remove Last (-)
+            if (GUILayout.Button("-", GUILayout.Width(30)))
+            {
+                int sizeBefore = _triggerEventsProp.arraySize;
+                if (sizeBefore > 0)
+                {
+                    int lastIdx = sizeBefore - 1;
+
+                    // if selected trigger was the last one, deselect; otherwise clamp selection
+                    if (_selectedTriggerIndex == lastIdx) _selectedTriggerIndex = -1;
+                    else if (_selectedTriggerIndex > lastIdx) _selectedTriggerIndex = Mathf.Clamp(_selectedTriggerIndex, -1, lastIdx - 1);
+
+                    // if dragging that trigger, cancel drag
+                    if (_draggingTriggerIndex == lastIdx) _draggingTriggerIndex = -1;
+                    else if (_draggingTriggerIndex > lastIdx) _draggingTriggerIndex = Mathf.Clamp(_draggingTriggerIndex, -1, lastIdx - 1);
+
+                    _triggerEventsProp.DeleteArrayElementAtIndex(lastIdx);
+
+                    serializedObject.ApplyModifiedProperties();
+                    EditorUtility.SetDirty(_sequencer);
+                    try { EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene); } catch { }
+
+                    Repaint();
+                }
+            }
+
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.Space(4);
 
             serializedObject.ApplyModifiedProperties();
         }
@@ -227,6 +304,10 @@ namespace BeachHero
 
         private void DrawTimelineArea()
         {
+            GUIStyle centeredBold = new GUIStyle(EditorStyles.boldLabel);
+            centeredBold.alignment = TextAnchor.MiddleCenter;
+            EditorGUILayout.LabelField("Timeline", centeredBold, GUILayout.ExpandWidth(true));
+
             float total = ComputeTotalDuration();
             if (total <= 0f) total = 1f;
 
@@ -342,14 +423,18 @@ namespace BeachHero
                         BeginDrag(i, DragMode.ResizeRight);
                         Event.current.Use();
                     }
-                    // clicking the bar selects / moves
+                    // clicking the bar selects (and prepares for drag) DO NOT change progress on simple click
                     else if (Event.current.type == EventType.MouseDown && barRect.Contains(mouse))
                     {
+                        // prepare dragging (BeginDrag records undo and stores original values).
+                        // We still call BeginDrag so an immediate mouse-drag will move the clip.
                         BeginDrag(i, DragMode.Move);
+
+                        // select the clip under the mouse
                         _selectedIndex = i;
-                        // set progress normalized (0..1) to clip start
-                        _progress = Mathf.Clamp01(start / total);
-                        ScrubToProgress(_progress);
+
+                        // NOTE: do NOT change _progress or call ScrubToProgress here.
+                        // Progress should only be changed when the user drags in the timeline area (handled elsewhere).
                         Event.current.Use();
                     }
 
@@ -377,6 +462,136 @@ namespace BeachHero
                 }
             }
 
+            // --- Draw trigger event markers (draggable, show time in seconds) ---
+            if (_triggerEventsProp != null && _triggerEventsProp.isArray)
+            {
+                float totalDuration = Mathf.Max(0.0001f, ComputeTotalDuration()); // used to show seconds
+
+                // end any trigger drag on mouse up
+                if (Event.current.type == EventType.MouseUp && _draggingTriggerIndex != -1)
+                {
+                    _draggingTriggerIndex = -1;
+                    serializedObject.ApplyModifiedProperties();
+                    EditorUtility.SetDirty(_sequencer);
+                    EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene);
+                    Event.current.Use();
+                }
+
+                for (int i = 0; i < _triggerEventsProp.arraySize; i++)
+                {
+                    var te = _triggerEventsProp.GetArrayElementAtIndex(i);
+                    if (te == null) continue;
+                    var timePercentProp = te.FindPropertyRelative("timePercent");
+                    float percent = (timePercentProp != null) ? timePercentProp.floatValue : 0f;
+
+                    float normalized = Mathf.Clamp01(percent / 100f);
+                    float x = inner.x + normalized * inner.width;
+
+                    // diamond shape
+                    float markerCenterY = inner.y - 14f;
+                    float half = 6f;
+                    Vector3[] diamond = new Vector3[]
+                    {
+            new Vector3(x, markerCenterY - half),
+            new Vector3(x - half, markerCenterY),
+            new Vector3(x, markerCenterY + half),
+            new Vector3(x + half, markerCenterY)
+                    };
+
+                    Rect markerRect = new Rect(x - half - 2f, markerCenterY - half - 2f, half * 2f + 4f, half * 2f + 4f);
+
+                    // guide line
+                    Handles.color = new Color(0.95f, 0.55f, 0.15f, 0.6f);
+                    Handles.DrawLine(new Vector3(x, markerCenterY + half + 2f), new Vector3(x, inner.y + inner.height));
+                    Handles.color = Color.white;
+
+                    // draw marker
+                    Handles.DrawAAConvexPolygon(diamond);
+                    Handles.DrawAAPolyLine(2f, new Vector3[] { diamond[0], diamond[1], diamond[2], diamond[3], diamond[0] });
+
+                    // compute seconds for display
+                    float seconds = normalized * totalDuration;
+
+                    Vector2 mouse = Event.current.mousePosition;
+
+                    // If this trigger is being dragged, update its percent from mouse delta
+                    if (_draggingTriggerIndex == i && (Event.current.type == EventType.MouseDrag || Event.current.type == EventType.MouseMove))
+                    {
+                        float mouseDelta = Event.current.mousePosition.x - _triggerDragStartMouseX;
+                        float deltaNorm = (mouseDelta / Mathf.Max(1f, inner.width));
+                        float newNorm = Mathf.Clamp01((_triggerOriginalPercent / 100f) + deltaNorm);
+                        float newPercent = newNorm * 100f;
+                        if (timePercentProp != null)
+                        {
+                            timePercentProp.floatValue = newPercent;
+                            serializedObject.ApplyModifiedProperties();
+                            percent = newPercent;
+                            normalized = newNorm;
+                            seconds = normalized * totalDuration;
+                            x = inner.x + normalized * inner.width;
+                        }
+                        Event.current.Use();
+                    }
+                    // hover: show seconds tooltip above the marker & change cursor
+                    if (markerRect.Contains(mouse))
+                    {
+                        string tipText = $"Trigger: {seconds:0.00}s";
+                        Vector2 tipSize = EditorStyles.miniLabel.CalcSize(new GUIContent(tipText));
+
+                        // place tooltip centered above the marker (leave a small gap)
+                        float tipX = x - tipSize.x * 0.5f;
+                        float tipY = markerCenterY - half - tipSize.y - 6f; // 6px gap above marker
+
+                        // clamp to inner bounds so it doesn't overflow the timeline rect
+                        tipX = Mathf.Clamp(tipX, inner.x + 2f, inner.x + inner.width - tipSize.x - 2f);
+                        tipY = Mathf.Max(tipY, inner.y - 40f); // don't go too far above
+
+                        Rect tipRect = new Rect(tipX, tipY, tipSize.x, tipSize.y);
+                        GUI.Label(tipRect, tipText, EditorStyles.miniLabel);
+
+                        EditorGUIUtility.AddCursorRect(markerRect, MouseCursor.SlideArrow);
+
+                        // start drag (left mouse down)
+                        if (Event.current.type == EventType.MouseDown && Event.current.button == 0)
+                        {
+                            _draggingTriggerIndex = i;
+                            _triggerDragStartMouseX = Event.current.mousePosition.x;
+                            _triggerOriginalPercent = percent;
+
+                            // DO NOT change _progress here - clicking/selecting a trigger should not move the scrub
+                            // expand the property for editing
+                            te.isExpanded = true;
+                            serializedObject.ApplyModifiedProperties();
+
+                            Selection.activeObject = _sequencer;
+                            EditorGUIUtility.PingObject(_sequencer);
+
+                            Event.current.Use();
+                        }
+                    }
+
+                    // click without drag: select and expand (do not change progress)
+                    if (Event.current.type == EventType.MouseDown && markerRect.Contains(Event.current.mousePosition) && _draggingTriggerIndex == -1)
+                    {
+                        // select but do not change scrub/progress
+                        _selectedTriggerIndex = i;
+
+                        te.isExpanded = true;
+                        serializedObject.ApplyModifiedProperties();
+                        Selection.activeObject = _sequencer;
+                        EditorGUIUtility.PingObject(_sequencer);
+
+                        Event.current.Use();
+                    }
+
+                    // optional focused outline when expanded
+                    if (te.isExpanded)
+                    {
+                        Handles.DrawAAPolyLine(3f, new Vector3[] { diamond[0], diamond[1], diamond[2], diamond[3], diamond[0] });
+                    }
+                }
+            }
+
             // scrub handle (positioned by normalized _progress)
             float scrubX = inner.x + Mathf.Clamp01(_progress) * inner.width;
             Rect scrubRect = new Rect(scrubX - 1, inner.y - 4, 2, inner.height + 8);
@@ -386,7 +601,9 @@ namespace BeachHero
             if ((Event.current.type == EventType.MouseDrag || Event.current.type == EventType.MouseDown) && inner.Contains(Event.current.mousePosition))
             {
                 // don't override if currently dragging a clip
-                if (_dragMode == DragMode.None)
+                // also don't scrub if the pointer is over a clip or over a trigger marker (so clip/marker clicks remain selection-only)
+                bool overInteractive = IsPointerOverTweenClipOrTriggerEvent(Event.current.mousePosition, inner, total);
+                if (_dragMode == DragMode.None && !overInteractive)
                 {
                     float normalizedAtMouse = Mathf.Clamp01((Event.current.mousePosition.x - inner.x) / inner.width);
                     _progress = normalizedAtMouse;
@@ -396,6 +613,46 @@ namespace BeachHero
             }
         }
 
+        private bool IsPointerOverTweenClipOrTriggerEvent(Vector2 mousePos, Rect inner, float total)
+        {
+            // check clips
+            var clipsRuntime = _sequencer.Clips;
+            if (clipsRuntime != null)
+            {
+                for (int i = 0; i < clipsRuntime.Length; i++)
+                {
+                    var clip = clipsRuntime[i];
+                    if (clip == null) continue;
+                    float start = Mathf.Clamp(clip.startTime, 0f, total);
+                    float dur = Mathf.Max(0.0001f, clip.duration);
+                    if (start + dur > total) dur = Mathf.Max(0.0001f, total - start);
+                    float x = inner.x + Mathf.Clamp01(start / total) * inner.width;
+                    float w = Mathf.Clamp01(dur / total) * inner.width;
+                    Rect barRect = new Rect(x, inner.y + 6 + i * (CLIP_BAR_HEIGHT + CLIP_BAR_PADDING), Mathf.Max(6f, w), CLIP_BAR_HEIGHT);
+                    if (barRect.Contains(mousePos)) return true;
+                }
+            }
+
+            // check trigger markers
+            if (_triggerEventsProp != null && _triggerEventsProp.isArray)
+            {
+                for (int i = 0; i < _triggerEventsProp.arraySize; i++)
+                {
+                    var te = _triggerEventsProp.GetArrayElementAtIndex(i);
+                    if (te == null) continue;
+                    var timePercentProp = te.FindPropertyRelative("timePercent");
+                    float percent = (timePercentProp != null) ? timePercentProp.floatValue : 0f;
+                    float normalized = Mathf.Clamp01(percent / 100f);
+                    float x = inner.x + normalized * inner.width;
+                    float markerCenterY = inner.y - 14f;
+                    float half = 6f;
+                    Rect markerRect = new Rect(x - half - 2f, markerCenterY - half - 2f, half * 2f + 4f, half * 2f + 4f);
+                    if (markerRect.Contains(mousePos)) return true;
+                }
+            }
+
+            return false;
+        }
 
         private void BeginDrag(int index, DragMode mode)
         {
@@ -672,6 +929,7 @@ namespace BeachHero
 
             return color;
         }
+
         private void AddClip(Type t)
         {
             int index = _clipsProp.arraySize;
@@ -728,9 +986,12 @@ namespace BeachHero
         private void StopPreviewAndCleanup()
         {
             _sequencer.Kill();
-            _previewSequence.Complete(true);
-            _previewSequence.Kill();
-            _previewSequence = null;
+            if (_previewSequence != null)
+            {
+                _previewSequence.Complete(true);
+                _previewSequence.Kill();
+                _previewSequence = null;
+            }
 
             DOTweenEditorPreview.Stop();
 
@@ -780,5 +1041,5 @@ namespace BeachHero
         }
 
     }
-#endif
 }
+#endif

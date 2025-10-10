@@ -1,12 +1,24 @@
 using DG.Tweening;
+using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace BeachHero
 {
+    [Serializable]
+    public class TriggerEvent
+    {
+        [Range(0f, 100f)] public float timePercent; // % of total duration
+        public UnityEvent onTrigger;
+    }
+
     public class TweenSequencer : MonoBehaviour
     {
         [SerializeReference] private TweenClipBase[] clips;
+        [SerializeField] private List<TriggerEvent> triggerEvents = new();
+
         public int loopCount = 0;              // 0 = no loop, -1 = infinite loop
         public LoopType loopType = LoopType.Restart;
         public float timelineDuration = 1f;
@@ -40,6 +52,7 @@ namespace BeachHero
                 return;
             }
 
+            // Build Tweens
             foreach (var clip in clips)
             {
                 if (clip == null)
@@ -54,7 +67,18 @@ namespace BeachHero
                 _sequence.Insert(clip.startTime, tween);
             }
 
+            // Add Trigger Events
+            foreach (var trigger in triggerEvents)
+            {
+                if (trigger == null || trigger.onTrigger == null)
+                {
+                    continue;
+                }
+                float triggerTime = Mathf.Clamp01(trigger.timePercent / 100f) * timelineDuration;
+                _sequence.InsertCallback(triggerTime, () => trigger.onTrigger?.Invoke());
+            }
         }
+
         public void Play()
         {
             if (_sequence == null || !_sequence.IsActive())
@@ -63,10 +87,12 @@ namespace BeachHero
             }
             _sequence?.Restart(); // restart ensures it plays from beginning each time
         }
+
         public void Pause()
         {
             _sequence?.Pause();
         }
+
         public void Kill()
         {
             KillAllClips();
@@ -76,11 +102,13 @@ namespace BeachHero
                 _sequence = null;
             }
         }
+
         private void KillAllClips()
         {
             if (clips == null) return;
             foreach (var c in clips) c?.KillTween();
         }
+
         public void ApplyAllFromStates()
         {
             if (clips == null) return;
