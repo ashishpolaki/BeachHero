@@ -56,7 +56,7 @@ namespace BeachHero
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             float baseHeight = base.GetPropertyHeight(property, label);
-            int extraLines = 1;
+            int extraLines = 0;
             extraLines += HasProperty(property, "spaceType");
             float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;
             return baseHeight + extraLines * singleLineTotal;
@@ -100,7 +100,7 @@ namespace BeachHero
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             float baseHeight = base.GetPropertyHeight(property, label);
-            int extraLines = 1;
+            int extraLines = 0;
             extraLines += HasProperty(property, "spaceType");
             extraLines += HasProperty(property, "rotateMode");
             float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;
@@ -135,7 +135,7 @@ namespace BeachHero
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             float baseHeight = base.GetPropertyHeight(property, label);
-            int extraLines = 1;
+            int extraLines = 0;
             extraLines += HasProperty(property, "vibrato");
             extraLines += HasProperty(property, "elasticity");
             float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;
