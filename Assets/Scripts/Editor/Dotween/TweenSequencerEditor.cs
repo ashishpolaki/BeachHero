@@ -181,6 +181,7 @@ namespace BeachHero
             EditorGUILayout.EndVertical();
         }
 
+        #region Keyboard Shortcuts
         private void HandleKeyboardShortcuts()
         {
             var e = Event.current;
@@ -191,18 +192,27 @@ namespace BeachHero
             {
                 if (e.keyCode == KeyCode.D) // Ctrl/Cmd + D -> duplicate
                 {
-                    DuplicateSelectedClip();
+                    if (_selectedClipIndex >= 0)
+                        DuplicateSelectedClip();
+                    else if (_selectedTriggerIndex >= 0)
+                        DuplicateSelectedTrigger();
+
                     e.Use();
                     GUI.FocusControl(null);
                 }
                 else if (e.keyCode == KeyCode.Delete) // Ctrl/Cmd + Delete -> delete
                 {
-                    DeleteSelectedClip();
+                    if (_selectedClipIndex >= 0)
+                        DeleteSelectedClip();
+                    else if (_selectedTriggerIndex >= 0)
+                        DeleteSelectedTrigger();
+
                     e.Use();
                     GUI.FocusControl(null);
                 }
             }
         }
+
 
         private void DuplicateSelectedClip()
         {
@@ -263,6 +273,49 @@ namespace BeachHero
             try { EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene); } catch { }
         }
 
+        private void DeleteSelectedTrigger()
+        {
+            if (_triggerEventsProp == null || _selectedTriggerIndex < 0 || _selectedTriggerIndex >= _triggerEventsProp.arraySize)
+                return;
+
+            Undo.RegisterCompleteObjectUndo(_sequencer, "Delete Trigger");
+
+            _triggerEventsProp.DeleteArrayElementAtIndex(_selectedTriggerIndex);
+            serializedObject.ApplyModifiedProperties();
+
+            // clamp selection
+            int newIndex = Mathf.Clamp(_selectedTriggerIndex, 0, _triggerEventsProp.arraySize - 1);
+            _selectedTriggerIndex = (_triggerEventsProp.arraySize == 0) ? -1 : newIndex;
+
+            EditorUtility.SetDirty(_sequencer);
+            try { EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene); } catch { }
+        }
+
+        private void DuplicateSelectedTrigger()
+        {
+            if (_triggerEventsProp == null || _selectedTriggerIndex < 0 || _selectedTriggerIndex >= _triggerEventsProp.arraySize)
+                return;
+
+            Undo.RegisterCompleteObjectUndo(_sequencer, "Duplicate Trigger");
+
+            var srcProp = _triggerEventsProp.GetArrayElementAtIndex(_selectedTriggerIndex);
+            int insertIndex = _selectedTriggerIndex + 1;
+
+            _triggerEventsProp.InsertArrayElementAtIndex(insertIndex);
+            var newElem = _triggerEventsProp.GetArrayElementAtIndex(insertIndex);
+
+            // Copy all serialized fields
+            EditorJsonUtility.FromJsonOverwrite(EditorJsonUtility.ToJson(srcProp.managedReferenceValue), newElem.managedReferenceValue);
+
+            serializedObject.ApplyModifiedProperties();
+            EditorUtility.SetDirty(_sequencer);
+
+            _selectedTriggerIndex = insertIndex;
+
+            try { EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene); } catch { }
+        }
+        #endregion
+
         private void DrawTopToolbar()
         {
             EditorGUILayout.BeginHorizontal();
@@ -307,6 +360,7 @@ namespace BeachHero
             float timelineHeight = TIMELINE_HEIGHT + ((CLIP_BAR_HEIGHT + CLIP_BAR_PADDING - 2f) * sequencerClipsLength);
             Rect timelineRect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, timelineHeight);
             GUI.Box(timelineRect, GUIContent.none);
+            Handles.DrawSolidRectangleWithOutline(timelineRect, new Color(0, 0, 0, 0), Color.black);
 
             Rect inner = new Rect(
                 timelineRect.x + TIMELINE_LEFT_MARGIN,
@@ -331,7 +385,7 @@ namespace BeachHero
 
                 // make full-second ticks slightly bigger
                 bool isWholeSecond = Mathf.Abs(time - Mathf.Round(time)) < 0.0001f;
-                float tickHeight = isWholeSecond ? 12f : 6f;
+                float tickHeight = isWholeSecond ? 9f : 6f;
                 Rect tick = new Rect(x - 0.5f, inner.y - tickHeight - 2f, 1f, tickHeight);
                 EditorGUI.DrawRect(tick, new Color(0.7f, 0.7f, 0.7f, 0.6f));
 
@@ -481,7 +535,7 @@ namespace BeachHero
                     float x = inner.x + normalized * inner.width;
 
                     // diamond shape
-                    float markerCenterY = inner.y - 14f;
+                    float markerCenterY = inner.y + 0f;
                     float half = 6f;
                     Vector3[] diamond = new Vector3[]
                     {
