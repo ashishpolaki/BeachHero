@@ -34,15 +34,15 @@ namespace BeachHero
         private const float CLIP_BAR_PADDING = 6f;
         private const float EDGE_HANDLE_WIDTH = 6f; // px for left/right resize handles
 
-        // selection + dragging
+        // Clip selection + dragging
         private int _selectedClipIndex = -1;
         private int _draggingIndex = -1;
         private DragMode _dragMode = DragMode.None;
-        private float _dragStartMouseX;
-        private float _dragOriginalStart;
-        private float _dragOriginalDuration;
+        private float _dragClipStartMouseX;
+        private float _dragClipOriginalStart;
+        private float _dragClipOriginalDuration;
 
-        // trigger dragging state
+        // trigger events dragging state
         private int _draggingTriggerIndex = -1;
         private float _triggerDragStartMouseX = 0f;
         private float _triggerOriginalPercent = 0f;
@@ -647,14 +647,14 @@ namespace BeachHero
         {
             _draggingIndex = index;
             _dragMode = mode;
-            _dragStartMouseX = Event.current.mousePosition.x;
+            _dragClipStartMouseX = Event.current.mousePosition.x;
 
             var clipProp = _clipsProp.GetArrayElementAtIndex(index);
             var startProp = clipProp.FindPropertyRelative("startTime");
             var durProp = clipProp.FindPropertyRelative("duration");
 
-            _dragOriginalStart = startProp != null ? startProp.floatValue : 0f;
-            _dragOriginalDuration = durProp != null ? durProp.floatValue : 0.1f;
+            _dragClipOriginalStart = startProp != null ? startProp.floatValue : 0f;
+            _dragClipOriginalDuration = durProp != null ? durProp.floatValue : 0.1f;
 
             // capture undo
             Undo.RecordObject(_sequencer, "Drag Clip");
@@ -665,7 +665,7 @@ namespace BeachHero
             if (_clipsProp == null) return;
             if (index < 0 || index >= _clipsProp.arraySize) return;
 
-            float mouseDelta = Event.current.mousePosition.x - _dragStartMouseX;
+            float mouseDelta = Event.current.mousePosition.x - _dragClipStartMouseX;
             float deltaTime = (mouseDelta / Mathf.Max(1f, inner.width)) * total;
 
             var clipProp = _clipsProp.GetArrayElementAtIndex(index);
@@ -678,17 +678,17 @@ namespace BeachHero
 
             if (_dragMode == DragMode.Move)
             {
-                float newStart = _dragOriginalStart + deltaTime;
+                float newStart = _dragClipOriginalStart + deltaTime;
                 newStart = Mathf.Max(0f, newStart);
                 // ensure clip stays within timeline bounds
-                newStart = Mathf.Min(newStart, Mathf.Max(0f, total - _dragOriginalDuration));
+                newStart = Mathf.Min(newStart, Mathf.Max(0f, total - _dragClipOriginalDuration));
                 startProp.floatValue = newStart;
             }
             else if (_dragMode == DragMode.ResizeLeft)
             {
                 // robust left-resize: compute original end and clamp newStart so it never crosses end
-                float originalStart = _dragOriginalStart;
-                float originalDur = _dragOriginalDuration;
+                float originalStart = _dragClipOriginalStart;
+                float originalDur = _dragClipOriginalDuration;
                 float originalEnd = originalStart + originalDur;
 
                 float newStart = originalStart + deltaTime;
@@ -704,9 +704,9 @@ namespace BeachHero
             else if (_dragMode == DragMode.ResizeRight)
             {
                 // extend/shrink duration by deltaTime, but keep end <= total and duration >= minDuration
-                float newDuration = _dragOriginalDuration + deltaTime;
+                float newDuration = _dragClipOriginalDuration + deltaTime;
                 newDuration = Mathf.Max(minDuration, newDuration);
-                newDuration = Mathf.Min(newDuration, Mathf.Max(minDuration, total - _dragOriginalStart));
+                newDuration = Mathf.Min(newDuration, Mathf.Max(minDuration, total - _dragClipOriginalStart));
                 durProp.floatValue = newDuration;
             }
 
