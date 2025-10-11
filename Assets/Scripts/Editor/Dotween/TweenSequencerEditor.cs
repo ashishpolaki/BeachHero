@@ -35,7 +35,7 @@ namespace BeachHero
         private const float EDGE_HANDLE_WIDTH = 6f; // px for left/right resize handles
 
         // selection + dragging
-        private int _selectedIndex = -1;
+        private int _selectedClipIndex = -1;
         private int _draggingIndex = -1;
         private DragMode _dragMode = DragMode.None;
         private float _dragStartMouseX;
@@ -64,10 +64,10 @@ namespace BeachHero
             _sequencer = (TweenSequencer)target;
             _clipsProp = serializedObject.FindProperty("clips");
             _timelineDurationProp = serializedObject.FindProperty("timelineDuration");
-            _triggerEventsProp = serializedObject.FindProperty("triggerEvents"); // <-- init
+            _triggerEventsProp = serializedObject.FindProperty("triggerEvents");
             _sequenceField = typeof(TweenSequencer).GetField("_sequence", BindingFlags.NonPublic | BindingFlags.Instance);
 
-            if (_selectedIndex >= _clipsProp.arraySize) _selectedIndex = -1;
+            if (_selectedClipIndex >= _clipsProp.arraySize) _selectedClipIndex = -1;
         }
 
         private void OnDisable()
@@ -110,83 +110,75 @@ namespace BeachHero
 
             // Timeline label
             DrawTimelineArea();
-            DrawBottomControls();
-
-            // Trigger events inspector (inline, editable)
-            DrawTriggerEventInspector();
+            DrawAddClipOrTriggerButtons();
 
             // Selected clip details
-            EditorGUILayout.Space(6);
-            DrawSelectedClipInspector();
-
+            EditorGUILayout.Space(3);
+            if (_selectedTriggerIndex >= 0)
+            {
+                DrawSelectedTriggerInspector();
+            }
+            else
+            {
+                DrawSelectedClipInspector();
+            }
             serializedObject.ApplyModifiedProperties();
         }
 
-        private void DrawTriggerEventInspector()
+        private void DrawSelectedTriggerInspector()
         {
-            if (_triggerEventsProp == null)
-                _triggerEventsProp = serializedObject.FindProperty("triggerEvents");
-
-            EditorGUILayout.Space(6);
-
-            // --- Label + Buttons on same horizontal row ---
-            EditorGUILayout.BeginHorizontal();
-
-            // Label takes all remaining space
-            EditorGUILayout.LabelField("Trigger Events", EditorStyles.boldLabel, GUILayout.MinWidth(100), GUILayout.ExpandWidth(true));
-
-            // Add Event (+)
-            if (GUILayout.Button("+", GUILayout.Width(30)))
+            if (_triggerEventsProp == null || !_triggerEventsProp.isArray)
             {
-                int idx = _triggerEventsProp.arraySize;
-                _triggerEventsProp.InsertArrayElementAtIndex(idx);
-                var newElem = _triggerEventsProp.GetArrayElementAtIndex(idx);
+                EditorGUILayout.HelpBox("No trigger events present.", MessageType.Info);
+                return;
+            }
 
-                // Initialize timePercent to current scrub position
-                var timePercentProp = newElem.FindPropertyRelative("timePercent");
-                if (timePercentProp != null) timePercentProp.floatValue = Mathf.Clamp01(_progress) * 100f;
+            if (_selectedTriggerIndex < 0 || _selectedTriggerIndex >= _triggerEventsProp.arraySize)
+            {
+                EditorGUILayout.HelpBox("Select a trigger from the timeline to view/edit details.", MessageType.Info);
+                return;
+            }
 
-                newElem.isExpanded = true;
+            var te = _triggerEventsProp.GetArrayElementAtIndex(_selectedTriggerIndex);
+            if (te == null)
+            {
+                EditorGUILayout.HelpBox("Selected trigger unavailable.", MessageType.Warning);
+                return;
+            }
 
+            EditorGUILayout.BeginVertical(GUI.skin.box);
+            EditorGUILayout.LabelField($"Trigger #{_selectedTriggerIndex}", EditorStyles.boldLabel);
+
+            // Show the serialized trigger fields
+            EditorGUILayout.PropertyField(te, true);
+
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("Go To"))
+            {
+                var timePercentProp = te.FindPropertyRelative("timePercent");
+                if (timePercentProp != null)
+                {
+                    _progress = Mathf.Clamp01(timePercentProp.floatValue / 100f);
+                    ScrubToProgress(_progress);
+                }
+            }
+
+            if (GUILayout.Button("Remove"))
+            {
+                // delete the selected trigger and clear selection
+                _triggerEventsProp.DeleteArrayElementAtIndex(_selectedTriggerIndex);
+                _selectedTriggerIndex = -1;
                 serializedObject.ApplyModifiedProperties();
                 EditorUtility.SetDirty(_sequencer);
                 try { EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene); } catch { }
 
-                // select the newly added trigger
-                _selectedTriggerIndex = idx;
-            }
-
-            // Remove Last (-)
-            if (GUILayout.Button("-", GUILayout.Width(30)))
-            {
-                int sizeBefore = _triggerEventsProp.arraySize;
-                if (sizeBefore > 0)
-                {
-                    int lastIdx = sizeBefore - 1;
-
-                    // if selected trigger was the last one, deselect; otherwise clamp selection
-                    if (_selectedTriggerIndex == lastIdx) _selectedTriggerIndex = -1;
-                    else if (_selectedTriggerIndex > lastIdx) _selectedTriggerIndex = Mathf.Clamp(_selectedTriggerIndex, -1, lastIdx - 1);
-
-                    // if dragging that trigger, cancel drag
-                    if (_draggingTriggerIndex == lastIdx) _draggingTriggerIndex = -1;
-                    else if (_draggingTriggerIndex > lastIdx) _draggingTriggerIndex = Mathf.Clamp(_draggingTriggerIndex, -1, lastIdx - 1);
-
-                    _triggerEventsProp.DeleteArrayElementAtIndex(lastIdx);
-
-                    serializedObject.ApplyModifiedProperties();
-                    EditorUtility.SetDirty(_sequencer);
-                    try { EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene); } catch { }
-
-                    Repaint();
-                }
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.EndVertical();
+                return;
             }
 
             EditorGUILayout.EndHorizontal();
-
-            EditorGUILayout.Space(4);
-
-            serializedObject.ApplyModifiedProperties();
+            EditorGUILayout.EndVertical();
         }
 
         private void HandleKeyboardShortcuts()
@@ -215,15 +207,15 @@ namespace BeachHero
         private void DuplicateSelectedClip()
         {
             if (_clipsProp == null) return;
-            if (_selectedIndex < 0 || _selectedIndex >= _clipsProp.arraySize) return;
+            if (_selectedClipIndex < 0 || _selectedClipIndex >= _clipsProp.arraySize) return;
 
             // record undo
             Undo.RegisterCompleteObjectUndo(_sequencer, "Duplicate Clip");
 
-            var srcProp = _clipsProp.GetArrayElementAtIndex(_selectedIndex);
+            var srcProp = _clipsProp.GetArrayElementAtIndex(_selectedClipIndex);
             object srcObj = srcProp.managedReferenceValue;
 
-            int insertIndex = _selectedIndex + 1;
+            int insertIndex = _selectedClipIndex + 1;
 
             // Insert a new element slot
             _clipsProp.InsertArrayElementAtIndex(insertIndex);
@@ -246,7 +238,7 @@ namespace BeachHero
 
             serializedObject.ApplyModifiedProperties();
             EditorUtility.SetDirty(_sequencer);
-            _selectedIndex = insertIndex;
+            _selectedClipIndex = insertIndex;
             // mark scene dirty so user is prompted to save
             try { EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene); } catch { }
         }
@@ -254,18 +246,18 @@ namespace BeachHero
         private void DeleteSelectedClip()
         {
             if (_clipsProp == null) return;
-            if (_selectedIndex < 0 || _selectedIndex >= _clipsProp.arraySize) return;
+            if (_selectedClipIndex < 0 || _selectedClipIndex >= _clipsProp.arraySize) return;
 
             // confirm? (optional) — we perform deletion immediately
             Undo.RegisterCompleteObjectUndo(_sequencer, "Delete Clip");
 
             // Delete element (works for managedReference arrays as used)
-            _clipsProp.DeleteArrayElementAtIndex(_selectedIndex);
+            _clipsProp.DeleteArrayElementAtIndex(_selectedClipIndex);
             serializedObject.ApplyModifiedProperties();
 
             // clamp selection
-            int newIndex = Mathf.Clamp(_selectedIndex, 0, _clipsProp.arraySize - 1);
-            _selectedIndex = (_clipsProp.arraySize == 0) ? -1 : newIndex;
+            int newIndex = Mathf.Clamp(_selectedClipIndex, 0, _clipsProp.arraySize - 1);
+            _selectedClipIndex = (_clipsProp.arraySize == 0) ? -1 : newIndex;
 
             EditorUtility.SetDirty(_sequencer);
             try { EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene); } catch { }
@@ -350,7 +342,7 @@ namespace BeachHero
                 EditorGUI.LabelField(lbl, label, EditorStyles.miniLabel);
             }
 
-            // draw clips
+            // draw tween clips
             var clipsRuntime = _sequencer.Clips;
             if (clipsRuntime != null)
             {
@@ -430,8 +422,9 @@ namespace BeachHero
                         // We still call BeginDrag so an immediate mouse-drag will move the clip.
                         BeginDrag(i, DragMode.Move);
 
-                        // select the clip under the mouse
-                        _selectedIndex = i;
+                        // select the clip under the mouse and deselect any trigger
+                        _selectedClipIndex = i;
+                        _selectedTriggerIndex = -1;
 
                         // NOTE: do NOT change _progress or call ScrubToProgress here.
                         // Progress should only be changed when the user drags in the timeline area (handled elsewhere).
@@ -455,7 +448,7 @@ namespace BeachHero
                     }
 
                     // 6) Selected highlight (white outline when selected)
-                    if (i == _selectedIndex)
+                    if (i == _selectedClipIndex)
                     {
                         Handles.DrawSolidRectangleWithOutline(barRect, new Color(0, 0, 0, 0), Color.white);
                     }
@@ -473,7 +466,7 @@ namespace BeachHero
                     _draggingTriggerIndex = -1;
                     serializedObject.ApplyModifiedProperties();
                     EditorUtility.SetDirty(_sequencer);
-                    EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene);
+                    try { EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene); } catch { }
                     Event.current.Use();
                 }
 
@@ -500,9 +493,12 @@ namespace BeachHero
 
                     Rect markerRect = new Rect(x - half - 2f, markerCenterY - half - 2f, half * 2f + 4f, half * 2f + 4f);
 
-                    // guide line
-                    Handles.color = new Color(0.95f, 0.55f, 0.15f, 0.6f);
-                    Handles.DrawLine(new Vector3(x, markerCenterY + half + 2f), new Vector3(x, inner.y + inner.height));
+                    // draw guide line if the trigger is selected or being dragged
+                    if ( i == _draggingTriggerIndex)
+                    {
+                        Handles.color = new Color(0.95f, 0.55f, 0.15f, 0.6f);
+                        Handles.DrawLine(new Vector3(x, markerCenterY + half + 2f), new Vector3(x, inner.y + inner.height));
+                    }
                     Handles.color = Color.white;
 
                     // draw marker
@@ -532,6 +528,7 @@ namespace BeachHero
                         }
                         Event.current.Use();
                     }
+
                     // hover: show seconds tooltip above the marker & change cursor
                     if (markerRect.Contains(mouse))
                     {
@@ -551,37 +548,29 @@ namespace BeachHero
 
                         EditorGUIUtility.AddCursorRect(markerRect, MouseCursor.SlideArrow);
 
-                        // start drag (left mouse down)
+                        // on left mouse down over the marker: either start drag or select
                         if (Event.current.type == EventType.MouseDown && Event.current.button == 0)
                         {
-                            _draggingTriggerIndex = i;
-                            _triggerDragStartMouseX = Event.current.mousePosition.x;
-                            _triggerOriginalPercent = percent;
+                            // prevent interfering with an ongoing trigger drag
+                            if (_draggingTriggerIndex == -1)
+                            {
+                                // start dragging immediately (so subsequent mouse drag events move it)
+                                _draggingTriggerIndex = i;
+                                _selectedTriggerIndex = i;
+                                _selectedClipIndex = -1; // deselect any clip
+                                _triggerDragStartMouseX = Event.current.mousePosition.x;
+                                _triggerOriginalPercent = percent;
 
-                            // DO NOT change _progress here - clicking/selecting a trigger should not move the scrub
-                            // expand the property for editing
-                            te.isExpanded = true;
-                            serializedObject.ApplyModifiedProperties();
+                                // expand the property for editing (null-safe)
+                                if (te != null) te.isExpanded = true;
+                                serializedObject.ApplyModifiedProperties();
 
-                            Selection.activeObject = _sequencer;
-                            EditorGUIUtility.PingObject(_sequencer);
+                                Selection.activeObject = _sequencer;
+                                EditorGUIUtility.PingObject(_sequencer);
 
-                            Event.current.Use();
+                                Event.current.Use();
+                            }
                         }
-                    }
-
-                    // click without drag: select and expand (do not change progress)
-                    if (Event.current.type == EventType.MouseDown && markerRect.Contains(Event.current.mousePosition) && _draggingTriggerIndex == -1)
-                    {
-                        // select but do not change scrub/progress
-                        _selectedTriggerIndex = i;
-
-                        te.isExpanded = true;
-                        serializedObject.ApplyModifiedProperties();
-                        Selection.activeObject = _sequencer;
-                        EditorGUIUtility.PingObject(_sequencer);
-
-                        Event.current.Use();
                     }
 
                     // optional focused outline when expanded
@@ -747,13 +736,13 @@ namespace BeachHero
 
         private void DrawSelectedClipInspector()
         {
-            if (_selectedIndex < 0 || _selectedIndex >= (_clipsProp.arraySize))
+            if (_selectedClipIndex < 0 || _selectedClipIndex >= (_clipsProp.arraySize))
             {
                 EditorGUILayout.HelpBox("Select a clip from the timeline to view/edit details.", MessageType.Info);
                 return;
             }
 
-            var elem = _clipsProp.GetArrayElementAtIndex(_selectedIndex);
+            var elem = _clipsProp.GetArrayElementAtIndex(_selectedClipIndex);
             if (elem == null)
             {
                 EditorGUILayout.HelpBox("Selected clip unavailable.", MessageType.Warning);
@@ -765,7 +754,7 @@ namespace BeachHero
 
             // Show the serialized clip fields (this will include all public fields on the clip)
             EditorGUILayout.PropertyField(elem, true);
-            var clipObj = _sequencer.Clips[_selectedIndex];
+            var clipObj = _sequencer.Clips[_selectedClipIndex];
             GUILayout.FlexibleSpace();
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Capture From"))
@@ -786,8 +775,8 @@ namespace BeachHero
             }
             if (GUILayout.Button("Remove"))
             {
-                _clipsProp.DeleteArrayElementAtIndex(_selectedIndex);
-                _selectedIndex = -1;
+                _clipsProp.DeleteArrayElementAtIndex(_selectedClipIndex);
+                _selectedClipIndex = -1;
                 serializedObject.ApplyModifiedProperties();
                 EditorUtility.SetDirty(_sequencer);
                 EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene);
@@ -800,16 +789,52 @@ namespace BeachHero
             EditorGUILayout.EndVertical();
         }
 
-        private void DrawBottomControls()
+        private void DrawAddClipOrTriggerButtons()
         {
             EditorGUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            if (GUILayout.Button("Add Clip", GUILayout.Width(100)))
+
+            // Add padding/margin on sides
+            GUILayout.Space(6);
+
+            float buttonSpacing = 6f;
+            float totalAvailable = EditorGUIUtility.currentViewWidth - 24f; // account for padding
+            float buttonWidth = (totalAvailable - buttonSpacing) / 2f;
+
+            // --- Add Tween Clip Button ---
+            if (GUILayout.Button("Add Tween Clip", GUILayout.Width(buttonWidth)))
             {
                 ShowAddMenu();
             }
+
+            GUILayout.Space(buttonSpacing);
+
+            // --- Add Trigger Event Button ---
+            if (GUILayout.Button("Add Trigger Event", GUILayout.Width(buttonWidth)))
+            {
+                int idx = _triggerEventsProp.arraySize;
+                _triggerEventsProp.InsertArrayElementAtIndex(idx);
+                var newElem = _triggerEventsProp.GetArrayElementAtIndex(idx);
+
+                // Initialize timePercent to current scrub position
+                var timePercentProp = newElem.FindPropertyRelative("timePercent");
+                if (timePercentProp != null)
+                    timePercentProp.floatValue = Mathf.Clamp01(_progress) * 100f;
+
+                newElem.isExpanded = true;
+
+                serializedObject.ApplyModifiedProperties();
+                EditorUtility.SetDirty(_sequencer);
+                try { EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene); } catch { }
+
+                // select the newly added trigger
+                _selectedTriggerIndex = idx;
+                _selectedClipIndex = -1;
+            }
+
+            GUILayout.Space(6);
             EditorGUILayout.EndHorizontal();
         }
+
 
         private void ShowAddMenu()
         {
@@ -938,7 +963,7 @@ namespace BeachHero
             var instance = Activator.CreateInstance(t);
             elem.managedReferenceValue = instance;
             serializedObject.ApplyModifiedProperties();
-            _selectedIndex = -1;
+            _selectedClipIndex = -1;
         }
 
         private void StartPreview(bool playImmediately = true)
