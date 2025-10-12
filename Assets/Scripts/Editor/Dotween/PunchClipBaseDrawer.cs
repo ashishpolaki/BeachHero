@@ -26,6 +26,17 @@ namespace BeachHero
             float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;
             return baseHeight + extraLines * singleLineTotal;
         }
+
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            PropertyBeginCheck(position, property, label);
+            float y = position.y;
+
+            // draw base part
+            DrawBaseFields(property, ref y, position, label);
+
+            PropertyEndCheck(property);
+        }
     }
 
     [CustomPropertyDrawer(typeof(PunchPositionClip), true)]

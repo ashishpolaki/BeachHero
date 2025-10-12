@@ -20,6 +20,7 @@ namespace BeachHero
         [SerializeField] private List<TriggerEvent> triggerEvents = new();
 
         public int loopCount = 0;              // 0 = no loop, -1 = infinite loop
+        public float delayFrames = 0;           // delay in seconds before starting the sequence
         public LoopType loopType = LoopType.Restart;
         public float timelineDuration = 1f;
         public TweenClipBase[] Clips => clips;
@@ -35,6 +36,7 @@ namespace BeachHero
                 _sequence = null;
             }
 
+            _sequence.SetDelay(delayFrames);
             _sequence = DOTween.Sequence().SetAutoKill(false).Pause();
 
 #if UNITY_EDITOR

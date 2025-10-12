@@ -16,6 +16,17 @@ namespace BeachHero
             DrawIfExists(property, ref y, position, "fadeOut");
         }
 
+        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
+        {
+            PropertyBeginCheck(position, property, label);
+            float y = position.y;
+
+            // draw base part
+            DrawBaseFields(property, ref y, position, label);
+
+            PropertyEndCheck(property);
+        }
+
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             float baseHeight = base.GetPropertyHeight(property, label);

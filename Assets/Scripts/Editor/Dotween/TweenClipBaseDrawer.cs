@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using System.Reflection;
 using DG.Tweening;
+using UnityEngine.UIElements;
 
 namespace BeachHero
 {
@@ -75,6 +76,23 @@ namespace BeachHero
                 return targetProp.objectReferenceValue.name;
             }
             return "<color=#FF4040>Target Null</color>";
+        }
+
+        protected void PropertyBeginCheck(Rect position, SerializedProperty property, GUIContent label)
+        {
+            EditorGUI.BeginProperty(position, label, property);
+            property.serializedObject.Update();
+            EditorGUI.BeginChangeCheck();
+        }
+
+        protected void PropertyEndCheck(SerializedProperty property)
+        {
+            if (EditorGUI.EndChangeCheck())
+            {
+                TweenSequencerEditor.Instance.OnClipOrSequencerDataChanged();
+            }
+            property.serializedObject.ApplyModifiedProperties();
+            EditorGUI.EndProperty();
         }
 
         protected void DrawIfExists(SerializedProperty parent, ref float y, Rect position, string propName, string labelOverride = null)

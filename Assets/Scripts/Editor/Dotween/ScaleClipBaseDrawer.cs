@@ -34,9 +34,7 @@ namespace BeachHero
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            EditorGUI.BeginProperty(position, label, property);
-            property.serializedObject.Update();
-
+            PropertyBeginCheck(position, property, label);
             float y = position.y;
 
             // draw base part
@@ -61,8 +59,7 @@ namespace BeachHero
                     break;
             }
 
-            property.serializedObject.ApplyModifiedProperties();
-            EditorGUI.EndProperty();
+           PropertyEndCheck(property);
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)

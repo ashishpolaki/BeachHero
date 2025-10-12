@@ -17,6 +17,7 @@ namespace BeachHero
         private SerializedProperty _clipsProp;
         private SerializedProperty _timelineDurationProp;
         private SerializedProperty _triggerEventsProp;
+        private SerializedProperty _delayProp;
         private TweenSequencer _sequencer;
         private FieldInfo _sequenceField;
 
@@ -25,7 +26,6 @@ namespace BeachHero
         private float _progress = 0f;
         private bool _autoReplay = false;
         private bool _isPlaying = false;
-        private bool _isScrubDragging = false;
 
         // timeline visuals
         private const float TIMELINE_HEIGHT = 50f;
@@ -68,6 +68,7 @@ namespace BeachHero
             _clipsProp = serializedObject.FindProperty("clips");
             _timelineDurationProp = serializedObject.FindProperty("timelineDuration");
             _triggerEventsProp = serializedObject.FindProperty("triggerEvents");
+            _delayProp = serializedObject.FindProperty("delayFrames");
             _sequenceField = typeof(TweenSequencer).GetField("_sequence", BindingFlags.NonPublic | BindingFlags.Instance);
 
             if (_selectedClipIndex >= _clipsProp.arraySize) _selectedClipIndex = -1;
@@ -99,17 +100,20 @@ namespace BeachHero
             EditorGUILayout.Space(6);
             DrawTopToolbar();
             EditorGUILayout.Space(4);
-            EditorGUILayout.Slider(_timelineDurationProp, minimumTimelineDuration, maximumTimelineDuration, new GUIContent("Duration (s)"));
 
-            // Progress slider
+
+            // Progress and Duration,Delay sliders
             EditorGUI.BeginChangeCheck();
+            EditorGUILayout.Slider(_timelineDurationProp, minimumTimelineDuration, maximumTimelineDuration, new GUIContent("Duration (s)"));
+            EditorGUILayout.Slider(_delayProp, 0, 1, new GUIContent("Start Delay (frames)"));
             _progress = EditorGUILayout.Slider("Progress", _progress, 0f, 1f);
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("loopCount"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("loopType"));
             if (EditorGUI.EndChangeCheck())
             {
                 ScrubToProgress(_progress);
+                serializedObject.ApplyModifiedProperties();
             }
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("loopCount"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("loopType"));
 
             // Timeline label
             DrawTimelineArea();
@@ -125,7 +129,40 @@ namespace BeachHero
             {
                 DrawSelectedClipInspector();
             }
+
             serializedObject.ApplyModifiedProperties();
+        }
+
+        public void OnClipOrSequencerDataChanged()
+        {
+            // Ensure serialized changes are applied (defensive)
+            serializedObject.ApplyModifiedProperties();
+
+            if (_sequencer == null) return;
+
+            // Apply states and rebuild the actual runtime sequence
+            _sequencer.ApplyAllFromStates();
+            _sequencer.BuildSequence();
+
+            // Pull the runtime sequence from the private field (you already use _sequenceField)
+            _previewSequence = _sequenceField?.GetValue(_sequencer) as Sequence;
+
+            if (_previewSequence != null)
+            {
+                // Prepare preview. Use _isPlaying to keep playing/paused state if possible.
+                DOTweenEditorPreview.PrepareTweenForPreview(_previewSequence, true, true, _isPlaying);
+
+                // If preview is not playing, keep it at the current progress; if playing, resume from that time.
+                float totalNow = Mathf.Max(0.0001f, _previewSequence.Duration());
+                float time = Mathf.Clamp01(_progress) * totalNow;
+                _previewSequence.Goto(time, andPlay: _isPlaying);
+            }
+
+            // Mark dirty so Unity will prompt to save scene/prefab changes
+            EditorUtility.SetDirty(_sequencer);
+            try { EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene); } catch { }
+            ScrubToProgress(_progress);
+            SceneView.RepaintAll();
         }
 
         private void DrawSelectedTriggerInspector()
@@ -394,26 +431,33 @@ namespace BeachHero
             float step = 0.1f;
             int steps = Mathf.CeilToInt(total / step);
 
+            float minLabelSpacing = 15f; // pixels
+            float lastLabelX = -minLabelSpacing;
+
             for (int i = 0; i <= steps; i++)
             {
                 float time = i * step;
-                if (time > total) time = total; // final clamp for last tick
+                if (time > total) time = total;
 
                 float normalized = Mathf.Clamp01(time / total);
                 float x = innerBase.x + normalized * innerBase.width;
 
-                // make full-second ticks slightly bigger
+                // draw tick
                 bool isWholeSecond = Mathf.Abs(time - Mathf.Round(time)) < 0.0001f;
                 float tickHeight = isWholeSecond ? 9f : 6f;
-                // place ticks inside tickArea (top strip)
                 Rect tick = new Rect(x - 0.5f, tickArea.y + 2f, 1f, tickHeight);
                 EditorGUI.DrawRect(tick, new Color(0.7f, 0.7f, 0.7f, 0.6f));
 
-                // Label in seconds (0.1s, 0.2s ...). Show up to one decimal place, put below tick within tickArea
-                string label = $"{time:0.0}s";
-                Vector2 size = EditorStyles.miniLabel.CalcSize(new GUIContent(label));
-                Rect lbl = new Rect(x - size.x * 0.5f, tick.yMax + 2f, size.x, size.y);
-                EditorGUI.LabelField(lbl, label, EditorStyles.miniLabel);
+                // draw label only if far enough from last label
+                if (x - lastLabelX >= minLabelSpacing)
+                {
+                    string label = $"{time:0.##}";
+                    Vector2 size = EditorStyles.miniLabel.CalcSize(new GUIContent(label));
+                    Rect lbl = new Rect(x - size.x * 0.5f, tick.yMax + 2f, size.x, size.y);
+                    EditorGUI.LabelField(lbl, label, EditorStyles.miniLabel);
+
+                    lastLabelX = x; // update last drawn label position
+                }
             }
 
             // draw tween clips into clipArea (clips appear below triggers now)
@@ -507,6 +551,7 @@ namespace BeachHero
                         {
                             UpdateDrag(i, clipArea, total);
                             Event.current.Use();
+                            OnClipOrSequencerDataChanged();
                         }
                         else if (Event.current.type == EventType.MouseUp)
                         {
@@ -657,8 +702,6 @@ namespace BeachHero
             if ((Event.current.type == EventType.MouseDrag || Event.current.type == EventType.MouseDown) && innerBase.Contains(Event.current.mousePosition))
             {
                 // don't override if currently dragging a clip
-                // also don't scrub if the pointer is over a clip or over a trigger marker (so clip/marker clicks remain selection-only)
-                bool overInteractive = IsPointerOverTweenClipOrTriggerEvent(Event.current.mousePosition, innerBase, total);
                 if (_dragMode == DragMode.None)
                 {
                     float normalizedAtMouse = Mathf.Clamp01((Event.current.mousePosition.x - innerBase.x) / innerBase.width);
@@ -1105,7 +1148,7 @@ namespace BeachHero
                 }
                 float normalized = Mathf.Clamp01(progress);
                 float time = normalized * _previewSequence.Duration();
-                _previewSequence.Goto(time, andPlay: false);
+                _previewSequence.Goto(time, andPlay: true);
                 EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene);
                 SceneView.RepaintAll();
             }
