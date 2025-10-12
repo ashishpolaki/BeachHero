@@ -25,7 +25,7 @@ namespace BeachHero
         {
             if (target == null)
             {
-                Debug.LogError("Target Transform is null.");
+                DebugUtils.LogError("Target Transform is null.");
                 return null;
             }
             return target.DOPunchPosition(punch, duration, vibrato, elasticity, snapping);
@@ -39,7 +39,7 @@ namespace BeachHero
         {
             if (target == null)
             {
-                Debug.LogError("Target Transform is null.");
+                DebugUtils.LogError("Target Transform is null.");
                 return null;
             }
             return target.DOPunchRotation(punch, duration, vibrato, elasticity);
@@ -53,7 +53,7 @@ namespace BeachHero
         {
             if (target == null)
             {
-                Debug.LogError("Target Transform is null.");
+                DebugUtils.LogError("Target Transform is null.");
                 return null;
             }
             return target.DOPunchScale(punch, duration, vibrato, elasticity);
@@ -68,7 +68,7 @@ namespace BeachHero
             RectTransform rectTransform = target as RectTransform;
             if (rectTransform == null)
             {
-                Debug.LogError("Target is not a RectTransform.");
+                DebugUtils.LogError("Target is not a RectTransform.");
                 return null;
             }
             return rectTransform.DOPunchAnchorPos(punch, duration, vibrato, elasticity, snapping);

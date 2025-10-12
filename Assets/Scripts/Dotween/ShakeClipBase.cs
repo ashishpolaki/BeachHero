@@ -26,7 +26,7 @@ namespace BeachHero
         {
             if (target == null)
             {
-                Debug.LogError("Target Transform is null.");
+                DebugUtils.LogError("Target Transform is null.");
                 return null;
             }
             return target.DOShakePosition(duration, strength, vibrato, randomness, snapping, fadeOut);
@@ -40,7 +40,7 @@ namespace BeachHero
         {
             if (target == null)
             {
-                Debug.LogError("Target Transform is null.");
+                DebugUtils.LogError("Target Transform is null.");
                 return null;
             }
             return target.DOShakeRotation(duration, strength, vibrato, randomness, fadeOut);
@@ -54,7 +54,7 @@ namespace BeachHero
         {
             if (target == null)
             {
-                Debug.LogError("Target Transform is null.");
+                DebugUtils.LogError("Target Transform is null.");
                 return null;
             }
             return target.DOShakeScale(duration, strength, vibrato, randomness, fadeOut);

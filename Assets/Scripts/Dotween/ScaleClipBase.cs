@@ -26,7 +26,7 @@ namespace BeachHero
         {
             if (target == null)
             {
-                Debug.LogError("Target Transform is null.");
+                DebugUtils.LogError("Target Transform is null.");
                 return null;
             }
 

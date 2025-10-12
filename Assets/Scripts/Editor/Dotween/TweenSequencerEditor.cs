@@ -480,20 +480,17 @@ namespace BeachHero
                     // Prioritize handle clicks
                     if (Event.current.type == EventType.MouseDown && leftHandle.Contains(mouse))
                     {
-                        Debug.Log($"Left handle clicked for clip {i}");
                         BeginDrag(i, DragMode.ResizeLeft);
                         Event.current.Use();
                     }
                     else if (Event.current.type == EventType.MouseDown && rightHandle.Contains(mouse))
                     {
-                        Debug.Log($"Right handle clicked for clip {i}");
                         BeginDrag(i, DragMode.ResizeRight);
                         Event.current.Use();
                     }
                     // clicking the bar selects (and prepares for drag) DO NOT change progress on simple click
                     else if (Event.current.type == EventType.MouseDown && barRect.Contains(mouse))
                     {
-                        Debug.Log($"Bar clicked for clip {i}");
                         BeginDrag(i, DragMode.Move);
 
                         _selectedClipIndex = i;
@@ -506,7 +503,6 @@ namespace BeachHero
                     if (_draggingIndex == i && _dragMode != DragMode.None &&
                         (Event.current.type == EventType.MouseDrag || Event.current.type == EventType.MouseUp))
                     {
-                        Debug.Log($"Bar clicked for clip ");
                         if (Event.current.type == EventType.MouseDrag)
                         {
                             UpdateDrag(i, clipArea, total);
@@ -1049,7 +1045,7 @@ namespace BeachHero
             _previewSequence = _sequencer._sequence;
             if (_previewSequence == null)
             {
-                Debug.LogWarning("No sequence built - check clips configuration.");
+                DebugUtils.LogWarning("No sequence built - check clips configuration.");
                 return;
             }
 

@@ -39,7 +39,7 @@ namespace BeachHero
         {
             if (target == null)
             {
-                Debug.LogError("Target Transform is null.");
+                DebugUtils.LogError("Target Transform is null.");
                 return null;
             }
             Vector3 dest = toPosition;
@@ -95,7 +95,7 @@ namespace BeachHero
         {
             if (target == null)
             {
-                Debug.LogError("Target RectTransform is null.");
+                DebugUtils.LogError("Target RectTransform is null.");
                 return null;
             }
             switch (rectAxis)

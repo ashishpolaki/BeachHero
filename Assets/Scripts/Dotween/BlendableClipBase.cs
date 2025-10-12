@@ -24,7 +24,7 @@ namespace BeachHero
         {
             if (target == null)
             {
-                Debug.LogError("Target Transform is null.");
+                DebugUtils.LogError("Target Transform is null.");
                 return null;
             }
 
@@ -49,7 +49,7 @@ namespace BeachHero
         {
             if (target == null)
             {
-                Debug.LogError("Target Transform is null.");
+                DebugUtils.LogError("Target Transform is null.");
                 return null;
             }
 
@@ -71,7 +71,7 @@ namespace BeachHero
         {
             if (target == null)
             {
-                Debug.LogError("Target Transform is null.");
+                DebugUtils.LogError("Target Transform is null.");
                 return null;
             }
             return target.DOBlendableScaleBy(byValue, duration);
@@ -88,7 +88,7 @@ namespace BeachHero
         {
             if (target == null)
             {
-                Debug.LogError("Target Transform is null.");
+                DebugUtils.LogError("Target Transform is null.");
                 return null;
             }
             return target.DOPunchRotation(byValue, duration, vibrato, elasticity);
