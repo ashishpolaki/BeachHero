@@ -25,6 +25,7 @@ namespace BeachHero
         private float _progress = 0f;
         private bool _autoReplay = false;
         private bool _isPlaying = false;
+        private bool _isScrubDragging = false;
 
         // timeline visuals
         private const float TIMELINE_HEIGHT = 50f;
@@ -370,9 +371,9 @@ namespace BeachHero
             //  - clipArea (below triggers, contains clip bars)
             Rect innerBase = new Rect(
                 timelineRect.x + TIMELINE_LEFT_MARGIN,
-                timelineRect.y ,
+                timelineRect.y,
                 timelineRect.width - TIMELINE_LEFT_MARGIN - TIMELINE_RIGHT_MARGIN,
-                timelineHeight - 44 // keep a small bottom padding
+                timelineHeight - 30 // keep a small bottom padding
             );
 
             // Clamp minimum width/height just in case
@@ -385,7 +386,7 @@ namespace BeachHero
             Rect clipArea = new Rect(innerBase.x, triggerArea.yMax + 2f, innerBase.width, innerBase.yMax - (triggerArea.yMax + 4f) - 2f);
 
             // background for clips
-            EditorGUI.DrawRect(clipArea, new Color(0.3f,0.3f,0.3f,1));
+            EditorGUI.DrawRect(clipArea, new Color(0.3f, 0.3f, 0.3f, 1));
             //Solid Rectangle with outline
             Handles.DrawSolidRectangleWithOutline(clipArea, new Color(0, 0, 0, 0), Color.black);
 
@@ -441,7 +442,7 @@ namespace BeachHero
                         y = clipArea.y + clipArea.height - CLIP_BAR_HEIGHT - 2;
                     }
 
-                    Rect barRect = new Rect(x, y , Mathf.Max(6f, w), CLIP_BAR_HEIGHT);
+                    Rect barRect = new Rect(x, y + 8, Mathf.Max(6f, w), CLIP_BAR_HEIGHT);
 
                     // 1) Fill bar base and outline for crispness
                     Color baseFill = new Color(0.18f, 0.18f, 0.18f, 1f);
@@ -479,17 +480,20 @@ namespace BeachHero
                     // Prioritize handle clicks
                     if (Event.current.type == EventType.MouseDown && leftHandle.Contains(mouse))
                     {
+                        Debug.Log($"Left handle clicked for clip {i}");
                         BeginDrag(i, DragMode.ResizeLeft);
                         Event.current.Use();
                     }
                     else if (Event.current.type == EventType.MouseDown && rightHandle.Contains(mouse))
                     {
+                        Debug.Log($"Right handle clicked for clip {i}");
                         BeginDrag(i, DragMode.ResizeRight);
                         Event.current.Use();
                     }
                     // clicking the bar selects (and prepares for drag) DO NOT change progress on simple click
                     else if (Event.current.type == EventType.MouseDown && barRect.Contains(mouse))
                     {
+                        Debug.Log($"Bar clicked for clip {i}");
                         BeginDrag(i, DragMode.Move);
 
                         _selectedClipIndex = i;
@@ -502,6 +506,7 @@ namespace BeachHero
                     if (_draggingIndex == i && _dragMode != DragMode.None &&
                         (Event.current.type == EventType.MouseDrag || Event.current.type == EventType.MouseUp))
                     {
+                        Debug.Log($"Bar clicked for clip ");
                         if (Event.current.type == EventType.MouseDrag)
                         {
                             UpdateDrag(i, clipArea, total);
@@ -611,7 +616,9 @@ namespace BeachHero
                         tipY = Mathf.Max(tipY, timelineRect.y - 100f); // don't go too far above
 
                         Rect tipRect = new Rect(tipX, tipY, tipSize.x, tipSize.y);
-                        GUI.Label(tipRect, tipText, EditorStyles.miniLabel);
+                        GUIStyle tipStyle = new GUIStyle(EditorStyles.miniLabel);
+                        tipStyle.normal.textColor = Color.cyan;
+                        GUI.Label(tipRect, tipText, tipStyle);
 
                         EditorGUIUtility.AddCursorRect(markerRect, MouseCursor.SlideArrow);
 
@@ -656,7 +663,7 @@ namespace BeachHero
                 // don't override if currently dragging a clip
                 // also don't scrub if the pointer is over a clip or over a trigger marker (so clip/marker clicks remain selection-only)
                 bool overInteractive = IsPointerOverTweenClipOrTriggerEvent(Event.current.mousePosition, innerBase, total);
-                if (_dragMode == DragMode.None && !overInteractive)
+                if (_dragMode == DragMode.None)
                 {
                     float normalizedAtMouse = Mathf.Clamp01((Event.current.mousePosition.x - innerBase.x) / innerBase.width);
                     _progress = normalizedAtMouse;
