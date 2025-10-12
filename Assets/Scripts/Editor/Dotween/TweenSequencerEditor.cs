@@ -27,12 +27,14 @@ namespace BeachHero
         private bool _isPlaying = false;
 
         // timeline visuals
-        private const float TIMELINE_HEIGHT = 60f;
+        private const float TIMELINE_HEIGHT = 50f;
         private const float TIMELINE_LEFT_MARGIN = 20f;
         private const float TIMELINE_RIGHT_MARGIN = 20f;
         private const float CLIP_BAR_HEIGHT = 30f;
-        private const float CLIP_BAR_PADDING = 6f;
+        private const float CLIP_BAR_PADDING = 15f;
         private const float EDGE_HANDLE_WIDTH = 6f; // px for left/right resize handles
+        private const float TRIGGER_AREA_HEIGHT = 18f;
+        private const float TICK_AREA_HEIGHT = 28f;
 
         // Clip selection + dragging
         private int _selectedClipIndex = -1;
@@ -213,7 +215,6 @@ namespace BeachHero
             }
         }
 
-
         private void DuplicateSelectedClip()
         {
             if (_clipsProp == null) return;
@@ -357,11 +358,7 @@ namespace BeachHero
             if (total <= 0f) total = 1f;
 
             int sequencerClipsLength = _sequencer.Clips != null ? _sequencer.Clips.Length : 1;
-
-            // Reserve vertical space: ticks (top), triggers (below ticks), clips (below triggers)
-            const float TICK_AREA_HEIGHT = 28f;    // ticks + labels area height (top)
-            const float TRIGGER_AREA_HEIGHT = 18f; // height reserved for the trigger strip (below ticks)
-            float timelineHeight = TIMELINE_HEIGHT + ((CLIP_BAR_HEIGHT + CLIP_BAR_PADDING - 2f) * sequencerClipsLength)
+            float timelineHeight = TIMELINE_HEIGHT + ((CLIP_BAR_HEIGHT + CLIP_BAR_PADDING) * sequencerClipsLength)
                                    + TICK_AREA_HEIGHT + TRIGGER_AREA_HEIGHT;
             Rect timelineRect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, timelineHeight - 30);
             GUI.Box(timelineRect, GUIContent.none);
@@ -375,7 +372,7 @@ namespace BeachHero
                 timelineRect.x + TIMELINE_LEFT_MARGIN,
                 timelineRect.y ,
                 timelineRect.width - TIMELINE_LEFT_MARGIN - TIMELINE_RIGHT_MARGIN,
-                timelineHeight - 28 - 8f // keep a small bottom padding
+                timelineHeight - 44 // keep a small bottom padding
             );
 
             // Clamp minimum width/height just in case
@@ -388,7 +385,9 @@ namespace BeachHero
             Rect clipArea = new Rect(innerBase.x, triggerArea.yMax + 2f, innerBase.width, innerBase.yMax - (triggerArea.yMax + 4f) - 2f);
 
             // background for clips
-            EditorGUI.DrawRect(clipArea, new Color(0.11f, 0.11f, 0.11f, 1f));
+            EditorGUI.DrawRect(clipArea, new Color(0.3f,0.3f,0.3f,1));
+            //Solid Rectangle with outline
+            Handles.DrawSolidRectangleWithOutline(clipArea, new Color(0, 0, 0, 0), Color.black);
 
             // Tick spacing (0.1s steps). If total is not an exact multiple of step, we ceil and clamp.
             float step = 0.1f;
@@ -442,7 +441,7 @@ namespace BeachHero
                         y = clipArea.y + clipArea.height - CLIP_BAR_HEIGHT - 2;
                     }
 
-                    Rect barRect = new Rect(x, y, Mathf.Max(6f, w), CLIP_BAR_HEIGHT);
+                    Rect barRect = new Rect(x, y , Mathf.Max(6f, w), CLIP_BAR_HEIGHT);
 
                     // 1) Fill bar base and outline for crispness
                     Color baseFill = new Color(0.18f, 0.18f, 0.18f, 1f);
@@ -899,7 +898,6 @@ namespace BeachHero
             GUILayout.Space(6);
             EditorGUILayout.EndHorizontal();
         }
-
 
         private void ShowAddMenu()
         {
