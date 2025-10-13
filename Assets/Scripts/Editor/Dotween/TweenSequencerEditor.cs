@@ -1119,13 +1119,14 @@ namespace BeachHero
 
         private void StopPreviewAndCleanup()
         {
-            _sequencer.Kill();
             if (_previewSequence != null)
             {
                 _previewSequence.Complete(true);
                 _previewSequence.Kill();
                 _previewSequence = null;
             }
+            if(_sequencer != null)
+                _sequencer.Kill();
 
             DOTweenEditorPreview.Stop();
 
@@ -1148,7 +1149,7 @@ namespace BeachHero
                 }
                 float normalized = Mathf.Clamp01(progress);
                 float time = normalized * _previewSequence.Duration();
-                _previewSequence.Goto(time, andPlay: true);
+                _previewSequence.Goto(time, andPlay: false);
                 EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene);
                 SceneView.RepaintAll();
             }

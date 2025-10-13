@@ -1,7 +1,6 @@
 using DG.Tweening;
 using System;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -36,6 +35,7 @@ namespace BeachHero
                 _sequence = null;
             }
 
+            ApplyAllFromStates();
             _sequence.SetDelay(delayFrames);
             _sequence = DOTween.Sequence().SetAutoKill(false).Pause();
 
@@ -87,7 +87,7 @@ namespace BeachHero
             {
                 BuildSequence();
             }
-            _sequence?.Restart(); // restart ensures it plays from beginning each time
+            _sequence.Restart();
         }
 
         public void Pause()

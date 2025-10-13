@@ -1,4 +1,3 @@
-using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,39 +14,22 @@ namespace BeachHero
         [SerializeField] private UIButtonAudio[] buttonAnimationDatas;
         [SerializeField] private Transform titleFont;
         [SerializeField] private Transform tree;
-
-        private Sequence treeShakeSequence;
-
-        #region Tween Animations
-        protected override void PlayTweenAnimations(TweenAnimationData animationData)
-        {
-            //base.PlayTweenAnimations(animationData);
-            float delay = animationData.Delay + animationData.Duration;
-            DOVirtual.DelayedCall(delay, ButtonTweenAnimations);
-            // ButtonTweenAnimations();
-        }
-        private void ButtonTweenAnimations()
-        {
-            foreach (var buttonAnimationData in buttonAnimationDatas)
-            {
-                buttonAnimationData.PlayTweenAnimation();
-            }
-        }
-        #endregion
+        [SerializeField] private TweenSequencer panelOpenAnimation;
 
         public override void Open(ScreenTabType screenTabType)
         {
+            panelOpenAnimation.BuildSequence();
             base.Open(screenTabType);
             SetLevelNumber();
             AddListeners();
-            OnAnimateBeachProps();
+            panelOpenAnimation.Play();
         }
 
         public override void Close()
         {
             base.Close();
             RemoveListeners();
-            KillPropAnimations();
+            panelOpenAnimation.Kill();
         }
 
         private void AddListeners()
@@ -77,7 +59,6 @@ namespace BeachHero
 
         private void OnPlayButtonClicked()
         {
-            // await UIController.GetInstance.LoadingUI.LoadSceneAsync(StringUtils.MAP_SCENE);
             MapController.GetInstance.CheckForMapUpdate();
             UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);
             GameController.GetInstance.SetGameState(GameState.Map);
@@ -93,40 +74,5 @@ namespace BeachHero
             int currentLevelNumber = GameController.GetInstance.CurrentLevelIndex + 1;
             levelNumberText.text = $"{currentLevelNumber}";
         }
-
-        #region Beach Props
-        private void OnAnimateBeachProps()
-        {
-            //Tree
-            ShakeTree();
-
-            //Title Font 
-            titleFont.localScale = Vector3.zero;
-            titleFont.DOScale(Vector3.one, 1).SetEase(Ease.OutFlash, 1f);
-        }
-        //462806//AE8653
-
-        public void ShakeTree()
-        {
-            tree.DOKill();
-            treeShakeSequence.Kill();
-            treeShakeSequence = DOTween.Sequence();
-            treeShakeSequence.Append(tree.DOShakeRotation(0.3f, new Vector3(0, 0, 1), 10, 90, false, ShakeRandomnessMode.Harmonic));
-            treeShakeSequence.AppendInterval(1); // Wait before the next loop starts
-            treeShakeSequence.SetLoops(-1, LoopType.Restart); // Loop forever
-        }
-
-        private void KillPropAnimations()
-        {
-            if (tree != null)
-            {
-                tree.DOKill();
-            }
-            if (titleFont != null)
-            {
-                titleFont.DOKill();
-            }
-        }
-        #endregion
     }
 }
