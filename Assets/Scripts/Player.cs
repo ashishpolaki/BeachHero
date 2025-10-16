@@ -85,6 +85,7 @@ namespace BeachHero
                         explosionParticle.transform.position = transform.position;
                         explosionParticle.Play();
                         AudioController.GetInstance.PlaySound(AudioType.BoomExplosion);
+                        CameraController.GetInstance.ShakeActiveCamera();
                     }
                     obstacle.Hit();
                 }
