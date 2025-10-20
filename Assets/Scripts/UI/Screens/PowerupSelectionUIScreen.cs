@@ -13,7 +13,6 @@ namespace BeachHero
         [SerializeField] private Button playButton;
         [SerializeField] private Button closeButton;
         [SerializeField] private TextMeshProUGUI levelNumberLabel;
-        [SerializeField] private Transform buttonsContainer;
         #endregion
 
         #region Private Variables
@@ -25,11 +24,15 @@ namespace BeachHero
         {
             base.Open(screenTabType);
             AddListeners();
-            tutorialActive = false; // Reset the tutorial state.
-            tutorialPanel.Deactivate();
+            if (tutorialActive)
+            {
+                // Reset the tutorial state.
+                tutorialActive = false;
+                tutorialPanel.Deactivate();
+            }
             UpdateLevelNumber();
-            SetupPowerup(PowerupType.Magnet, magnetButton, speedButton);
-            SetupPowerup(PowerupType.SpeedBoost, speedButton, magnetButton);
+            SetupPowerup(PowerupType.Magnet, magnetButton);
+            SetupPowerup(PowerupType.SpeedBoost, speedButton);
         }
         public override void Close()
         {
@@ -61,6 +64,13 @@ namespace BeachHero
         {
             var gameState = GameController.GetInstance.GameState;
 
+            if(tutorialActive)
+            {
+                TutorialUiUtility.RemoveTutorialCanvas(playButton.gameObject);
+                tutorialPanel.Deactivate();
+                tutorialActive = false;
+            }
+
             // Fade in before handling play logic
             await UIController.GetInstance.FadeUI.FadeInASync();
             if (gameState == GameState.LevelFail || gameState == GameState.Paused)
@@ -74,9 +84,14 @@ namespace BeachHero
 
         private void OnPowerupPressed()
         {
+            // Only proceed if the tutorial is active
             if (!tutorialActive)
+            {
                 return;
-            tutorialPanel.OnPowerupButtonPressed(buttonsContainer);
+            }
+            TutorialUiUtility.RemoveTutorialCanvas(magnetButton.gameObject);
+            TutorialUiUtility.RemoveTutorialCanvas(speedButton.gameObject);
+            tutorialPanel.OnPowerupButtonPressed(playButton.transform);
         }
         #endregion
 
@@ -87,7 +102,7 @@ namespace BeachHero
             levelNumberLabel.text = $"LEVEL {currentLevelNumber}";
         }
 
-        private void SetupPowerup(PowerupType type, PowerupButton targetButton, PowerupButton otherButton)
+        private void SetupPowerup(PowerupType type, PowerupButton targetButton)
         {
             int currentLevelNumber = GameController.GetInstance.CurrentLevelIndex + 1;
             bool isLocked = !GameController.GetInstance.PowerupController.IsPowerupUnlocked(type);
@@ -96,12 +111,8 @@ namespace BeachHero
             {
                 GameController.GetInstance.PowerupController.UnlockPowerup(type);
                 isLocked = false;
-
                 tutorialActive = true;
-                otherButton.transform.SetParent(buttonsContainer);
-                playButton.transform.SetParent(buttonsContainer);
-
-                tutorialPanel.ShowPowerupTutorial(targetButton.transform, playButton.transform);
+                tutorialPanel.ShowPowerupTutorial(targetButton.transform);
             }
 
             int balance = GameController.GetInstance.PowerupController.GetPowerupBalance(type);

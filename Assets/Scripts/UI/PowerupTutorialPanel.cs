@@ -22,9 +22,6 @@ namespace BeachHero
         [SerializeField] private float handMoveDuration = 0.5f;
         [SerializeField] private Ease handMoveEase = Ease.InOutSine;
 
-        private Transform playButtonTransform;
-        private Transform currentPowerupTransform;
-
         public void Deactivate()
         {
             powerUpMaskRect.sizeDelta = Vector2.zero;
@@ -37,7 +34,7 @@ namespace BeachHero
             playButtonMaskRect.DOKill();
         }
 
-        public void ShowPowerupTutorial(Transform powerupButton, Transform playButton)
+        public void ShowPowerupTutorial(Transform powerupButton)
         {
             // Reset & enable UI
             powerUpMaskRect.sizeDelta = Vector2.zero;
@@ -46,8 +43,6 @@ namespace BeachHero
 
             // Track references
             powerUpMaskRect.position = powerupButton.position;
-            currentPowerupTransform = powerupButton;
-            playButtonTransform = playButton;
 
             // Animate mask & show hand
             powerUpMaskRect.DOSizeDelta(powerupButtonSizeRect, buttonScaleDuration).SetDelay(buttonScaleDelay).SetEase(buttonScaleEase).OnComplete
@@ -58,12 +53,11 @@ namespace BeachHero
            });
         }
 
-        public void OnPowerupButtonPressed(Transform _buttonsParent)
+        public void OnPowerupButtonPressed(Transform playButtonTransform)
         {
             powerUpMaskRect.gameObject.SetActive(false);
             tutorialHandRect.gameObject.SetActive(false);
             playButtonMaskRect.gameObject.SetActive(true);
-            currentPowerupTransform.SetParent(_buttonsParent);
             playButtonMaskRect.sizeDelta = Vector2.zero;
             playButtonMaskRect.position = playButtonTransform.position;
             playButtonMaskRect.DOSizeDelta(playButtonSizeRect, buttonScaleDuration).SetEase(buttonScaleEase).OnComplete
@@ -80,8 +74,9 @@ namespace BeachHero
             tutorialHandRect.gameObject.SetActive(true);
             Vector2 anchoredPos = tutorialHandRect.anchoredPosition;
             tutorialHandRect.DOAnchorPosY(anchoredPos.y + handMoveOffset, handMoveDuration).SetEase(handMoveEase).SetLoops(-1, LoopType.Yoyo);
-            _transform.SetParent(transform);
-            //  playButtonTransform.SetAsLastSibling(); // Ensure the play button is on top
+            TutorialUiUtility.EnsureTutorialCanvas(_transform.gameObject, sortingOrder: 2);
         }
     }
 }
+
+
