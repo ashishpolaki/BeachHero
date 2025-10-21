@@ -16,6 +16,7 @@ namespace BeachHero
         #region Inspector Variables
         [SerializeField] private BoatSkinColorUI boatSkinColorUIPrefab;
         [SerializeField] private Transform boatColorListContainer;
+        [SerializeField] private TweenSequencer panelOpenAnimation;
         //  [SerializeField] private BoatPurchasePanel purchasePanel;
         //  [SerializeField] private BoatSkinUI boatSkinPrefab;
         //  [SerializeField] private Transform boatListContainer;
@@ -53,11 +54,13 @@ namespace BeachHero
             selectedBoatIndex = -1;
             AddListeners();
             SetupCustomisation();
+            panelOpenAnimation.Play();
         }
         public override void Close()
         {
             base.Close();
             RemoveListeneres();
+            panelOpenAnimation.Kill();
             //    purchasePanel.Close();
         }
         #endregion

@@ -11,7 +11,9 @@ namespace BeachHero
         Shake,
         Punch,
         Jump,
-        Blendable
+        Blendable,
+        CanvasGroup,
+        Image
     }
     public enum Axis3D
     {

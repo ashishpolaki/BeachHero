@@ -14,6 +14,7 @@ namespace BeachHero
             DrawIfExists(property, ref y, position, "vibrato");
             DrawIfExists(property, ref y, position, "randomness");
             DrawIfExists(property, ref y, position, "fadeOut");
+            DrawIfExists(property, ref y, position, "originalScale");
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -36,6 +37,7 @@ namespace BeachHero
             extraLines += HasProperty(property, "vibrato");
             extraLines += HasProperty(property, "randomness");
             extraLines += HasProperty(property, "fadeOut");
+            extraLines += HasProperty(property, "originalScale");
             float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;
             return baseHeight + extraLines * singleLineTotal;
         }

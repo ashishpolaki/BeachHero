@@ -969,6 +969,12 @@ namespace BeachHero
             menu.AddItem(new GUIContent("Blendable/Position"), false, () => AddClip(typeof(BlendablePositionClip)));
             menu.AddItem(new GUIContent("Blendable/Rotation"), false, () => AddClip(typeof(BlendableRotationClip)));
             menu.AddItem(new GUIContent("Blendable/Punch Rotation"), false, () => AddClip(typeof(BlendablePunchRotationClip)));
+            //Image
+            menu.AddItem(new GUIContent("Image/Fade"), false, () => AddClip(typeof(ImageFadeClip)));
+            menu.AddItem(new GUIContent("Image/Fill Amount"), false, () => AddClip(typeof(ImageFillAmountClip)));
+            menu.AddItem(new GUIContent("Image/Gradient Color"), false, () => AddClip(typeof(ImageGradientColorClip)));
+            //CanvasGroup
+            menu.AddItem(new GUIContent("CanvasGroup/Fade"), false, () => AddClip(typeof(CanvasGroupFadeClip)));
             menu.ShowAsContext();
         }
 
@@ -1000,6 +1006,12 @@ namespace BeachHero
                 BlendablePositionClip => "Blend Pos",
                 BlendableRotationClip => "Blend Rotation",
                 BlendablePunchRotationClip => "Blend Punch Rotation",
+                //Image
+                ImageFadeClip => "Image Fade",
+                ImageFillAmountClip => "Image Fill",
+                ImageGradientColorClip => "Image Gradient",
+                //CanvasGroup
+                CanvasGroupFadeClip => "CanvasGroup Fade",
                 _ => "Unknown"
             };
 
@@ -1021,6 +1033,11 @@ namespace BeachHero
                     if (t != null)
                     {
                         targetName = t.gameObject.name;
+                    }
+                    CanvasGroup cg = targetValue as CanvasGroup;
+                    if (cg != null)
+                    {
+                        targetName = cg.gameObject.name;
                     }
                 }
             }
@@ -1058,6 +1075,16 @@ namespace BeachHero
                 BlendablePositionClip => new Color(1.00f, 0.60f, 1.00f),   // Light Pink
                 BlendableRotationClip => new Color(0.90f, 0.70f, 1.00f),   // Lavender
                 BlendablePunchRotationClip => new Color(0.60f, 0.20f, 0.70f),   // Deep Purple
+
+                // Image 
+                ImageFadeClip => new Color(1.00f, 0.75f, 0.70f),      // Peach Tint
+                ImageFillAmountClip => new Color(1.00f, 0.65f, 0.85f),     // Light Rose
+                ImageGradientColorClip => new Color(1.00f, 0.55f, 0.75f), // Pinkish
+
+                // CanvasGroup  
+                CanvasGroupFadeClip => new Color(0.55f, 0.85f, 0.95f), // Soft Cyan Mist
+
+                // misc
                 _ => Color.gray
             };
 
@@ -1125,7 +1152,7 @@ namespace BeachHero
                 _previewSequence.Kill();
                 _previewSequence = null;
             }
-            if(_sequencer != null)
+            if (_sequencer != null)
                 _sequencer.Kill();
 
             DOTweenEditorPreview.Stop();

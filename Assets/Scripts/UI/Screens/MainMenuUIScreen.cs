@@ -12,8 +12,6 @@ namespace BeachHero
         [SerializeField] private Button settingsButton;
         [SerializeField] private TextMeshProUGUI levelNumberText;
         [SerializeField] private UIButtonAudio[] buttonAnimationDatas;
-        [SerializeField] private Transform titleFont;
-        [SerializeField] private Transform tree;
         [SerializeField] private TweenSequencer panelOpenAnimation;
 
         public override void Open(ScreenTabType screenTabType)

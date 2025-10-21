@@ -335,6 +335,7 @@ GameObject:
   - component: {fileID: 6536501444728415889}
   - component: {fileID: 7948750116867649475}
   - component: {fileID: 2524975356916758404}
+  - component: {fileID: 4835613499673179982}
   m_Layer: 5
   m_Name: BoatCustomisationUiScreen
   m_TagString: Untagged
@@ -430,6 +431,7 @@ MonoBehaviour:
   boatSkinColorUIPrefab: {fileID: 2197957893336026270, guid: ae17426f3887ebd43806b789e260fcfc,
     type: 3}
   boatColorListContainer: {fileID: 6229853378310692231}
+  panelOpenAnimation: {fileID: 4835613499673179982}
   screenBounds: {fileID: 2111526194186752255}
   boatScrollView: {fileID: 7236714827378950224}
   homeButton: {fileID: 832372154426100620}
@@ -442,6 +444,190 @@ MonoBehaviour:
   customisationCamera: {fileID: 4689292443042330732}
   camPositionOffset: {x: 2.55, y: 2.5, z: 4.87}
   camRotationOffset: {x: 17.191, y: 205.917, z: 357.561}
+--- !u!114 &4835613499673179982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 686302927982576442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b2f9017c8115d648b2e0ec1ef03c5b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clips:
+  - rid: 8537023278330413056
+  - rid: 8537023278330413057
+  - rid: 8537023278330413058
+  - rid: 8537023278330413166
+  - rid: 8537023278330413167
+  - rid: 8537023278330413168
+  - rid: 8537023278330413169
+  - rid: 8537023278330413170
+  - rid: 8537023278330413171
+  - rid: 8537023278330413172
+  triggerEvents: []
+  loopCount: 0
+  delayFrames: 0
+  loopType: 0
+  timelineDuration: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 8537023278330413056
+      type: {class: AnchorPositionClip, ns: BeachHero, asm: BeachHero}
+      data:
+        clipType: 0
+        startTime: 0
+        duration: 0.9390564
+        ease: 24
+        snapping: 0
+        overshoot: 1.70158
+        amplitude: 0.9
+        period: 0.5
+        moveTargetType: 1
+        fromPosition: {x: 0, y: 200, z: 0}
+        target: {fileID: 996054892665871352}
+        toAnchoredPosition: {x: 0, y: -97}
+        rectAxis: 1
+    - rid: 8537023278330413057
+      type: {class: ScaleClip, ns: BeachHero, asm: BeachHero}
+      data:
+        clipType: 1
+        startTime: 0.6832167
+        duration: 0.3167833
+        ease: 1
+        snapping: 0
+        overshoot: 1.70158
+        amplitude: 1
+        period: 0
+        fromScale: {x: 1, y: 0, z: 1}
+        toScale: {x: 1, y: 1, z: 1}
+        target: {fileID: 5575191378709880320}
+        scaleAxis: 1
+    - rid: 8537023278330413058
+      type: {class: ScaleClip, ns: BeachHero, asm: BeachHero}
+      data:
+        clipType: 1
+        startTime: 0.6832167
+        duration: 0.3196903
+        ease: 1
+        snapping: 0
+        overshoot: 1.70158
+        amplitude: 1
+        period: 0
+        fromScale: {x: 1, y: 0, z: 1}
+        toScale: {x: 1, y: 1, z: 1}
+        target: {fileID: 5070795766472346401}
+        scaleAxis: 1
+    - rid: 8537023278330413166
+      type: {class: CanvasGroupFadeClip, ns: BeachHero, asm: BeachHero}
+      data:
+        clipType: 7
+        startTime: 0.033215784
+        duration: 0.28536832
+        ease: 18
+        snapping: 0
+        overshoot: 1.70158
+        amplitude: 1
+        period: 0
+        target: {fileID: 5390461048607733065}
+        fromAlpha: 0
+        toAlpha: 0.3
+    - rid: 8537023278330413167
+      type: {class: CanvasGroupFadeClip, ns: BeachHero, asm: BeachHero}
+      data:
+        clipType: 7
+        startTime: 0.4082158
+        duration: 0.59178424
+        ease: 18
+        snapping: 0
+        overshoot: 1.70158
+        amplitude: 1
+        period: 0
+        target: {fileID: 5390461048607733065}
+        fromAlpha: 0.2
+        toAlpha: 1
+    - rid: 8537023278330413168
+      type: {class: AnchorPositionClip, ns: BeachHero, asm: BeachHero}
+      data:
+        clipType: 0
+        startTime: 0.032775134
+        duration: 0.78691506
+        ease: 3
+        snapping: 0
+        overshoot: 1.70158
+        amplitude: 1
+        period: 0
+        moveTargetType: 1
+        fromPosition: {x: 0, y: -2158, z: 0}
+        target: {fileID: 1313343459081593455}
+        toAnchoredPosition: {x: 0, y: -969}
+        rectAxis: 1
+    - rid: 8537023278330413169
+      type: {class: RotateClip, ns: BeachHero, asm: BeachHero}
+      data:
+        clipType: 2
+        startTime: 0.15044248
+        duration: 0.18030971
+        ease: 4
+        snapping: 0
+        overshoot: 1.70158
+        amplitude: 1
+        period: 0
+        fromRotation: {x: 90, y: 0, z: 0}
+        toRotation: {x: 90, y: 0, z: 3}
+        target: {fileID: 1313343459081593455}
+        rotateMode: 0
+        spaceType: 0
+    - rid: 8537023278330413170
+      type: {class: RotateClip, ns: BeachHero, asm: BeachHero}
+      data:
+        clipType: 2
+        startTime: 0.3329646
+        duration: 0.18030971
+        ease: 4
+        snapping: 0
+        overshoot: 1.70158
+        amplitude: 1
+        period: 0
+        fromRotation: {x: 90, y: 0, z: 0}
+        toRotation: {x: 90, y: 0, z: -3}
+        target: {fileID: 1313343459081593455}
+        rotateMode: 0
+        spaceType: 0
+    - rid: 8537023278330413171
+      type: {class: RotateClip, ns: BeachHero, asm: BeachHero}
+      data:
+        clipType: 2
+        startTime: 0.5165929
+        duration: 0.18030971
+        ease: 4
+        snapping: 0
+        overshoot: 1.70158
+        amplitude: 1
+        period: 0
+        fromRotation: {x: 90, y: 0, z: 0}
+        toRotation: {x: 90, y: 0, z: 0}
+        target: {fileID: 1313343459081593455}
+        rotateMode: 0
+        spaceType: 0
+    - rid: 8537023278330413172
+      type: {class: ScaleClip, ns: BeachHero, asm: BeachHero}
+      data:
+        clipType: 1
+        startTime: 0.6832167
+        duration: 0.32743365
+        ease: 34
+        snapping: 0
+        overshoot: 1.70158
+        amplitude: 3
+        period: 0.2
+        fromScale: {x: 0, y: 0, z: 1}
+        toScale: {x: 1, y: 1, z: 1}
+        target: {fileID: 4248511416572031806}
+        scaleAxis: 3
 --- !u!1 &1026480165394448717
 GameObject:
   m_ObjectHideFlags: 0
@@ -2452,7 +2638,7 @@ RectTransform:
   m_GameObject: {fileID: 2798717657809155663}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2701854266336437404}
@@ -4081,7 +4267,7 @@ RectTransform:
   m_GameObject: {fileID: 5720255848133124245}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 0, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3424429810215064173}
@@ -5187,7 +5373,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -97}
+  m_AnchoredPosition: {x: 0, y: 200}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8028574659028729801
@@ -5641,6 +5827,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1313343459081593455}
+  - component: {fileID: 5390461048607733065}
   m_Layer: 5
   m_Name: BoatViewPanel
   m_TagString: Untagged
@@ -5655,7 +5842,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8279867148230627975}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5673,9 +5860,21 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -969}
+  m_AnchoredPosition: {x: 0, y: -2158}
   m_SizeDelta: {x: 1125, y: 1164.5}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &5390461048607733065
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8279867148230627975}
+  m_Enabled: 1
+  m_Alpha: 0.2
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8329064126178655452
 GameObject:
   m_ObjectHideFlags: 0
@@ -6562,7 +6761,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 19922010, guid: 0bb1d6b9d39bcbf4785d00557d53e9e3, type: 3}
       propertyPath: m_SortingLayer
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 19970644, guid: 0bb1d6b9d39bcbf4785d00557d53e9e3, type: 3}
       propertyPath: m_SortingLayer
@@ -6717,6 +6916,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3878760640359219283, guid: a1cdaf26825d34144bb72e561315f746,
         type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3878760640359219283, guid: a1cdaf26825d34144bb72e561315f746,
+        type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 443
       objectReference: {fileID: 0}
@@ -6795,6 +6999,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1cdaf26825d34144bb72e561315f746, type: 3}
+--- !u!224 &5070795766472346401 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3878760640359219283, guid: a1cdaf26825d34144bb72e561315f746,
+    type: 3}
+  m_PrefabInstance: {fileID: 8325807307573382002}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6244669395740660384 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2675894748096715218, guid: a1cdaf26825d34144bb72e561315f746,

@@ -13,6 +13,7 @@ namespace BeachHero
             DrawIfExists(property, ref y, position, "punch");
             DrawIfExists(property, ref y, position, "vibrato");
             DrawIfExists(property, ref y, position, "elasticity");
+            DrawIfExists(property, ref y, position, "originalScale");
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
@@ -23,6 +24,7 @@ namespace BeachHero
             extraLines += HasProperty(property, "punch");
             extraLines += HasProperty(property, "vibrato");
             extraLines += HasProperty(property, "elasticity");
+            extraLines += HasProperty(property, "originalScale");
             float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;
             return baseHeight + extraLines * singleLineTotal;
         }

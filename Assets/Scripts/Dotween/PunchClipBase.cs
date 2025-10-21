@@ -11,10 +11,20 @@ namespace BeachHero
         public Vector3 punch = Vector3.one;
         public int vibrato = 10;
         public float elasticity = 1f;
+        public Vector3 originalScale = Vector3.one;
 
         public PunchClipBase()
         {
             clipType = TweenClipType.Punch;
+        }
+
+        public override void ApplyFromState()
+        {
+            if (target == null)
+            {
+                return;
+            }
+            target.localScale = originalScale;
         }
     }
 

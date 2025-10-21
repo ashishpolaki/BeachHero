@@ -12,10 +12,20 @@ namespace BeachHero
         public int vibrato = 10;
         public float randomness = 90f;
         public bool fadeOut = true;
+        public Vector3 originalScale = Vector3.one;
 
         public ShakeClipBase()
         {
             clipType = TweenClipType.Shake;
+        }
+
+        public override void ApplyFromState()
+        {
+            if (target == null)
+            {
+                return;
+            }
+            target.localScale = originalScale;
         }
     }
 
