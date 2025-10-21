@@ -59,7 +59,10 @@ namespace BeachHero
             ICollectable collectable = other.GetComponent<ICollectable>();
             if (collectable != null)
             {
-                collectable.Collect();
+                if (!collectable.IsCollected)
+                {
+                    collectable.Collect();
+                }
             }
 
             //Collide with Obstacle

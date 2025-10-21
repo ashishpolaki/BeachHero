@@ -21,17 +21,6 @@ namespace BeachHero
                 animationClips.Add(hash);
             }
         }
-        public void Init()
-        {
-            PlayRandomAnimation();
-        }
-        public void PlayRandomAnimation()
-        {
-            if (playAnimationCoroutine == null && animationClips.Count > 0)
-            {
-                playAnimationCoroutine = StartCoroutine(PlayAnimationsLoop());
-            }
-        }
         private IEnumerator PlayAnimationsLoop()
         {
             while (true)
@@ -46,6 +35,17 @@ namespace BeachHero
                     yield return null;
                 }
                 yield return new WaitForSeconds(animationInterval);
+            }
+        }
+        public void Init()
+        {
+            PlayRandomAnimation();
+        }
+        public void PlayRandomAnimation()
+        {
+            if (playAnimationCoroutine == null && animationClips.Count > 0)
+            {
+                playAnimationCoroutine = StartCoroutine(PlayAnimationsLoop());
             }
         }
         public void StopAnimation()
