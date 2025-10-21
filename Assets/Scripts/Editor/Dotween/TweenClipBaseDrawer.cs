@@ -4,7 +4,6 @@ using UnityEditor;
 using UnityEngine;
 using System.Reflection;
 using DG.Tweening;
-using UnityEngine.UIElements;
 
 namespace BeachHero
 {
