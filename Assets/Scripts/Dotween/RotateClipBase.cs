@@ -43,7 +43,14 @@ namespace BeachHero
         {
             if (target != null)
             {
-                target.eulerAngles = fromRotation;
+                if (spaceType == SpaceType.World)
+                {
+                    target.eulerAngles = fromRotation;
+                }
+                else
+                {
+                    target.localEulerAngles = fromRotation;
+                }
             }
         }
     }

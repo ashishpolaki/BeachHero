@@ -463,9 +463,9 @@ MonoBehaviour:
   - rid: 8537023278330413166
   - rid: 8537023278330413167
   - rid: 8537023278330413168
-  - rid: 8537023278330413169
-  - rid: 8537023278330413170
-  - rid: 8537023278330413171
+  - rid: 8537023278330413197
+  - rid: 8537023278330413198
+  - rid: 8537023278330413199
   - rid: 8537023278330413172
   triggerEvents: []
   loopCount: 0
@@ -565,54 +565,6 @@ MonoBehaviour:
         target: {fileID: 1313343459081593455}
         toAnchoredPosition: {x: 0, y: -969}
         rectAxis: 1
-    - rid: 8537023278330413169
-      type: {class: RotateClip, ns: BeachHero, asm: BeachHero}
-      data:
-        clipType: 2
-        startTime: 0.15044248
-        duration: 0.18030971
-        ease: 4
-        snapping: 0
-        overshoot: 1.70158
-        amplitude: 1
-        period: 0
-        fromRotation: {x: 90, y: 0, z: 0}
-        toRotation: {x: 90, y: 0, z: 3}
-        target: {fileID: 1313343459081593455}
-        rotateMode: 0
-        spaceType: 0
-    - rid: 8537023278330413170
-      type: {class: RotateClip, ns: BeachHero, asm: BeachHero}
-      data:
-        clipType: 2
-        startTime: 0.3329646
-        duration: 0.18030971
-        ease: 4
-        snapping: 0
-        overshoot: 1.70158
-        amplitude: 1
-        period: 0
-        fromRotation: {x: 90, y: 0, z: 0}
-        toRotation: {x: 90, y: 0, z: -3}
-        target: {fileID: 1313343459081593455}
-        rotateMode: 0
-        spaceType: 0
-    - rid: 8537023278330413171
-      type: {class: RotateClip, ns: BeachHero, asm: BeachHero}
-      data:
-        clipType: 2
-        startTime: 0.5165929
-        duration: 0.18030971
-        ease: 4
-        snapping: 0
-        overshoot: 1.70158
-        amplitude: 1
-        period: 0
-        fromRotation: {x: 90, y: 0, z: 0}
-        toRotation: {x: 90, y: 0, z: 0}
-        target: {fileID: 1313343459081593455}
-        rotateMode: 0
-        spaceType: 0
     - rid: 8537023278330413172
       type: {class: ScaleClip, ns: BeachHero, asm: BeachHero}
       data:
@@ -628,6 +580,54 @@ MonoBehaviour:
         toScale: {x: 1, y: 1, z: 1}
         target: {fileID: 4248511416572031806}
         scaleAxis: 3
+    - rid: 8537023278330413197
+      type: {class: RotateClip, ns: BeachHero, asm: BeachHero}
+      data:
+        clipType: 2
+        startTime: 0.1512662
+        duration: 0.18030971
+        ease: 4
+        snapping: 0
+        overshoot: 1.70158
+        amplitude: 1
+        period: 0
+        fromRotation: {x: 0, y: 0, z: 0}
+        toRotation: {x: 0, y: 0, z: 3}
+        target: {fileID: 1313343459081593455}
+        rotateMode: 0
+        spaceType: 1
+    - rid: 8537023278330413198
+      type: {class: RotateClip, ns: BeachHero, asm: BeachHero}
+      data:
+        clipType: 2
+        startTime: 0.3329646
+        duration: 0.18030971
+        ease: 4
+        snapping: 0
+        overshoot: 1.70158
+        amplitude: 1
+        period: 0
+        fromRotation: {x: 0, y: 0, z: 0}
+        toRotation: {x: 0, y: 0, z: -3}
+        target: {fileID: 1313343459081593455}
+        rotateMode: 0
+        spaceType: 1
+    - rid: 8537023278330413199
+      type: {class: RotateClip, ns: BeachHero, asm: BeachHero}
+      data:
+        clipType: 2
+        startTime: 0.5165929
+        duration: 0.18030971
+        ease: 4
+        snapping: 0
+        overshoot: 1.70158
+        amplitude: 1
+        period: 0
+        fromRotation: {x: 0, y: 0, z: 0}
+        toRotation: {x: 0, y: 0, z: 0}
+        target: {fileID: 1313343459081593455}
+        rotateMode: 0
+        spaceType: 1
 --- !u!1 &1026480165394448717
 GameObject:
   m_ObjectHideFlags: 0
@@ -2638,7 +2638,7 @@ RectTransform:
   m_GameObject: {fileID: 2798717657809155663}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2701854266336437404}
@@ -4267,7 +4267,7 @@ RectTransform:
   m_GameObject: {fileID: 5720255848133124245}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 0, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3424429810215064173}
@@ -5373,7 +5373,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 200}
+  m_AnchoredPosition: {x: 0, y: -97}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8028574659028729801
@@ -5842,7 +5842,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8279867148230627975}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.00000008742278, w: -1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5860,7 +5860,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -2158}
+  m_AnchoredPosition: {x: 0, y: -969}
   m_SizeDelta: {x: 1125, y: 1164.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &5390461048607733065
@@ -5871,7 +5871,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8279867148230627975}
   m_Enabled: 1
-  m_Alpha: 0.2
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -6917,7 +6917,7 @@ PrefabInstance:
     - target: {fileID: 3878760640359219283, guid: a1cdaf26825d34144bb72e561315f746,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3878760640359219283, guid: a1cdaf26825d34144bb72e561315f746,
         type: 3}
