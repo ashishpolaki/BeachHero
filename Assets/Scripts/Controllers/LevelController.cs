@@ -98,7 +98,7 @@ namespace BeachHero
                     isPathDrawingAllowed = true;
                     if (playerMode == PlayerMode.FTUE)
                     {
-                        GameController.GetInstance.TutorialController.OnPlayerTap();
+                        TutorialController.GetInstance.OnPlayerTap();
                     }
                     AudioController.GetInstance.PlaySoundInLoop(AudioType.PathDraw);
                 }
@@ -185,7 +185,7 @@ namespace BeachHero
             levelPhase = LevelPhase.Simulating;
             if (playerMode == PlayerMode.FTUE)
             {
-                GameController.GetInstance.TutorialController.OnPathDrawn();
+                TutorialController.GetInstance.OnPathDrawn();
             }
         }
 

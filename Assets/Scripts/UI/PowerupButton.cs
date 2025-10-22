@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -69,7 +68,7 @@ namespace BeachHero
 
             if (!isLocked)
             {
-                GameController.GetInstance.TutorialController.OnPowerupPressed();
+                TutorialController.GetInstance.OnPowerupPressed();
             }
         }
         private void AddMorePowerup()

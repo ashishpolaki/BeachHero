@@ -31,7 +31,6 @@ namespace BeachHero
         [SerializeField] private LevelController levelController;
         [SerializeField] private PoolController poolManager;
         [SerializeField] private PowerupController powerupController;
-        [SerializeField] private TutorialController tutorialController;
         [SerializeField] private StoreController storeController;
         [SerializeField] private SkinController skinController;
         [SerializeField] private LevelFailDelay[] levelFailDelays;
@@ -47,7 +46,6 @@ namespace BeachHero
         public PoolController PoolManager => poolManager;
         public LevelController LevelController => levelController;
         public PowerupController PowerupController => powerupController;
-        public TutorialController TutorialController => tutorialController;
         public StoreController StoreController => storeController;
         public SkinController SkinController => skinController;
         #endregion
@@ -93,7 +91,7 @@ namespace BeachHero
         {
             SetGameState(GameState.Playing);
             CameraController.GetInstance.SetActiveCamera(GameCameraType.GameView);
-            bool isFTUE = tutorialController.IsFTUE(currentLevelIndex + 1);
+            bool isFTUE = TutorialController.GetInstance.IsFTUE(currentLevelIndex + 1);
             ScreenTabType screenTabType = isFTUE ? ScreenTabType.FTUE : ScreenTabType.None;
             levelController.InitializePlayerData(isFTUE);
             UIController.GetInstance.ScreenEvent(ScreenType.Gameplay, UIScreenEvent.Open, screenTabType);

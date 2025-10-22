@@ -23,6 +23,7 @@ namespace BeachHero
             GameController.GetInstance.Init();
             AudioController.GetInstance.Init();
             CameraController.GetInstance.Init();
+            TutorialController.GetInstance.Init();
             AdController.GetInstance.Init();
             HapticsManager.GetInstance.Init();
             DOTween.Init();

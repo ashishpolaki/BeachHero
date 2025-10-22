@@ -171,27 +171,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 327617bf2d92d3347b1c4953be1aa10b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openingAnimationData:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
   rect: {fileID: 379920715209317445}
   notchSafeArea: {fileID: 0}
   screenType: 7
   defaultOpenTab: 0
   tabs: []
-  tutorialPanel: {fileID: 7029953569860127651}
   magnetButton: {fileID: 3636575030536423212}
   speedButton: {fileID: 4489962214280904090}
   playButton: {fileID: 3341441240902022548}
   closeButton: {fileID: 8906281367012212818}
   levelNumberLabel: {fileID: 5183436358018329260}
-  buttonsContainer: {fileID: 7324011518483749185}
+  powerupButtonSprite: {fileID: 21300000, guid: 334095af25ccb2444a2aa25517646f7c,
+    type: 3}
+  playButtonSprite: {fileID: 21300000, guid: b11c09117255a014b8905d86db2a375c, type: 3}
 --- !u!1 &139184882614853065
 GameObject:
   m_ObjectHideFlags: 0
@@ -400,15 +392,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openingAnimation:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
   buttonAudioType: 1
   button: {fileID: 4005015816727672685}
   rect: {fileID: 0}
@@ -646,15 +629,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openingAnimation:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
   buttonAudioType: 1
   button: {fileID: 8906281367012212818}
   rect: {fileID: 0}
@@ -1356,15 +1330,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openingAnimation:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
   buttonAudioType: 1
   button: {fileID: 5449183031456707673}
   rect: {fileID: 0}
@@ -1577,15 +1542,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openingAnimation:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
   buttonAudioType: 1
   button: {fileID: 3341441240902022548}
   rect: {fileID: 0}
@@ -1682,7 +1638,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8364175923780338973
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2034,7 +1990,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &582978276483412786
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2966,15 +2922,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openingAnimation:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
   buttonAudioType: 1
   button: {fileID: 2552755202613257296}
   rect: {fileID: 0}
@@ -3248,15 +3195,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openingAnimation:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
   buttonAudioType: 1
   button: {fileID: 268068854696627224}
   rect: {fileID: 0}

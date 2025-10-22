@@ -25,11 +25,11 @@ namespace BeachHero
         public override async void Open()
         {
             base.Open();
-            if (GameController.GetInstance != null)
+            if (TutorialController.GetInstance != null)
             {
-                GameController.GetInstance.TutorialController.OnPathDrawnAction += OnPathDrawn;
+                TutorialController.GetInstance.OnPathDrawnAction += OnPathDrawn;
             }
-            currentFTUEType = GameController.GetInstance.TutorialController.CurrentFTUEType;
+            currentFTUEType = TutorialController.GetInstance.CurrentFTUEType;
             cam = GameController.GetInstance.LevelController.Cam;
             handImageColor = handImage.color;
             handImageColor.a = 1f;
@@ -42,9 +42,9 @@ namespace BeachHero
         public override void Close()
         {
             base.Close();
-            if (GameController.GetInstance != null)
+            if (TutorialController.GetInstance != null)
             {
-                GameController.GetInstance.TutorialController.OnPathDrawnAction -= OnPathDrawn;
+                TutorialController.GetInstance.OnPathDrawnAction -= OnPathDrawn;
             }
             handObject.localScale = Vector3.one;
             handObject.DOKill();

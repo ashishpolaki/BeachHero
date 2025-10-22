@@ -7,12 +7,13 @@ namespace BeachHero
     public class PowerupSelectionUIScreen : BaseScreen
     {
         #region Inspector Variables
-        [SerializeField] private PowerupTutorialPanel tutorialPanel;
         [SerializeField] private PowerupButton magnetButton;
         [SerializeField] private PowerupButton speedButton;
         [SerializeField] private Button playButton;
         [SerializeField] private Button closeButton;
         [SerializeField] private TextMeshProUGUI levelNumberLabel;
+        [SerializeField] private Sprite powerupButtonSprite;
+        [SerializeField] private Sprite playButtonSprite;
         #endregion
 
         #region Private Variables
@@ -28,7 +29,6 @@ namespace BeachHero
             {
                 // Reset the tutorial state.
                 tutorialActive = false;
-                tutorialPanel.Deactivate();
             }
             UpdateLevelNumber();
             SetupPowerup(PowerupType.Magnet, magnetButton);
@@ -48,13 +48,13 @@ namespace BeachHero
         {
             playButton.ButtonRegister(OnPlayClicked);
             closeButton.ButtonRegister(ClosePanel);
-            GameController.GetInstance.TutorialController.OnPowerupPressAction += OnPowerupPressed;
+            TutorialController.GetInstance.OnPowerupPressAction += OnPowerupPressed;
         }
         private void RemoveListeners()
         {
             playButton.ButtonDeRegister(OnPlayClicked);
             closeButton.ButtonDeRegister(ClosePanel);
-            GameController.GetInstance.TutorialController.OnPowerupPressAction -= OnPowerupPressed;
+            TutorialController.GetInstance.OnPowerupPressAction -= OnPowerupPressed;
         }
         private void ClosePanel()
         {
@@ -64,10 +64,12 @@ namespace BeachHero
         {
             var gameState = GameController.GetInstance.GameState;
 
-            if(tutorialActive)
+            if (tutorialActive)
             {
-                TutorialUiUtility.RemoveTutorialCanvas(playButton.gameObject);
-                tutorialPanel.Deactivate();
+                TutorialController.GetInstance.RemoveTutorialCanvas(playButton.gameObject);
+                TutorialController.GetInstance.ClearButtonHighlight();
+                TutorialController.GetInstance.HideHandPointer();
+                TutorialController.GetInstance.HideBlockerOverlay();
                 tutorialActive = false;
             }
 
@@ -89,9 +91,11 @@ namespace BeachHero
             {
                 return;
             }
-            TutorialUiUtility.RemoveTutorialCanvas(magnetButton.gameObject);
-            TutorialUiUtility.RemoveTutorialCanvas(speedButton.gameObject);
-            tutorialPanel.OnPowerupButtonPressed(playButton.transform);
+            TutorialController.GetInstance.RemoveTutorialCanvas(magnetButton.gameObject);
+            TutorialController.GetInstance.RemoveTutorialCanvas(speedButton.gameObject);
+            TutorialController.GetInstance.ClearButtonHighlight();
+            TutorialController.GetInstance.HideHandPointer();
+            TutorialController.GetInstance.HighlightButton(playButton.transform, playButton.GetComponent<RectTransform>().sizeDelta, playButtonSprite,true);
         }
         #endregion
 
@@ -112,7 +116,7 @@ namespace BeachHero
                 GameController.GetInstance.PowerupController.UnlockPowerup(type);
                 isLocked = false;
                 tutorialActive = true;
-                tutorialPanel.ShowPowerupTutorial(targetButton.transform);
+                TutorialController.GetInstance.HighlightButton(targetButton.transform, targetButton.GetComponent<RectTransform>().sizeDelta, powerupButtonSprite);
             }
 
             int balance = GameController.GetInstance.PowerupController.GetPowerupBalance(type);
