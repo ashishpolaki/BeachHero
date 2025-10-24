@@ -68,7 +68,7 @@ namespace BeachHero
             {
                 TutorialController.GetInstance.RemoveTutorialCanvas(playButton.gameObject);
                 TutorialController.GetInstance.ClearButtonHighlight();
-                TutorialController.GetInstance.HideHandPointer();
+                TutorialController.GetInstance.TutorialHand.Hide();
                 TutorialController.GetInstance.HideBlockerOverlay();
                 tutorialActive = false;
             }
@@ -91,11 +91,17 @@ namespace BeachHero
             {
                 return;
             }
-            TutorialController.GetInstance.RemoveTutorialCanvas(magnetButton.gameObject);
-            TutorialController.GetInstance.RemoveTutorialCanvas(speedButton.gameObject);
+            if (TutorialController.GetInstance.TutorialType == TutorialType.MagnetPowerup)
+            {
+                TutorialController.GetInstance.RemoveTutorialCanvas(magnetButton.gameObject);
+            }
+            else if (TutorialController.GetInstance.TutorialType == TutorialType.SpeedBoostPowerup)
+            {
+                TutorialController.GetInstance.RemoveTutorialCanvas(speedButton.gameObject);
+            }
             TutorialController.GetInstance.ClearButtonHighlight();
-            TutorialController.GetInstance.HideHandPointer();
-            TutorialController.GetInstance.HighlightButton(playButton.transform, playButton.GetComponent<RectTransform>().sizeDelta, playButtonSprite,true);
+            TutorialController.GetInstance.TutorialHand.Hide();
+            TutorialController.GetInstance.HighlightButton(playButton.transform, playButton.GetComponent<RectTransform>().sizeDelta, playButtonSprite, true);
         }
         #endregion
 
@@ -116,6 +122,8 @@ namespace BeachHero
                 GameController.GetInstance.PowerupController.UnlockPowerup(type);
                 isLocked = false;
                 tutorialActive = true;
+                var tutorialType = type == PowerupType.Magnet ? TutorialType.MagnetPowerup : TutorialType.SpeedBoostPowerup;
+                TutorialController.GetInstance.SetCurrentTutorialType(tutorialType);
                 TutorialController.GetInstance.HighlightButton(targetButton.transform, targetButton.GetComponent<RectTransform>().sizeDelta, powerupButtonSprite);
             }
 

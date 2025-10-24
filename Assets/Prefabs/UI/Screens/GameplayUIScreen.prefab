@@ -422,15 +422,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openingAnimation:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
   buttonAudioType: 1
   button: {fileID: 262120400088817302}
   rect: {fileID: 0}
@@ -568,15 +559,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openingAnimation:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
   buttonAudioType: 1
   button: {fileID: 5205383346646795538}
   rect: {fileID: 0}
@@ -714,15 +696,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openingAnimation:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
   buttonAudioType: 1
   button: {fileID: 273080263119631402}
   rect: {fileID: 0}
@@ -938,15 +911,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openingAnimation:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
   buttonAudioType: 1
   button: {fileID: 8090799919026597619}
   rect: {fileID: 0}
@@ -1591,15 +1555,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openingAnimation:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
   buttonAudioType: 1
   button: {fileID: 7179067537632794198}
   rect: {fileID: 0}
@@ -1815,15 +1770,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b91b182715ca6c448ad2082033ebae1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openingAnimationData:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
   rect: {fileID: 0}
   notchSafeArea: {fileID: 0}
   screenType: 4
@@ -1921,10 +1867,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameplayTutorialScreenTab
       objectReference: {fileID: 0}
+    - target: {fileID: 876970465345324469, guid: 069808b5a34d2ad40b40daa40056d349,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3103028678054336266, guid: 069808b5a34d2ad40b40daa40056d349,
         type: 3}
       propertyPath: m_RaycastTarget
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4753180286173205855, guid: 069808b5a34d2ad40b40daa40056d349,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5418024443277305674, guid: 069808b5a34d2ad40b40daa40056d349,
         type: 3}
@@ -2024,6 +1980,11 @@ PrefabInstance:
     - target: {fileID: 5418024443277305674, guid: 069808b5a34d2ad40b40daa40056d349,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6583655495997151117, guid: 069808b5a34d2ad40b40daa40056d349,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

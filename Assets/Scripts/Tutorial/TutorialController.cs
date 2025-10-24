@@ -5,16 +5,20 @@ using UnityEngine.UI;
 
 namespace BeachHero
 {
-    public enum FTUETutorialType
+    public enum TutorialType
     {
         None,
-        TapAndDrag,    // Tap + drag to save
-        RescueAll,       // Save all drowning characters
+        MagnetPowerup,
+        SpeedBoostPowerup,
+        TapAndDrag,      // Tap + drag to save. Used in Level 1
+        RescueAll,       // Save all drowning characters in a level. Used in Level 2
     }
     public class TutorialController : SingleTon<TutorialController>
     {
         #region Inspector Variables
-        [SerializeField] private FTUEConfigSO fTUEConfig;
+        [SerializeField] private TutorialConfigSO tutorialConfig;
+        [SerializeField] private TutorialHand tutorialHand;
+        [SerializeField] private TutorialCharacter tutorialCharacter;
         [SerializeField] private GameObject blockerOverlay;
         [SerializeField] private RectTransform highlightRect;
         [SerializeField] private Image highlightImage;
@@ -22,12 +26,6 @@ namespace BeachHero
         [Space(2), Header("Button Highlight Animation")]
         [SerializeField] private float buttonScaleDuration = 0.5f;
         [SerializeField] private Ease buttonScaleEase = Ease.OutBack;
-
-        [Space(2), Header("Hand Animation")]
-        [SerializeField] private RectTransform handPointer;
-        [SerializeField] private float handMoveOffset = 50f;
-        [SerializeField] private float handMoveDuration = 0.5f;
-        [SerializeField] private Ease handMoveEase = Ease.InOutSine;
         #endregion
 
         #region Events
@@ -37,25 +35,20 @@ namespace BeachHero
         #endregion
 
         #region Properties
-        public FTUETutorialType CurrentFTUEType { private set; get; }
+        public TutorialType TutorialType { private set; get; }
+        public TutorialCharacter TutorialCharacter => tutorialCharacter;
+        public TutorialHand TutorialHand => tutorialHand;
         #endregion
 
         #region Unity Methods
         private void OnDestroy()
         {
             ClearButtonHighlight();
-            HideHandPointer();
+            tutorialHand.Hide();
         }
         #endregion
 
-        #region Public Methods
-        public void Init()
-        {
-            blockerOverlay.SetActive(false);
-            handPointer.gameObject.SetActive(false);
-            highlightRect.gameObject.SetActive(false);
-        }
-
+        #region Highlight COntrols
         public void HighlightButton(Transform button, Vector2 size, Sprite sprite, bool sliced = false)
         {
             blockerOverlay.SetActive(true);
@@ -75,7 +68,7 @@ namespace BeachHero
                 .OnComplete(() =>
                 {
                     EnsureTutorialCanvas(button.gameObject, "SpritesAboveUI", 2);
-                    ShowHandPointer(button);
+                    tutorialHand.ShowHandPointing(button);
                 });
         }
 
@@ -85,38 +78,35 @@ namespace BeachHero
             highlightRect.sizeDelta = Vector2.zero;
             highlightRect.gameObject.SetActive(false);
         }
-        public void ShowHandPointer(Transform target)
-        {
-            handPointer.DOKill();
-            handPointer.position = target.position;
-            handPointer.gameObject.SetActive(true);
+        #endregion
 
-            Vector2 anchoredPos = handPointer.anchoredPosition;
-            handPointer.DOAnchorPosY(anchoredPos.y + handMoveOffset, handMoveDuration)
-                .SetEase(handMoveEase)
-                .SetLoops(-1, LoopType.Yoyo);
-        }
-        public void HideHandPointer()
+        #region Public Methods
+        public void Init()
         {
-            handPointer.DOKill();
-            handPointer.gameObject.SetActive(false);
+            blockerOverlay.SetActive(false);
+            tutorialHand.Init();
+            highlightRect.gameObject.SetActive(false);
+        }
+        public void SetCurrentTutorialType(TutorialType tutorialType)
+        {
+            TutorialType = tutorialType;
         }
         public void HideBlockerOverlay()
         {
             blockerOverlay.SetActive(false);
         }
         /// <summary>
-        /// Is the current level a FTUE(First Time User Experience) level? 
+        /// Is the current level a Tutorial level? 
         /// </summary>
         /// <param name="levelNumber"></param>
         /// <returns></returns>
-        public bool IsFTUE(int levelNumber)
+        public bool IsTutorial(int levelNumber)
         {
-            foreach (var item in fTUEConfig.entries)
+            foreach (var item in tutorialConfig.entries)
             {
                 if (item.levelNumber == levelNumber)
                 {
-                    CurrentFTUEType = item.tutorialType;
+                    SetCurrentTutorialType(item.tutorialType);
                     return true;
                 }
             }
@@ -134,7 +124,9 @@ namespace BeachHero
         {
             OnPowerupPressAction?.Invoke();
         }
+        #endregion
 
+        #region Canvas Utility
         /// <summary>
         /// Ensures the target GameObject has a Canvas configured for tutorial overlay rendering
         /// and a GraphicRaycaster for input handling. Returns the Canvas component.
@@ -192,6 +184,5 @@ namespace BeachHero
                 UnityEngine.Object.Destroy(canvas);
         }
         #endregion
-
     }
 }

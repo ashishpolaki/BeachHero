@@ -1,6 +1,4 @@
 using UnityEngine;
-using DG.Tweening;
-using UnityEngine.UI;
 using Febucci.UI;
 using System.Threading.Tasks;
 
@@ -8,19 +6,10 @@ namespace BeachHero
 {
     public class GameplayTutorialTab : BaseScreenTab
     {
-        [SerializeField] private RectTransform handObject;
         [SerializeField] private TextAnimatorPlayer instructionText;
-        [SerializeField] private Image panelImage;
-        [SerializeField] private Image handImage;
-        [SerializeField] private float handMoveDuration = 1.4f;
-        [SerializeField] private float handScaleDuration = 0.5f;
-        [SerializeField] private float handScaleElasticity = 0.2f;
-        [SerializeField] private float handScalePunch = 0.2f;
-        [SerializeField] private float panelFadeDuration = 0.5f;
 
         private Camera cam;
-        private Color handImageColor;
-        private FTUETutorialType currentFTUEType;
+        private TutorialType currentTutorialType;
 
         public override async void Open()
         {
@@ -29,14 +18,10 @@ namespace BeachHero
             {
                 TutorialController.GetInstance.OnPathDrawnAction += OnPathDrawn;
             }
-            currentFTUEType = TutorialController.GetInstance.CurrentFTUEType;
+            currentTutorialType = TutorialController.GetInstance.TutorialType;
             cam = GameController.GetInstance.LevelController.Cam;
-            handImageColor = handImage.color;
-            handImageColor.a = 1f;
-            handImage.color = handImageColor;
             await Task.Delay(100); // Wait for a frame to ensure the camera is set up
-            OnHandTap();
-            ShowInstructionText();
+            InitializeTutorial();
         }
 
         public override void Close()
@@ -46,72 +31,70 @@ namespace BeachHero
             {
                 TutorialController.GetInstance.OnPathDrawnAction -= OnPathDrawn;
             }
-            handObject.localScale = Vector3.one;
-            handObject.DOKill();
-            handImage.DOKill();
+            TutorialController.GetInstance.TutorialHand.Hide();
         }
 
-        private void ShowInstructionText()
+        private void InitializeTutorial()
         {
-            // Set instruction text based on the FTUE type
-            if (currentFTUEType == FTUETutorialType.TapAndDrag)
-            {
-                instructionText.ShowText(StringUtils.TAP_AND_DRAG_TUTORIAL);
-            }
-            else if (currentFTUEType == FTUETutorialType.RescueAll)
-            {
-                instructionText.ShowText(StringUtils.RESCUE_ALL_TUTORIAL);
-            }
+            DisplayInstructionText();
+            PositionAndAnimateHand();
         }
 
-        private void HideInstructionText()
+        private void DisplayInstructionText()
         {
-            instructionText.StartDisappearingText();
+            string text = currentTutorialType switch
+            {
+                TutorialType.TapAndDrag => StringUtils.TAP_AND_DRAG_TUTORIAL,
+                TutorialType.RescueAll => StringUtils.RESCUE_ALL_TUTORIAL,
+                _ => string.Empty
+            };
+
+            if (!string.IsNullOrEmpty(text))
+                instructionText.ShowText(text);
         }
+
+        private void HideInstructionText() => instructionText.StartDisappearingText();
 
         private void OnPathDrawn()
         {
             HideInstructionText();
-            //Fade handImage
-            handImage.DOKill();
-            handImage.DOFade(0, panelFadeDuration).OnComplete(() =>
-            {
-                handImage.color = handImageColor;
-                Close();
-            });
+           
+            Close();
         }
 
-        private void OnHandTap()
+        private void PositionAndAnimateHand()
         {
-            Vector3 playerWorldPos = GameController.GetInstance.LevelController.PlayerTransform.position;
-            Vector3 screenPos = cam.WorldToScreenPoint(playerWorldPos);
             var canvas = UIController.GetInstance.Canvas;
-            Vector3 worldOnCanvas = cam.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, canvas.planeDistance));  // Convert screen world on canvas plane (plane distance = 1)
-            Vector3 localPos = (canvas.transform as RectTransform).InverseTransformPoint(worldOnCanvas);
-            localPos = new Vector3(localPos.x, localPos.y, 0f); // Ensure z is zero for 2D canvas
-            handObject.localPosition = localPos;
-            handObject.DOKill();
-            handObject.DOPunchScale(Vector3.one * handScalePunch, handScaleDuration, 0, handScaleElasticity).OnComplete(() =>
-            {
-                OnHandMove();
-            });
+            var level = GameController.GetInstance.LevelController;
 
+            Vector3 playerLocalPos = WorldToCanvasLocalPosition(cam, canvas, level.PlayerTransform.position);
+            int charIndex = currentTutorialType == TutorialType.TapAndDrag ? 0 : 1;
+
+            Vector3 characterLocalPos = WorldToCanvasLocalPosition(
+                cam, canvas, level.GetDrowningCharacter(charIndex).position);
+            TutorialController.GetInstance.TutorialHand.PlayPunchThenMoveLoop(playerLocalPos, characterLocalPos);
         }
 
-        private void OnHandMove()
+        private Vector3 WorldToCanvasLocalPosition(Camera camera, Canvas canvas, Vector3 worldPosition)
         {
-            handObject.DOKill();
-            int characterIndex = currentFTUEType == FTUETutorialType.TapAndDrag ? 0 : 1;
-            var canvas = UIController.GetInstance.Canvas;
-            Vector3 characterWorldPos = GameController.GetInstance.LevelController.GetDrowningCharacter(characterIndex).position;
-            Vector3 screenPos = cam.WorldToScreenPoint(characterWorldPos);
-            Vector3 worldOnCanvas = cam.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, canvas.planeDistance)); // Convert screen world on canvas plane (plane distance = 1)
-            Vector3 localPos = (canvas.transform as RectTransform).InverseTransformPoint(worldOnCanvas);
-            localPos = new Vector3(localPos.x, localPos.y, 0f); // Ensure z is zero for 2D canvas
-            handObject.DOAnchorPos(localPos, handMoveDuration).OnComplete(() =>
+            if (camera == null || canvas == null)
             {
-                OnHandTap();
-            });
+                Debug.LogError("WorldToCanvasLocalPosition: Missing camera or canvas reference.");
+                return Vector3.zero;
+            }
+
+            // Convert world - screen position
+            Vector3 screenPos = camera.WorldToScreenPoint(worldPosition);
+
+            // Convert screen - world position on canvas plane
+            Vector3 worldOnCanvas = camera.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, canvas.planeDistance));
+
+            // Convert to local position on canvas RectTransform
+            RectTransform canvasRect = canvas.transform as RectTransform;
+            Vector3 localPos = canvasRect.InverseTransformPoint(worldOnCanvas);
+            localPos.z = 0f; // Keep flat on 2D plane
+
+            return localPos;
         }
     }
 }

@@ -91,8 +91,8 @@ namespace BeachHero
         {
             SetGameState(GameState.Playing);
             CameraController.GetInstance.SetActiveCamera(GameCameraType.GameView);
-            bool isFTUE = TutorialController.GetInstance.IsFTUE(currentLevelIndex + 1);
-            ScreenTabType screenTabType = isFTUE ? ScreenTabType.FTUE : ScreenTabType.None;
+            bool isFTUE = TutorialController.GetInstance.IsTutorial(currentLevelIndex + 1);
+            ScreenTabType screenTabType = isFTUE ? ScreenTabType.LevelTutorial : ScreenTabType.None;
             levelController.InitializePlayerData(isFTUE);
             UIController.GetInstance.ScreenEvent(ScreenType.Gameplay, UIScreenEvent.Open, screenTabType);
             ActivatePowerups();
