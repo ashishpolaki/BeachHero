@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -52,6 +53,7 @@ namespace BeachHero
         private bool hasDrawnPath = false;
         private bool isPathDrawingAllowed = false;
         private bool isMagnetActive = false;
+        private bool isPlayerInitialRotationSet = false;
 
         private int gameCurrencyCount;
         private int targetDrownCharacters;
@@ -127,7 +129,6 @@ namespace BeachHero
         #endregion
 
         #region DrawPath
-
         private void UpdatePath(Vector3 newPosition)
         {
             if (Vector3.Distance(newPosition, lastTrailPoint) > minTrailPointsDistance)
@@ -152,8 +153,18 @@ namespace BeachHero
                         // Update the trail position to the interpolated point
                         playerPathDrawTrail.transform.position = interpolatedPoint;
                     }
-                }
 
+                    if (!isPlayerInitialRotationSet)
+                    {
+                        isPlayerInitialRotationSet = true;
+                        var smoothedPoints = CatmullSplineUtils.GetEvenlySpacedPoints(curvePoints, spacing);
+
+                        Vector3 nextPoint = smoothedPoints[1];
+                        Vector3 direction = (nextPoint - player.transform.position).normalized;
+                        Quaternion targetRot = Quaternion.LookRotation(direction);
+                        player.transform.DORotateQuaternion(targetRot, 0.2f);
+                    }
+                }
                 // Update the last trail point
                 lastTrailPoint = newPosition;
             }
@@ -211,7 +222,7 @@ namespace BeachHero
         }
         public void UpdateBoat(int index, int boatColorIndex)
         {
-            player.UpdateBoat(index, boatColorIndex,0, GameController.GetInstance.SkinController.GetBoatSkinByIndex(index).BoatPrefab);
+            player.UpdateBoat(index, boatColorIndex, 0, GameController.GetInstance.SkinController.GetBoatSkinByIndex(index).BoatPrefab);
         }
         public float GetPlayerSpeed()
         {
@@ -420,6 +431,7 @@ namespace BeachHero
 
         private void ResetState()
         {
+            isPlayerInitialRotationSet = false;
             gameCurrencyCount = 0;
             drownCharactersCounter = 0;
             ReturnToPoolEverything();

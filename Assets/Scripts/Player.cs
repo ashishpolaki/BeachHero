@@ -182,21 +182,12 @@ namespace BeachHero
         }
         public void StartMovement(Vector3[] pointsList)
         {
+            normalBoostObj.SetActive(!isSpeedBoostEnabled);
             if (isSpeedBoostEnabled)
             {
-                normalBoostObj.SetActive(false);
                 speedBoostObj.SetActive(true);
             }
-
             canStartMovement = true;
-
-            //set boat direction 
-            Vector3 p0 = pointsList[0];
-            Vector3 p1 = pointsList[1];
-            Vector3 direction = (p1 - p0).normalized;
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = targetRotation;
-
             this.pointsList = pointsList;
         }
         #endregion
@@ -206,10 +197,10 @@ namespace BeachHero
             canStartMovement = false;
             if (isSpeedBoostEnabled)
             {
-                normalBoostObj.SetActive(true);
                 speedBoostObj.SetActive(false);
                 isSpeedBoostEnabled = false;
             }
+            normalBoostObj.SetActive(false);
             pointsList = new Vector3[0];
             nextPointIndex = 1;
             DeactivateMagnetPowerup();
