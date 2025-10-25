@@ -94,10 +94,14 @@ namespace BeachHero
             if (TutorialController.GetInstance.TutorialType == TutorialType.MagnetPowerup)
             {
                 TutorialController.GetInstance.RemoveTutorialCanvas(magnetButton.gameObject);
+                TutorialController.GetInstance.TutorialCharacter.SkipAnimation();
+                TutorialController.GetInstance.TutorialSpeechBubble.Hide();
             }
             else if (TutorialController.GetInstance.TutorialType == TutorialType.SpeedBoostPowerup)
             {
                 TutorialController.GetInstance.RemoveTutorialCanvas(speedButton.gameObject);
+                TutorialController.GetInstance.TutorialCharacter.SkipAnimation();
+                TutorialController.GetInstance.TutorialSpeechBubble.Hide();
             }
             TutorialController.GetInstance.ClearButtonHighlight();
             TutorialController.GetInstance.TutorialHand.Hide();
@@ -123,6 +127,9 @@ namespace BeachHero
                 isLocked = false;
                 tutorialActive = true;
                 var tutorialType = type == PowerupType.Magnet ? TutorialType.MagnetPowerup : TutorialType.SpeedBoostPowerup;
+                TutorialController.GetInstance.TutorialCharacter.PlayAnimation(TutorialCharacterType.Talk);
+                TutorialController.GetInstance.TutorialSpeechBubble.Show(type == PowerupType.Magnet ?
+                    StringUtils.MAGNET_POWERUP_TUTORIAL_MESSAGE : StringUtils.SPEEDBOOST_POWERUP_TUTORIAL_MESSAGE);
                 TutorialController.GetInstance.SetCurrentTutorialType(tutorialType);
                 TutorialController.GetInstance.HighlightButton(targetButton.transform, targetButton.GetComponent<RectTransform>().sizeDelta, powerupButtonSprite);
             }

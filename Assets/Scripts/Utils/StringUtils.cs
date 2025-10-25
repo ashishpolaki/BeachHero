@@ -68,13 +68,17 @@ namespace BeachHero
         public const string NO_ADS_PURCHASED = "NoAdsPurchased";
 
         //Scenes
-       // public const string MAP_SCENE = "Map";
+        // public const string MAP_SCENE = "Map";
         public const string GAME_SCENE = "Game";
         public const string INIT_SCENE = "Init";
 
         //MAP
         public const string MAP_NUMER = "MapNumber";
         public const string MAP_UNLOCKED_DESCRIPTION = "NEW MAP UNLOCKED !";
+
+        //Tutorial Speech Messages
+        public const string MAGNET_POWERUP_TUTORIAL_MESSAGE = "Tap the button to attract\nall the nearby Star Fishes";
+        public const string SPEEDBOOST_POWERUP_TUTORIAL_MESSAGE = "Hit that button and surf\nfaster than the waves!";
     }
 
     public class IntUtils
@@ -104,5 +108,5 @@ namespace BeachHero
         public const int DEFAULT_BOAT_INDEX = 0;
         public const int DEFAULT_BOAT_COLOR_INDEX = 0;
     }
-    
+
 }
