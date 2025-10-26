@@ -77,6 +77,7 @@ namespace BeachHero
         public const string MAP_UNLOCKED_DESCRIPTION = "NEW MAP UNLOCKED !";
 
         //Tutorial Speech Messages
+        public const string TUTORIAL_WELCOME_MESSAGE = "Welcome to Beach Hero Sharath!\n 3rd Map Yedhi ra bokka.";
         public const string MAGNET_POWERUP_TUTORIAL_MESSAGE = "Tap the button to attract\nall the nearby Star Fishes";
         public const string SPEEDBOOST_POWERUP_TUTORIAL_MESSAGE = "Hit that button and surf\nfaster than the waves!";
     }

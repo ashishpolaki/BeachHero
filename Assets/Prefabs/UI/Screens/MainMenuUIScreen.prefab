@@ -877,6 +877,7 @@ MonoBehaviour:
   - {fileID: 2021827812927618675}
   - {fileID: 5887865604330089652}
   panelOpenAnimation: {fileID: 1852807306873934527}
+  playButtonSprite: {fileID: 21300000, guid: c2a055ed4887b0b48b33f83f2bbfbe81, type: 3}
 --- !u!114 &1852807306873934527
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -896,7 +897,23 @@ MonoBehaviour:
   - rid: 8537023256971444341
   - rid: 8537023256971444342
   - rid: 8537023256971444348
-  triggerEvents: []
+  triggerEvents:
+  - timePercent: 98.305084
+    onTrigger:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 7017788322635099548}
+          m_TargetAssemblyTypeName: BeachHero.MainMenuUIScreen, BeachHero
+          m_MethodName: OnPanelAnimationEnd
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   loopCount: 0
   delayFrames: 0
   loopType: 0
@@ -2505,7 +2522,7 @@ PrefabInstance:
     - target: {fileID: 2077645177540679380, guid: a1cdaf26825d34144bb72e561315f746,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -572.1
+      value: -572
       objectReference: {fileID: 0}
     - target: {fileID: 2077645177540679380, guid: a1cdaf26825d34144bb72e561315f746,
         type: 3}

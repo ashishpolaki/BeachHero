@@ -13,6 +13,9 @@ namespace BeachHero
         [SerializeField] private TextMeshProUGUI levelNumberText;
         [SerializeField] private UIButtonAudio[] buttonAnimationDatas;
         [SerializeField] private TweenSequencer panelOpenAnimation;
+        [SerializeField] private Sprite playButtonSprite;
+
+        private bool isWelcomeMessageShown = false; 
 
         public override void Open(ScreenTabType screenTabType)
         {
@@ -21,6 +24,18 @@ namespace BeachHero
             SetLevelNumber();
             AddListeners();
             panelOpenAnimation.Play();
+        }
+
+        public void OnPanelAnimationEnd()
+        {
+            isWelcomeMessageShown = SaveSystem.LoadBool("IsWelcomeMessageShown", false);
+            if (!isWelcomeMessageShown)
+            {
+                SaveSystem.SaveBool("IsWelcomeMessageShown", true);
+                isWelcomeMessageShown = true;
+                TutorialController.GetInstance.HighlightButton(levelPanelButton.transform, levelPanelButton.GetComponent<RectTransform>().sizeDelta, playButtonSprite,true);
+                TutorialController.GetInstance.TutorialCharacter.PlayAnimation(TutorialCharacterType.WaveHand);
+            }
         }
 
         public override void Close()
@@ -57,6 +72,15 @@ namespace BeachHero
 
         private void OnPlayButtonClicked()
         {
+            if (isWelcomeMessageShown) 
+            {
+                TutorialController.GetInstance.RemoveTutorialCanvas(levelPanelButton.gameObject);
+                TutorialController.GetInstance.ClearButtonHighlight();
+                TutorialController.GetInstance.TutorialHand.Hide();
+                TutorialController.GetInstance.HideBlockerOverlay();
+                TutorialController.GetInstance.TutorialCharacter.SkipAnimation();
+            }
+
             MapController.GetInstance.CheckForMapUpdate();
             UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);
             GameController.GetInstance.SetGameState(GameState.Map);
