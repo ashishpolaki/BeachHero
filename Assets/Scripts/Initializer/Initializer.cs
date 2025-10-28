@@ -14,9 +14,50 @@ namespace BeachHero
             AsyncLazyInit();
         }
 
+        private void SetAdaptiveFrameRate()
+        {
+            int ram = SystemInfo.systemMemorySize; // in MB
+            string gpu = SystemInfo.graphicsDeviceName.ToLower()
+                    .Replace("(tm)", "")
+                    .Replace(" ", "")
+                    .Trim();
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+            int targetFPS = 30; // default
+
+            // --- Primary check: RAM-based classification ---
+            if (ram >= 8000)
+            {
+                targetFPS = 60; // high-end default
+            }
+            else
+            {
+                targetFPS = 30; // mid/low-end default
+            }
+
+           // Secondary check (GPU)
+    if (!string.IsNullOrEmpty(gpu))
+    {
+        if (gpu.Contains("adreno7") || gpu.Contains("adreno8") || gpu.Contains("mali-g7") || gpu.Contains("immortalis"))
+            targetFPS = 60;
+        else if (gpu.Contains("adreno6") || gpu.Contains("mali-g6") || gpu.Contains("mali-g5"))
+            targetFPS = Mathf.Min(targetFPS, 30);
+    }
+
+            // --- Apply ---
+            Application.targetFrameRate = targetFPS;
+
+            Debug.Log($"[AdaptiveFPS] GPU: {gpu} | RAM: {ram}MB | Target FPS: {targetFPS}");
+#endif
+
+        }
+
+
+
+
         private async void AsyncLazyInit()
         {
-            Application.targetFrameRate = 60;
+            SetAdaptiveFrameRate();
 
             // small delay so the first frame renders smoothly
             await Task.Yield();

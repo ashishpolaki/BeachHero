@@ -74,7 +74,10 @@ namespace BeachHero
         {
             if (target != null)
             {
-                target.position = fromPosition;
+                if(positionSpace == SpaceType.Local)
+                    target.localPosition = fromPosition;
+                else
+                    target.position = fromPosition;
             }
         }
     }

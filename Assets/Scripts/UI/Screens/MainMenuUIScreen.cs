@@ -1,3 +1,4 @@
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,7 +16,7 @@ namespace BeachHero
         [SerializeField] private TweenSequencer panelOpenAnimation;
         [SerializeField] private Sprite playButtonSprite;
 
-        private bool isWelcomeMessageShown = false; 
+        private bool isWelcomeMessageShown = false;
 
         public override void Open(ScreenTabType screenTabType)
         {
@@ -33,8 +34,12 @@ namespace BeachHero
             {
                 SaveSystem.SaveBool("IsWelcomeMessageShown", true);
                 isWelcomeMessageShown = true;
-                TutorialController.GetInstance.HighlightButton(levelPanelButton.transform, levelPanelButton.GetComponent<RectTransform>().sizeDelta, playButtonSprite,true);
-                TutorialController.GetInstance.TutorialCharacter.PlayAnimation(TutorialCharacterType.WaveHand);
+                Tween buttonTween = TutorialController.GetInstance.HighlightButton(levelPanelButton.transform, levelPanelButton.GetComponent<RectTransform>().sizeDelta, playButtonSprite, true);
+                buttonTween.onComplete = () =>
+                {
+                    TutorialController.GetInstance.TutorialHand.ShowHandPointing(levelPanelButton.transform);
+                    TutorialController.GetInstance.TutorialCharacter.PlayAnimation(TutorialCharacterType.WaveHand);
+                };
             }
         }
 
@@ -72,7 +77,7 @@ namespace BeachHero
 
         private void OnPlayButtonClicked()
         {
-            if (isWelcomeMessageShown) 
+            if (isWelcomeMessageShown)
             {
                 TutorialController.GetInstance.RemoveTutorialCanvas(levelPanelButton.gameObject);
                 TutorialController.GetInstance.ClearButtonHighlight();

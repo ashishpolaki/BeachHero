@@ -51,7 +51,7 @@ namespace BeachHero
         #endregion
 
         #region Highlight COntrols
-        public void HighlightButton(Transform button, Vector2 size, Sprite sprite, bool sliced = false)
+        public Tween HighlightButton(Transform button, Vector2 size, Sprite sprite, bool sliced = false)
         {
             blockerOverlay.SetActive(true);
             highlightRect.DOKill();
@@ -65,7 +65,7 @@ namespace BeachHero
             if (sliced)
                 highlightImage.pixelsPerUnitMultiplier = 100f;
 
-            highlightRect.DOSizeDelta(size, buttonScaleDuration)
+           return highlightRect.DOSizeDelta(size, buttonScaleDuration)
                 .SetEase(buttonScaleEase)
                 .OnComplete(() =>
                 {

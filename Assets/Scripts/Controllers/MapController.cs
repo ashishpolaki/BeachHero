@@ -26,6 +26,7 @@ namespace BeachHero
         #region Inspector Variables
         [SerializeField] private LevelDatabaseSO levelDatabase;
         [SerializeField] private Collider2D confineCollider;
+        [SerializeField] private GameObject waterGraphics;
 
         [Header("Map")]
         [SerializeField] private Transform mapBG;
@@ -135,6 +136,11 @@ namespace BeachHero
             }
         }
         #endregion
+
+        public void SetMapActive(bool isActive)
+        {
+            waterGraphics.SetActive(isActive);
+        }
 
         #region Boat Movement
         public void PlaceBoatAtCurrentLevel()
