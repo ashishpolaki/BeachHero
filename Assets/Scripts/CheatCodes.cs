@@ -1,5 +1,6 @@
 #if CHEAT_CODE
 using QFSW.QC;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -60,6 +61,18 @@ namespace BeachHero
         #endregion
 
         #region Commands
+        [Command("Active-WaterGraphics")]
+        public static void ActivateWaterGraphics(bool isActive)
+        {
+          
+            var water = Resources.FindObjectsOfTypeAll<GameObject>()
+                     .FirstOrDefault(go => go.name == "Water");
+            water.SetActive(isActive);
+            if (water != null)
+            {
+            }
+        }
+
         [Command("unlock-powerups")]
         public static void UnlockPowerups()
         {

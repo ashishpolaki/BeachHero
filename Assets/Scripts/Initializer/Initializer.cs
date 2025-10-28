@@ -49,7 +49,6 @@ namespace BeachHero
 
             Debug.Log($"[AdaptiveFPS] GPU: {gpu} | RAM: {ram}MB | Target FPS: {targetFPS}");
 #endif
-
         }
 
 
