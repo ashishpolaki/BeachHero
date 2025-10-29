@@ -47,12 +47,9 @@ namespace BeachHero
             // --- Apply ---
             Application.targetFrameRate = targetFPS;
 
-            Debug.Log($"[AdaptiveFPS] GPU: {gpu} | RAM: {ram}MB | Target FPS: {targetFPS}");
+            DebugUtils.Log($"[AdaptiveFPS] GPU: {gpu} | RAM: {ram}MB | Target FPS: {targetFPS}");
 #endif
         }
-
-
-
 
         private async void AsyncLazyInit()
         {
