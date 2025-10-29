@@ -5,6 +5,7 @@ namespace BeachHero
         public const string LEVELNUMBER = "LevelNumber";
 
         //Tutorial
+        public const string SHOW_WELCOME_MESSAGE = "IsWelcomeMessageShown";
         public const string TAP_AND_DRAG_TUTORIAL = "TAP & DRAG THE BOAT";
         public const string RESCUE_ALL_TUTORIAL = "RESCUE THEM ALL !";
 
@@ -80,6 +81,9 @@ namespace BeachHero
         public const string TUTORIAL_WELCOME_MESSAGE = "WELCOME, BRAVE HERO!\nBEACH IS IN TROUBLE,\nITS TIME TO DIVE IN\nAND SAVE THE DAY!";
         public const string MAGNET_POWERUP_TUTORIAL_MESSAGE = "TAP THE BUTTON TO\nATTRACT ALL THE\nNEARBY STAR FISHES";
         public const string SPEEDBOOST_POWERUP_TUTORIAL_MESSAGE = "HIT THAT BUTTON\nAND SURF FASTER\n THAN THE WAVES!";
+
+        //Sorting Layers
+        public const string SPRITES_ABOVE_UI_LAYER = "SpritesAboveUI";
     }
 
     public class IntUtils
@@ -108,6 +112,9 @@ namespace BeachHero
         //Boat
         public const int DEFAULT_BOAT_INDEX = 0;
         public const int DEFAULT_BOAT_COLOR_INDEX = 0;
+
+        //Sorting Layers
+        public const int TUTORIAL_CANVAS_LAYER = 2; 
     }
 
 }

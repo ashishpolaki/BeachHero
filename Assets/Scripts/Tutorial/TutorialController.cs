@@ -30,7 +30,6 @@ namespace BeachHero
         #endregion
 
         #region Events
-        public event Action OnPlayerTapAction;
         public event Action OnPathDrawnAction;
         public event Action OnPowerupPressAction;
         #endregion
@@ -65,13 +64,8 @@ namespace BeachHero
             if (sliced)
                 highlightImage.pixelsPerUnitMultiplier = 100f;
 
-           return highlightRect.DOSizeDelta(size, buttonScaleDuration)
-                .SetEase(buttonScaleEase)
-                .OnComplete(() =>
-                {
-                    EnsureTutorialCanvas(button.gameObject, "SpritesAboveUI", 2);
-                    tutorialHand.ShowHandPointing(button);
-                });
+            return highlightRect.DOSizeDelta(size, buttonScaleDuration)
+                 .SetEase(buttonScaleEase);
         }
 
         public void ClearButtonHighlight()
@@ -113,10 +107,6 @@ namespace BeachHero
                 }
             }
             return false;
-        }
-        public void OnPlayerTap()
-        {
-            OnPlayerTapAction?.Invoke();
         }
         public void OnPathDrawn()
         {

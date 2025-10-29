@@ -8,13 +8,16 @@ namespace BeachHero
     public class MainMenuUIScreen : BaseScreen
     {
         [SerializeField] private Button boatCustomisationButton;
-        [SerializeField] private Button levelPanelButton;
+        [SerializeField] private Button playButton;
         [SerializeField] private Button storeButton;
         [SerializeField] private Button settingsButton;
         [SerializeField] private TextMeshProUGUI levelNumberText;
         [SerializeField] private UIButtonAudio[] buttonAnimationDatas;
         [SerializeField] private TweenSequencer panelOpenAnimation;
         [SerializeField] private Sprite playButtonSprite;
+        [Header("Tutorial Positions")]
+        [SerializeField] private Vector3 tutorialCharacterPosition;
+        [SerializeField] private Vector3 speechBubblePosition;
 
         private bool isWelcomeMessageShown = false;
 
@@ -24,22 +27,37 @@ namespace BeachHero
             base.Open(screenTabType);
             SetLevelNumber();
             AddListeners();
-            panelOpenAnimation.Play();
+            OnOpenPanel();
         }
 
-        public void OnPanelAnimationEnd()
+        public void OnOpenPanel()
         {
-            isWelcomeMessageShown = SaveSystem.LoadBool("IsWelcomeMessageShown", false);
+            isWelcomeMessageShown = SaveSystem.LoadBool(StringUtils.SHOW_WELCOME_MESSAGE, false);
             if (!isWelcomeMessageShown)
             {
-                SaveSystem.SaveBool("IsWelcomeMessageShown", true);
+                panelOpenAnimation.ApplyAllToStates();
+                SaveSystem.SaveBool(StringUtils.SHOW_WELCOME_MESSAGE, true);
                 isWelcomeMessageShown = true;
-                Tween buttonTween = TutorialController.GetInstance.HighlightButton(levelPanelButton.transform, levelPanelButton.GetComponent<RectTransform>().sizeDelta, playButtonSprite, true);
-                buttonTween.onComplete = () =>
+
+                // Highlight the play button and show tutorial.
+                var tc = TutorialController.GetInstance;
+                Tween buttonTween = tc.HighlightButton(playButton.transform, playButton.GetComponent<RectTransform>().sizeDelta, playButtonSprite, true);
+                buttonTween.OnComplete(() =>
                 {
-                    TutorialController.GetInstance.TutorialHand.ShowHandPointing(levelPanelButton.transform);
-                    TutorialController.GetInstance.TutorialCharacter.PlayAnimation(TutorialCharacterType.WaveHand);
-                };
+                    tc.EnsureTutorialCanvas(playButton.gameObject, StringUtils.SPRITES_ABOVE_UI_LAYER, IntUtils.TUTORIAL_CANVAS_LAYER);
+                    tc.TutorialHand.ShowHandPointing(playButton.transform);
+                });
+
+                // Move the tutorial character and show welcome message.
+                Tween characterMoveTween = tc.TutorialCharacter.PlayAnimation(TutorialCharacterType.WaveHand, tutorialCharacterPosition);
+                characterMoveTween.OnComplete(() =>
+                {
+                    tc.TutorialSpeechBubble.Show(StringUtils.TUTORIAL_WELCOME_MESSAGE, speechBubblePosition);
+                });
+            }
+            else
+            {
+                panelOpenAnimation.Play();
             }
         }
 
@@ -53,7 +71,7 @@ namespace BeachHero
         private void AddListeners()
         {
             boatCustomisationButton.ButtonRegister(OnBoatCustomisationButtonClicked);
-            levelPanelButton.ButtonRegister(OnPlayButtonClicked);
+            playButton.ButtonRegister(OnPlayButtonClicked);
             storeButton.ButtonRegister(OnStoreButtonClicked);
             settingsButton.ButtonRegister(OnSettingsButtonClick);
         }
@@ -61,7 +79,7 @@ namespace BeachHero
         private void RemoveListeners()
         {
             boatCustomisationButton.ButtonDeRegister(OnBoatCustomisationButtonClicked);
-            levelPanelButton.ButtonDeRegister(OnPlayButtonClicked);
+            playButton.ButtonDeRegister(OnPlayButtonClicked);
             storeButton.ButtonDeRegister(OnStoreButtonClicked);
             settingsButton.ButtonDeRegister(OnSettingsButtonClick);
         }
@@ -79,11 +97,13 @@ namespace BeachHero
         {
             if (isWelcomeMessageShown)
             {
-                TutorialController.GetInstance.RemoveTutorialCanvas(levelPanelButton.gameObject);
-                TutorialController.GetInstance.ClearButtonHighlight();
-                TutorialController.GetInstance.TutorialHand.Hide();
-                TutorialController.GetInstance.HideBlockerOverlay();
-                TutorialController.GetInstance.TutorialCharacter.SkipAnimation();
+                var tc = TutorialController.GetInstance;
+                tc.RemoveTutorialCanvas(playButton.gameObject);
+                tc.ClearButtonHighlight();
+                tc.HideBlockerOverlay();
+                tc.TutorialHand.Hide();
+                tc.TutorialCharacter.SkipAnimation();
+                tc.TutorialSpeechBubble.Hide();
             }
 
             MapController.GetInstance.CheckForMapUpdate();

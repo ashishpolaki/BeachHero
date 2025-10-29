@@ -98,10 +98,6 @@ namespace BeachHero
                 {
                     HapticsManager.GetInstance.MediumImpactHaptic();
                     isPathDrawingAllowed = true;
-                    if (playerMode == PlayerMode.FTUE)
-                    {
-                        TutorialController.GetInstance.OnPlayerTap();
-                    }
                     AudioController.GetInstance.PlaySoundInLoop(AudioType.PathDraw);
                 }
             }
