@@ -86,6 +86,8 @@ namespace BeachHero
         // Apply stored "from" state to the target(s). Override in subclasses.
         public virtual void ApplyFromState() { }
 
+        public virtual void ApplyToState() { }
+
         public virtual void KillTween()
         {
             if (_tween != null && _tween.IsActive())

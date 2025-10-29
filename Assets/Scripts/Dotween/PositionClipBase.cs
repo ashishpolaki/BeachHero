@@ -74,10 +74,21 @@ namespace BeachHero
         {
             if (target != null)
             {
-                if(positionSpace == SpaceType.Local)
+                if (positionSpace == SpaceType.Local)
                     target.localPosition = fromPosition;
                 else
                     target.position = fromPosition;
+            }
+        }
+
+        public override void ApplyToState()
+        {
+            if (target != null)
+            {
+                if (positionSpace == SpaceType.Local)
+                    toPosition = target.localPosition;
+                else
+                    toPosition = target.position;
             }
         }
     }
@@ -114,7 +125,41 @@ namespace BeachHero
         {
             if (target != null)
             {
-                target.anchoredPosition = fromPosition;
+                switch (rectAxis)
+                {
+                    case Axis2D.X:
+                        target.anchoredPosition = new Vector2(fromPosition.x, target.anchoredPosition.y);
+                        break;
+                    case Axis2D.Y:
+                        target.anchoredPosition = new Vector2(target.anchoredPosition.x, fromPosition.y);
+                        break;
+                    case Axis2D.XY:
+                    default:
+                        target.anchoredPosition = new Vector2(fromPosition.x, fromPosition.y);
+                        break;
+
+                }
+            }
+        }
+
+        public override void ApplyToState()
+        {
+            if (target != null)
+            {
+                switch (rectAxis)
+                {
+                    case Axis2D.X:
+                        target.anchoredPosition = new Vector2(toAnchoredPosition.x, target.anchoredPosition.y);
+                        break;
+                    case Axis2D.Y:
+                        target.anchoredPosition = new Vector2(target.anchoredPosition.x, toAnchoredPosition.y);
+                        break;
+                    case Axis2D.XY:
+                    default:
+                        target.anchoredPosition = new Vector2(toAnchoredPosition.x, toAnchoredPosition.y);
+                        break;
+
+                }
             }
         }
     }

@@ -38,5 +38,13 @@ namespace BeachHero
                 target.alpha = fromAlpha;
             }
         }
+
+        public override void ApplyToState()
+        {
+            if (target != null)
+            {
+                target.alpha = toAlpha;
+            }
+        }
     }
 }

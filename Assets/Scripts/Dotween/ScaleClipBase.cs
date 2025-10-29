@@ -48,5 +48,12 @@ namespace BeachHero
                 target.localScale = fromScale;
             }
         }
+        public override void ApplyToState()
+        {
+            if (target != null)
+            {
+                target.localScale = toScale;
+            }
+        }
     }
 }

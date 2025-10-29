@@ -53,5 +53,20 @@ namespace BeachHero
                 }
             }
         }
+
+        public override void ApplyToState()
+        {
+            if (target != null)
+            {
+                if (spaceType == SpaceType.World)
+                {
+                    target.eulerAngles = toRotation;
+                }
+                else
+                {
+                    target.localEulerAngles = toRotation;
+                }
+            }
+        }
     }
 }

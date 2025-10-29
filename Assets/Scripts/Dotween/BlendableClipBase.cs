@@ -37,6 +37,24 @@ namespace BeachHero
                 return target.DOBlendableMoveBy(byValue, duration, snapping);
             }
         }
+
+        public override void ApplyToState()
+        {
+            if (target == null)
+            {
+                DebugUtils.LogError("Target Transform is null.");
+                return;
+            }
+
+            if (spaceType == SpaceType.Local)
+            {
+                target.localPosition += byValue;
+            }
+            else
+            {
+                target.position += byValue;
+            }
+        }
     }
 
     [Serializable]
@@ -62,6 +80,23 @@ namespace BeachHero
                 return target.DOBlendableRotateBy(byValue, duration, rotateMode);
             }
         }
+        public override void ApplyToState()
+        {
+            if (target == null)
+            {
+                DebugUtils.LogError("Target Transform is null.");
+                return;
+            }
+
+            if (spaceType == SpaceType.Local)
+            {
+                target.localRotation = Quaternion.Euler(target.localRotation.eulerAngles + byValue);
+            }
+            else
+            {
+                target.rotation = Quaternion.Euler(target.rotation.eulerAngles + byValue);
+            }
+        }
     }
 
     [Serializable]
@@ -75,6 +110,17 @@ namespace BeachHero
                 return null;
             }
             return target.DOBlendableScaleBy(byValue, duration);
+        }
+
+        public override void ApplyToState()
+        {
+            if (target == null)
+            {
+                DebugUtils.LogError("Target Transform is null.");
+                return;
+            }
+
+            target.localScale += byValue;
         }
     }
 
@@ -92,6 +138,17 @@ namespace BeachHero
                 return null;
             }
             return target.DOPunchRotation(byValue, duration, vibrato, elasticity);
+        }
+
+        public override void ApplyToState()
+        {
+            if (target == null)
+            {
+                DebugUtils.LogError("Target Transform is null.");
+                return;
+            }
+
+            target.rotation = Quaternion.Euler(target.rotation.eulerAngles + byValue);
         }
     }
 }

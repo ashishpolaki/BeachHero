@@ -119,5 +119,14 @@ namespace BeachHero
                 c?.ApplyFromState();
             }
         }
+
+        public void ApplyAllToStates()
+        {
+            if (clips == null) return;
+            foreach (var c in clips)
+            {
+                c?.ApplyToState();
+            }
+        }
     }
 }
