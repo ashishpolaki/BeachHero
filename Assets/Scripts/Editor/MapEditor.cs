@@ -5,11 +5,11 @@ using UnityEditor;
 namespace BeachHero
 {
     [System.Serializable]
-    public class BezierPoint
+    public struct BezierPoint
     {
         public Vector3 anchorPoint; // Main control point
-        public Vector3 inTangent = Vector3.zero; // Local position
-        public Vector3 outTangent = Vector3.zero; // Local position
+        public Vector3 inTangent; // Local position
+        public Vector3 outTangent; // Local position
 
         public void ResetZ()
         {

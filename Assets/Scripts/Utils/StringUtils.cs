@@ -79,8 +79,8 @@ namespace BeachHero
 
         //Tutorial Speech Messages
         public const string TUTORIAL_WELCOME_MESSAGE = "WELCOME, BRAVE HERO!\nBEACH IS IN TROUBLE,\nITS TIME TO DIVE IN\nAND SAVE THE DAY!";
-        public const string MAGNET_POWERUP_TUTORIAL_MESSAGE = "TAP THE BUTTON TO\nATTRACT ALL THE\nNEARBY STAR FISHES";
-        public const string SPEEDBOOST_POWERUP_TUTORIAL_MESSAGE = "HIT THAT BUTTON\nAND SURF FASTER\n THAN THE WAVES!";
+        public const string MAGNET_POWERUP_TUTORIAL_MESSAGE = "ACTIVATE THE MAGNET\n AND ATTRACT\n ALL THE STARFISH!";
+        public const string SPEEDBOOST_POWERUP_TUTORIAL_MESSAGE = "HIT THE BOOST\nAND SPEED UP\nTHE BOAT!";
 
         //Sorting Layers
         public const string SPRITES_ABOVE_UI_LAYER = "SpritesAboveUI";

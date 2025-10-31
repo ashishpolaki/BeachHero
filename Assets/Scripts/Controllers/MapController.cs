@@ -46,6 +46,7 @@ namespace BeachHero
         #endregion
 
         #region Properties
+        public bool IsNewMapUnlocked => isNewMapUnlocked;
         public int MapNumber
         {
             get => mapNumber;
@@ -171,6 +172,12 @@ namespace BeachHero
                     levelVisual.rotation);
             }
         }
+
+        public void SetBoatObjectActive(bool enable)
+        {
+            boatTransform.gameObject.SetActive(enable);
+        }
+
         public void AnimateBoatToCurrentLevel()
         {
             if (isNewMapUnlocked)

@@ -54,6 +54,7 @@ namespace BeachHero
         private async void AsyncLazyInit()
         {
             SetAdaptiveFrameRate();
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
             // small delay so the first frame renders smoothly
             await Task.Yield();

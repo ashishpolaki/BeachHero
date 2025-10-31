@@ -158,10 +158,13 @@ namespace BeachHero
 
             for (int i = 0; i < mapTester.bezierPoints.Count; i++)
             {
-                var point = mapTester.bezierPoints[i];
-                if (point.anchorPoint == null) continue;
-
+                BezierPoint point = mapTester.bezierPoints[i];
+                if (point.anchorPoint == null)
+                {
+                    continue;
+                }
                 Vector3 oldAnchorPos = point.anchorPoint;
+
                 // === 1. MOVE ANCHOR FIRST ===
                 Handles.color = Color.white;
                 EditorGUI.BeginChangeCheck();
@@ -225,6 +228,7 @@ namespace BeachHero
                     }
                     Handles.DrawLine(anchorPos, outWorld);
                 }
+                mapTester.bezierPoints[i] = point;
 
                 // Mark scene dirty
                 if (GUI.changed)
