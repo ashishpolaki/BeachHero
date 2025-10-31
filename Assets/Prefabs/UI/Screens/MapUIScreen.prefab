@@ -96,15 +96,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e8afe65f13fc1a458d155b090cc7daa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openingAnimationData:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
   rect: {fileID: 0}
   notchSafeArea: {fileID: 0}
   screenType: 6
@@ -584,13 +575,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: -1
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -627,18 +618,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openingAnimation:
-    Type: 4
-    Ease: 34
-    Duration: 0.5
-    Strength: 1
-    Delay: 1
-    Vibration: 3
-    Offset: 0
-    Elasticity: 0.4
   buttonAudioType: 1
   button: {fileID: 9138512115033614868}
   rect: {fileID: 8840813695366083639}
+  pressedScale: 0.9
+  hoverScale: 1.05
+  tweenDuration: 0.15
+  tweenEase: 27
+  enableHover: 0
+  _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &3451192771320139023
 GameObject:
   m_ObjectHideFlags: 0
@@ -847,18 +835,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openingAnimation:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
   buttonAudioType: 9
   button: {fileID: 8846772873582122788}
   rect: {fileID: 2504819655089508101}
+  pressedScale: 0.9
+  hoverScale: 1.05
+  tweenDuration: 0.15
+  tweenEase: 27
+  enableHover: 0
+  _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &4592843336146976139
 GameObject:
   m_ObjectHideFlags: 0
@@ -1291,7 +1276,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -1328,18 +1313,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openingAnimation:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
   buttonAudioType: 1
   button: {fileID: 4717114761778534736}
   rect: {fileID: 556205959012481290}
+  pressedScale: 0.9
+  hoverScale: 1.05
+  tweenDuration: 0.15
+  tweenEase: 27
+  enableHover: 0
+  _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &5832295632904656682
 GameObject:
   m_ObjectHideFlags: 0
@@ -1883,18 +1865,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openingAnimation:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
   buttonAudioType: 9
   button: {fileID: 1552274342069632436}
   rect: {fileID: 4003048227186030654}
+  pressedScale: 0.9
+  hoverScale: 1.05
+  tweenDuration: 0.15
+  tweenEase: 27
+  enableHover: 0
+  _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &7929171453010926158
 GameObject:
   m_ObjectHideFlags: 0
@@ -2199,7 +2178,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2898949111564275550}
   - component: {fileID: 3451205716067782955}
-  - component: {fileID: 3519649054982366352}
+  - component: {fileID: 7414419738308442490}
   m_Layer: 12
   m_Name: ZoomToggle
   m_TagString: Untagged
@@ -2247,7 +2226,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -2288,28 +2267,27 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsOn: 1
---- !u!95 &3519649054982366352
-Animator:
-  serializedVersion: 7
+--- !u!114 &7414419738308442490
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8446865323373553193}
   m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 5906954bde6e64316abab6f3c6ebaa3a, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonAudioType: 0
+  button: {fileID: 0}
+  rect: {fileID: 2898949111564275550}
+  pressedScale: 0.9
+  hoverScale: 1.05
+  tweenDuration: 0.15
+  tweenEase: 27
+  enableHover: 0
+  _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &8579134028430140402
 GameObject:
   m_ObjectHideFlags: 0

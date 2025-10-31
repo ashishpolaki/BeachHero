@@ -97,7 +97,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -136,7 +136,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonAudioType: 1
   button: {fileID: 5192779947189712439}
-  rect: {fileID: 2919556460416423963}
+  pressedScale: 0.9
+  hoverScale: 1.05
+  tweenDuration: 0.15
+  tweenEase: 27
+  enableHover: 0
+  _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &954288469884760255
 GameObject:
   m_ObjectHideFlags: 0
@@ -469,7 +474,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonAudioType: 1
   button: {fileID: 4141304196390609998}
-  rect: {fileID: 4824854023410272593}
+  pressedScale: 0.9
+  hoverScale: 1.05
+  tweenDuration: 0.15
+  tweenEase: 27
+  enableHover: 0
+  _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &2518283311147858941
 GameObject:
   m_ObjectHideFlags: 0
@@ -717,7 +727,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -756,7 +766,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonAudioType: 1
   button: {fileID: 3408815223475987010}
-  rect: {fileID: 4699860009668411207}
+  pressedScale: 0.9
+  hoverScale: 1.05
+  tweenDuration: 0.15
+  tweenEase: 27
+  enableHover: 0
+  _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &3034446249913120528
 GameObject:
   m_ObjectHideFlags: 0
@@ -871,11 +886,6 @@ MonoBehaviour:
   storeButton: {fileID: 5192779947189712439}
   settingsButton: {fileID: 3302027707281503164}
   levelNumberText: {fileID: 3942195231119110490}
-  buttonAnimationDatas:
-  - {fileID: 971613588692747548}
-  - {fileID: 2446996965009974112}
-  - {fileID: 2021827812927618675}
-  - {fileID: 5887865604330089652}
   panelOpenAnimation: {fileID: 1852807306873934527}
   playButtonSprite: {fileID: 21300000, guid: c2a055ed4887b0b48b33f83f2bbfbe81, type: 3}
   tutorialCharacterPosition: {x: 318, y: -628, z: 0}
@@ -1753,7 +1763,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -1792,7 +1802,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonAudioType: 1
   button: {fileID: 3302027707281503164}
-  rect: {fileID: 2892421362999491527}
+  pressedScale: 0.9
+  hoverScale: 1.05
+  tweenDuration: 0.15
+  tweenEase: 27
+  enableHover: 0
+  _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &5983541775809291182
 GameObject:
   m_ObjectHideFlags: 0
@@ -2386,7 +2401,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -2425,7 +2440,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonAudioType: 1
   button: {fileID: 5993284834546111571}
-  rect: {fileID: 2377908066080421926}
+  pressedScale: 0.9
+  hoverScale: 1.05
+  tweenDuration: 0.15
+  tweenEase: 27
+  enableHover: 0
+  _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1001 &2612062954113083190
 PrefabInstance:
   m_ObjectHideFlags: 0

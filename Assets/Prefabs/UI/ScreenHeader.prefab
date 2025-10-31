@@ -159,7 +159,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3878760640359219283}
-  - component: {fileID: 2343315769819115387}
   m_Layer: 5
   m_Name: GameCurrency
   m_TagString: Untagged
@@ -190,30 +189,6 @@ RectTransform:
   m_AnchoredPosition: {x: 401, y: -106}
   m_SizeDelta: {x: 280.2489, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2343315769819115387
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2675894748096715218}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  openingAnimation:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
-  buttonAudioType: 1
-  button: {fileID: 1009402902270693874}
-  rect: {fileID: 0}
 --- !u!1 &3332269497399826495
 GameObject:
   m_ObjectHideFlags: 0
@@ -641,7 +616,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4572500405419286031}
-  - component: {fileID: 2668591330969304153}
   m_Layer: 5
   m_Name: Magnet
   m_TagString: Untagged
@@ -672,30 +646,6 @@ RectTransform:
   m_AnchoredPosition: {x: -224.19931, y: -106}
   m_SizeDelta: {x: 280.2489, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2668591330969304153
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4548584526385345021}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  openingAnimation:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
-  buttonAudioType: 1
-  button: {fileID: 2370564719625088754}
-  rect: {fileID: 0}
 --- !u!1 &4799372529527403063
 GameObject:
   m_ObjectHideFlags: 0
@@ -705,7 +655,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8266789538037759714}
-  - component: {fileID: 670350072063461678}
   m_Layer: 5
   m_Name: SpeedBoost
   m_TagString: Untagged
@@ -736,30 +685,6 @@ RectTransform:
   m_AnchoredPosition: {x: 95, y: -106}
   m_SizeDelta: {x: 280.2489, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &670350072063461678
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4799372529527403063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  openingAnimation:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
-  buttonAudioType: 1
-  button: {fileID: 5938357861855006747}
-  rect: {fileID: 0}
 --- !u!1 &4970491121098750255
 GameObject:
   m_ObjectHideFlags: 0
@@ -1219,7 +1144,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -1256,18 +1181,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openingAnimation:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
   buttonAudioType: 1
   button: {fileID: 5938357861855006747}
-  rect: {fileID: 7682979185911543904}
+  pressedScale: 0.9
+  hoverScale: 1.05
+  tweenDuration: 0.15
+  tweenEase: 27
+  enableHover: 0
+  _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &7334478653882251622
 GameObject:
   m_ObjectHideFlags: 0
@@ -1440,7 +1361,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -1477,18 +1398,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openingAnimation:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
   buttonAudioType: 1
   button: {fileID: 1009402902270693874}
-  rect: {fileID: 101378102881755934}
+  pressedScale: 0.9
+  hoverScale: 1.05
+  tweenDuration: 0.15
+  tweenEase: 27
+  enableHover: 0
+  _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &7510884066752595493
 GameObject:
   m_ObjectHideFlags: 0
@@ -1660,7 +1577,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -1697,18 +1614,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openingAnimation:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
   buttonAudioType: 1
   button: {fileID: 2370564719625088754}
-  rect: {fileID: 8029397517020304679}
+  pressedScale: 0.9
+  hoverScale: 1.05
+  tweenDuration: 0.15
+  tweenEase: 27
+  enableHover: 0
+  _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &8659044207020478160
 GameObject:
   m_ObjectHideFlags: 0

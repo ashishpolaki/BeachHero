@@ -12,7 +12,6 @@ namespace BeachHero
         [SerializeField] private Button storeButton;
         [SerializeField] private Button settingsButton;
         [SerializeField] private TextMeshProUGUI levelNumberText;
-        [SerializeField] private UIButtonAudio[] buttonAnimationDatas;
         [SerializeField] private TweenSequencer panelOpenAnimation;
         [SerializeField] private Sprite playButtonSprite;
         [Header("Tutorial Positions")]
