@@ -16,13 +16,13 @@ namespace BeachHero
 
         private void SetAdaptiveFrameRate()
         {
+
+#if UNITY_ANDROID && !UNITY_EDITOR
             int ram = SystemInfo.systemMemorySize; // in MB
             string gpu = SystemInfo.graphicsDeviceName.ToLower()
                     .Replace("(tm)", "")
                     .Replace(" ", "")
                     .Trim();
-
-#if UNITY_ANDROID && !UNITY_EDITOR
             int targetFPS = 30; // default
 
             // --- Primary check: RAM-based classification ---
@@ -65,7 +65,8 @@ namespace BeachHero
             AdController.GetInstance.Init();
             HapticsManager.GetInstance.Init();
             DOTween.Init();
-            Febucci.UI.Core.TAnimBuilder.InitializeGlobalDatabase();
+            ES3.Init();
+            Febucci.UI.Core.TAnimBuilder.InitializeGlobalDatabase(); 
 
             // wait a little to avoid freezing all at once
             await Task.Delay(100);

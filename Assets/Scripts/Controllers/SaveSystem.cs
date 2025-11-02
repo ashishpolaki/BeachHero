@@ -6,6 +6,7 @@ namespace BeachHero
     {
         public void Init()
         {
+            ES3.Init();
         }
         public static void SaveInt(string _saveString, int _value)
         {

@@ -82,7 +82,13 @@ namespace BeachHero
             if (!canDrawGizmos) return;
 
             if (Keyframes == null || Keyframes.Length < 2)
+            {
+                if (Keyframes != null && Keyframes.Length == 1)
+                {
+                    transform.position = Keyframes[0].position;
+                }
                 return;
+            }
             pathPoints = BezierCurveUtils.GeneratePath(Keyframes, resolution);
 
             Gizmos.color = Color.red;
@@ -94,9 +100,13 @@ namespace BeachHero
             }
             pathRenderer.positionCount = pathPoints.Length;
             pathRenderer.SetPositions(pathPoints);
-            if (pathPoints.Length > 0)
+
+            if (pathPoints.Length > 1)
             {
+                //Set the position of the obstacle to the first point in the path
                 transform.position = pathPoints[0];
+
+                //Make the obstacle look at the second point in the path
                 transform.LookAt(pathPoints[1]);
             }
         }

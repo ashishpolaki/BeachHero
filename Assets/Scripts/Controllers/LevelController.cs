@@ -542,6 +542,7 @@ namespace BeachHero
                             break;
                     }
                     staticObstacle.transform.SetPositionAndRotation(staticObstacleData.position, Quaternion.Euler(staticObstacleData.rotation));
+                    staticObstacle.transform.localScale = staticObstacleData.scale;
                     obstaclesDictionary[staticObstacleData.type].Add(staticObstacle);
                 }
             }

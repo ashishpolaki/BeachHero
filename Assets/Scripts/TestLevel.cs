@@ -40,9 +40,12 @@ namespace BeachHero
 
             // wait a little to avoid freezing all at once
             await Task.Delay(100);
-         //   await UIController.GetInstance.LoadingUI.LoadSceneAsync(StringUtils.GAME_SCENE);
             GameController.GetInstance.SpawnLevel();
             await UIController.GetInstance.LoadingUI.DisableLoadingScreen();
+            UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Close);
+            CameraController.GetInstance.SetActiveCamera(GameCameraType.GameView);
+            GameController.GetInstance.SetGameState(GameState.Playing);
+            GameController.GetInstance.LevelController.InitializePlayerData(false);
         }
     }
 }

@@ -54,6 +54,10 @@ namespace BeachHero
                 RemoveAllKeyframes();
                 DrawShapeGenerator();
                 DrawOffsetToggle();
+                if (GUI.changed)
+                {
+                    EditorUtility.SetDirty(movingObstacle);
+                }
             }
             serializedObject.ApplyModifiedProperties();
         }
@@ -280,6 +284,30 @@ namespace BeachHero
         {
             if (!movingObstacle.canEditKeyFramesInScene)
                 return;
+
+            if (movingObstacle.Keyframes.Length == 1)
+            {
+                Handles.Label(movingObstacle.Keyframes[0].position + Vector3.up * 0.5f, $"Point {0}",
+                   new GUIStyle
+                   {
+                       fontSize = 15,
+                       normal = new GUIStyleState { textColor = Color.white }
+                   });
+
+                // Draw an interactive Sphere Handle
+                Handles.color = Color.white;
+                EditorGUI.BeginChangeCheck();
+                Vector3 newKeyFramePos = Handles.FreeMoveHandle(movingObstacle.Keyframes[0].position, 0.15f, Vector3.zero, Handles.SphereHandleCap);
+                bool keyFrameMoved = EditorGUI.EndChangeCheck();
+                if (keyFrameMoved)
+                {
+                    Undo.RecordObject(movingObstacle, "Move Keyframe");
+                    movingObstacle.Keyframes[0].position = newKeyFramePos;
+
+                    // Force the Scene view to repaint
+                    SceneView.RepaintAll();
+                }
+            }
 
             if (movingObstacle.Keyframes == null || movingObstacle.Keyframes.Length < 2)
                 return;

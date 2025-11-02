@@ -104,12 +104,14 @@ public class BeachHeroEditorWindow : EditorWindow
         public SerializedProperty typeProperty;
         public SerializedProperty positionProperty;
         public SerializedProperty rotationProperty;
+        public SerializedProperty scaleProperty;
 
         public StaticObstacleRepresentation(SerializedProperty staticObstacleProperty)
         {
             typeProperty = staticObstacleProperty.FindPropertyRelative("type");
             positionProperty = staticObstacleProperty.FindPropertyRelative("position");
             rotationProperty = staticObstacleProperty.FindPropertyRelative("rotation");
+            scaleProperty = staticObstacleProperty.FindPropertyRelative("scale");
         }
     }
 
@@ -590,6 +592,11 @@ public class BeachHeroEditorWindow : EditorWindow
             staticObstacleRepresentation.typeProperty.enumValueIndex = (int)staticObstacles[i].ObstacleType;
             staticObstacleRepresentation.positionProperty.vector3Value = staticObstacles[i].transform.position;
             staticObstacleRepresentation.rotationProperty.vector3Value = staticObstacles[i].transform.eulerAngles;
+            if (staticObstacles[i].transform.localScale == Vector3.zero)
+            {
+                staticObstacles[i].transform.localScale = Vector3.one;
+            }
+            staticObstacleRepresentation.scaleProperty.vector3Value = staticObstacles[i].transform.localScale;
         }
     }
 

@@ -12,7 +12,7 @@ public class EditorSceneController : MonoBehaviour
     private LevelSO currentLevel;
 
     //Spawn Item Paths 
-    private static string drownCharacterPath = "Assets/Prefabs/DrownCharacter.prefab";
+    private static string drownCharacterPath = "Assets/Prefabs/Characters/DrownCharacter.prefab";
     private static string startPointPath = "Assets/Prefabs/StartPoint.prefab";
 
     private static string gameCurrencyPath = "Assets/Prefabs/Collectables/GameCurrency.prefab";
@@ -88,6 +88,15 @@ public class EditorSceneController : MonoBehaviour
     public void SpawnLevelData(LevelSO _levelSO)
     {
         currentLevel = _levelSO;
+        //Reset Water Whirlpool
+        var waterMaterial = AssetDatabase.LoadAssetAtPath<Material>("Assets/Materials/WaterOptimized.mat");
+        if (waterMaterial != null)
+        {
+            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{1}"), 0f);
+            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{2}"), 0f);
+            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{3}"), 0f);
+            DebugUtils.Log("WhirlPools has been reseted");
+        }
         SpawnStartPoint();
         SpawnMovingObstacles();
         SpawnStaticObstacles();
@@ -147,6 +156,7 @@ public class EditorSceneController : MonoBehaviour
             GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab.gameObject);
             instance.transform.SetParent(container.transform);
             instance.transform.SetPositionAndRotation(item.position, Quaternion.Euler(item.rotation));
+            instance.transform.localScale = item.scale;
         }
     }
 
