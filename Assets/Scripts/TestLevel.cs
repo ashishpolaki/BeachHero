@@ -27,7 +27,6 @@ namespace BeachHero
 
         private async void AsyncLazyInit()
         {
-            DebugUtils.Log("Loading Game Scene");
             // small delay so the first frame renders smoothly
             await Task.Yield();
             GameController.GetInstance.Init();

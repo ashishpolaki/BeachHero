@@ -140,6 +140,7 @@ namespace BeachHero
 
         public void SetMapActive(bool isActive)
         {
+            if(waterGraphics != null)
             waterGraphics.SetActive(isActive);
         }
 
