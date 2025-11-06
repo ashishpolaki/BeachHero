@@ -101,11 +101,17 @@ namespace BeachHero
                         transform.position = keyframes[currentIndex].position;
                         if (direction == 1)
                         {
-                            transform.rotation = Quaternion.LookRotation((keyframes[currentIndex + 1].position - keyframes[currentIndex].position).normalized);
+                            if (currentIndex + 1 < keyframes.Length)
+                            {
+                                transform.rotation = Quaternion.LookRotation((keyframes[currentIndex + 1].position - keyframes[currentIndex].position).normalized);
+                            }
                         }
                         else
                         {
-                            transform.rotation = Quaternion.LookRotation((keyframes[currentIndex - 1].position - keyframes[currentIndex].position).normalized);
+                            if (currentIndex - 1 >= 0)
+                            {
+                                transform.rotation = Quaternion.LookRotation((keyframes[currentIndex - 1].position - keyframes[currentIndex].position).normalized);
+                            }
                         }
                     }
                     else

@@ -34,6 +34,10 @@ namespace BeachHero
             transform.position = collectableData.position;
             transform.rotation = Quaternion.Euler(collectableData.rotation);
             collectableType = collectableData.type;
+            if (collectableData.count <= 0)
+            {
+                collectableData.count = 1;
+            }
             count = collectableData.count;
             isCollected = false;
         }
