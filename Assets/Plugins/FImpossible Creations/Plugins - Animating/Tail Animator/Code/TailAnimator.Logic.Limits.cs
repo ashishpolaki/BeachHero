@@ -298,7 +298,7 @@ namespace FIMSpace.FTail
                         {
                             if (!wasCameraSearch)
                             {
-                                c = FindObjectOfType<Camera>();
+                                c = FindFirstObjectByType<Camera>();
                                 if (c) _distanceFrom_Auto = c.transform;
                                 wasCameraSearch = true;
                             }
