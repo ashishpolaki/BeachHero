@@ -33,7 +33,7 @@ namespace BeachHero
         public FadeUI FadeUI => fadeUI;
         public Canvas Canvas => canvas;
         #endregion
-
+     
         #region Public Methods
         public void ScreenEvent(ScreenType screenType, UIScreenEvent uIScreenEvent, ScreenTabType screenTabType = ScreenTabType.None)
         {

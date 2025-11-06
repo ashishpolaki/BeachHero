@@ -182,6 +182,16 @@ namespace TransitionsPlus {
             }
         }
 
+        public void ResetTransition()
+        {
+            progress = 0;
+            enabled = true;
+            UpdateMaterialProperties();
+            lastCaptureFrame = -1;
+            playing = false;
+            startTime = GetTime();
+        }
+
         void StartTransition() {
             playing = true;
             startTime = GetTime();

@@ -958,7 +958,7 @@ namespace FIMSpace.FTail
                         {
                             if (GUILayout.Button("Add TailAnimatorWind to the Scene"))
                             {
-                                TailAnimatorWind wind = FindObjectOfType<TailAnimatorWind>();
+                                TailAnimatorWind wind = FindFirstObjectByType<TailAnimatorWind>();
                                 if (wind)
                                 {
                                     UnityEngine.Debug.Log("Tail Animator Wind already on scene!");
@@ -998,7 +998,7 @@ namespace FIMSpace.FTail
                     if (Camera.main) t = Camera.main.transform;
                     else
                     {
-                        Camera c = FindObjectOfType<Camera>();
+                        Camera c = FindFirstObjectByType<Camera>();
                         if (c) t = c.transform;
                     }
 
