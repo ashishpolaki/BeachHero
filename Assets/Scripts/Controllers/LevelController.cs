@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace BeachHero
 {
@@ -174,8 +175,8 @@ namespace BeachHero
                 if (Physics.Raycast(ray, out raycastHit, 1000f, touchLayer))
                 {
                     Vector3 hitPoint = raycastHit.point;
-                    if (!raycastHit.collider.CompareTag("Ground"))
-                        hitPoint.y = 0f;
+                    //if (!raycastHit.collider.CompareTag("Ground"))
+                    hitPoint.y = 0f;
 
                     UpdatePath(hitPoint);
                 }

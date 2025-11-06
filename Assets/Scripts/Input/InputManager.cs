@@ -43,18 +43,30 @@ namespace BeachHero
         }
         private void OnTouchPosition(InputAction.CallbackContext obj)
         {
+#if UNITY_EDITOR
+            MousePosition = Mouse.current.position.ReadValue();
+#else
             MousePosition = inputSystemActions.Game.TouchPosition.ReadValue<Vector2>();
+#endif
         }
 
         private void OnClickPerformed(InputAction.CallbackContext obj)
         {
+#if UNITY_EDITOR
+            MousePosition = Mouse.current.position.ReadValue();
+#else
             MousePosition = inputSystemActions.Game.TouchPosition.ReadValue<Vector2>();
+#endif
             OnMouseClickDown?.Invoke(MousePosition);
         }
 
         private void OnClickReleased(InputAction.CallbackContext obj)
         {
+#if UNITY_EDITOR
+            MousePosition = Mouse.current.position.ReadValue();
+#else
             MousePosition = inputSystemActions.Game.TouchPosition.ReadValue<Vector2>();
+#endif
             OnMouseClickUp?.Invoke(MousePosition);
         }
     }

@@ -1302,10 +1302,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""2848f969-40ec-4fed-90c9-8a50e5a272db"",
-                    ""path"": ""<Touchscreen>/position"",
+                    ""path"": ""<Pointer>/delta"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": "";Touch"",
+                    ""groups"": "";Touch;Keyboard&Mouse"",
                     ""action"": ""TouchPosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
