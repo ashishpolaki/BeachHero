@@ -10,6 +10,7 @@ namespace BeachHero
         [SerializeField] private CustomToggle hapticToggle;
         [SerializeField] private Button privacyPolicyButton;
         [SerializeField] private Button closePanelbutton;
+        [SerializeField] private Button backButton;
 
         public override void Open(ScreenTabType screenTabType)
         {
@@ -19,6 +20,7 @@ namespace BeachHero
             hapticToggle.OnToggleChanged += OnHapticToggleChanged;
             privacyPolicyButton.ButtonRegister(OnPrivacyPolicy);
             closePanelbutton.ButtonRegister(ClosePanel);
+            backButton.ButtonRegister(ClosePanel);
 
             // Initialize toggles based on saved settings
             soundToggle.Init(SaveSystem.LoadBool(StringUtils.SOUND_ON, true));
@@ -34,6 +36,7 @@ namespace BeachHero
             hapticToggle.OnToggleChanged -= OnHapticToggleChanged;
             privacyPolicyButton.ButtonDeRegister(OnPrivacyPolicy);
             closePanelbutton.ButtonDeRegister(ClosePanel);
+            backButton.ButtonDeRegister(ClosePanel);
         }
 
         private void OnSoundToggleChanged(bool isOn)
