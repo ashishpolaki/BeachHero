@@ -36,7 +36,7 @@ namespace BeachHero
             fadeAnimator.profile.duration = duration;
             Ease ease = isFadeIn ? fadeInEase : fadeOutEase;
             float getter = isFadeIn ? 0f : 1f;
-            fadeAnimator.ResetTransition();
+            fadeAnimator.ResetTransition(getter);
             DOTween.To(() => getter, x => fadeAnimator.SetProgress(x), endValue, duration).SetEase(ease);
         }
         private async Task StartFadeAsync(float endValue, float duration,float delay)

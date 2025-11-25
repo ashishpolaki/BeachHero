@@ -282,7 +282,6 @@ namespace BeachHero
                 //PRevious
                 if (previousMap > 0)
                 {
-                    DebugUtils.Log("Previous Map: " + previousMap);
                     mapDatas[previousMap - 1].mapObject.SetActive(false);
                 }
 

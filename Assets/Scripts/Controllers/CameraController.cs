@@ -85,7 +85,7 @@ namespace BeachHero
         {
             if (cameraDictionary.TryGetValue(gameCameraType, out GameCameraConfig currentConfig))
             {
-                currentConfig.camera.Lens.OrthographicSize = size;
+              currentConfig.camera.Lens.OrthographicSize = size;
             }
         }
         public void SetCameraFollow(Transform target, GameCameraType cameraType)
