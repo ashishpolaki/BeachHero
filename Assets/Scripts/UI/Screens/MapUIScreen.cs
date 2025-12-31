@@ -1,20 +1,18 @@
+using Febucci.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Febucci.UI;
 
 namespace BeachHero
 {
     public class MapUIScreen : BaseScreen
     {
-        [SerializeField] private Toggle zoomToggle;
         [SerializeField] private Button mapExitBtn;
         [SerializeField] private Button playButton;
         [SerializeField] private Button rightArrowBtn;
         [SerializeField] private Button leftArrowBtn;
         [SerializeField] private TextMeshProUGUI mapNameText;
         [SerializeField] private TextAnimatorPlayer unlockMapText;
-        [SerializeField] private TextAnimatorPlayer titleDescriptionText;
         [SerializeField] private GameObject mapSelector;
         [SerializeField] private ParticleSystem confettiParticleSystem;
 
@@ -33,14 +31,13 @@ namespace BeachHero
             base.Open(screenTabType);
             currentMapNumber = MapController.GetInstance.MapNumber;
             totalMaps = MapController.GetInstance.TotalMaps;
-            zoomToggle.isOn = false;
 
             var particle = confettiParticleSystem.main;
             particle.startDelay = confettiDelay;
-            ZoomToggle(false);
-            MapController.GetInstance.ChangeMapVisual(previousMapNumber, currentMapNumber);
+            CameraController.GetInstance.SetActiveCamera(GameCameraType.Map);
+          //  MapController.GetInstance.UpdatePathLine();
+            MapController.GetInstance.SwitchMap(previousMapNumber, currentMapNumber);
 
-            zoomToggle.onValueChanged.AddListener((val) => { ZoomToggle(val); AudioController.GetInstance.PlaySound(AudioType.Button); });
             mapExitBtn.ButtonRegister(MapExitToHome);
             playButton.ButtonRegister(OnPlayButtonClick);
             rightArrowBtn.ButtonRegister(ScrollRight);
@@ -59,11 +56,8 @@ namespace BeachHero
             base.Close();
             SetMapButtonsVisibility(false);
             ResetTextAnimator();
-            MapController.GetInstance.ChangeMapVisual(currentMapNumber, MapController.GetInstance.MapNumber);
+            MapController.GetInstance.SwitchMap(currentMapNumber, MapController.GetInstance.MapNumber);
             playButton.interactable = true;
-            zoomToggle.interactable = true;
-
-            zoomToggle.onValueChanged.RemoveAllListeners();
             mapExitBtn.ButtonDeRegister(MapExitToHome);
             playButton.ButtonDeRegister(OnPlayButtonClick);
             rightArrowBtn.ButtonDeRegister(ScrollRight);
@@ -100,27 +94,12 @@ namespace BeachHero
                 unlockMapText.StopShowingText();
                 unlockMapText.StopDisappearingText();
                 unlockMapText.onTextShowed.RemoveAllListeners();
-                titleDescriptionText.StopShowingText();
-                titleDescriptionText.StopDisappearingText();
-                titleDescriptionText.ShowText("");
             }
-        }
-
-        private void ShowTitleDescription()
-        {
-            titleDescriptionText.ShowText($"{MapController.GetInstance.GetMapDescription(currentMapNumber)}");
-        }
-
-        private void HideTitleDescription()
-        {
-            titleDescriptionText.StopShowingText();
-            titleDescriptionText.StartDisappearingText();
         }
 
         private void SetMapButtonsVisibility(bool _val)
         {
             playButton.gameObject.SetActive(_val);
-            zoomToggle.gameObject.SetActive(_val);
             mapExitBtn.gameObject.SetActive(_val);
         }
 
@@ -141,44 +120,26 @@ namespace BeachHero
             UIController.GetInstance.ScreenEvent(ScreenType.PowerupSelection, UIScreenEvent.Push);
         }
 
-        private void ZoomToggle(bool isZoomOut)
-        {
-            if (isZoomOut)
-            {
-                MapController.GetInstance.ZoomOut();
-                ShowTitleDescription();
-                UpdateMapVisual();
-            }
-            else
-            {
-                HideTitleDescription();
-                MapController.GetInstance.ZoomIn();
-            }
-            mapSelector.gameObject.SetActive(isZoomOut);
-        }
         private void ScrollRight()
         {
             previousMapNumber = currentMapNumber;
             currentMapNumber += 1;
-            UpdateMapVisual();
-            ShowTitleDescription();
+            UpdateMapVisual(true);
         }
         private void ScrollLeft()
         {
             previousMapNumber = currentMapNumber;
             currentMapNumber -= 1;
-            UpdateMapVisual();
-            ShowTitleDescription();
+            UpdateMapVisual(true);
         }
-        private void UpdateMapVisual()
+        private void UpdateMapVisual(bool playAnim = false)
         {
-            mapNameText.text = $"{MapController.GetInstance.GetMapName(currentMapNumber)}";
-            bool isCurrentMap = MapController.GetInstance.MapNumber == currentMapNumber;
-            playButton.interactable = isCurrentMap;
-            zoomToggle.interactable = isCurrentMap;
+            // bool isCurrentMap = MapController.GetInstance.MapNumber == currentMapNumber;
+            //playButton.interactable = isCurrentMap;
             leftArrowBtn.interactable = currentMapNumber > 1;
             rightArrowBtn.interactable = currentMapNumber < totalMaps;
-            MapController.GetInstance.ChangeMapVisual(previousMapNumber, currentMapNumber);
+            mapNameText.text = $"{MapController.GetInstance.GetMapDescription(currentMapNumber)}";
+            MapController.GetInstance.SwitchMap(previousMapNumber, currentMapNumber, playAnim);
         }
     }
 }

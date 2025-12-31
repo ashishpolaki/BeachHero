@@ -282,8 +282,11 @@ namespace BeachHero
             float distanceSoFar = 0f;
             Vector3 lastPoint = bezierPoints[0].anchorPoint;
 
+            Vector3 firstTangent = EvaluateBezierDerivative(bezierPoints[0].anchorPoint, bezierPoints[0].anchorPoint + bezierPoints[0].outTangent
+                , bezierPoints[1].anchorPoint, bezierPoints[1].anchorPoint + bezierPoints[1].inTangent, 0f).normalized;
+
             sampledPoints.Add(lastPoint);
-            tangentVectors.Add(Vector3.forward); // placeholder
+            tangentVectors.Add(firstTangent);
 
             for (int seg = 0; seg < bezierPoints.Count - 1; seg++)
             {

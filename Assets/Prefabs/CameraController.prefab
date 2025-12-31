@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6112855457787074902
 Transform:
   m_ObjectHideFlags: 0
@@ -30,8 +30,7 @@ Transform:
   m_LocalPosition: {x: 6.21, y: -5.54, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 3497866905743353521}
+  m_Children: []
   m_Father: {fileID: 1843682094165662881}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5253023031436396975
@@ -5336,11 +5335,6 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 4128
   - cameraType: 3
-    camera: {fileID: 5253023031436396975}
-    cullingMask:
-      serializedVersion: 2
-      m_Bits: 4128
-  - cameraType: 4
     camera: {fileID: 6812133127751902700}
     cullingMask:
       serializedVersion: 2
@@ -5363,7 +5357,7 @@ GameObject:
   - component: {fileID: 7493692791253343456}
   - component: {fileID: 2249796003372915577}
   m_Layer: 0
-  m_Name: MapFar
+  m_Name: Map
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5381,7 +5375,8 @@ Transform:
   m_LocalPosition: {x: 10, y: 10.16, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 3497866905743353521}
   m_Father: {fileID: 1843682094165662881}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7454238708277873319
@@ -10942,14 +10937,14 @@ Transform:
   m_GameObject: {fileID: 7331514134397064043}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.3000002, z: 5}
+  m_LocalPosition: {x: -3.79, y: -14.4, z: 5}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3710092217447591988}
   - {fileID: 822416835796931202}
   - {fileID: 8708577856216963329}
-  m_Father: {fileID: 6112855457787074902}
+  m_Father: {fileID: 8795254825323573605}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &570309719875488630
 ParticleSystem:

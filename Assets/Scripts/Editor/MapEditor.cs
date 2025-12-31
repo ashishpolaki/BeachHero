@@ -168,6 +168,7 @@ namespace BeachHero
                     float t = j / (float)curveSamples;
                     Vector3 pos = BezierCurveUtils.GetPoint(p0, p1, p2, p3, t);
                     Gizmos.DrawLine(prev, pos);
+                    Gizmos.DrawSphere(pos, 0.1f);
                     prev = pos;
                 }
             }

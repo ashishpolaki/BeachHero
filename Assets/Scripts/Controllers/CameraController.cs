@@ -126,8 +126,7 @@ namespace BeachHero
     {
         PlayerFar,
         PlayerNear,
-        MapFar,
-        MapNear,
+        Map,
         GameView,
         None
     }

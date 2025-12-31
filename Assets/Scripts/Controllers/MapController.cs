@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 using DG.Tweening;
 using System;
 #if UNITY_EDITOR
@@ -37,6 +37,16 @@ namespace BeachHero
         [SerializeField] private float boatDuration = 1f;
         [SerializeField] private float boatOffsetDistance = 0.5f;
         [SerializeField] private Ease boatEase = Ease.OutCubic;
+
+        [Header("Map Switch Tween Data")]
+        [SerializeField] private float mapSwitchInScale = 0.8f;
+        [SerializeField] private float mapSwitchOutScale = 0.8f;
+        [SerializeField] private float mapSwitchScaleDuration = 0.2f;
+        [SerializeField] private float mapSwitchScaleOvershoot = 4f;
+        [SerializeField] private Ease mapSwitchScaleEase = Ease.InBack;
+
+        [SerializeField] private float mapSwitchMoveDuration = 0.5f;
+        [SerializeField] private Ease mapSwitchMoveEase = Ease.Linear;
         #endregion
 
         #region Private Variables
@@ -73,8 +83,7 @@ namespace BeachHero
                 GetInstance = this;
             }
             InitializeMapVisuals();
-            CameraController.GetInstance.SetCollider(confineCollider, GameCameraType.MapFar);
-            CameraController.GetInstance.SetCollider(confineCollider, GameCameraType.MapNear);
+            CameraController.GetInstance.SetCollider(confineCollider, GameCameraType.Map);
         }
         private void OnDestroy()
         {
@@ -109,7 +118,7 @@ namespace BeachHero
                     break;
                 }
             }
-            ChangeMapVisual(-1, savedMapNumber);
+            SwitchMap(-1, savedMapNumber);
         }
         #endregion
 
@@ -133,15 +142,15 @@ namespace BeachHero
 
             if (isNewMapUnlocked)
             {
-                ChangeMapVisual(savedMapNumber, MapNumber);
+                SwitchMap(savedMapNumber, MapNumber);
             }
         }
         #endregion
 
         public void SetMapActive(bool isActive)
         {
-            if(waterGraphics != null)
-            waterGraphics.SetActive(isActive);
+            if (waterGraphics != null)
+                waterGraphics.SetActive(isActive);
         }
 
         #region Boat Movement
@@ -210,8 +219,8 @@ namespace BeachHero
                         time = x;
                         Vector3 pos = BezierCurveUtils.GetPoint(p0, p1, p2, p3, time);
                         Vector3 forward = BezierCurveUtils.GetTangent(p0, p1, p2, p3, time).normalized;
-                        boatTransform.up = forward;
-                        mapDatas[mapNumber - 1].CalculateOffsetDirectionFromCross(forward, out Vector3 boatOffsetDirection);
+                        boatTransform.up = Vector3.Lerp(boatTransform.up, forward, Time.deltaTime * 10f);
+                        mapDatas[mapNumber - 1].CalculateOffsetDirectionFromCross(boatTransform.up, out Vector3 boatOffsetDirection);
                         boatTransform.position = pos + boatOffsetDirection * boatOffsetDistance;
                     },
                     1,
@@ -223,29 +232,15 @@ namespace BeachHero
         }
         #endregion
 
-        #region Zoom
-        public void ZoomIn()
+        #region Map
+        public void UpdatePathLine()
         {
-            Vector2 position = mapDatas[mapNumber - 1].GetLevelVisual(GameController.GetInstance.CurrentLevelIndex + 1).WorldPosition;
-            CameraController.GetInstance.SetActiveCamera(GameCameraType.MapNear);
-            CameraController.GetInstance.SetCameraPosition(position, false);
-            var pathLine = mapDatas[mapNumber - 1].pathLine;
-            DOTween.To(() => pathLine.startWidth, (x) => pathLine.startWidth = x, ZoomInThick, ZoomDuration);
-            DOTween.To(() => pathLine.endWidth, (x) => pathLine.endWidth = x, ZoomInThick, ZoomDuration);
-            DOTween.To(() => pathLine.textureScale, (x) => pathLine.textureScale = x, ZoomInTextureScale, ZoomDuration);
-        }
-        public void ZoomOut()
-        {
-            CameraController.GetInstance.SetActiveCamera(GameCameraType.MapFar);
-            UpdateMapBGScale();
             var pathLine = mapDatas[mapNumber - 1].pathLine;
             DOTween.To(() => pathLine.startWidth, (x) => pathLine.startWidth = x, ZoomOutThick, ZoomDuration);
             DOTween.To(() => pathLine.endWidth, (x) => pathLine.endWidth = x, ZoomOutThick, ZoomDuration);
             DOTween.To(() => pathLine.textureScale, (x) => pathLine.textureScale = x, DefaultTextureScale, ZoomDuration);
         }
-        #endregion
 
-        #region Map
         public string GetMapName(int mapNumber)
         {
             for (int i = 0; i < mapDatas.Length; i++)
@@ -274,25 +269,67 @@ namespace BeachHero
             OnMapUnlocked?.Invoke();
         }
 
-        public void ChangeMapVisual(int previousMap, int currentMap)
+        public void SwitchMap(int previousMap, int currentMap, bool isPlayAnim = false)
         {
-            //If startLevelIndex is -1, it means no levels are set for this map
-            if (mapDatas[currentMap - 1].startLevelNumber != -1)
+            UpdateMapBGScale();
+            int mapMultiplier = currentMap > previousMap ? -1 : 1;
+            if (isPlayAnim)
             {
-                //PRevious
+                //Previous Map Animation Out
                 if (previousMap > 0)
                 {
-                    mapDatas[previousMap - 1].mapObject.SetActive(false);
+                    var previousMapData = mapDatas[previousMap - 1];
+                    previousMapData.mapObject.transform.DOScale(mapSwitchInScale, mapSwitchScaleDuration)
+                        .SetEase(mapSwitchScaleEase, mapSwitchScaleOvershoot)
+                        .OnComplete(() =>
+                        {
+                            previousMapData.mapObject.transform.DOMoveX(
+                                previousMapData.mapObject.transform.position.x + (mapMultiplier * 50), mapSwitchMoveDuration)
+                            .SetEase(mapSwitchMoveEase);
+                        });
                 }
 
-                //Current
-                mapDatas[currentMap - 1].mapObject.SetActive(true);
-                mapDatas[currentMap - 1].LevelSetup(levelDatabase);
+                var currentMapData = mapDatas[currentMap - 1];
+                currentMapData.mapObject.transform.DOScale(mapSwitchInScale, mapSwitchScaleDuration)
+                     .SetEase(mapSwitchScaleEase, mapSwitchScaleOvershoot)
+                        .OnComplete(() =>
+                        {
+                            currentMapData.mapObject.SetActive(true);
+                            currentMapData.LevelSetup(levelDatabase);
+                            currentMapData.mapObject.transform.position = new Vector3(
+                                                                      -mapMultiplier * 50,
+                                currentMapData.mapObject.transform.position.y,
+                                currentMapData.mapObject.transform.position.z);
+
+                            currentMapData.mapObject.transform.DOMoveX(
+                                currentMapData.mapObject.transform.position.x + (mapMultiplier * 50), mapSwitchMoveDuration)
+                            .SetEase(mapSwitchMoveEase).OnComplete(() =>
+                            {
+                                currentMapData.mapObject.transform.DOScale(1f, mapSwitchScaleDuration)
+                                .SetEase(mapSwitchScaleEase, mapSwitchScaleOvershoot);
+                            });
+                        });
+            }
+            else
+            {
+                //If startLevelIndex is -1, it means no levels are set for this map
+                if (mapDatas[currentMap - 1].startLevelNumber != -1)
+                {
+                    //PRevious
+                    if (previousMap > 0)
+                    {
+                        mapDatas[previousMap - 1].mapObject.SetActive(false);
+                    }
+
+                    //Current
+                    mapDatas[currentMap - 1].mapObject.SetActive(true);
+                    mapDatas[currentMap - 1].LevelSetup(levelDatabase);
+                }
             }
         }
-        private void UpdateMapBGScale()
+        public void UpdateMapBGScale()
         {
-            CameraController.GetInstance.SetOrthoSize(ScreenResolutionUtils.GetOrthographicSize(ReferenceOrthoSize), GameCameraType.MapFar);
+            CameraController.GetInstance.SetOrthoSize(ScreenResolutionUtils.GetOrthographicSize(ReferenceOrthoSize), GameCameraType.Map);
             if (mapBG != null)
             {
                 var scale = ScreenResolutionUtils.GetObjectScale(ReferenceMapScale, ReferenceOrthoSize);
