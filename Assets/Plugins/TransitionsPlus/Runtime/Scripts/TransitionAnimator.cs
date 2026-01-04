@@ -182,9 +182,9 @@ namespace TransitionsPlus {
             }
         }
 
-        public void ResetTransition()
+        public void ResetTransition(float startProgress)
         {
-            progress = 0;
+            progress = startProgress;
             enabled = true;
             UpdateMaterialProperties();
             lastCaptureFrame = -1;

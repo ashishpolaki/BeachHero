@@ -5,7 +5,7 @@ namespace BeachHero
     public class MovingObstacle : Obstacle
     {
         #region Inspector Variables
-        [SerializeField] private LineRenderer pathRenderer;
+      //  [SerializeField] private LineRenderer pathRenderer;
         [SerializeField] private float rotationSpeedMultiplier = 0.3f;
         [SerializeField] private int samples = 20;
         [SerializeField] private float movementSpeed = 5f;
@@ -36,11 +36,10 @@ namespace BeachHero
             direction = 1;
             transform.position = keyframes[0].position;
             transform.rotation = Quaternion.LookRotation((keyframes[1].position - keyframes[0].position).normalized);
-            var pointsList = BezierCurveUtils.GeneratePath(keyframes, movingObstacleData.resolution);
-            pathRenderer.positionCount = pointsList.Length;
-            // Ensure the first point is at a height of 0.5f to fix rendering bug on water
-            pointsList[0].y = 0.5f;
-            pathRenderer.SetPositions(pointsList);
+            //var pointsList = BezierCurveUtils.GeneratePath(keyframes, movingObstacleData.resolution);
+            //pathRenderer.positionCount = pointsList.Length;
+            //pointsList[0].y = 0.5f;
+            //pathRenderer.SetPositions(pointsList);
 
             // Precompute segment lengths
             segmentLengths = new float[keyframes.Length - 1];
