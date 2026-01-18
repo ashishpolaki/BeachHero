@@ -25,7 +25,7 @@ MonoBehaviour:
         m_PostInfinity: 0
         m_RotationOrder: 4
   - From: GameView
-    To: PlayerFar
+    To: VictoryWide
     Blend:
       Style: 0
       Time: 1
@@ -35,8 +35,8 @@ MonoBehaviour:
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 4
-  - From: PlayerFar
-    To: PlayerNear
+  - From: VictoryWide
+    To: VictoryClose
     Blend:
       Style: 3
       Time: 1
@@ -46,22 +46,11 @@ MonoBehaviour:
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 4
-  - From: MapFar
-    To: MapNear
+  - From: GameView
+    To: GameViewFocus
     Blend:
       Style: 3
-      Time: 1.2
-      CustomCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 0
-        m_PostInfinity: 0
-        m_RotationOrder: 4
-  - From: MapNear
-    To: MapFar
-    Blend:
-      Style: 3
-      Time: 1.2
+      Time: 1
       CustomCurve:
         serializedVersion: 2
         m_Curve: []
