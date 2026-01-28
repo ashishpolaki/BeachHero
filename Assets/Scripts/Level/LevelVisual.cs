@@ -10,8 +10,6 @@ namespace BeachHero
         [SerializeField] private GameObject current;
         [SerializeField] private TextMeshPro levelText;
 
-        public Vector3 WorldPosition => levelData.WorldPosition;
-
         public bool IsCurrentLevel => levelData.IsCurrentLevel;
 
         public int LevelNumber => levelData.LevelNumber;
@@ -29,7 +27,6 @@ namespace BeachHero
             UpdateVisual();
             levelText.text = levelData.LevelNumber.ToString();
             levelText.rectTransform.rotation = Quaternion.Euler(0, 0, -(transform.parent.eulerAngles.z));
-            levelData.WorldPosition = transform.position;
         }
 
         private void UpdateVisual()
