@@ -69,7 +69,6 @@ namespace BeachHero
         {
             if (!enableHover) return;
         }
-
         public void OnPointerExit(PointerEventData eventData)
         {
             if (!enableHover) return;
