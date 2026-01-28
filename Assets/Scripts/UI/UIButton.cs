@@ -1,7 +1,8 @@
-using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using LitMotion;
+using LitMotion.Extensions;
 
 namespace BeachHero
 {
@@ -24,7 +25,7 @@ namespace BeachHero
         [SerializeField] private Ease pressEase = Ease.OutBack;
         [SerializeField] private Ease releaseEase = Ease.OutBack;
 
-        private Tween _scaleTween;
+        private MotionHandle _scaleHandle;
         public Vector3 _originalScale = new Vector3(1, 1, 1);
         [Tooltip("Event triggered when button animation completes")]
         public event System.Action OnButtonReleased;
@@ -36,7 +37,7 @@ namespace BeachHero
         }
         private void OnDestroy()
         {
-            _scaleTween?.Kill();
+            _scaleHandle.TryCancel();
         }
         #endregion
 
@@ -67,32 +68,34 @@ namespace BeachHero
         public void OnPointerEnter(PointerEventData eventData)
         {
             if (!enableHover) return;
-            // AnimateTo(hoverScale);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             if (!enableHover) return;
-            // AnimateTo(_originalScale.x);
         }
         #endregion
 
         #region Animations
         private void PlayPressAnimation()
         {
-            _scaleTween?.Kill();
-            _scaleTween = transform.DOScale(pressedScale, tweenDuration).SetEase(pressEase);
+            _scaleHandle.TryCancel();
+            _scaleHandle = LMotion.Create(transform.localScale, Vector3.one * pressedScale, tweenDuration)
+                .WithEase(pressEase)
+                .BindToLocalScale(transform);
         }
 
         private void PlayReleaseAnimation()
         {
-            _scaleTween?.Kill();
+            _scaleHandle.TryCancel();
             PlayAudio();
-            _scaleTween = transform.DOScale(_originalScale.x, tweenDuration).SetEase(releaseEase)
-                .OnComplete(() =>
+            _scaleHandle = LMotion.Create(transform.localScale, _originalScale, tweenDuration)
+                .WithEase(releaseEase)
+                .WithOnComplete(() =>
                 {
                     OnButtonReleased?.Invoke();
-                });
+                })
+                .BindToLocalScale(transform);
         }
         #endregion
     }
