@@ -7,10 +7,10 @@ namespace BeachHero
 {
     public class MainMenuUIScreen : BaseScreen
     {
-        [SerializeField] private Button boatCustomisationButton;
-        [SerializeField] private Button playButton;
-        [SerializeField] private Button storeButton;
-        [SerializeField] private Button settingsButton;
+        [SerializeField] private UIButton boatCustomisationButton;
+        [SerializeField] private UIButton playButton;
+        [SerializeField] private UIButton storeButton;
+        [SerializeField] private UIButton settingsButton;
         [SerializeField] private TextMeshProUGUI levelNumberText;
         [SerializeField] private TweenSequencer panelOpenAnimation;
         [SerializeField] private Sprite playButtonSprite;
@@ -69,18 +69,18 @@ namespace BeachHero
 
         private void AddListeners()
         {
-            boatCustomisationButton.ButtonRegister(OnBoatCustomisationButtonClicked);
-            playButton.ButtonRegister(OnPlayButtonClicked);
-            storeButton.ButtonRegister(OnStoreButtonClicked);
-            settingsButton.ButtonRegister(OnSettingsButtonClick);
+            boatCustomisationButton.OnButtonReleased += (OnBoatCustomisationButtonClicked);
+            playButton.OnButtonReleased += OnPlayButtonClicked;
+            storeButton.OnButtonReleased += (OnStoreButtonClicked);
+            settingsButton.OnButtonReleased += (OnSettingsButtonClick);
         }
 
         private void RemoveListeners()
         {
-            boatCustomisationButton.ButtonDeRegister(OnBoatCustomisationButtonClicked);
-            playButton.ButtonDeRegister(OnPlayButtonClicked);
-            storeButton.ButtonDeRegister(OnStoreButtonClicked);
-            settingsButton.ButtonDeRegister(OnSettingsButtonClick);
+            boatCustomisationButton.OnButtonReleased -= (OnBoatCustomisationButtonClicked);
+            playButton.OnButtonReleased -= OnPlayButtonClicked;
+            storeButton.OnButtonReleased -= (OnStoreButtonClicked);
+            settingsButton.OnButtonReleased -= (OnSettingsButtonClick);
         }
         private void OnSettingsButtonClick()
         {

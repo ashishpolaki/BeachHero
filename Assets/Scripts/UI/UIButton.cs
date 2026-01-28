@@ -9,6 +9,7 @@ namespace BeachHero
     {
         [SerializeField] private AudioType buttonAudioType;
         [SerializeField] private Button button;
+        [SerializeField] private bool enableHover = false;
 
         [Header("Scale Settings")]
         [Tooltip("Scale when button is pressed")]
@@ -20,31 +21,26 @@ namespace BeachHero
         [Tooltip("Time taken for the tween animation")]
         public float tweenDuration = 0.15f;
 
-        [Tooltip("Ease type for animation (Ex: OutBack, OutQuad, etc.)")]
-        public Ease tweenEase = Ease.OutBack;
+        [SerializeField] private Ease pressEase = Ease.OutBack;
+        [SerializeField] private Ease releaseEase = Ease.OutBack;
 
-        [Tooltip("Enable hover animation (useful for PC or console)")]
-        public bool enableHover = false;
         private Tween _scaleTween;
         public Vector3 _originalScale = new Vector3(1, 1, 1);
+        [Tooltip("Event triggered when button animation completes")]
+        public event System.Action OnButtonReleased;
 
+        #region Unity Methods
         private void Awake()
         {
-            if (button != null)
-            {
-                button.ButtonRegister(PlayAudio);
-            }
             transform.localScale = _originalScale;
         }
         private void OnDestroy()
         {
-            if (button != null)
-            {
-                button.ButtonDeRegisterAll();
-            }
             _scaleTween?.Kill();
         }
+        #endregion
 
+        #region Audio
         private void PlayAudio()
         {
             if (buttonAudioType != AudioType.None)
@@ -55,38 +51,50 @@ namespace BeachHero
                 }
             }
         }
-        #region Pointers
+        #endregion
 
+        #region Pointers
         public void OnPointerDown(PointerEventData eventData)
         {
-            AnimateTo(pressedScale);
+            PlayPressAnimation();
         }
 
         public void OnPointerUp(PointerEventData eventData)
         {
-            AnimateTo(_originalScale.x);
+            PlayReleaseAnimation();
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
             if (!enableHover) return;
-
-            AnimateTo(hoverScale);
+            // AnimateTo(hoverScale);
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             if (!enableHover) return;
-
-            AnimateTo(_originalScale.x);
+            // AnimateTo(_originalScale.x);
         }
         #endregion
 
-        private void AnimateTo(float targetScale)
+        #region Animations
+        private void PlayPressAnimation()
         {
             _scaleTween?.Kill();
-            _scaleTween = transform.DOScale(targetScale, tweenDuration).SetEase(tweenEase);
+            _scaleTween = transform.DOScale(pressedScale, tweenDuration).SetEase(pressEase);
         }
+
+        private void PlayReleaseAnimation()
+        {
+            _scaleTween?.Kill();
+            PlayAudio();
+            _scaleTween = transform.DOScale(_originalScale.x, tweenDuration).SetEase(releaseEase)
+                .OnComplete(() =>
+                {
+                    OnButtonReleased?.Invoke();
+                });
+        }
+        #endregion
     }
 }
 

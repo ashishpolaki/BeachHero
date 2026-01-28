@@ -136,11 +136,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonAudioType: 1
   button: {fileID: 5192779947189712439}
+  enableHover: 0
   pressedScale: 0.9
   hoverScale: 1.05
   tweenDuration: 0.15
-  tweenEase: 27
-  enableHover: 0
+  pressEase: 27
+  releaseEase: 27
   _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &954288469884760255
 GameObject:
@@ -474,11 +475,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonAudioType: 1
   button: {fileID: 4141304196390609998}
+  enableHover: 0
   pressedScale: 0.9
   hoverScale: 1.05
   tweenDuration: 0.15
-  tweenEase: 27
-  enableHover: 0
+  pressEase: 27
+  releaseEase: 27
   _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &2518283311147858941
 GameObject:
@@ -766,11 +768,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonAudioType: 1
   button: {fileID: 3408815223475987010}
+  enableHover: 0
   pressedScale: 0.9
   hoverScale: 1.05
   tweenDuration: 0.15
-  tweenEase: 27
-  enableHover: 0
+  pressEase: 27
+  releaseEase: 27
   _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &3034446249913120528
 GameObject:
@@ -881,10 +884,10 @@ MonoBehaviour:
   screenType: 1
   defaultOpenTab: 0
   tabs: []
-  boatCustomisationButton: {fileID: 3408815223475987010}
-  playButton: {fileID: 5993284834546111571}
-  storeButton: {fileID: 5192779947189712439}
-  settingsButton: {fileID: 3302027707281503164}
+  boatCustomisationButton: {fileID: 971613588692747548}
+  playButton: {fileID: 5887865604330089652}
+  storeButton: {fileID: 2446996965009974112}
+  settingsButton: {fileID: 4742733536649313588}
   levelNumberText: {fileID: 3942195231119110490}
   panelOpenAnimation: {fileID: 1852807306873934527}
   playButtonSprite: {fileID: 21300000, guid: c2a055ed4887b0b48b33f83f2bbfbe81, type: 3}
@@ -1802,11 +1805,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonAudioType: 1
   button: {fileID: 3302027707281503164}
+  enableHover: 0
   pressedScale: 0.9
   hoverScale: 1.05
   tweenDuration: 0.15
-  tweenEase: 27
-  enableHover: 0
+  pressEase: 27
+  releaseEase: 27
   _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &5983541775809291182
 GameObject:
@@ -2440,11 +2444,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonAudioType: 1
   button: {fileID: 5993284834546111571}
+  enableHover: 0
   pressedScale: 0.9
   hoverScale: 1.05
   tweenDuration: 0.15
-  tweenEase: 27
-  enableHover: 0
+  pressEase: 27
+  releaseEase: 27
   _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1001 &2612062954113083190
 PrefabInstance:
