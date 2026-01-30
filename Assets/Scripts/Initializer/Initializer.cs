@@ -6,11 +6,8 @@ namespace BeachHero
 {
     public class Initializer : MonoBehaviour
     {
-        [SerializeField] private Material waterMaterial;
-
         private void Start()
         {
-            ResetWaterMaterial();
             AsyncLazyInit();
         }
 
@@ -74,16 +71,6 @@ namespace BeachHero
             GameController.GetInstance.SpawnLevel();
             await SceneLoader.GetInstance.UnloadScene(StringUtils.INIT_SCENE);
             await UIController.GetInstance.LoadingUI.DisableLoadingScreen();
-        }
-
-        /// <summary>
-        /// Reset the water material properties to their default values.
-        /// </summary>
-        private void ResetWaterMaterial()
-        {
-            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{1}"), 0f);
-            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{2}"), 0f);
-            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{3}"), 0f);
         }
     }
 }

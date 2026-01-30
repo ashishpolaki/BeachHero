@@ -617,12 +617,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
-  button: {fileID: 9138512115033614868}
+  enableHover: 0
   pressedScale: 0.9
   hoverScale: 1.05
   tweenDuration: 0.15
-  tweenEase: 27
-  enableHover: 0
+  pressEase: 26
+  releaseEase: 26
   _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &3451192771320139023
 GameObject:
@@ -833,12 +833,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 8
-  button: {fileID: 8846772873582122788}
+  enableHover: 0
   pressedScale: 0.9
   hoverScale: 1.05
   tweenDuration: 0.15
-  tweenEase: 27
-  enableHover: 0
+  pressEase: 26
+  releaseEase: 26
   _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &4592843336146976139
 GameObject:
@@ -1310,12 +1310,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
-  button: {fileID: 4717114761778534736}
+  enableHover: 0
   pressedScale: 0.9
   hoverScale: 1.05
   tweenDuration: 0.15
-  tweenEase: 27
-  enableHover: 0
+  pressEase: 26
+  releaseEase: 26
   _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &5832295632904656682
 GameObject:
@@ -1861,12 +1861,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 8
-  button: {fileID: 1552274342069632436}
+  enableHover: 0
   pressedScale: 0.9
   hoverScale: 1.05
   tweenDuration: 0.15
-  tweenEase: 27
-  enableHover: 0
+  pressEase: 26
+  releaseEase: 26
   _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &7929171453010926158
 GameObject:
@@ -2274,12 +2274,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 0
-  button: {fileID: 0}
+  enableHover: 0
   pressedScale: 0.9
   hoverScale: 1.05
   tweenDuration: 0.15
-  tweenEase: 27
-  enableHover: 0
+  pressEase: 26
+  releaseEase: 26
   _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &8579134028430140402
 GameObject:
@@ -2533,6 +2533,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SortingLayerID
       value: -1453750307
+      objectReference: {fileID: 0}
+    - target: {fileID: 8879409816538776594, guid: 0b6c7beac8584c842adbed5e4d17d25a,
+        type: 3}
+      propertyPath: m_UseCustomVertexStreams
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8879409816538776594, guid: 0b6c7beac8584c842adbed5e4d17d25a,
+        type: 3}
+      propertyPath: m_VertexStreams.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8879409816538776594, guid: 0b6c7beac8584c842adbed5e4d17d25a,
+        type: 3}
+      propertyPath: 'm_VertexStreams.Array.data[1]'
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8879409816538776594, guid: 0b6c7beac8584c842adbed5e4d17d25a,
+        type: 3}
+      propertyPath: 'm_VertexStreams.Array.data[2]'
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

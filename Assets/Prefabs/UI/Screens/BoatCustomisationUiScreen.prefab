@@ -2693,12 +2693,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
-  button: {fileID: 6989249675713585657}
+  enableHover: 0
   pressedScale: 0.9
   hoverScale: 1.05
   tweenDuration: 0.15
-  tweenEase: 27
-  enableHover: 0
+  pressEase: 26
+  releaseEase: 26
   _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &2843097246753306914
 GameObject:
@@ -3146,12 +3146,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 8
-  button: {fileID: 8740369399590210878}
+  enableHover: 0
   pressedScale: 0.9
   hoverScale: 1.05
   tweenDuration: 0.15
-  tweenEase: 27
-  enableHover: 0
+  pressEase: 26
+  releaseEase: 26
   _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &4451953379518729841
 GameObject:
@@ -4332,12 +4332,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
-  button: {fileID: 832372154426100620}
+  enableHover: 0
   pressedScale: 0.9
   hoverScale: 1.05
   tweenDuration: 0.15
-  tweenEase: 27
-  enableHover: 0
+  pressEase: 26
+  releaseEase: 26
   _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &5727133989143238791
 GameObject:
@@ -6095,12 +6095,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 8
-  button: {fileID: 5010387286955176349}
+  enableHover: 0
   pressedScale: 0.9
   hoverScale: 1.05
   tweenDuration: 0.15
-  tweenEase: 27
-  enableHover: 0
+  pressEase: 26
+  releaseEase: 26
   _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &8431639760793196934
 GameObject:
@@ -6731,6 +6731,22 @@ PrefabInstance:
     - target: {fileID: 19922010, guid: 0bb1d6b9d39bcbf4785d00557d53e9e3, type: 3}
       propertyPath: m_SortingLayer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19922010, guid: 0bb1d6b9d39bcbf4785d00557d53e9e3, type: 3}
+      propertyPath: m_UseCustomVertexStreams
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 19922010, guid: 0bb1d6b9d39bcbf4785d00557d53e9e3, type: 3}
+      propertyPath: m_VertexStreams.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19922010, guid: 0bb1d6b9d39bcbf4785d00557d53e9e3, type: 3}
+      propertyPath: 'm_VertexStreams.Array.data[1]'
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19922010, guid: 0bb1d6b9d39bcbf4785d00557d53e9e3, type: 3}
+      propertyPath: 'm_VertexStreams.Array.data[2]'
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 19970644, guid: 0bb1d6b9d39bcbf4785d00557d53e9e3, type: 3}
       propertyPath: m_SortingLayer

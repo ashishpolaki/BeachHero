@@ -6,7 +6,6 @@ namespace BeachHero
 {
     public class WhirlpoolObstacle : Obstacle
     {
-        [SerializeField] private Material waterMaterial;
         [SerializeField] private SphereCollider sphereCollider;
         [SerializeField] private float rotationSpeed = 300f; // Speed of rotation around the cyclone
         [SerializeField] private float pullToCenterSpeed = 1f; // Speed at which the object is pulled toward the center
@@ -36,11 +35,6 @@ namespace BeachHero
             canStartCyclone = false;
             transform.position = obstacleData.position;
             sphereCollider.radius = obstacleData.scale * radiusMultiplier;
-
-            //water Shader WhirlPool Data
-            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_DISTANCE}_{index}"), obstacleData.scale / 20f);
-            waterMaterial.SetVector(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_POSITION}_{index}"), obstacleData.shaderPosition);
-            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{index}"), 1f);
         }
 
         public override async void Hit()
@@ -50,14 +44,6 @@ namespace BeachHero
             await Task.Delay((int)(gameOverdelay * 1000)); // Wait before calling game over panel
             base.Hit();
         }
-        public void OnDisable()
-        {
-            ResetWaterMaterial();
-        }
-        private void OnDestroy()
-        {
-            ResetWaterMaterial();
-        }
         private async void PlayVibration()
         {
             float startCooldownTime = Time.time;
@@ -66,14 +52,6 @@ namespace BeachHero
                 HapticsManager.GetInstance.FailureHapticWithCooldown(failureHapticCooldown);
                 await Task.Yield();
             }
-        }
-        private void ResetWaterMaterial()
-        {
-            if (index < 0)
-            {
-                return;
-            }
-            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{index}"), 0f);
         }
         private void OnPlayerHit()
         {

@@ -171,23 +171,6 @@ public class BeachHeroEditorWindow : EditorWindow
         window.Show();
     }
 
-    [MenuItem("Beach Hero/Reset WhirlPools")]
-    private static void ResetWhirlPools()
-    {
-        var waterMaterial = AssetDatabase.LoadAssetAtPath<Material>("Assets/Materials/WaterOptimized.mat");
-        if (waterMaterial != null)
-        {
-            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{1}"), 0f);
-            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{2}"), 0f);
-            waterMaterial.SetFloat(Shader.PropertyToID($"{StringUtils.WHIRLPOOL_ENABLE}_{3}"), 0f);
-            DebugUtils.Log("WhirlPools has been reseted");
-        }
-        else
-        {
-            DebugUtils.LogError("Water Material not found at the specified path.");
-        }
-    }
-
     #region Unity methods
     void OnEnable()
     {
