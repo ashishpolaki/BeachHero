@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -71,12 +70,25 @@ namespace BeachHero
                 {
                     levelDatas[i].MarkIncomplete();
                 }
+                levelDatas[i].MedalsEarned = SaveSystem.LoadInt($"{StringUtils.MEDAL_EARNED_PREFIX}{i}", 0);
             }
         }
 
         public LevelSO GetLevelByIndex(int index)
         {
             return levelsList[index % levelsList.Length];
+        }
+
+        public void SetMedalsForLevel(int levelIndex, int medals)
+        {
+            if (levelIndex >= 0 && levelIndex < levelDatas.Count)
+            {
+                if (medals > levelDatas[levelIndex].MedalsEarned)
+                {
+                    levelDatas[levelIndex].MedalsEarned = medals;
+                    SaveSystem.SaveInt($"{StringUtils.MEDAL_EARNED_PREFIX}{levelIndex}", medals);
+                }
+            }
         }
         #endregion
     }

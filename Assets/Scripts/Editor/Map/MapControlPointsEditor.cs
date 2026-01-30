@@ -134,6 +134,7 @@ namespace BeachHero
                 //Generate Level Visuals 
                 if (GUILayout.Button("Generate Level Visuals"))
                 {
+                    Undo.RecordObject(mapTester, "Generate Level Visuals");
                     mapTester.GenerateLevelVisuals();
                     EditorSceneManager.MarkSceneDirty(mapTester.gameObject.scene);
                 }

@@ -1,7 +1,7 @@
 using DG.Tweening;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace BeachHero
 {
@@ -50,7 +50,7 @@ namespace BeachHero
 
         private LevelPhase levelPhase = LevelPhase.None;
         private PlayerMode playerMode = PlayerMode.Normal;
-
+        private MedalCurrencyRequirements medalCurrencyRequirements = new MedalCurrencyRequirements();
         private bool hasDrawnPath = false;
         private bool isPathDrawingAllowed = false;
         private bool isMagnetActive = false;
@@ -66,8 +66,15 @@ namespace BeachHero
         public Transform PlayerTransform => player != null ? player.transform : null;
         public bool IsLevelPassed => levelPhase == LevelPhase.CompletedSuccess;
         public int GameCurrencyCount => gameCurrencyCount;
-
+        public int MedalsEarned
+        {
+            get; private set;
+        }
         public Camera Cam => cam ??= Camera.main;
+        #endregion
+
+        #region Actions
+        public event Action<int> OnMedalCountUpdated;
         #endregion
 
         #region Unity Methods
@@ -327,11 +334,35 @@ namespace BeachHero
         }
         #endregion
 
-        #region Powerups/Collectables
+        #region Medals
+        public void UpdateMedalCount()
+        {
+            if (gameCurrencyCount >= medalCurrencyRequirements.requiredCurrencyForThreeMedals)
+            {
+                MedalsEarned = 3;
+            }
+            else if (gameCurrencyCount >= medalCurrencyRequirements.requiredCurrencyForTwoMedals)
+            {
+                MedalsEarned = 2;
+            }
+            else if (gameCurrencyCount >= medalCurrencyRequirements.requiredCurrencyForOneMedal)
+            {
+                MedalsEarned = 1;
+            }
+            if (MedalsEarned > 0)
+            {
+                OnMedalCountUpdated?.Invoke(MedalsEarned);
+            }
+        }
+        #endregion
+
+        #region Powerups/Collectables/Medals
         public void OnGameCurrencyCollect()
         {
             gameCurrencyCount++;
+            UpdateMedalCount();
         }
+       
         public void OnActivatePowerup(PowerupType powerUpType)
         {
             if (powerUpType == PowerupType.Magnet)
@@ -388,6 +419,7 @@ namespace BeachHero
         {
             ResetState();
             targetDrownCharacters = levelSO.DrownCharacters.Length;
+            medalCurrencyRequirements = levelSO.MedalsRequirements;
 
             // Load the level data
             SpawnStartPoint(levelSO.StartPointData.Position, levelSO.StartPointData.Rotation);
@@ -428,6 +460,7 @@ namespace BeachHero
 
         private void ResetState()
         {
+            MedalsEarned = 0;
             isPlayerInitialRotationSet = false;
             gameCurrencyCount = 0;
             drownCharactersCounter = 0;

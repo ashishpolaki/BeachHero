@@ -10,9 +10,10 @@ namespace BeachHero
         [SerializeField] private ObstacleData obstacles;
         [SerializeField] private DrownCharacterData[] drownCharacters;
         [SerializeField] private CollectableData[] collectables;
+        [SerializeField] private MedalCurrencyRequirements medalRequirements;
 
         #region Properties
-        
+
         public float LevelTime => levelTime;
 
         public StartPointData StartPointData => startPoint;
@@ -22,7 +23,17 @@ namespace BeachHero
         public DrownCharacterData[] DrownCharacters => drownCharacters;
 
         public CollectableData[] Collectables => collectables;
+
+        public MedalCurrencyRequirements MedalsRequirements => medalRequirements;
         #endregion
+    }
+
+    [System.Serializable]
+    public struct MedalCurrencyRequirements
+    {
+        public int requiredCurrencyForThreeMedals;
+        public int requiredCurrencyForTwoMedals;
+        public int requiredCurrencyForOneMedal;
     }
 
     [System.Serializable]

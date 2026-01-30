@@ -65,6 +65,9 @@ namespace BeachHero
         //Game Currency
         public const string GAME_CURRENCY_BALANCE = "GameCurrencyBalance";
 
+        //Medals
+        public const string MEDAL_EARNED_PREFIX = "MedalEarned_Level_";
+
         //ADS
         public const string NO_ADS_PURCHASED = "NoAdsPurchased";
 

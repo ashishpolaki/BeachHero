@@ -170,8 +170,7 @@ namespace BeachHero
             CameraController.GetInstance.OnPlayerBlendCamera(this.transform);
             AudioController.GetInstance.PlaySound(AudioType.Joy);
             await Task.Delay(1000); // Wait for 1 seconds to allow the animation to play
-            UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Open, ScreenTabType.LevelWin);
-            AudioController.GetInstance.PlaySound(AudioType.Gamewin);
+            GameController.GetInstance.LevelWinFeedback();
         }
         #endregion
 

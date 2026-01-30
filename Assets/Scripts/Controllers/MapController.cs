@@ -14,10 +14,8 @@ namespace BeachHero
 
         #region Constants 
         private static readonly Vector2 DefaultTextureScale = new Vector2(1, 1);
-        private static readonly Vector2 ZoomInTextureScale = new Vector2(3, 1);
         private static readonly Vector2 ReferenceMapScale = new Vector2(4.5f, 4f);
 
-        private static readonly float ZoomInThick = 0.2f;
         private static readonly float ZoomOutThick = 0.55f;
         private static readonly float ZoomDuration = 1.5f;
         private static readonly float ReferenceOrthoSize = 31f;
@@ -26,7 +24,6 @@ namespace BeachHero
         #region Inspector Variables
         [SerializeField] private LevelDatabaseSO levelDatabase;
         [SerializeField] private Collider2D confineCollider;
-        [SerializeField] private GameObject waterGraphics;
 
         [Header("Map")]
         [SerializeField] private Transform mapBG;
@@ -146,12 +143,6 @@ namespace BeachHero
             }
         }
         #endregion
-
-        public void SetMapActive(bool isActive)
-        {
-            if (waterGraphics != null)
-                waterGraphics.SetActive(isActive);
-        }
 
         #region Boat Movement
         public void PlaceBoatAtCurrentLevel()
@@ -405,6 +396,7 @@ namespace BeachHero
             for (int i = 0; i < bezierPoints.Count; i++)
             {
                 var levelObject = Instantiate(levelPrefab, mapDatas[_mapIndex].levelsParent);
+                Undo.RegisterCreatedObjectUndo(levelObject, "Create Level Visual");
                 mapDatas[_mapIndex].levelVisuals.Add(levelObject.GetComponent<LevelVisual>());
                 mapDatas[_mapIndex].levelVisuals[i].SetPositions(bezierPoints[i].anchorPoint);
             }
