@@ -75,6 +75,7 @@ namespace BeachHero
 
         #region Actions
         public event Action<int> OnMedalCountUpdated;
+        public event Action OnPlayerTouch;
         #endregion
 
         #region Unity Methods
@@ -107,6 +108,7 @@ namespace BeachHero
                     HapticsManager.GetInstance.MediumImpactHaptic();
                     isPathDrawingAllowed = true;
                     AudioController.GetInstance.PlaySoundInLoop(AudioType.PathDraw);
+                    OnPlayerTouch?.Invoke();
                 }
             }
         }
@@ -120,6 +122,7 @@ namespace BeachHero
                 if (drawnPoints.Count >= 4)
                 {
                     smoothedDrawnPoints = CatmullSplineUtils.GetEvenlySpacedPoints(drawnPoints, spacing);
+                    ActivatePowerups();
                     StartSimulation();
                 }
                 else
@@ -356,34 +359,11 @@ namespace BeachHero
         }
         #endregion
 
-        #region Powerups/Collectables/Medals
+        #region Collectables
         public void OnGameCurrencyCollect()
         {
             gameCurrencyCount++;
             UpdateMedalCount();
-        }
-       
-        public void OnActivatePowerup(PowerupType powerUpType)
-        {
-            if (powerUpType == PowerupType.Magnet)
-            {
-                ActivateMagnetPowerup();
-            }
-            else if (powerUpType == PowerupType.SpeedBoost)
-            {
-                ActivateSpeedPowerup();
-            }
-        }
-
-        public void ActivateMagnetPowerup()
-        {
-            isMagnetActive = true;
-            player.ActivateMagnetPowerup();
-        }
-
-        public void ActivateSpeedPowerup()
-        {
-            player.ActivateSpeedPowerup();
         }
 
         private void UpdateCollectables()
@@ -411,6 +391,45 @@ namespace BeachHero
                         }
                     }
             }
+        }
+        #endregion
+
+        #region Powerups
+        private void ActivatePowerups()
+        {
+            var powerupController = GameController.GetInstance.PowerupController;
+            if (powerupController.CurrentActivePowerupList.Count <= 0)
+            {
+                return;
+            }
+            foreach (PowerupType powerupType in powerupController.CurrentActivePowerupList)
+            {
+                OnActivatePowerup(powerupType);
+            }
+            powerupController.ActivateSelectedPowerups();
+        }
+
+        public void OnActivatePowerup(PowerupType powerUpType)
+        {
+            if (powerUpType == PowerupType.Magnet)
+            {
+                ActivateMagnetPowerup();
+            }
+            else if (powerUpType == PowerupType.SpeedBoost)
+            {
+                ActivateSpeedPowerup();
+            }
+        }
+
+        public void ActivateMagnetPowerup()
+        {
+            isMagnetActive = true;
+            player.ActivateMagnetPowerup();
+        }
+
+        public void ActivateSpeedPowerup()
+        {
+            player.ActivateSpeedPowerup();
         }
         #endregion
 

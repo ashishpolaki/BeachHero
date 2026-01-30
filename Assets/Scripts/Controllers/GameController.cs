@@ -95,7 +95,6 @@ namespace BeachHero
             ScreenTabType screenTabType = isFTUE ? ScreenTabType.LevelTutorial : ScreenTabType.None;
             levelController.InitializePlayerData(isFTUE);
             UIController.GetInstance.ScreenEvent(ScreenType.Gameplay, UIScreenEvent.Open, screenTabType);
-            ActivatePowerups();
         }
         public void RetryLevel()
         {
@@ -179,21 +178,6 @@ namespace BeachHero
         public void OnGameCurrencyPickup()
         {
             levelController.OnGameCurrencyCollect();
-        }
-        #endregion
-
-        #region Powerup
-        private void ActivatePowerups()
-        {
-            if (powerupController.CurrentActivePowerupList.Count <= 0)
-            {
-                return;
-            }
-            foreach (PowerupType powerupType in powerupController.CurrentActivePowerupList)
-            {
-                levelController.OnActivatePowerup(powerupType);
-            }
-            powerupController.ActivateSelectedPowerups();
         }
         #endregion
 

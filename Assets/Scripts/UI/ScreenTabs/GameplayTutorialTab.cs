@@ -79,7 +79,7 @@ namespace BeachHero
         {
             if (camera == null || canvas == null)
             {
-                Debug.LogError("WorldToCanvasLocalPosition: Missing camera or canvas reference.");
+                DebugUtils.LogError("WorldToCanvasLocalPosition: Missing camera or canvas reference.");
                 return Vector3.zero;
             }
 

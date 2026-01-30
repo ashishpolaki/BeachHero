@@ -9,7 +9,6 @@ namespace BeachHero
     public class UIButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
     {
         [SerializeField] private AudioType buttonAudioType;
-        [SerializeField] private Button button;
         [SerializeField] private bool enableHover = false;
 
         [Header("Scale Settings")]
@@ -76,7 +75,7 @@ namespace BeachHero
         #endregion
 
         #region Animations
-        private void PlayPressAnimation()
+        public virtual void PlayPressAnimation()
         {
             _scaleHandle.TryCancel();
             _scaleHandle = LMotion.Create(transform.localScale, Vector3.one * pressedScale, tweenDuration)
@@ -84,7 +83,7 @@ namespace BeachHero
                 .BindToLocalScale(transform);
         }
 
-        private void PlayReleaseAnimation()
+        public virtual void PlayReleaseAnimation()
         {
             _scaleHandle.TryCancel();
             PlayAudio();

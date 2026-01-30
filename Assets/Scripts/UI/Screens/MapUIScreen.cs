@@ -105,7 +105,6 @@ namespace BeachHero
 
         private void PushPowerupSelectionScreen()
         {
-            UIController.GetInstance.ScreenEvent(ScreenType.PowerupSelection, UIScreenEvent.Push);
             SetMapButtonsVisibility(true);
         }
 
@@ -115,9 +114,11 @@ namespace BeachHero
             GameController.GetInstance.SetGameState(GameState.NotStarted);
         }
 
-        private void OnPlayButtonClick()
+        private async void OnPlayButtonClick()
         {
-            UIController.GetInstance.ScreenEvent(ScreenType.PowerupSelection, UIScreenEvent.Push);
+            await UIController.GetInstance.FadeUI.FadeInASync();
+            GameController.GetInstance.Play();
+            await UIController.GetInstance.FadeUI.FadeOutASync();
         }
 
         private void ScrollRight()
