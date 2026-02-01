@@ -4135,13 +4135,13 @@ RectTransform:
   m_Children:
   - {fileID: 6233940968190498966}
   - {fileID: 5770373801940523370}
-  - {fileID: 5630491649108147892}
-  - {fileID: 2295555816286015222}
   - {fileID: 5397027217195372123}
   - {fileID: 3518498362592981050}
   - {fileID: 9084473917301072746}
   - {fileID: 1032701779785459752}
   - {fileID: 4287533903643324486}
+  - {fileID: 5630491649108147892}
+  - {fileID: 2295555816286015222}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -4218,8 +4218,9 @@ MonoBehaviour:
   shopContainer: {fileID: 5229974600624317038}
   noAdsContainer: {fileID: 6569133149619912695}
   containerMoveDuration: 0.5
-  containerMoveEase: 25
   containerMoveOffset: 200
+  containerMoveOpenDelay: 1
+  containerMoveEase: 25
 --- !u!1 &8567686090327533464
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
-using DG.Tweening;
+using LitMotion;
+using LitMotion.Extensions;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,6 +31,8 @@ namespace BeachHero
         [SerializeField] private float minTrailPointsDistance = 0.3f;
         [SerializeField] private float spacing = 0.5f;
         [SerializeField] private float magnetRadius = 5f;
+        [SerializeField] private float spawnAnimationDuration = 1;
+        [SerializeField] private Ease spawnAnimationEase = Ease.OutElastic;
         #endregion
 
         #region Private Variables
@@ -169,7 +172,7 @@ namespace BeachHero
                         Vector3 nextPoint = smoothedPoints[1];
                         Vector3 direction = (nextPoint - player.transform.position).normalized;
                         Quaternion targetRot = Quaternion.LookRotation(direction);
-                        player.transform.DORotateQuaternion(targetRot, 0.2f);
+                        LMotion.Create(player.transform.rotation, targetRot,0.2f).BindToRotation(player.transform);
                     }
                 }
                 // Update the last trail point
@@ -364,6 +367,29 @@ namespace BeachHero
         {
             gameCurrencyCount++;
             UpdateMedalCount();
+        }
+        private void EnsureCollectableList(CollectableType type)
+        {
+            if (!collectableDictionary.ContainsKey(type))
+            {
+                collectableDictionary[type] = new List<Collectable>();
+            }
+        }
+        private Collectable GetCollectableFromPool(CollectableType type)
+        {
+            return type switch
+            {
+                CollectableType.GameCurrency =>
+                    poolManager.GameCurrencyPool.GetObject().GetComponent<Collectable>(),
+
+                CollectableType.Magnet =>
+                    poolManager.MagnetPowerupPool.GetObject().GetComponent<Collectable>(),
+
+                CollectableType.SpeedBoost =>
+                    poolManager.SpeedPowerupPool.GetObject().GetComponent<Collectable>(),
+
+                _ => null
+            };
         }
 
         private void UpdateCollectables()
@@ -626,6 +652,72 @@ namespace BeachHero
         #endregion
 
         #region Spawn
+        public void ResetAllSpawnedObjectsScale()
+        {
+            //Player
+            player.transform.localScale = Vector3.zero;
+
+            //Saved Character
+            foreach (var savedCharacter in savedCharactersList)
+            {
+                savedCharacter.transform.localScale = Vector3.zero;
+            }
+
+            //Obstacles
+            foreach (var obstacleList in obstaclesDictionary.Values)
+            {
+                foreach (var obstacle in obstacleList)
+                {
+                    obstacle.transform.localScale = Vector3.zero;
+                }
+            }
+
+            //Collectables
+            foreach (var collectableList in collectableDictionary.Values)
+            {
+                foreach (var collectable in collectableList)
+                {
+                    collectable.transform.localScale = Vector3.zero;
+                }
+            }
+
+        }
+
+        public void PlaySpawnAnimations()
+        {
+            //Player
+            LMotion.Create(Vector3.zero, Vector3.one, spawnAnimationDuration)
+                .WithEase(spawnAnimationEase).BindToLocalScale(player.transform);
+
+            //Saved Character
+            foreach (var savedCharacter in savedCharactersList)
+            {
+                LMotion.Create(Vector3.zero, Vector3.one, spawnAnimationDuration)
+                 .WithEase(spawnAnimationEase).BindToLocalScale(savedCharacter.transform);
+            }
+
+            //Obstacles
+            foreach (var obstacleList in obstaclesDictionary.Values)
+            {
+                foreach (var obstacle in obstacleList)
+                {
+                    LMotion.Create(Vector3.zero, Vector3.one, spawnAnimationDuration)
+                     .WithEase(spawnAnimationEase).BindToLocalScale(obstacle.transform);
+                }
+            }
+
+            //Collectables
+            foreach (var collectableList in collectableDictionary.Values)
+            {
+                foreach (var collectable in collectableList)
+                {
+                    LMotion.Create(Vector3.zero, Vector3.one, spawnAnimationDuration)
+                     .WithEase(spawnAnimationEase).BindToLocalScale(collectable.transform);
+                }
+            }
+
+        }
+
         private void SpawnTrails()
         {
             playerPathDrawTrail = poolManager.PathTrailPool.GetObject().GetComponent<PathTrail>();
@@ -646,48 +738,18 @@ namespace BeachHero
         {
             foreach (var collectable in collectableDatas)
             {
-                if (!collectableDictionary.ContainsKey(collectable.type))
-                {
-                    collectableDictionary[collectable.type] = new List<Collectable>();
-                }
-                switch (collectable.type)
-                {
-                    case CollectableType.GameCurrency:
-                        SpawnGameCurrency(collectable);
-                        break;
-                    case CollectableType.Magnet:
-                        SpawnMagnet(collectable);
-                        break;
-                    case CollectableType.SpeedBoost:
-                        SpawnSpeed(collectable);
-                        break;
-                    default:
-                        break;
-                }
+                EnsureCollectableList(collectable.type);
+                SpawnCollectable(collectable);
             }
         }
-
-        private void SpawnMagnet(CollectableData collectableData)
+        private void SpawnCollectable(CollectableData data)
         {
-            Collectable magnet = poolManager.MagnetPowerupPool.GetObject().GetComponent<Collectable>();
-            magnet.Init(collectableData);
-            collectableDictionary[collectableData.type].Add(magnet);
-        }
+            Collectable collectable = GetCollectableFromPool(data.type);
+            if (collectable == null) return;
 
-        private void SpawnSpeed(CollectableData collectableData)
-        {
-            Collectable speed = poolManager.SpeedPowerupPool.GetObject().GetComponent<Collectable>();
-            speed.Init(collectableData);
-            collectableDictionary[collectableData.type].Add(speed);
+            collectable.Init(data);
+            collectableDictionary[data.type].Add(collectable);
         }
-
-        private void SpawnGameCurrency(CollectableData collectableData)
-        {
-            Collectable collectable = poolManager.GameCurrencyPool.GetObject().GetComponent<Collectable>();
-            collectable.Init(collectableData);
-            collectableDictionary[collectableData.type].Add(collectable);
-        }
-
         private void SpawnStartPoint(Vector3 pos, Vector3 rot)
         {
             startPointBehaviour = poolManager.StartPointPool.GetObject().GetComponent<StartPointBehaviour>();

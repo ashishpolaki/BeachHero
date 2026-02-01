@@ -6,27 +6,35 @@ namespace BeachHero
 {
     public class GameplayUIScreen : BaseScreen
     {
+        [Header("Buttons")]
         [SerializeField] private UIButton pauseButton;
         [SerializeField] private UIButton retryButton;
         [SerializeField] private UIButton boatCustomisationBtn;
         [SerializeField] private UIButton shopBtn;
         [SerializeField] private UIButton noAdsBtn;
+
+        [Header("Powerup Buttons")]
         [SerializeField] private PowerupUIButton magnetPowerupButton;
         [SerializeField] private PowerupUIButton speedBoostPowerupButton;
 
+        [Header("UI Containers")]
         [SerializeField] private RectTransform powerupsContainer;
         [SerializeField] private RectTransform boatCustomisationContainer;
         [SerializeField] private RectTransform shopContainer;
         [SerializeField] private RectTransform noAdsContainer;
 
+        [Header("Containers Animation Settings")]
         [SerializeField] private float containerMoveDuration = 0.5f;
-        [SerializeField] private Ease containerMoveEase = Ease.OutBack;
         [SerializeField] private float containerMoveOffset = 200;
+        [SerializeField] private float containerMoveOpenDelay = 1f;
+        [SerializeField] private Ease containerMoveEase = Ease.OutBack;
 
         public override void Open(ScreenTabType screenTabType)
         {
             base.Open(screenTabType);
-            ResetContainersPosition();
+            SetContainersInitialPosition();
+            PlayContainersAnimation();
+
             pauseButton.OnButtonReleased += OnPause;
             retryButton.OnButtonReleased += OnRetry;
             boatCustomisationBtn.OnButtonReleased += OnBoatCustomize;
@@ -38,12 +46,25 @@ namespace BeachHero
             GameController.GetInstance.LevelController.OnPlayerTouch += OnPlayerTouch;
         }
 
-        private void ResetContainersPosition()
+        // Set the containers outside the screen initially
+        private void SetContainersInitialPosition()
         {
-            powerupsContainer.anchoredPosition = new Vector2(0, powerupsContainer.anchoredPosition.y);
-            boatCustomisationContainer.anchoredPosition = new Vector2(0, boatCustomisationContainer.anchoredPosition.y);
-            shopContainer.anchoredPosition = new Vector2(0, shopContainer.anchoredPosition.y);
-            noAdsContainer.anchoredPosition = new Vector2(0, noAdsContainer.anchoredPosition.y);
+            powerupsContainer.anchoredPosition = new Vector2(-containerMoveOffset, powerupsContainer.anchoredPosition.y);
+            boatCustomisationContainer.anchoredPosition = new Vector2(containerMoveOffset, boatCustomisationContainer.anchoredPosition.y);
+            shopContainer.anchoredPosition = new Vector2(containerMoveOffset, shopContainer.anchoredPosition.y);
+            noAdsContainer.anchoredPosition = new Vector2(containerMoveOffset, noAdsContainer.anchoredPosition.y);
+        }
+
+        private void PlayContainersAnimation()
+        {
+            LMotion.Create(-containerMoveOffset, 0, containerMoveDuration)
+                .WithEase(containerMoveEase).WithDelay(containerMoveOpenDelay).BindToAnchoredPositionX(powerupsContainer);
+            LMotion.Create(containerMoveOffset, 0, containerMoveDuration)
+                .WithEase(containerMoveEase).WithDelay(containerMoveOpenDelay).BindToAnchoredPositionX(boatCustomisationContainer);
+            LMotion.Create(containerMoveOffset, 0, containerMoveDuration)
+                .WithEase(containerMoveEase).WithDelay(containerMoveOpenDelay).BindToAnchoredPositionX(shopContainer);
+            LMotion.Create(containerMoveOffset, 0, containerMoveDuration)
+                .WithEase(containerMoveEase).WithDelay(containerMoveOpenDelay).BindToAnchoredPositionX(noAdsContainer);
         }
 
         private void OnPlayerTouch()

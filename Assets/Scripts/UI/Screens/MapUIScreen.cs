@@ -35,7 +35,7 @@ namespace BeachHero
             var particle = confettiParticleSystem.main;
             particle.startDelay = confettiDelay;
             CameraController.GetInstance.SetActiveCamera(GameCameraType.Map);
-          //  MapController.GetInstance.UpdatePathLine();
+            //  MapController.GetInstance.UpdatePathLine();
             MapController.GetInstance.SwitchMap(previousMapNumber, currentMapNumber);
 
             mapExitBtn.ButtonRegister(MapExitToHome);
@@ -118,7 +118,9 @@ namespace BeachHero
         {
             await UIController.GetInstance.FadeUI.FadeInASync();
             GameController.GetInstance.Play();
+            GameController.GetInstance.LevelController.ResetAllSpawnedObjectsScale();
             await UIController.GetInstance.FadeUI.FadeOutASync();
+            GameController.GetInstance.LevelController.PlaySpawnAnimations();
         }
 
         private void ScrollRight()
