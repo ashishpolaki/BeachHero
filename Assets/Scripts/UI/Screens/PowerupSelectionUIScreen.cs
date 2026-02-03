@@ -87,7 +87,7 @@ namespace BeachHero
                 GameController.GetInstance.RetryLevel();
             }
             UIController.GetInstance.ScreenEvent(ScreenType.PowerupSelection, UIScreenEvent.Close);
-            GameController.GetInstance.Play();
+          //  GameController.GetInstance.Play();
             await UIController.GetInstance.FadeUI.FadeOutASync();
         }
 
