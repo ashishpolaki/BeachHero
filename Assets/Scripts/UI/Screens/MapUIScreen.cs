@@ -117,8 +117,7 @@ namespace BeachHero
         private async void OnPlayButtonClick()
         {
             await UIController.GetInstance.FadeUI.FadeInASync();
-            GameController.GetInstance.Play();
-            GameController.GetInstance.LevelController.ResetAllSpawnedObjectsScale();
+            GameController.GetInstance.StartGameplay();
             await UIController.GetInstance.FadeUI.FadeOutASync();
             GameController.GetInstance.LevelController.PlaySpawnAnimations();
         }

@@ -11,12 +11,12 @@ namespace BeachHero
         [SerializeField] private Color medalEarned;
         [SerializeField] private Color medalUnEarned;
 
-        private void OnEnable()
+        public void AddListeners()
         {
             GameController.GetInstance.LevelController.OnMedalCountUpdated += OnMedalCountUpdated;
         }
 
-        private void OnDisable()
+        public void RemoveListeners()
         {
             GameController.GetInstance.LevelController.OnMedalCountUpdated -= OnMedalCountUpdated;
             ResetMedals();

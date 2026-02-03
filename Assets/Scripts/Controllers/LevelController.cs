@@ -79,6 +79,8 @@ namespace BeachHero
         #region Actions
         public event Action<int> OnMedalCountUpdated;
         public event Action OnPlayerTouch;
+        public event Action OnDrawPathError;
+        public event Action OnCompleteSpawnAnimation;
         #endregion
 
         #region Unity Methods
@@ -121,7 +123,6 @@ namespace BeachHero
             if (levelPhase == LevelPhase.DrawingPath && !hasDrawnPath)
             {
                 hasDrawnPath = true;
-                isPathDrawingAllowed = false;
                 if (drawnPoints.Count >= 4)
                 {
                     smoothedDrawnPoints = CatmullSplineUtils.GetEvenlySpacedPoints(drawnPoints, spacing);
@@ -133,6 +134,9 @@ namespace BeachHero
                     hasDrawnPath = false;
                     drawnPoints.Clear();
                 }
+                if (isPathDrawingAllowed)
+                    OnDrawPathError?.Invoke();
+                isPathDrawingAllowed = false;
                 AudioController.GetInstance.StopSound(AudioType.PathDraw);
             }
         }
@@ -172,7 +176,7 @@ namespace BeachHero
                         Vector3 nextPoint = smoothedPoints[1];
                         Vector3 direction = (nextPoint - player.transform.position).normalized;
                         Quaternion targetRot = Quaternion.LookRotation(direction);
-                        LMotion.Create(player.transform.rotation, targetRot,0.2f).BindToRotation(player.transform);
+                        LMotion.Create(player.transform.rotation, targetRot, 0.2f).BindToRotation(player.transform);
                     }
                 }
                 // Update the last trail point
@@ -687,7 +691,8 @@ namespace BeachHero
         {
             //Player
             LMotion.Create(Vector3.zero, Vector3.one, spawnAnimationDuration)
-                .WithEase(spawnAnimationEase).BindToLocalScale(player.transform);
+                .WithEase(spawnAnimationEase)
+                .BindToLocalScale(player.transform);
 
             //Saved Character
             foreach (var savedCharacter in savedCharactersList)
@@ -716,6 +721,7 @@ namespace BeachHero
                 }
             }
 
+            OnCompleteSpawnAnimation.Invoke();
         }
 
         private void SpawnTrails()

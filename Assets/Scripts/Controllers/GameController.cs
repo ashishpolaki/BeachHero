@@ -87,13 +87,14 @@ namespace BeachHero
         #endregion
 
         #region Game Flow
-        public void Play()
+        public void StartGameplay()
         {
             SetGameState(GameState.Playing);
             CameraController.GetInstance.SetActiveCamera(GameCameraType.GameView);
             bool isFTUE = TutorialController.GetInstance.IsTutorial(currentLevelIndex + 1);
             ScreenTabType screenTabType = isFTUE ? ScreenTabType.LevelTutorial : ScreenTabType.None;
             levelController.InitializePlayerData(isFTUE);
+            levelController.ResetAllSpawnedObjectsScale();
             UIController.GetInstance.ScreenEvent(ScreenType.Gameplay, UIScreenEvent.Open, screenTabType);
         }
         public void RetryLevel()

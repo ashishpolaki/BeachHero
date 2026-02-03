@@ -6,6 +6,7 @@ namespace BeachHero
 {
     public class GameplayUIScreen : BaseScreen
     {
+        #region Inspector Variables
         [Header("Buttons")]
         [SerializeField] private UIButton pauseButton;
         [SerializeField] private UIButton retryButton;
@@ -17,23 +18,22 @@ namespace BeachHero
         [SerializeField] private PowerupUIButton magnetPowerupButton;
         [SerializeField] private PowerupUIButton speedBoostPowerupButton;
 
-        [Header("UI Containers")]
-        [SerializeField] private RectTransform powerupsContainer;
-        [SerializeField] private RectTransform boatCustomisationContainer;
-        [SerializeField] private RectTransform shopContainer;
-        [SerializeField] private RectTransform noAdsContainer;
+        [Header("UI Panels")]
+        [SerializeField] private RectTransform powerupPanel;          
+        [SerializeField] private RectTransform boatPanel;          
+        [SerializeField] private RectTransform shopPanel;          
+        [SerializeField] private RectTransform noAdsPanel;         
 
-        [Header("Containers Animation Settings")]
-        [SerializeField] private float containerMoveDuration = 0.5f;
-        [SerializeField] private float containerMoveOffset = 200;
-        [SerializeField] private float containerMoveOpenDelay = 1f;
-        [SerializeField] private Ease containerMoveEase = Ease.OutBack;
+         [Header("Panel Animation Settings")]
+        [SerializeField] private float panelSlideDuration = 0.5f;
+        [SerializeField] private float panelSlideOffset = 200f;
+        [SerializeField] private Ease panelSlideEase = Ease.OutBack;
+        #endregion
 
         public override void Open(ScreenTabType screenTabType)
         {
             base.Open(screenTabType);
-            SetContainersInitialPosition();
-            PlayContainersAnimation();
+            SetPanelsToHiddenPosition();
 
             pauseButton.OnButtonReleased += OnPause;
             retryButton.OnButtonReleased += OnRetry;
@@ -43,43 +43,9 @@ namespace BeachHero
             //Powerups
             magnetPowerupButton.Init(PowerupType.Magnet, 3);
             speedBoostPowerupButton.Init(PowerupType.SpeedBoost, 3);
-            GameController.GetInstance.LevelController.OnPlayerTouch += OnPlayerTouch;
-        }
-
-        // Set the containers outside the screen initially
-        private void SetContainersInitialPosition()
-        {
-            powerupsContainer.anchoredPosition = new Vector2(-containerMoveOffset, powerupsContainer.anchoredPosition.y);
-            boatCustomisationContainer.anchoredPosition = new Vector2(containerMoveOffset, boatCustomisationContainer.anchoredPosition.y);
-            shopContainer.anchoredPosition = new Vector2(containerMoveOffset, shopContainer.anchoredPosition.y);
-            noAdsContainer.anchoredPosition = new Vector2(containerMoveOffset, noAdsContainer.anchoredPosition.y);
-        }
-
-        private void PlayContainersAnimation()
-        {
-            LMotion.Create(-containerMoveOffset, 0, containerMoveDuration)
-                .WithEase(containerMoveEase).WithDelay(containerMoveOpenDelay).BindToAnchoredPositionX(powerupsContainer);
-            LMotion.Create(containerMoveOffset, 0, containerMoveDuration)
-                .WithEase(containerMoveEase).WithDelay(containerMoveOpenDelay).BindToAnchoredPositionX(boatCustomisationContainer);
-            LMotion.Create(containerMoveOffset, 0, containerMoveDuration)
-                .WithEase(containerMoveEase).WithDelay(containerMoveOpenDelay).BindToAnchoredPositionX(shopContainer);
-            LMotion.Create(containerMoveOffset, 0, containerMoveDuration)
-                .WithEase(containerMoveEase).WithDelay(containerMoveOpenDelay).BindToAnchoredPositionX(noAdsContainer);
-        }
-
-        private void OnPlayerTouch()
-        {
-            LMotion.Create(0, -containerMoveOffset, containerMoveDuration)
-                .WithEase(containerMoveEase).BindToAnchoredPositionX(powerupsContainer);
-
-            LMotion.Create(0, containerMoveOffset, containerMoveDuration)
-                .WithEase(containerMoveEase).BindToAnchoredPositionX(boatCustomisationContainer);
-
-            LMotion.Create(0, containerMoveOffset, containerMoveDuration)
-                .WithEase(containerMoveEase).BindToAnchoredPositionX(shopContainer);
-
-            LMotion.Create(0, containerMoveOffset, containerMoveDuration)
-                .WithEase(containerMoveEase).BindToAnchoredPositionX(noAdsContainer);
+            GameController.GetInstance.LevelController.OnPlayerTouch += HandleHidePanels;
+            GameController.GetInstance.LevelController.OnDrawPathError += HandleShowPanels;
+            GameController.GetInstance.LevelController.OnCompleteSpawnAnimation += HandleShowPanels;
         }
 
         public override void Close()
@@ -93,9 +59,54 @@ namespace BeachHero
             //Powerups
             magnetPowerupButton.DeInitialize();
             speedBoostPowerupButton.DeInitialize();
-            GameController.GetInstance.LevelController.OnPlayerTouch -= OnPlayerTouch;
+            GameController.GetInstance.LevelController.OnPlayerTouch -= HandleHidePanels;
+            GameController.GetInstance.LevelController.OnDrawPathError -= HandleShowPanels;
+            GameController.GetInstance.LevelController.OnCompleteSpawnAnimation -= HandleShowPanels;
         }
 
+        #region Containers Animation
+        private void SetPanelsToHiddenPosition()
+        {
+            powerupPanel.anchoredPosition = new Vector2(-panelSlideOffset, powerupPanel.anchoredPosition.y);
+            boatPanel.anchoredPosition = new Vector2(panelSlideOffset, boatPanel.anchoredPosition.y);
+            shopPanel.anchoredPosition = new Vector2(panelSlideOffset, shopPanel.anchoredPosition.y);
+            noAdsPanel.anchoredPosition = new Vector2(panelSlideOffset, noAdsPanel.anchoredPosition.y);
+        }
+        private void AnimatePanels(bool show)
+        {
+            float leftPanelFromX = show ? -panelSlideOffset : 0f;
+            float leftPanelToX = show ? 0f : -panelSlideOffset;
+
+            float rightPanelFromX = show ? panelSlideOffset : 0f;
+            float rightPanelToX = show ? 0f : panelSlideOffset;
+
+            LMotion.Create(leftPanelFromX, leftPanelToX, panelSlideDuration)
+                .WithEase(panelSlideEase)
+                .BindToAnchoredPositionX(powerupPanel);
+
+            LMotion.Create(rightPanelFromX, rightPanelToX, panelSlideDuration)
+                .WithEase(panelSlideEase)
+                .BindToAnchoredPositionX(boatPanel);
+
+            LMotion.Create(rightPanelFromX, rightPanelToX, panelSlideDuration)
+                .WithEase(panelSlideEase)
+                .BindToAnchoredPositionX(shopPanel);
+
+            LMotion.Create(rightPanelFromX, rightPanelToX, panelSlideDuration)
+                .WithEase(panelSlideEase)
+                .BindToAnchoredPositionX(noAdsPanel);
+        }
+
+        private void HandleShowPanels()
+        {
+            AnimatePanels(true);
+        }
+        private void HandleHidePanels()
+        {
+            AnimatePanels(false);
+        }
+        #endregion
+       
         private void OnBoatCustomize()
         {
             GameController.GetInstance.SetGameState(GameState.Paused);
@@ -119,13 +130,12 @@ namespace BeachHero
             GameController.GetInstance.SetGameState(GameState.Paused);
             OpenTab(ScreenTabType.GamePause);
         }
-        private async void OnRetry()
+        private void OnRetry()
         {
             GameController.GetInstance.SetGameState(GameState.Paused);
-            await UIController.GetInstance.FadeUI.FadeInASync();
             GameController.GetInstance.RetryLevel();
-            GameController.GetInstance.Play();
-            await UIController.GetInstance.FadeUI.FadeOutASync();
+            GameController.GetInstance.StartGameplay();
+            GameController.GetInstance.LevelController.PlaySpawnAnimations();
         }
     }
 }
