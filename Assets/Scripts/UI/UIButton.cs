@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 using LitMotion;
 using LitMotion.Extensions;
 
@@ -8,24 +7,21 @@ namespace BeachHero
 {
     public class UIButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
     {
+        [Header("Audio")]
         [SerializeField] private AudioType buttonAudioType;
+
+        [Header("Interaction")]
         [SerializeField] private bool enableHover = false;
 
-        [Header("Scale Settings")]
-        [Tooltip("Scale when button is pressed")]
-        public float pressedScale = 0.9f;
-
-        [Tooltip("Scale when hovered (optional, leave same as 1 for mobile)")]
-        public float hoverScale = 1.05f;
-
-        [Tooltip("Time taken for the tween animation")]
-        public float tweenDuration = 0.15f;
-
+        [Header("Scale Animation")]
+        [SerializeField] private Vector3 _originalScale = new Vector3(1, 1, 1);
+        [SerializeField] private float pressedScale = 0.9f;
+        [SerializeField] private float hoverScale = 1.05f;
+        [SerializeField] private float tweenDuration = 0.15f;
         [SerializeField] private Ease pressEase = Ease.OutBack;
         [SerializeField] private Ease releaseEase = Ease.OutBack;
 
         private MotionHandle _scaleHandle;
-        public Vector3 _originalScale = new Vector3(1, 1, 1);
         [Tooltip("Event triggered when button animation completes")]
         public event System.Action OnButtonReleased;
 
@@ -59,15 +55,37 @@ namespace BeachHero
             PlayPressAnimation();
         }
 
+        private bool IsPointerInside(PointerEventData eventData)
+        {
+            RectTransform rect = transform as RectTransform;
+            if (rect == null)
+                return false;
+
+            Camera cam = eventData.pressEventCamera;
+            return RectTransformUtility.RectangleContainsScreenPoint(
+                rect,
+                eventData.position,
+                cam
+            );
+        }
+
         public void OnPointerUp(PointerEventData eventData)
         {
-            PlayReleaseAnimation();
+            if (IsPointerInside(eventData))
+            {
+                PlayReleaseAnimation();   
+            }
+            else
+            {
+                CancelPressAnimation();   
+            }
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
             if (!enableHover) return;
         }
+
         public void OnPointerExit(PointerEventData eventData)
         {
             if (!enableHover) return;
@@ -75,25 +93,31 @@ namespace BeachHero
         #endregion
 
         #region Animations
-        public virtual void PlayPressAnimation()
+        private void AnimateScale(Vector3 target, Ease ease, System.Action onComplete = null)
         {
             _scaleHandle.TryCancel();
-            _scaleHandle = LMotion.Create(transform.localScale, Vector3.one * pressedScale, tweenDuration)
-                .WithEase(pressEase)
+
+            _scaleHandle = LMotion
+                .Create(transform.localScale, target, tweenDuration)
+                .WithEase(ease)
+                .WithOnComplete(onComplete)
                 .BindToLocalScale(transform);
         }
-
+        private void CancelPressAnimation()
+        {
+            AnimateScale(_originalScale, releaseEase);
+        }
+        public virtual void PlayPressAnimation()
+        {
+            AnimateScale(Vector3.one * pressedScale, pressEase);
+        }
         public virtual void PlayReleaseAnimation()
         {
-            _scaleHandle.TryCancel();
             PlayAudio();
-            _scaleHandle = LMotion.Create(transform.localScale, _originalScale, tweenDuration)
-                .WithEase(releaseEase)
-                .WithOnComplete(() =>
-                {
-                    OnButtonReleased?.Invoke();
-                })
-                .BindToLocalScale(transform);
+            AnimateScale(_originalScale, releaseEase, () =>
+            {
+                OnButtonReleased?.Invoke();
+            });
         }
         #endregion
     }
