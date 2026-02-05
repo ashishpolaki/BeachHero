@@ -1,7 +1,6 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace BeachHero
 {
@@ -11,6 +10,7 @@ namespace BeachHero
         [SerializeField] private UIButton playButton;
         [SerializeField] private UIButton storeButton;
         [SerializeField] private UIButton settingsButton;
+        [SerializeField] private UIButton leaderBoardButton;
         [SerializeField] private TextMeshProUGUI levelNumberText;
         [SerializeField] private TweenSequencer panelOpenAnimation;
         [SerializeField] private Sprite playButtonSprite;
@@ -73,6 +73,7 @@ namespace BeachHero
             playButton.OnButtonReleased += OnPlayButtonClicked;
             storeButton.OnButtonReleased += (OnStoreButtonClicked);
             settingsButton.OnButtonReleased += (OnSettingsButtonClick);
+            leaderBoardButton.OnButtonReleased += OpenLeaderboards;
         }
 
         private void RemoveListeners()
@@ -81,7 +82,14 @@ namespace BeachHero
             playButton.OnButtonReleased -= OnPlayButtonClicked;
             storeButton.OnButtonReleased -= (OnStoreButtonClicked);
             settingsButton.OnButtonReleased -= (OnSettingsButtonClick);
+            leaderBoardButton.OnButtonReleased -= OpenLeaderboards;
         }
+
+        private void OpenLeaderboards()
+        {
+            GameController.GetInstance.LeaderboardController.ShowLeaderboardUI();
+        }
+
         private void OnSettingsButtonClick()
         {
             UIController.GetInstance.ScreenEvent(ScreenType.Settings, UIScreenEvent.Push);

@@ -33,6 +33,7 @@ namespace BeachHero
         [SerializeField] private PowerupController powerupController;
         [SerializeField] private StoreController storeController;
         [SerializeField] private SkinController skinController;
+        [SerializeField] private LeaderboardController leaderboardController;
         [SerializeField] private LevelFailDelay[] levelFailDelays;
 
         [Tooltip("The Index Starts from 0")]
@@ -48,6 +49,7 @@ namespace BeachHero
         public PowerupController PowerupController => powerupController;
         public StoreController StoreController => storeController;
         public SkinController SkinController => skinController;
+        public LeaderboardController LeaderboardController => leaderboardController;
         #endregion
 
         #region Unity Methods

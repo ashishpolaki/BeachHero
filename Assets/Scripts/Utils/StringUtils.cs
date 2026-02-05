@@ -9,25 +9,27 @@ namespace BeachHero
         public const string TAP_AND_DRAG_TUTORIAL = "TAP & DRAG THE BOAT";
         public const string RESCUE_ALL_TUTORIAL = "RESCUE THEM ALL !";
 
-        //Whirlpool (ShaderGraph Properties)
-        public const string WHIRLPOOL_DISTANCE = "_WP_Distance";
-        public const string WHIRLPOOL_POSITION = "_WP_Position";
-        public const string WHIRLPOOL_ENABLE = "_WP_Enable";
-
         //Trail Renderer
         public const string TRAIL_SPEED = "_Speed";
 
         //ToonShader (ShaderGraph Properties)
         public const string TINT_COLOR = "_Tint";
+
         //Tags
         public const string PLAYER_TAG = "Player";
         public const string OBSTACLE_TAG = "Obstacle";
         public const string CHARACTER_TAG = "Character";
         public const string GROUND_TAG = "Ground";
 
+        //Sorting Layers
+        public const string SPRITES_ABOVE_UI_LAYER = "SpritesAboveUI";
+
         //Audio
         public const string MUSIC_ON = "Music";
         public const string SOUND_ON = "Sound";
+
+        //Medals
+        public const string TOTAL_MEDALS = "TotalMedals";
 
         //Haptics
         public const string HAPTICS_ON = "Haptics";
@@ -72,7 +74,6 @@ namespace BeachHero
         public const string NO_ADS_PURCHASED = "NoAdsPurchased";
 
         //Scenes
-        // public const string MAP_SCENE = "Map";
         public const string GAME_SCENE = "Game";
         public const string INIT_SCENE = "Init";
 
@@ -84,9 +85,6 @@ namespace BeachHero
         public const string TUTORIAL_WELCOME_MESSAGE = "WELCOME, BRAVE HERO!\nBEACH IS IN TROUBLE,\nITS TIME TO DIVE IN\nAND SAVE THE DAY!";
         public const string MAGNET_POWERUP_TUTORIAL_MESSAGE = "ACTIVATE THE MAGNET\n AND ATTRACT\n ALL THE STARFISH!";
         public const string SPEEDBOOST_POWERUP_TUTORIAL_MESSAGE = "HIT THE BOOST\nAND SPEED UP\nTHE BOAT!";
-
-        //Sorting Layers
-        public const string SPRITES_ABOVE_UI_LAYER = "SpritesAboveUI";
     }
 
     public class IntUtils
@@ -117,7 +115,7 @@ namespace BeachHero
         public const int DEFAULT_BOAT_COLOR_INDEX = 0;
 
         //Sorting Layers
-        public const int TUTORIAL_CANVAS_LAYER = 2; 
+        public const int TUTORIAL_CANVAS_LAYER = 2;
     }
 
 }

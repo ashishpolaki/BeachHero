@@ -6,6 +6,11 @@ namespace BeachHero
 {
     public class Initializer : MonoBehaviour
     {
+        private void Awake()
+        {
+            GameController.GetInstance.LeaderboardController.InitializeGPGS();
+        }
+
         private void Start()
         {
             AsyncLazyInit();
@@ -63,7 +68,7 @@ namespace BeachHero
             HapticsManager.GetInstance.Init();
             DOTween.Init();
             ES3.Init();
-            Febucci.UI.Core.TAnimBuilder.InitializeGlobalDatabase(); 
+            Febucci.UI.Core.TAnimBuilder.InitializeGlobalDatabase();
 
             // wait a little to avoid freezing all at once
             await Task.Delay(100);
