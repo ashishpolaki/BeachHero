@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Sych.ShareAssets.Runtime;
 using TMPro;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ namespace BeachHero
         [SerializeField] private UIButton storeButton;
         [SerializeField] private UIButton settingsButton;
         [SerializeField] private UIButton leaderBoardButton;
+        [SerializeField] private UIButton shareGameButton;
         [SerializeField] private TextMeshProUGUI levelNumberText;
         [SerializeField] private TweenSequencer panelOpenAnimation;
         [SerializeField] private Sprite playButtonSprite;
@@ -74,6 +76,22 @@ namespace BeachHero
             storeButton.OnButtonReleased += (OnStoreButtonClicked);
             settingsButton.OnButtonReleased += (OnSettingsButtonClick);
             leaderBoardButton.OnButtonReleased += OpenLeaderboards;
+            shareGameButton.OnButtonReleased += ShareClicked;
+        }
+
+        private void ShareClicked()
+        {
+            if (!Share.IsPlatformSupported)
+            {
+                DebugUtils.LogError("Share: platform not supported");
+                return;
+            }
+
+            var item = "https://play.google.com/store/apps/details?id=com.hunterKirito.BeachHero";
+            Share.Item(item, success =>
+            {
+                DebugUtils.Log($"Share: {(success ? "success" : "failed")}");
+            });
         }
 
         private void RemoveListeners()
@@ -83,6 +101,7 @@ namespace BeachHero
             storeButton.OnButtonReleased -= (OnStoreButtonClicked);
             settingsButton.OnButtonReleased -= (OnSettingsButtonClick);
             leaderBoardButton.OnButtonReleased -= OpenLeaderboards;
+            shareGameButton.OnButtonReleased -= ShareClicked;
         }
 
         private void OpenLeaderboards()
