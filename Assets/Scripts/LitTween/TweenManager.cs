@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using LitMotion;
 using LitMotion.Extensions;
 
-namespace BeachHero.Tween
+namespace BeachHero
 {
     /// <summary>
     /// Static manager class for managing LitMotion tweens with automatic tracking and grouping capabilities.
