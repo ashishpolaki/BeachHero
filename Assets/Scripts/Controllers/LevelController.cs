@@ -176,7 +176,7 @@ namespace BeachHero
                         Vector3 nextPoint = smoothedPoints[1];
                         Vector3 direction = (nextPoint - player.transform.position).normalized;
                         Quaternion targetRot = Quaternion.LookRotation(direction);
-                        LMotion.Create(player.transform.rotation, targetRot, 0.2f).BindToRotation(player.transform);
+                        TweenManager.Rotate(player.transform, targetRot, 0.2f);
                     }
                 }
                 // Update the last trail point
@@ -206,7 +206,7 @@ namespace BeachHero
         {
             player.StartMovement(smoothedDrawnPoints.ToArray());
             playerPathDrawTrail.SetTrailSpeed(player.MovementSpeed / 2f);
-            startPointBehaviour.Stop();
+            startPointBehaviour.StopRippleAnimation();
             levelPhase = LevelPhase.Simulating;
             if (playerMode == PlayerMode.FTUE)
             {
@@ -690,15 +690,12 @@ namespace BeachHero
         public void PlaySpawnAnimations()
         {
             //Player
-            LMotion.Create(Vector3.zero, Vector3.one, spawnAnimationDuration)
-                .WithEase(spawnAnimationEase)
-                .BindToLocalScale(player.transform);
+            TweenManager.Scale(Vector3.zero, Vector3.one, player.transform, spawnAnimationDuration, spawnAnimationEase);
 
             //Saved Character
             foreach (var savedCharacter in savedCharactersList)
             {
-                LMotion.Create(Vector3.zero, Vector3.one, spawnAnimationDuration)
-                 .WithEase(spawnAnimationEase).BindToLocalScale(savedCharacter.transform);
+                TweenManager.Scale(Vector3.zero, Vector3.one, savedCharacter.transform, spawnAnimationDuration, spawnAnimationEase);
             }
 
             //Obstacles
@@ -706,8 +703,7 @@ namespace BeachHero
             {
                 foreach (var obstacle in obstacleList)
                 {
-                    LMotion.Create(Vector3.zero, Vector3.one, spawnAnimationDuration)
-                     .WithEase(spawnAnimationEase).BindToLocalScale(obstacle.transform);
+                    TweenManager.Scale(Vector3.zero, Vector3.one, obstacle.transform, spawnAnimationDuration, spawnAnimationEase);
                 }
             }
 
@@ -716,8 +712,7 @@ namespace BeachHero
             {
                 foreach (var collectable in collectableList)
                 {
-                    LMotion.Create(Vector3.zero, Vector3.one, spawnAnimationDuration)
-                     .WithEase(spawnAnimationEase).BindToLocalScale(collectable.transform);
+                    TweenManager.Scale(Vector3.zero, Vector3.one, collectable.transform, spawnAnimationDuration, spawnAnimationEase);
                 }
             }
 

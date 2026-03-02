@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using LitMotion;
-using LitMotion.Extensions;
 
 namespace BeachHero
 {
@@ -21,7 +20,7 @@ namespace BeachHero
         [SerializeField] private Ease pressEase = Ease.OutBack;
         [SerializeField] private Ease releaseEase = Ease.OutBack;
 
-        private MotionHandle _scaleHandle;
+        private TweenHandle scaleHandle;
         [Tooltip("Event triggered when button animation completes")]
         public event System.Action OnButtonReleased;
 
@@ -32,7 +31,7 @@ namespace BeachHero
         }
         private void OnDestroy()
         {
-            _scaleHandle.TryCancel();
+            scaleHandle.Cancel();
         }
         #endregion
 
@@ -73,11 +72,11 @@ namespace BeachHero
         {
             if (IsPointerInside(eventData))
             {
-                PlayReleaseAnimation();   
+                PlayReleaseAnimation();
             }
             else
             {
-                CancelPressAnimation();   
+                CancelPressAnimation();
             }
         }
 
@@ -95,13 +94,8 @@ namespace BeachHero
         #region Animations
         private void AnimateScale(Vector3 target, Ease ease, System.Action onComplete = null)
         {
-            _scaleHandle.TryCancel();
-
-            _scaleHandle = LMotion
-                .Create(transform.localScale, target, tweenDuration)
-                .WithEase(ease)
-                .WithOnComplete(onComplete)
-                .BindToLocalScale(transform);
+            scaleHandle.Cancel();
+            scaleHandle = TweenManager.Scale(transform.localScale, target, transform, tweenDuration, ease, onComplete);
         }
         private void CancelPressAnimation()
         {

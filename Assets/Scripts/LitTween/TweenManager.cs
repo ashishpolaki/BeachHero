@@ -1,6 +1,5 @@
 // TweenManager.cs - Complete Static Manager for LitMotion
 using UnityEngine;
-using System.Collections.Generic;
 using LitMotion;
 using LitMotion.Extensions;
 
@@ -47,14 +46,19 @@ namespace BeachHero
             return new TweenHandle(handle);
         }
 
+        #endregion
+
+        #region Scale
+
         public static TweenHandle Scale(
-      Transform target,
+      Vector3 from,
       Vector3 to,
+      Transform target,
       float duration,
       Ease ease = Ease.Linear,
       System.Action onComplete = null)
         {
-            var motion = LMotion.Create(target.localScale, to, duration)
+            var motion = LMotion.Create(from, to, duration)
                                 .WithEase(ease);
 
             if (onComplete != null)
@@ -63,6 +67,10 @@ namespace BeachHero
             var handle = motion.BindToLocalScale(target);
             return new TweenHandle(handle);
         }
+
+        #endregion
+
+        #region Rotation
 
         public static TweenHandle Rotate(
      Transform target,
@@ -101,20 +109,57 @@ namespace BeachHero
             return new TweenHandle(handle);
         }
         #endregion
+
+        #region Rect
+        public static TweenHandle AnchoredPositionX(
+            RectTransform target,
+            float from,
+            float to,
+            float duration,
+            Ease ease = Ease.Linear,
+            System.Action onComplete = null)
+        {
+            var motion = LMotion.Create(target.anchoredPosition.x, to, duration)
+                                .WithEase(ease);
+            if (onComplete != null)
+                motion = motion.WithOnComplete(onComplete);
+            var handle = motion.Bind(x => target.anchoredPosition = new Vector2(x, target.anchoredPosition.y));
+            return new TweenHandle(handle);
+        }
+        #endregion
+
+        public static TweenHandle Float(
+            float from,
+            float to,
+            float duration,
+            System.Action<float> setter,
+            Ease ease = Ease.Linear,
+            System.Action onComplete = null)
+        {
+            var motion = LMotion.Create(from, to, duration);
+
+            if (ease != Ease.Linear)
+                motion = motion.WithEase(ease);
+
+            if (onComplete != null)
+                motion = motion.WithOnComplete(onComplete);
+
+            var handle = motion.Bind(setter);
+
+            return new TweenHandle(handle);
+        }
     }
-
-
 
     public struct TweenHandle
     {
         private MotionHandle _handle;
 
+        public bool IsActive => _handle.IsActive();
+
         public TweenHandle(MotionHandle handle)
         {
             _handle = handle;
         }
-
-        public bool IsActive => _handle.IsActive();
 
         public void Cancel()
         {

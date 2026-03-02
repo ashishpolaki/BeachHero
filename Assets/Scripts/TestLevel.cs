@@ -1,5 +1,4 @@
 #if UNITY_EDITOR
-using DG.Tweening;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -21,7 +20,6 @@ namespace BeachHero
             CameraController.GetInstance.Init();
             AdController.GetInstance.Init();
             HapticsManager.GetInstance.Init();
-            DOTween.Init();
             Febucci.UI.Core.TAnimBuilder.InitializeGlobalDatabase();
 
             // wait a little to avoid freezing all at once

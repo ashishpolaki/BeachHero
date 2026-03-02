@@ -19,12 +19,12 @@ namespace BeachHero
         [SerializeField] private PowerupUIButton speedBoostPowerupButton;
 
         [Header("UI Panels")]
-        [SerializeField] private RectTransform powerupPanel;          
-        [SerializeField] private RectTransform boatPanel;          
-        [SerializeField] private RectTransform shopPanel;          
-        [SerializeField] private RectTransform noAdsPanel;         
+        [SerializeField] private RectTransform powerupPanel;
+        [SerializeField] private RectTransform boatPanel;
+        [SerializeField] private RectTransform shopPanel;
+        [SerializeField] private RectTransform noAdsPanel;
 
-         [Header("Panel Animation Settings")]
+        [Header("Panel Animation Settings")]
         [SerializeField] private float panelSlideDuration = 0.5f;
         [SerializeField] private float panelSlideOffset = 200f;
         [SerializeField] private Ease panelSlideEase = Ease.OutBack;
@@ -80,21 +80,10 @@ namespace BeachHero
             float rightPanelFromX = show ? panelSlideOffset : 0f;
             float rightPanelToX = show ? 0f : panelSlideOffset;
 
-            LMotion.Create(leftPanelFromX, leftPanelToX, panelSlideDuration)
-                .WithEase(panelSlideEase)
-                .BindToAnchoredPositionX(powerupPanel);
-
-            LMotion.Create(rightPanelFromX, rightPanelToX, panelSlideDuration)
-                .WithEase(panelSlideEase)
-                .BindToAnchoredPositionX(boatPanel);
-
-            LMotion.Create(rightPanelFromX, rightPanelToX, panelSlideDuration)
-                .WithEase(panelSlideEase)
-                .BindToAnchoredPositionX(shopPanel);
-
-            LMotion.Create(rightPanelFromX, rightPanelToX, panelSlideDuration)
-                .WithEase(panelSlideEase)
-                .BindToAnchoredPositionX(noAdsPanel);
+            TweenManager.AnchoredPositionX(powerupPanel, leftPanelFromX, leftPanelToX, panelSlideDuration, panelSlideEase);
+            TweenManager.AnchoredPositionX(boatPanel, rightPanelFromX, rightPanelToX, panelSlideDuration, panelSlideEase);
+            TweenManager.AnchoredPositionX(shopPanel, rightPanelFromX, rightPanelToX, panelSlideDuration, panelSlideEase);
+            TweenManager.AnchoredPositionX(noAdsPanel, rightPanelFromX, rightPanelToX, panelSlideDuration, panelSlideEase);
         }
 
         private void HandleShowPanels()
@@ -106,7 +95,7 @@ namespace BeachHero
             AnimatePanels(false);
         }
         #endregion
-       
+
         private void OnBoatCustomize()
         {
             GameController.GetInstance.SetGameState(GameState.Paused);

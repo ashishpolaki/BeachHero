@@ -1,8 +1,8 @@
 using UnityEngine;
-using System.Collections.Generic;
-using DG.Tweening;
 using System;
+using LitMotion;
 #if UNITY_EDITOR
+using System.Collections.Generic;
 using UnityEditor;
 #endif
 
@@ -47,7 +47,7 @@ namespace BeachHero
         #endregion
 
         #region Private Variables
-        private Tween boatTween;
+        private TweenHandle boatTweenHandle;
         private int mapNumber = 0;
         private bool isNewMapUnlocked = false;
         #endregion
@@ -203,9 +203,9 @@ namespace BeachHero
                 Vector3 p3 = bp1.anchorPoint;
 
                 float time = 0;
-                boatTween.Kill();
-                boatTween = DOTween.To(
-                    () => time, x =>
+                boatTweenHandle.Cancel();
+                boatTweenHandle = TweenManager.Float(time, 1f, boatDuration,
+                    x =>
                     {
                         time = x;
                         Vector3 pos = BezierCurveUtils.GetPoint(p0, p1, p2, p3, time);
@@ -214,11 +214,7 @@ namespace BeachHero
                         mapDatas[mapNumber - 1].CalculateOffsetDirectionFromCross(boatTransform.up, out Vector3 boatOffsetDirection);
                         boatTransform.position = pos + boatOffsetDirection * boatOffsetDistance;
                     },
-                    1,
-                    boatDuration).SetEase(boatEase).OnComplete(() =>
-                    {
-                        OnShowPowerupSelection?.Invoke();
-                    });
+                    boatEase, () => OnShowPowerupSelection?.Invoke());
             }
         }
         #endregion
@@ -227,9 +223,11 @@ namespace BeachHero
         public void UpdatePathLine()
         {
             var pathLine = mapDatas[mapNumber - 1].pathLine;
-            DOTween.To(() => pathLine.startWidth, (x) => pathLine.startWidth = x, ZoomOutThick, ZoomDuration);
-            DOTween.To(() => pathLine.endWidth, (x) => pathLine.endWidth = x, ZoomOutThick, ZoomDuration);
-            DOTween.To(() => pathLine.textureScale, (x) => pathLine.textureScale = x, DefaultTextureScale, ZoomDuration);
+            TweenManager.Float(pathLine.startWidth, ZoomOutThick, ZoomDuration, value => pathLine.startWidth = value);
+            TweenManager.Float(pathLine.endWidth, ZoomOutThick, ZoomDuration, value => pathLine.endWidth = value);
+            // DOTween.To(() => pathLine.startWidth, (x) => pathLine.startWidth = x, ZoomOutThick, ZoomDuration);
+            //  DOTween.To(() => pathLine.endWidth, (x) => pathLine.endWidth = x, ZoomOutThick, ZoomDuration);
+            // DOTween.To(() => pathLine.textureScale, (x) => pathLine.textureScale = x, DefaultTextureScale, ZoomDuration);
         }
 
         public string GetMapName(int mapNumber)
@@ -266,40 +264,14 @@ namespace BeachHero
             int mapMultiplier = currentMap > previousMap ? -1 : 1;
             if (isPlayAnim)
             {
-                //Previous Map Animation Out
+                //Previous Map 
                 if (previousMap > 0)
                 {
-                    var previousMapData = mapDatas[previousMap - 1];
-                    previousMapData.mapObject.transform.DOScale(mapSwitchInScale, mapSwitchScaleDuration)
-                        .SetEase(mapSwitchScaleEase, mapSwitchScaleOvershoot)
-                        .OnComplete(() =>
-                        {
-                            previousMapData.mapObject.transform.DOMoveX(
-                                previousMapData.mapObject.transform.position.x + (mapMultiplier * 50), mapSwitchMoveDuration)
-                            .SetEase(mapSwitchMoveEase);
-                        });
+                    mapDatas[previousMap - 1].mapObject.SetActive(false);
                 }
-
                 var currentMapData = mapDatas[currentMap - 1];
-                currentMapData.mapObject.transform.DOScale(mapSwitchInScale, mapSwitchScaleDuration)
-                     .SetEase(mapSwitchScaleEase, mapSwitchScaleOvershoot)
-                        .OnComplete(() =>
-                        {
-                            currentMapData.mapObject.SetActive(true);
-                            currentMapData.LevelSetup(levelDatabase);
-                            currentMapData.mapObject.transform.position = new Vector3(
-                                                                      -mapMultiplier * 50,
-                                currentMapData.mapObject.transform.position.y,
-                                currentMapData.mapObject.transform.position.z);
-
-                            currentMapData.mapObject.transform.DOMoveX(
-                                currentMapData.mapObject.transform.position.x + (mapMultiplier * 50), mapSwitchMoveDuration)
-                            .SetEase(mapSwitchMoveEase).OnComplete(() =>
-                            {
-                                currentMapData.mapObject.transform.DOScale(1f, mapSwitchScaleDuration)
-                                .SetEase(mapSwitchScaleEase, mapSwitchScaleOvershoot);
-                            });
-                        });
+                currentMapData.mapObject.SetActive(true);
+                currentMapData.LevelSetup(levelDatabase);
             }
             else
             {

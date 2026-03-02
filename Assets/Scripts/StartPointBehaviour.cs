@@ -1,5 +1,5 @@
-using DG.Tweening;
 using UnityEngine;
+using LitMotion;
 
 namespace BeachHero
 {
@@ -12,29 +12,39 @@ namespace BeachHero
         [SerializeField] private float fadeValue = 0.5f;
         [SerializeField] private Ease easeType = Ease.OutCubic;
 
+        private TweenHandle scaleHandle;
+        private TweenHandle fadeHandle;
+
         public void Init()
         {
             AnimateRipple();
         }
 
-        public void Stop()
+        public void StopRippleAnimation()
         {
-            rippleRenderer.DOKill(); // Stop any ongoing animations
+            fadeHandle.Cancel();
+            scaleHandle.Cancel();
             rippleRenderer.color = new Color(1, 1, 1, 0); // Reset to transparent
             rippleRenderer.transform.localScale = Vector3.one * minScale; // Reset scale
         }
 
-        void AnimateRipple()
+        private void AnimateRipple()
         {
-            rippleRenderer.DOKill(); // Stop any ongoing animations
+            StopRippleAnimation();
 
             rippleRenderer.color = new Color(1, 1, 1, 1);
-            rippleRenderer.transform.localScale = Vector3.one * minScale;
 
-            rippleRenderer.transform.DOScale(maxScale, duration).SetEase(easeType);
-            rippleRenderer.DOFade(fadeValue, duration).OnComplete(() =>
+            scaleHandle = TweenManager.Scale(rippleRenderer.transform.localScale, maxScale * Vector3.one,
+                rippleRenderer.transform, duration, easeType, () =>
+                {
+                    AnimateRipple(); // Loop
+                });
+
+            fadeHandle = TweenManager.Float(1f, fadeValue, duration, (val) =>
             {
-                AnimateRipple(); // Loop
+                Color c = rippleRenderer.color;
+                c.a = val;
+                rippleRenderer.color = c;
             });
         }
     }

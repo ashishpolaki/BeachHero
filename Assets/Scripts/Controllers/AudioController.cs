@@ -1,4 +1,3 @@
-using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -99,8 +98,9 @@ namespace BeachHero
         private void FadeMusicVolume()
         {
             float volume = SaveSystem.LoadFloat(StringUtils.GAME_MUSIC_VOLUME, audioSettings.GetAudioVolume(AudioType.GameMusic));
-            gameMusicSource.volume = volume * gameMusicVolumeMultiplier;
-            gameMusicSource.DOFade(volume, fadeMusicDuration);
+            //  gameMusicSource.DOFade(volume, fadeMusicDuration);
+            // TweenManager.FadeAudio(gameMusicSource, volume, fadeMusicDuration);
+            TweenManager.Float(gameMusicSource.volume, volume, fadeMusicDuration, (x) => gameMusicSource.volume = x);
         }
         #endregion
 
