@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 
 namespace BeachHero
 {
@@ -30,7 +29,7 @@ namespace BeachHero
             boatCustomisationUIScreen = _boatCustomisationUIScreen;
             isSelected = _isSelected;
             selectButton.interactable = !_isSelected;
-            backgroundImage.DOFade(isSelected ? 1 : unSelectedFadeAlpha,0);
+           // backgroundImage.DOFade(isSelected ? 1 : unSelectedFadeAlpha,0);
         }
         private void OnSelectButtonClicked()
         {
@@ -39,13 +38,13 @@ namespace BeachHero
         public void Select()
         {
             isSelected = true;
-            backgroundImage.DOFade(1 , 0);
+          //  backgroundImage.DOFade(1 , 0);
             selectButton.interactable = false;
         }
         public void UnSelect()
         {
             isSelected = false;
-            backgroundImage.DOFade(unSelectedFadeAlpha, 0);
+         //   backgroundImage.DOFade(unSelectedFadeAlpha, 0);
             selectButton.interactable = true;
         }
     }

@@ -1,7 +1,7 @@
 using TransitionsPlus;
 using UnityEngine;
 using System.Threading.Tasks;
-using DG.Tweening;
+using LitMotion;
 
 namespace BeachHero
 {
@@ -11,10 +11,10 @@ namespace BeachHero
         [SerializeField] private TransitionAnimator fadeAnimator;
         [SerializeField] private float fadeInDuration = 0.5f;
         [SerializeField] private float fadeOutDuration = 0.5f;
-        [SerializeField] private Ease fadeInEase = Ease.InOutSine;
-        [SerializeField] private Ease fadeOutEase = Ease.InOutSine;
+        [SerializeField] private Ease fadeInEase = Ease.InQuad;
+        [SerializeField] private Ease fadeOutEase = Ease.InBack;
 
-        private Tween fadeTween;
+        private TweenHandle fadeTween;
 
         #region Public Methods
         public void FadeIn() => StartFade(1f, fadeInDuration);
@@ -26,18 +26,14 @@ namespace BeachHero
         #region Private Methods
         private void StartFade(float endValue, float duration)
         {
-            if (fadeTween != null)
-            {
-                fadeTween.Kill();
-                fadeTween = null;
-            }
+            fadeTween.Cancel();
 
             bool isFadeIn = endValue == 1f ? true : false;
             fadeAnimator.profile.duration = duration;
             Ease ease = isFadeIn ? fadeInEase : fadeOutEase;
             float getter = isFadeIn ? 0f : 1f;
             fadeAnimator.ResetTransition(getter);
-            DOTween.To(() => getter, x => fadeAnimator.SetProgress(x), endValue, duration).SetEase(ease);
+            TweenManager.Float(getter, endValue, duration, x => fadeAnimator.SetProgress(x), ease);
         }
         private async Task StartFadeAsync(float endValue, float duration,float delay)
         {

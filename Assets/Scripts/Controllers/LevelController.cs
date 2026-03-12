@@ -176,7 +176,7 @@ namespace BeachHero
                         Vector3 nextPoint = smoothedPoints[1];
                         Vector3 direction = (nextPoint - player.transform.position).normalized;
                         Quaternion targetRot = Quaternion.LookRotation(direction);
-                        TweenManager.Rotate(player.transform, targetRot, 0.2f);
+                        TweenManager.Rotate(player.transform, player.transform.rotation, targetRot, 0.2f);
                     }
                 }
                 // Update the last trail point

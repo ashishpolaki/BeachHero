@@ -1,4 +1,4 @@
-using DG.Tweening;
+using LitMotion;
 using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -44,8 +44,8 @@ namespace BeachHero
             if (animate)
             {
                 //Set slider with move duration
-                fillSlider.DOValue(toggled ? 1f : 0f, moveDuration).SetEase(Ease.OutQuad);
-                knobRect.DOAnchorPosX(toggled ? -knobAnchorX : knobAnchorX, moveDuration).SetEase(Ease.Linear);
+                TweenManager.Float(fillSlider.value, toggled ? 1f : 0f, moveDuration, val => fillSlider.value = val, Ease.OutQuad);
+                TweenManager.AnchoredPositionX(knobRect, knobRect.anchoredPosition.x, toggled ? -knobAnchorX : knobAnchorX, moveDuration);
                 OnToggleChanged?.Invoke(toggled);
             }
             else

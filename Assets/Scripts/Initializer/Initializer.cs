@@ -1,4 +1,3 @@
-using DG.Tweening;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -18,8 +17,7 @@ namespace BeachHero
 
         private void SetAdaptiveFrameRate()
         {
-
-#if UNITY_ANDROID && !UNITY_EDITOR
+#if UNITY_ANDROID && UNITY_EDITOR
             int ram = SystemInfo.systemMemorySize; // in MB
             string gpu = SystemInfo.graphicsDeviceName.ToLower()
                     .Replace("(tm)", "")
@@ -28,7 +26,7 @@ namespace BeachHero
             int targetFPS = 30; // default
 
             // --- Primary check: RAM-based classification ---
-            if (ram >= 8000)
+            if (ram >= 7900) // tolerance check
             {
                 targetFPS = 60; // high-end default
             }
@@ -37,18 +35,8 @@ namespace BeachHero
                 targetFPS = 30; // mid/low-end default
             }
 
-           // Secondary check (GPU)
-    if (!string.IsNullOrEmpty(gpu))
-    {
-        if (gpu.Contains("adreno7") || gpu.Contains("adreno8") || gpu.Contains("mali-g7") || gpu.Contains("immortalis"))
-            targetFPS = 60;
-        else if (gpu.Contains("adreno6") || gpu.Contains("mali-g6") || gpu.Contains("mali-g5"))
-            targetFPS = Mathf.Min(targetFPS, 30);
-    }
-
             // --- Apply ---
             Application.targetFrameRate = targetFPS;
-
             DebugUtils.Log($"[AdaptiveFPS] GPU: {gpu} | RAM: {ram}MB | Target FPS: {targetFPS}");
 #endif
         }
@@ -66,7 +54,6 @@ namespace BeachHero
             TutorialController.GetInstance.Init();
             AdController.GetInstance.Init();
             HapticsManager.GetInstance.Init();
-            DOTween.Init();
             ES3.Init();
             Febucci.UI.Core.TAnimBuilder.InitializeGlobalDatabase();
 
