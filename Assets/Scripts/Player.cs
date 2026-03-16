@@ -118,11 +118,7 @@ namespace BeachHero
         }
         private void DeactivateMagnetPowerup()
         {
-            if (magnetEffect.IsPlaying)
-            {
-                magnetEffect.StopRippleEffect();
-                magnetEffect.gameObject.SetActive(false);
-            }
+            magnetEffect.StopRippleEffect();
         }
         #endregion
 

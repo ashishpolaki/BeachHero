@@ -1,4 +1,4 @@
-using DG.Tweening;
+using LitMotion;
 using UnityEngine;
 
 namespace BeachHero
@@ -12,13 +12,12 @@ namespace BeachHero
         [SerializeField] private float rippleShrinkDuration = 1f;
         [SerializeField] private float delayBetweenLoops = 1f;
         [SerializeField] private float startScale = 1.5f;
-        [SerializeField] private Ease rippleEase = Ease.InOutQuad;
+        [SerializeField] private Ease rippleEase = Ease.Linear;
         [SerializeField] private float rotationSpeed = 90f; // degrees per second
 
         private SpriteRenderer[] ripples;
-        private Sequence loopSeq;
-
-        public bool IsPlaying => loopSeq != null && loopSeq.IsActive();
+        private TweenSequence loopSequence;
+        private TweenHandle rotationTweenHandle;
 
         public void PlayRippleEffect()
         {
@@ -32,63 +31,61 @@ namespace BeachHero
                     ripples[i] = ripple;
                 }
             }
-
             AnimateRipples();
+        }
+
+        private void AnimateRipples()
+        {
+            //KillTween();
+            float duration = 360f / rotationSpeed;
+
+            rotationTweenHandle = TweenManager.RotateEulerAngles(transform, new Vector3(0, 360, 0), duration, -1);
+            loopSequence = new TweenSequence(LSequence.Create());
+
+            for (int i = 0; i < rippleCount; i++)
+            {
+                SpriteRenderer sr = ripples[i];
+                var fadeTween = TweenManager.Float(0f, 1f, rippleFadeInDuration, value =>
+                 {
+                     var c = sr.color;
+                     c.a = value;
+                     sr.color = c;
+                 }, rippleEase);
+                var scaleTween = TweenManager.Scale(sr.transform.localScale, Vector3.zero, sr.transform, rippleShrinkDuration, rippleEase);
+                loopSequence.Insert(i * rippleInterval, fadeTween.Handle);
+                loopSequence.Insert(i * rippleInterval, scaleTween.Handle);
+            }
+            var delayStartRipples = TweenManager.RunCallback(() =>
+              {
+                  KillTween();
+                  AnimateRipples();
+              });
+
+            float time = (rippleInterval * rippleCount) + rippleShrinkDuration + delayBetweenLoops;
+            loopSequence.Insert(time, delayStartRipples.Handle);
+            loopSequence.Play();
         }
 
         public void StopRippleEffect()
         {
             KillTween();
+            gameObject.SetActive(false);
         }
 
         private void KillTween()
         {
             // Kill previous sequence if it's still alive
-            if (loopSeq != null && loopSeq.IsActive())
-                loopSeq.Kill();
+            loopSequence.Cancel();
+            rotationTweenHandle.Cancel();
 
             // Reset all ripples to their initial state
-            for (int i = 0; i < rippleCount; i++)
+            if (ripples != null)
             {
-                SpriteRenderer sr = ripples[i];
-                sr.DOKill(); // Ensure each ripple is reset before starting the animation
-                sr.transform.localScale = Vector3.one * startScale;
-                sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, 0f); // Start transparent
-            }
-
-            transform.localRotation = Quaternion.identity; // Reset rotation
-            transform.DOKill(); // Reset any previous rotation animations
-        }
-
-        void AnimateRipples()
-        {
-            KillTween();
-            float duration = 360f / rotationSpeed;
-
-            transform.DORotate(new Vector3(0, 360, 0), duration, RotateMode.WorldAxisAdd)
-                     .SetEase(Ease.Linear)
-                     .SetLoops(-1);
-
-            loopSeq = DOTween.Sequence();
-
-            for (int i = 0; i < rippleCount; i++)
-            {
-                SpriteRenderer sr = ripples[i];
-
-                loopSeq.Insert(i * rippleInterval,
-                    DOTween.Sequence().AppendCallback(() =>
-                    {
-                        sr.DOFade(1f, rippleFadeInDuration);
-                    }).Append(sr.transform.DOScale(0f, rippleShrinkDuration).SetEase(rippleEase))
-                );
-
-                // Only attach restart to last ripple
-                if (i == rippleCount - 1)
+                for (int i = 0; i < rippleCount; i++)
                 {
-                    loopSeq.OnComplete(() =>
-                    {
-                        DOVirtual.DelayedCall(delayBetweenLoops, AnimateRipples);
-                    });
+                    SpriteRenderer sr = ripples[i];
+                    sr.transform.localScale = Vector3.one * startScale;
+                    sr.color = new Color(sr.color.r, sr.color.g, sr.color.b, 0f); // Start transparent
                 }
             }
         }

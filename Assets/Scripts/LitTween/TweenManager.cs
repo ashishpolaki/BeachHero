@@ -14,12 +14,13 @@ namespace BeachHero
         #region Transform
         public static TweenHandle Move(
            Transform target,
+           Vector3 from,
            Vector3 to,
            float duration,
            Ease ease = Ease.Linear,
            System.Action onComplete = null)
         {
-            var motion = LMotion.Create(target.position, to, duration)
+            var motion = LMotion.Create(from, to, duration)
                                 .WithEase(ease);
 
             if (onComplete != null)
@@ -71,41 +72,54 @@ namespace BeachHero
         #endregion
 
         #region Rotation
-
         public static TweenHandle Rotate(
-     Transform target,
-     Quaternion to,
-     float duration,
-     Ease ease = Ease.Linear,
-     System.Action onComplete = null)
+                   Transform target,
+                   Quaternion from,
+                   Quaternion to,
+                   float duration,
+                   int loops = 0,
+                   Ease ease = Ease.Linear,
+                   System.Action onComplete = null)
         {
             var motion = LMotion.Create(target.rotation, to, duration)
                                 .WithEase(ease);
 
             if (onComplete != null)
+            {
                 motion = motion.WithOnComplete(onComplete);
+            }
+
+            if (loops != 0)
+            {
+                motion.WithLoops(loops);
+            }
 
             var handle = motion.BindToRotation(target);
             return new TweenHandle(handle);
         }
 
-        public static TweenHandle RotateBy(
+        public static TweenHandle RotateEulerAngles(
            Transform target,
            Vector3 byValue,
            float duration,
+           int loops = 0,
            Ease ease = Ease.Linear,
            System.Action onComplete = null)
         {
-            var start = target.eulerAngles;
-            var end = start + byValue;
+            Quaternion startRot = target.rotation;
+            var motion = LMotion.Create(Vector3.zero, byValue, duration).WithEase(ease);
 
-            var motion = LMotion.Create(start, end, duration)
-                                .WithEase(ease);
+            if (loops != 0)
+            {
+                motion.WithLoops(loops);
+            }
 
             if (onComplete != null)
+            {
                 motion = motion.WithOnComplete(onComplete);
+            }
 
-            var handle = motion.Bind(x => target.eulerAngles = x);
+            var handle = motion.Bind(x => target.rotation = startRot * Quaternion.Euler(x));
             return new TweenHandle(handle);
         }
         #endregion
@@ -119,11 +133,12 @@ namespace BeachHero
             Ease ease = Ease.Linear,
             System.Action onComplete = null)
         {
-            var motion = LMotion.Create(target.anchoredPosition.x, to, duration)
-                                .WithEase(ease);
+            var motion = LMotion.Create(from, to, duration).WithEase(ease);
             if (onComplete != null)
+            {
                 motion = motion.WithOnComplete(onComplete);
-            var handle = motion.Bind(x => target.anchoredPosition = new Vector2(x, target.anchoredPosition.y));
+            }
+            var handle = motion.BindToAnchoredPositionX(target);
             return new TweenHandle(handle);
         }
         #endregion
@@ -148,6 +163,16 @@ namespace BeachHero
 
             return new TweenHandle(handle);
         }
+
+        public static TweenHandle RunCallback(System.Action onComplete = null)
+        {
+            var motion = LMotion.Create(0, 0, 0);
+            if (onComplete != null)
+                motion = motion.WithOnComplete(onComplete);
+            var handle = motion.RunWithoutBinding();
+            return new TweenHandle(handle);
+        }
+
     }
 
     public struct TweenHandle
@@ -155,10 +180,26 @@ namespace BeachHero
         private MotionHandle _handle;
 
         public bool IsActive => _handle.IsActive();
+        public MotionHandle Handle => _handle;
 
         public TweenHandle(MotionHandle handle)
         {
             _handle = handle;
+        }
+
+        public void SetPlaybackSpeed(float speed)
+        {
+            _handle.PlaybackSpeed = speed;
+        }
+
+        public void SetSlider(float val)
+        {
+            _handle.Time = val;
+        }
+
+        public void Resume()
+        {
+            _handle.PlaybackSpeed = 1;
         }
 
         public void Cancel()
@@ -171,6 +212,74 @@ namespace BeachHero
         {
             if (_handle.IsActive())
                 _handle.Complete();
+        }
+    }
+
+    public struct TweenSequence
+    {
+        private MotionSequenceBuilder sequenceBuilder;
+        private MotionHandle handle;
+
+        public MotionHandle Handle => handle;
+        public bool IsActive => Handle.IsActive();
+
+        public TweenSequence(MotionSequenceBuilder builder)
+        {
+            handle = default;
+            sequenceBuilder = builder;
+        }
+
+        public void Append(MotionHandle motionHandle)
+        {
+            sequenceBuilder.Append(motionHandle);
+        }
+
+        public void AppendInterval(float interval)
+        {
+            sequenceBuilder.AppendInterval(interval);
+        }
+
+        public void Join(MotionHandle motionHandle)
+        {
+            sequenceBuilder.Join(motionHandle);
+        }
+
+        public void Insert(float time, MotionHandle motionHandle)
+        {
+            sequenceBuilder.Insert(time, motionHandle);
+        }
+
+        public void Cancel()
+        {
+            if (Handle.IsActive())
+            {
+                handle.Cancel();
+            }
+        }
+
+        public void Play()
+        {
+            if (!handle.IsActive())
+            {
+                handle = sequenceBuilder.Run();
+            }
+        }
+        public void Preserve()
+        {
+            handle.Preserve();
+        }
+        public void SetPlaybackSpeed(float speed)
+        {
+            handle.PlaybackSpeed = speed;
+        }
+        public void Complete()
+        {
+            if (handle.IsActive())
+                handle.Complete();
+        }
+        public void SetSlider(float val)
+        {
+            handle.Time = val;
         }
     }
 }
