@@ -40,7 +40,7 @@ namespace BeachHero
                     AnimateRipple(); // Loop
                 });
 
-            fadeHandle = TweenManager.Float(1f, fadeValue, duration, (val) =>
+            fadeHandle = TweenManager.SetFloat(1f, fadeValue, duration, (val) =>
             {
                 Color c = rippleRenderer.color;
                 c.a = val;

@@ -1,4 +1,4 @@
-using DG.Tweening;
+using LitMotion;
 using System;
 using UnityEngine;
 
@@ -19,31 +19,22 @@ namespace BeachHero
     [Serializable]
     public class RotateClip : RotateClipBase
     {
-        public RotateMode rotateMode = RotateMode.Fast;
-        public SpaceType spaceType = SpaceType.World;
+        public TransformSpace spaceType = TransformSpace.World;
 
-        protected override Tween CreateTweenCore()
+        protected override MotionHandle CreateTweenCore()
         {
             if (target == null)
             {
                 DebugUtils.LogError("Target Transform is null.");
-                return null;
             }
 
-            if (spaceType == SpaceType.Local)
-            {
-                return target.DOLocalRotate(toRotation, duration, rotateMode);
-            }
-            else
-            {
-                return target.DORotate(toRotation, duration, rotateMode);
-            }
+            return TweenManager.RotateEulerAngles(target, fromRotation, toRotation, duration, ease, spaceType).Handle;
         }
         public override void ApplyFromState()
         {
             if (target != null)
             {
-                if (spaceType == SpaceType.World)
+                if (spaceType == TransformSpace.World)
                 {
                     target.eulerAngles = fromRotation;
                 }
@@ -58,7 +49,7 @@ namespace BeachHero
         {
             if (target != null)
             {
-                if (spaceType == SpaceType.World)
+                if (spaceType == TransformSpace.World)
                 {
                     target.eulerAngles = toRotation;
                 }

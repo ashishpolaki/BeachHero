@@ -49,15 +49,15 @@ namespace BeachHero
                 {
                     DrawIfExists(property, ref y, position, "transformAxis");
 
-                    switch ((Axis3D)transformAxis.enumValueIndex)
+                    switch ((TransformAxis)transformAxis.enumValueIndex)
                     {
-                        case Axis3D.X:
+                        case TransformAxis.X:
                             DrawIfExists(property, ref y, position, "toPosition.x");
                             break;
-                        case Axis3D.Y:
+                        case TransformAxis.Y:
                             DrawIfExists(property, ref y, position, "toPosition.y");
                             break;
-                        case Axis3D.Z:
+                        case TransformAxis.Z:
                             DrawIfExists(property, ref y, position, "toPosition.z");
                             break;
                         default:
@@ -104,11 +104,11 @@ namespace BeachHero
             if (rectAxis != null)
             {
                 DrawIfExists(property, ref y, position, "rectAxis");
-                if (rectAxis.enumValueIndex == (int)Axis2D.X)
+                if (rectAxis.enumValueIndex == (int)TransformAxis.X)
                 {
                     DrawIfExists(property, ref y, position, "toAnchoredPosition.x");
                 }
-                else if (rectAxis.enumValueIndex == (int)Axis2D.Y)
+                else if (rectAxis.enumValueIndex == (int)TransformAxis.Y)
                 {
                     DrawIfExists(property, ref y, position, "toAnchoredPosition.y");
                 }

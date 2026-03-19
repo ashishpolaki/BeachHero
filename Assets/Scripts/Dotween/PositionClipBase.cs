@@ -1,4 +1,4 @@
-using DG.Tweening;
+using LitMotion;
 using System;
 using UnityEngine;
 
@@ -27,33 +27,33 @@ namespace BeachHero
     {
         public Transform target;
         public Vector3 toPosition;
-        public SpaceType positionSpace = SpaceType.World;
-        public Axis3D transformAxis = Axis3D.XYZ;
+        public TransformSpace positionSpace = TransformSpace.World;
+        public TransformAxis transformAxis = TransformAxis.XYZ;
 
         public TransformPositionClip() : base()
         {
             moveTargetType = MoveTargetType.Transform;
         }
 
-        protected override Tween CreateTweenCore()
+        protected override MotionHandle CreateTweenCore()
         {
             if (target == null)
             {
                 DebugUtils.LogError("Target Transform is null.");
-                return null;
+                //  return null;
             }
             Vector3 dest = toPosition;
 
             //Local
-            if (positionSpace == SpaceType.Local)
+            if (positionSpace == TransformSpace.Local)
             {
                 switch (transformAxis)
                 {
-                    case Axis3D.X: return target.DOLocalMoveX(dest.x, duration, snapping);
-                    case Axis3D.Y: return target.DOLocalMoveY(dest.y, duration, snapping);
-                    case Axis3D.Z: return target.DOLocalMoveZ(dest.z, duration, snapping);
-                    case Axis3D.XYZ:
-                    default: return target.DOLocalMove(dest, duration, snapping);
+                    case TransformAxis.X: return TweenManager.Move(target, target.localPosition, new Vector3(dest.x, target.localPosition.y, target.localPosition.z), duration, spaceType: positionSpace, ease: ease, onComplete: null).Handle;
+                    case TransformAxis.Y: return TweenManager.Move(target, target.localPosition, new Vector3(target.localPosition.x, dest.y, target.localPosition.z), duration, spaceType: positionSpace, ease: ease, onComplete: null).Handle;
+                    case TransformAxis.Z: return TweenManager.Move(target, target.localPosition, new Vector3(target.localPosition.x, target.localPosition.y, dest.z), duration, spaceType: positionSpace, ease: ease, onComplete: null).Handle;
+                    case TransformAxis.XYZ:
+                    default: return TweenManager.Move(target, target.localPosition, dest, duration, spaceType: positionSpace, ease: ease, onComplete: null).Handle;
                 }
             }
             //World
@@ -61,11 +61,11 @@ namespace BeachHero
             {
                 switch (transformAxis)
                 {
-                    case Axis3D.X: return target.DOMoveX(dest.x, duration, snapping);
-                    case Axis3D.Y: return target.DOMoveY(dest.y, duration, snapping);
-                    case Axis3D.Z: return target.DOMoveZ(dest.z, duration, snapping);
-                    case Axis3D.XYZ:
-                    default: return target.DOMove(dest, duration, snapping);
+                    case TransformAxis.X: return TweenManager.Move(target, target.position, new Vector3(dest.x, target.position.y, target.position.z), duration, spaceType: positionSpace, ease: ease, onComplete: null).Handle;
+                    case TransformAxis.Y: return TweenManager.Move(target, target.position, new Vector3(target.position.x, dest.y, target.position.z), duration, spaceType: positionSpace, ease: ease, onComplete: null).Handle;
+                    case TransformAxis.Z: return TweenManager.Move(target, target.position, new Vector3(target.position.x, target.position.y, dest.z), duration, spaceType: positionSpace, ease: ease, onComplete: null).Handle;
+                    case TransformAxis.XYZ:
+                    default: return TweenManager.Move(target, target.position, dest, duration, spaceType: positionSpace, ease: ease, onComplete: null).Handle;
                 }
             }
         }
@@ -74,7 +74,7 @@ namespace BeachHero
         {
             if (target != null)
             {
-                if (positionSpace == SpaceType.Local)
+                if (positionSpace == TransformSpace.Local)
                     target.localPosition = fromPosition;
                 else
                     target.position = fromPosition;
@@ -85,7 +85,7 @@ namespace BeachHero
         {
             if (target != null)
             {
-                if (positionSpace == SpaceType.Local)
+                if (positionSpace == TransformSpace.Local)
                     toPosition = target.localPosition;
                 else
                     toPosition = target.position;
@@ -98,27 +98,31 @@ namespace BeachHero
     {
         public RectTransform target;
         public Vector2 toAnchoredPosition;
-        public Axis2D rectAxis = Axis2D.XY;
+        public TransformAxis rectAxis = TransformAxis.XYZ;
 
         public AnchorPositionClip() : base()
         {
             moveTargetType = MoveTargetType.RectTransform;
         }
 
-        protected override Tween CreateTweenCore()
+        protected override MotionHandle CreateTweenCore()
         {
             if (target == null)
             {
                 DebugUtils.LogError("Target RectTransform is null.");
-                return null;
+                // return null;
             }
             switch (rectAxis)
             {
-                case Axis2D.X: return target.DOAnchorPosX(toAnchoredPosition.x, duration, snapping);
-                case Axis2D.Y: return target.DOAnchorPosY(toAnchoredPosition.y, duration, snapping);
-                case Axis2D.XY:
-                default: return target.DOAnchorPos(toAnchoredPosition, duration, snapping);
+                case TransformAxis.X:
+                    return TweenManager.MoveAnchorOnAxis(target, target.anchoredPosition.x, toAnchoredPosition.x, duration, ease, rectAxis).Handle;
+                case TransformAxis.Y:
+                    return TweenManager.MoveAnchorOnAxis(target, target.anchoredPosition.y, toAnchoredPosition.y, duration, ease, rectAxis).Handle;
+                case TransformAxis.XY:
+                   return TweenManager.MoveAnchor(target, target.anchoredPosition, toAnchoredPosition, duration, ease, rectAxis).Handle;
+                   
             }
+            return default;
         }
 
         public override void ApplyFromState()
@@ -127,17 +131,16 @@ namespace BeachHero
             {
                 switch (rectAxis)
                 {
-                    case Axis2D.X:
+                    case TransformAxis.X:
                         target.anchoredPosition = new Vector2(fromPosition.x, target.anchoredPosition.y);
                         break;
-                    case Axis2D.Y:
+                    case TransformAxis.Y:
                         target.anchoredPosition = new Vector2(target.anchoredPosition.x, fromPosition.y);
                         break;
-                    case Axis2D.XY:
+                    case TransformAxis.XY:
                     default:
-                        target.anchoredPosition = new Vector2(fromPosition.x, fromPosition.y);
+                        target.anchoredPosition = fromPosition;
                         break;
-
                 }
             }
         }
@@ -148,15 +151,15 @@ namespace BeachHero
             {
                 switch (rectAxis)
                 {
-                    case Axis2D.X:
+                    case TransformAxis.X:
                         target.anchoredPosition = new Vector2(toAnchoredPosition.x, target.anchoredPosition.y);
                         break;
-                    case Axis2D.Y:
+                    case TransformAxis.Y:
                         target.anchoredPosition = new Vector2(target.anchoredPosition.x, toAnchoredPosition.y);
                         break;
-                    case Axis2D.XY:
+                    case TransformAxis.XY:
                     default:
-                        target.anchoredPosition = new Vector2(toAnchoredPosition.x, toAnchoredPosition.y);
+                        target.anchoredPosition = toAnchoredPosition;
                         break;
 
                 }

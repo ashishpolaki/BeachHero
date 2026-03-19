@@ -1,4 +1,4 @@
-using DG.Tweening;
+using LitMotion;
 using System;
 using UnityEngine;
 
@@ -20,26 +20,26 @@ namespace BeachHero
     [Serializable]
     public class ScaleClip : ScaleClipBase
     {
-        public Axis3D scaleAxis = Axis3D.XYZ;
+        public TransformAxis scaleAxis = TransformAxis.XYZ;
 
-        protected override Tween CreateTweenCore()
+        protected override MotionHandle CreateTweenCore()
         {
             if (target == null)
             {
                 DebugUtils.LogError("Target Transform is null.");
-                return null;
             }
-
-            switch(scaleAxis)
+            switch (scaleAxis)
             {
-                case Axis3D.X: return target.DOScaleX(toScale.x, duration);
-                case Axis3D.Y: return target.DOScaleY(toScale.y, duration);
-                case Axis3D.Z: return target.DOScaleZ(toScale.z, duration);
-                case Axis3D.XYZ:
-                default:
-                    return target.DOScale(toScale, duration);
+                case TransformAxis.X:
+                    return TweenManager.ScaleOnAxis(fromScale.x, toScale.x, target, duration, ease, scaleAxis).Handle;
+                case TransformAxis.Y:
+                    return TweenManager.ScaleOnAxis(fromScale.y, toScale.y, target, duration, ease, scaleAxis).Handle;
+                case TransformAxis.Z:
+                    return TweenManager.ScaleOnAxis(fromScale.z, toScale.z, target, duration, ease, scaleAxis).Handle;
+                case TransformAxis.XYZ:
+                    return TweenManager.Scale(fromScale, toScale, target, duration, ease).Handle;
             }
-
+            return default;
         }
         public override void ApplyFromState()
         {

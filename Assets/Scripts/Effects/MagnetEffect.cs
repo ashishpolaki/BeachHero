@@ -38,14 +38,17 @@ namespace BeachHero
         {
             //KillTween();
             float duration = 360f / rotationSpeed;
-
-            rotationTweenHandle = TweenManager.RotateEulerAngles(transform, new Vector3(0, 360, 0), duration, -1);
+            Quaternion startRot = transform.rotation;
+            rotationTweenHandle = TweenManager.SetVector3(Vector3.zero, new Vector3(0, 360, 0), duration, (value) =>
+            {
+                transform.rotation = startRot * Quaternion.Euler(value);
+            }, -1);
             loopSequence = new TweenSequence(LSequence.Create());
 
             for (int i = 0; i < rippleCount; i++)
             {
                 SpriteRenderer sr = ripples[i];
-                var fadeTween = TweenManager.Float(0f, 1f, rippleFadeInDuration, value =>
+                var fadeTween = TweenManager.SetFloat(0f, 1f, rippleFadeInDuration, value =>
                  {
                      var c = sr.color;
                      c.a = value;
@@ -63,7 +66,7 @@ namespace BeachHero
 
             float time = (rippleInterval * rippleCount) + rippleShrinkDuration + delayBetweenLoops;
             loopSequence.Insert(time, delayStartRipples.Handle);
-            loopSequence.Play();
+            loopSequence.InitializeHandle();
         }
 
         public void StopRippleEffect()

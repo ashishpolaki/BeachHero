@@ -33,7 +33,7 @@ namespace BeachHero
             Ease ease = isFadeIn ? fadeInEase : fadeOutEase;
             float getter = isFadeIn ? 0f : 1f;
             fadeAnimator.ResetTransition(getter);
-            TweenManager.Float(getter, endValue, duration, x => fadeAnimator.SetProgress(x), ease);
+            TweenManager.SetFloat(getter, endValue, duration, x => fadeAnimator.SetProgress(x), ease);
         }
         private async Task StartFadeAsync(float endValue, float duration,float delay)
         {

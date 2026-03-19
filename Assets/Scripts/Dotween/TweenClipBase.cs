@@ -1,5 +1,5 @@
-using DG.Tweening;
 using System;
+using LitMotion;
 
 namespace BeachHero
 {
@@ -15,20 +15,15 @@ namespace BeachHero
         CanvasGroup,
         Image
     }
-    public enum Axis3D
+    public enum TransformAxis
     {
         X,
         Y,
         Z,
+        XY,
         XYZ
     }
-    public enum Axis2D
-    {
-        X,
-        Y,
-        XY
-    }
-    public enum SpaceType
+    public enum TransformSpace
     {
         World,
         Local
@@ -40,48 +35,47 @@ namespace BeachHero
         public float startTime = 0f;
         public float duration = 1f;
         public Ease ease = Ease.Linear;
-        public bool snapping = false;
-        public float overshoot = 1.70158f; // for Back eases
-        public float amplitude = 1f;  // for Elastic eases
-        public float period = 0f; // for Elastic/Flash eases
+        //public float overshoot = 1.70158f; // for Back eases
+        //public float amplitude = 1f;  // for Elastic eases
+        //public float period = 0f; // for Elastic/Flash eases
 
-        [NonSerialized] protected Tween _tween;
+        [NonSerialized] protected MotionHandle _tween;
 
-        public Tween GetTween()
+        public MotionHandle GetTween()
         {
-            var tween = CreateTweenCore();
-            if (tween == null)
-            {
-                return null;
-            }
-            switch (ease)
-            {
-                case Ease.InBack:
-                case Ease.OutBack:
-                case Ease.InOutBack:
-                    tween.SetEase(ease, overshoot);
-                    break;
-
-                case Ease.InElastic:
-                case Ease.OutElastic:
-                case Ease.InOutElastic:
-                case Ease.InFlash:
-                case Ease.OutFlash:
-                case Ease.InOutFlash:
-                    tween.SetEase(ease, amplitude, period);
-                    break;
-
-                default:
-                    tween.SetEase(ease);
-                    break;
-            }
-
-            tween.SetAutoKill(false).Pause();
-            _tween = tween;
+            _tween = CreateTweenCore();
             return _tween;
+
+            //if (tween == null)
+            //{
+            //    return null;
+            //}
+            //switch (ease)
+            //{
+            //    case Ease.InBack:
+            //    case Ease.OutBack:
+            //    case Ease.InOutBack:
+            //        tween.SetEase(ease, overshoot);
+            //        break;
+
+            //    case Ease.InElastic:
+            //    case Ease.OutElastic:
+            //    case Ease.InOutElastic:
+            //    //case Ease.InFlash:
+            //    //case Ease.OutFlash:
+            //    //case Ease.InOutFlash:
+            //        tween.SetEase(ease, amplitude, period);
+            //        break;
+
+            //    default:
+            //        tween.SetEase(ease);
+            //        break;
+            //}
+
+            //tween.SetAutoKill(false).Pause();
         }
 
-        protected abstract Tween CreateTweenCore();
+        protected abstract MotionHandle CreateTweenCore();
 
         // Apply stored "from" state to the target(s). Override in subclasses.
         public virtual void ApplyFromState() { }
@@ -90,10 +84,9 @@ namespace BeachHero
 
         public virtual void KillTween()
         {
-            if (_tween != null && _tween.IsActive())
+            if (_tween.IsActive())
             {
-                _tween.Kill();
-                _tween = null;
+                _tween.Cancel();
             }
         }
     }

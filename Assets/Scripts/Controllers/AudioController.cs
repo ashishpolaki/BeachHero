@@ -100,7 +100,7 @@ namespace BeachHero
             float volume = SaveSystem.LoadFloat(StringUtils.GAME_MUSIC_VOLUME, audioSettings.GetAudioVolume(AudioType.GameMusic));
             //  gameMusicSource.DOFade(volume, fadeMusicDuration);
             // TweenManager.FadeAudio(gameMusicSource, volume, fadeMusicDuration);
-            TweenManager.Float(gameMusicSource.volume, volume, fadeMusicDuration, (x) => gameMusicSource.volume = x);
+            TweenManager.SetFloat(gameMusicSource.volume, volume, fadeMusicDuration, (x) => gameMusicSource.volume = x);
         }
         #endregion
 

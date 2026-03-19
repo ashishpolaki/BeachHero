@@ -44,18 +44,18 @@ namespace BeachHero
             // draw ScaleClip fields via inherited helper
             var scaleAxisProp = property.FindPropertyRelative("scaleAxis");
             DrawIfExists(property, ref y, position, "scaleAxis");
-            switch ((Axis3D)scaleAxisProp.enumValueIndex)
+            switch ((TransformAxis)scaleAxisProp.enumValueIndex)
             {
-                case Axis3D.X:
+                case TransformAxis.X:
                     DrawIfExists(property, ref y, position, "toScale.x");
                     break;
-                case Axis3D.Y:
+                case TransformAxis.Y:
                     DrawIfExists(property, ref y, position, "toScale.y");
                     break;
-                case Axis3D.Z:
+                case TransformAxis.Z:
                     DrawIfExists(property, ref y, position, "toScale.z");
                     break;
-                case Axis3D.XYZ:
+                case TransformAxis.XYZ:
                     DrawIfExists(property, ref y, position, "toScale");
                     break;
             }

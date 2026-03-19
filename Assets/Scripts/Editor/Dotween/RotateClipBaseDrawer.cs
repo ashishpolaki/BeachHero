@@ -44,7 +44,6 @@ namespace BeachHero
             DrawBaseFields(property, ref y, position, label);
 
             // draw RotateClip fields via inherited helper
-            DrawIfExists(property, ref y, position, "rotateMode");
             DrawIfExists(property, ref y, position, "spaceType");
 
             PropertyEndCheck(property);
@@ -54,7 +53,6 @@ namespace BeachHero
         {
             float baseHeight = base.GetPropertyHeight(property, label);
             int extraLines = 0;
-            extraLines += HasProperty(property, "rotateMode");
             extraLines += HasProperty(property, "spaceType");
             float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;
             return baseHeight + extraLines * singleLineTotal;

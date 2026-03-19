@@ -204,7 +204,7 @@ namespace BeachHero
 
                 float time = 0;
                 boatTweenHandle.Cancel();
-                boatTweenHandle = TweenManager.Float(time, 1f, boatDuration,
+                boatTweenHandle = TweenManager.SetFloat(time, 1f, boatDuration,
                     x =>
                     {
                         time = x;
@@ -223,8 +223,8 @@ namespace BeachHero
         public void UpdatePathLine()
         {
             var pathLine = mapDatas[mapNumber - 1].pathLine;
-            TweenManager.Float(pathLine.startWidth, ZoomOutThick, ZoomDuration, value => pathLine.startWidth = value);
-            TweenManager.Float(pathLine.endWidth, ZoomOutThick, ZoomDuration, value => pathLine.endWidth = value);
+            TweenManager.SetFloat(pathLine.startWidth, ZoomOutThick, ZoomDuration, value => pathLine.startWidth = value);
+            TweenManager.SetFloat(pathLine.endWidth, ZoomOutThick, ZoomDuration, value => pathLine.endWidth = value);
             // DOTween.To(() => pathLine.startWidth, (x) => pathLine.startWidth = x, ZoomOutThick, ZoomDuration);
             //  DOTween.To(() => pathLine.endWidth, (x) => pathLine.endWidth = x, ZoomOutThick, ZoomDuration);
             // DOTween.To(() => pathLine.textureScale, (x) => pathLine.textureScale = x, DefaultTextureScale, ZoomDuration);

@@ -80,10 +80,10 @@ namespace BeachHero
             float rightPanelFromX = show ? panelSlideOffset : 0f;
             float rightPanelToX = show ? 0f : panelSlideOffset;
 
-            TweenManager.AnchoredPositionX(powerupPanel, leftPanelFromX, leftPanelToX, panelSlideDuration, panelSlideEase);
-            TweenManager.AnchoredPositionX(boatPanel, rightPanelFromX, rightPanelToX, panelSlideDuration, panelSlideEase);
-            TweenManager.AnchoredPositionX(shopPanel, rightPanelFromX, rightPanelToX, panelSlideDuration, panelSlideEase);
-            TweenManager.AnchoredPositionX(noAdsPanel, rightPanelFromX, rightPanelToX, panelSlideDuration, panelSlideEase);
+            TweenManager.MoveAnchorOnAxis(powerupPanel, leftPanelFromX, leftPanelToX, panelSlideDuration, panelSlideEase);
+            TweenManager.MoveAnchorOnAxis(boatPanel, rightPanelFromX, rightPanelToX, panelSlideDuration, panelSlideEase);
+            TweenManager.MoveAnchorOnAxis(shopPanel, rightPanelFromX, rightPanelToX, panelSlideDuration, panelSlideEase);
+            TweenManager.MoveAnchorOnAxis(noAdsPanel, rightPanelFromX, rightPanelToX, panelSlideDuration, panelSlideEase);
         }
 
         private void HandleShowPanels()

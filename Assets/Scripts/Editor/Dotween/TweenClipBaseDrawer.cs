@@ -3,7 +3,6 @@ using UnityEditor.SceneManagement;
 using UnityEditor;
 using UnityEngine;
 using System.Reflection;
-using DG.Tweening;
 
 namespace BeachHero
 {
@@ -34,27 +33,26 @@ namespace BeachHero
             DrawIfExists(property, ref y, position, "startTime");
             DrawIfExists(property, ref y, position, "duration");
             DrawIfExists(property, ref y, position, "ease");
-            DrawIfExists(property, ref y, position, "snapping");
 
-            //If ease is Back, show overshoot
-            var easeProp = property.FindPropertyRelative("ease");
-            if (easeProp != null)
-            {
-                if (easeProp.enumValueIndex == (int)Ease.InBack || easeProp.enumValueIndex == (int)Ease.OutBack || easeProp.enumValueIndex == (int)Ease.InOutBack)
-                {
-                    DrawIfExists(property, ref y, position, "overshoot");
-                }
-                else if (easeProp.enumValueIndex == (int)Ease.InElastic || easeProp.enumValueIndex == (int)Ease.OutElastic || easeProp.enumValueIndex == (int)Ease.InOutElastic)
-                {
-                    DrawIfExists(property, ref y, position, "amplitude");
-                    DrawIfExists(property, ref y, position, "period");
-                }
-                else if (easeProp.enumValueIndex == (int)Ease.InFlash || easeProp.enumValueIndex == (int)Ease.OutFlash || easeProp.enumValueIndex == (int)Ease.InOutFlash)
-                {
-                    DrawIfExists(property, ref y, position, "amplitude", "Flash Count");
-                    DrawIfExists(property, ref y, position, "period", "Flash Duration");
-                }
-            }
+            ////If ease is Back, show overshoot
+            //var easeProp = property.FindPropertyRelative("ease");
+            //if (easeProp != null)
+            //{
+            //    if (easeProp.enumValueIndex == (int)Ease.InBack || easeProp.enumValueIndex == (int)Ease.OutBack || easeProp.enumValueIndex == (int)Ease.InOutBack)
+            //    {
+            //        DrawIfExists(property, ref y, position, "overshoot");
+            //    }
+            //    else if (easeProp.enumValueIndex == (int)Ease.InElastic || easeProp.enumValueIndex == (int)Ease.OutElastic || easeProp.enumValueIndex == (int)Ease.InOutElastic)
+            //    {
+            //        DrawIfExists(property, ref y, position, "amplitude");
+            //        DrawIfExists(property, ref y, position, "period");
+            //    }
+            //    else if (easeProp.enumValueIndex == (int)Ease.InFlash || easeProp.enumValueIndex == (int)Ease.OutFlash || easeProp.enumValueIndex == (int)Ease.InOutFlash)
+            //    {
+            //        DrawIfExists(property, ref y, position, "amplitude", "Flash Count");
+            //        DrawIfExists(property, ref y, position, "period", "Flash Duration");
+            //    }
+            //}
         }
 
         protected virtual string HeaderLabel()
@@ -113,22 +111,22 @@ namespace BeachHero
             lines += Exists("startTime");
             lines += Exists("duration");
             lines += Exists("ease");
-            lines += Exists("snapping");
+           // lines += Exists("snapping");
 
-            var easeProp = property.FindPropertyRelative("ease");
-            if (easeProp != null)
-            {
-                if (easeProp.enumValueIndex == (int)Ease.InBack || easeProp.enumValueIndex == (int)Ease.OutBack || easeProp.enumValueIndex == (int)Ease.InOutBack)
-                {
-                    lines += Exists("overshoot");
-                }
-                else if (easeProp.enumValueIndex == (int)Ease.InElastic || easeProp.enumValueIndex == (int)Ease.OutElastic || easeProp.enumValueIndex == (int)Ease.InOutElastic ||
-                    easeProp.enumValueIndex == (int)Ease.InFlash || easeProp.enumValueIndex == (int)Ease.OutFlash || easeProp.enumValueIndex == (int)Ease.InOutFlash)
-                {
-                    lines += Exists("amplitude");
-                    lines += Exists("period");
-                }
-            }
+            //var easeProp = property.FindPropertyRelative("ease");
+            //if (easeProp != null)
+            //{
+            //    if (easeProp.enumValueIndex == (int)Ease.InBack || easeProp.enumValueIndex == (int)Ease.OutBack || easeProp.enumValueIndex == (int)Ease.InOutBack)
+            //    {
+            //        lines += Exists("overshoot");
+            //    }
+            //    else if (easeProp.enumValueIndex == (int)Ease.InElastic || easeProp.enumValueIndex == (int)Ease.OutElastic || easeProp.enumValueIndex == (int)Ease.InOutElastic ||
+            //        easeProp.enumValueIndex == (int)Ease.InFlash || easeProp.enumValueIndex == (int)Ease.OutFlash || easeProp.enumValueIndex == (int)Ease.InOutFlash)
+            //    {
+            //        lines += Exists("amplitude");
+            //        lines += Exists("period");
+            //    }
+            //}
 
             float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;
             return lines * singleLineTotal;

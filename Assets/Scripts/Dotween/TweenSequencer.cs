@@ -1,8 +1,8 @@
-using DG.Tweening;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using LitMotion;
 
 namespace BeachHero
 {
@@ -18,36 +18,34 @@ namespace BeachHero
         [SerializeReference] private TweenClipBase[] clips;
         [SerializeField] private List<TriggerEvent> triggerEvents = new();
 
-        public int loopCount = 0;              // 0 = no loop, -1 = infinite loop
+        // public int loopCount = 0;              // 0 = no loop, -1 = infinite loop
+        // public LoopType loopType = LoopType.Restart;
         public float delayFrames = 0;           // delay in seconds before starting the sequence
-        public LoopType loopType = LoopType.Restart;
         public float timelineDuration = 1f;
         public TweenClipBase[] Clips => clips;
 
-        public Sequence _sequence;
+        public TweenSequence _sequence;
 
+        public bool IsActive => _sequence.IsActive;
+        public float Duration => _sequence.Duration;
         public void BuildSequence()
         {
             // kill previous
-            if (_sequence != null && _sequence.IsActive())
-            {
-                _sequence.Kill();
-                _sequence = null;
-            }
+            _sequence.Cancel();
 
             ApplyAllFromStates();
+            _sequence = new TweenSequence(LSequence.Create());
             _sequence.SetDelay(delayFrames);
-            _sequence = DOTween.Sequence().SetAutoKill(false).Pause();
 
 #if UNITY_EDITOR
-            if (!Application.isPlaying && loopCount < 0)
-            {
-                loopCount = 10; //  use a finite preview count in Edit Mode
-            }
+            //   if (!Application.isPlaying && loopCount < 0)
+            //   {
+            //      loopCount = 10; //  use a finite preview count in Edit Mode
+            //  }
 #endif
 
             // apply loop settings
-            _sequence.SetLoops(loopCount, loopType);
+            //_sequence.SetLoops(loopCount, loopType);
 
             if (clips == null)
             {
@@ -77,32 +75,28 @@ namespace BeachHero
                     continue;
                 }
                 float triggerTime = Mathf.Clamp01(trigger.timePercent / 100f) * timelineDuration;
-                _sequence.InsertCallback(triggerTime, () => trigger.onTrigger?.Invoke());
+                ;
+                _sequence.Insert(triggerTime, TweenManager.RunCallback(() => trigger.onTrigger?.Invoke()).Handle);
             }
+            _sequence.InitializeHandle();
+            _sequence.Preserve();
+            _sequence.SetPlaybackSpeed(0);
         }
 
         public void Play()
         {
-            if (_sequence == null || !_sequence.IsActive())
+            if (!_sequence.IsActive)
             {
                 BuildSequence();
             }
-            _sequence.Restart();
+            _sequence.SetPlaybackSpeed(1);
         }
 
-        public void Pause()
-        {
-            _sequence?.Pause();
-        }
 
         public void Kill()
         {
             KillAllClips();
-            if (_sequence != null && _sequence.IsActive())
-            {
-                _sequence.Kill();
-                _sequence = null;
-            }
+            _sequence.Cancel();
         }
 
         private void KillAllClips()

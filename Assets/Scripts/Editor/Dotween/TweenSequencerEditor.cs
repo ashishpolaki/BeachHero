@@ -4,8 +4,6 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using UnityEditor.SceneManagement;
-using DG.Tweening;
-using DG.DOTweenEditor;
 
 namespace BeachHero
 {
@@ -22,9 +20,8 @@ namespace BeachHero
         private FieldInfo _sequenceField;
 
         // preview
-        private Sequence _previewSequence;
+        private TweenSequence _previewSequence;
         private float _progress = 0f;
-        private bool _autoReplay = false;
         private bool _isPlaying = false;
 
         // timeline visuals
@@ -101,14 +98,13 @@ namespace BeachHero
             DrawTopToolbar();
             EditorGUILayout.Space(4);
 
-
             // Progress and Duration,Delay sliders
             EditorGUI.BeginChangeCheck();
             EditorGUILayout.Slider(_timelineDurationProp, minimumTimelineDuration, maximumTimelineDuration, new GUIContent("Duration (s)"));
             EditorGUILayout.Slider(_delayProp, 0, 1, new GUIContent("Start Delay (frames)"));
             _progress = EditorGUILayout.Slider("Progress", _progress, 0f, 1f);
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("loopCount"));
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("loopType"));
+            // EditorGUILayout.PropertyField(serializedObject.FindProperty("loopCount"));
+            // EditorGUILayout.PropertyField(serializedObject.FindProperty("loopType"));
             if (EditorGUI.EndChangeCheck())
             {
                 ScrubToProgress(_progress);
@@ -145,17 +141,14 @@ namespace BeachHero
             _sequencer.BuildSequence();
 
             // Pull the runtime sequence from the private field (you already use _sequenceField)
-            _previewSequence = _sequenceField?.GetValue(_sequencer) as Sequence;
+            // _previewSequence = (TweenSequence)_sequenceField?.GetValue(_sequencer);
+            _previewSequence = _sequencer._sequence;
 
-            if (_previewSequence != null)
+            if (_previewSequence.IsValid)
             {
-                // Prepare preview. Use _isPlaying to keep playing/paused state if possible.
-                DOTweenEditorPreview.PrepareTweenForPreview(_previewSequence, true, true, _isPlaying);
-
-                // If preview is not playing, keep it at the current progress; if playing, resume from that time.
-                float totalNow = Mathf.Max(0.0001f, _previewSequence.Duration());
+                float totalNow = Mathf.Max(0.0001f, _previewSequence.Duration);
                 float time = Mathf.Clamp01(_progress) * totalNow;
-                _previewSequence.Goto(time, andPlay: _isPlaying);
+                _previewSequence.SetSlider(time);
             }
 
             // Mark dirty so Unity will prompt to save scene/prefab changes
@@ -363,7 +356,7 @@ namespace BeachHero
             {
                 if (GUILayout.Button("Play", GUILayout.Width(64)))
                 {
-                    StartPreview(playImmediately: true);
+                    StartPreview();
                 }
             }
             else
@@ -379,8 +372,6 @@ namespace BeachHero
                 StopPreviewAndCleanup();
                 _progress = 0f;
             }
-
-            _autoReplay = GUILayout.Toggle(_autoReplay, "Auto Replay", "Button", GUILayout.Width(100));
 
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
@@ -824,16 +815,17 @@ namespace BeachHero
             serializedObject.ApplyModifiedProperties();
             EditorUtility.SetDirty(_sequencer);
             // update preview live if playing
-            if (_previewSequence != null && _previewSequence.IsActive())
-            {
-                _sequencer.BuildSequence();
-                _previewSequence = _sequenceField?.GetValue(_sequencer) as Sequence;
-                // keep preview playing from same progress
-                float totalNow = ComputeTotalDuration();
-                float time = Mathf.Clamp01(_progress) * Mathf.Max(0.0001f, totalNow);
 
-                _previewSequence.Goto(time, andPlay: _isPlaying);
-            }
+            //if (_previewSequence != null && _previewSequence.IsActive())
+            //{
+            //    _sequencer.BuildSequence();
+            //    _previewSequence = _sequenceField?.GetValue(_sequencer) as Sequence;
+            //    // keep preview playing from same progress
+            //    float totalNow = ComputeTotalDuration();
+            //    float time = Mathf.Clamp01(_progress) * Mathf.Max(0.0001f, totalNow);
+
+            //    _previewSequence.Goto(time, andPlay: _isPlaying);
+            //}
         }
 
         private void EndDrag()
@@ -965,16 +957,16 @@ namespace BeachHero
             menu.AddItem(new GUIContent("Shake/Rotation"), false, () => AddClip(typeof(ShakeRotationClip)));
             menu.AddItem(new GUIContent("Shake/Scale"), false, () => AddClip(typeof(ShakeScaleClip)));
             //Blendable
-            menu.AddItem(new GUIContent("Blendable/Scale"), false, () => AddClip(typeof(BlendableScaleClip)));
-            menu.AddItem(new GUIContent("Blendable/Position"), false, () => AddClip(typeof(BlendablePositionClip)));
-            menu.AddItem(new GUIContent("Blendable/Rotation"), false, () => AddClip(typeof(BlendableRotationClip)));
-            menu.AddItem(new GUIContent("Blendable/Punch Rotation"), false, () => AddClip(typeof(BlendablePunchRotationClip)));
-            //Image
-            menu.AddItem(new GUIContent("Image/Fade"), false, () => AddClip(typeof(ImageFadeClip)));
-            menu.AddItem(new GUIContent("Image/Fill Amount"), false, () => AddClip(typeof(ImageFillAmountClip)));
-            menu.AddItem(new GUIContent("Image/Gradient Color"), false, () => AddClip(typeof(ImageGradientColorClip)));
-            //CanvasGroup
-            menu.AddItem(new GUIContent("CanvasGroup/Fade"), false, () => AddClip(typeof(CanvasGroupFadeClip)));
+            //menu.AddItem(new GUIContent("Blendable/Scale"), false, () => AddClip(typeof(BlendableScaleClip)));
+            //menu.AddItem(new GUIContent("Blendable/Position"), false, () => AddClip(typeof(BlendablePositionClip)));
+            //menu.AddItem(new GUIContent("Blendable/Rotation"), false, () => AddClip(typeof(BlendableRotationClip)));
+            //menu.AddItem(new GUIContent("Blendable/Punch Rotation"), false, () => AddClip(typeof(BlendablePunchRotationClip)));
+            ////Image
+            //menu.AddItem(new GUIContent("Image/Fade"), false, () => AddClip(typeof(ImageFadeClip)));
+            //menu.AddItem(new GUIContent("Image/Fill Amount"), false, () => AddClip(typeof(ImageFillAmountClip)));
+            //menu.AddItem(new GUIContent("Image/Gradient Color"), false, () => AddClip(typeof(ImageGradientColorClip)));
+            ////CanvasGroup
+            //menu.AddItem(new GUIContent("CanvasGroup/Fade"), false, () => AddClip(typeof(CanvasGroupFadeClip)));
             menu.ShowAsContext();
         }
 
@@ -1002,16 +994,16 @@ namespace BeachHero
                 ShakeRotationClip => "Shake Rotation",
                 ShakeScaleClip => "Shake Scale",
                 //Blendable
-                BlendableScaleClip => "Blend Scale",
-                BlendablePositionClip => "Blend Pos",
-                BlendableRotationClip => "Blend Rotation",
-                BlendablePunchRotationClip => "Blend Punch Rotation",
-                //Image
-                ImageFadeClip => "Image Fade",
-                ImageFillAmountClip => "Image Fill",
-                ImageGradientColorClip => "Image Gradient",
-                //CanvasGroup
-                CanvasGroupFadeClip => "CanvasGroup Fade",
+                //BlendableScaleClip => "Blend Scale",
+                //BlendablePositionClip => "Blend Pos",
+                //BlendableRotationClip => "Blend Rotation",
+                //BlendablePunchRotationClip => "Blend Punch Rotation",
+                ////Image
+                //ImageFadeClip => "Image Fade",
+                //ImageFillAmountClip => "Image Fill",
+                //ImageGradientColorClip => "Image Gradient",
+                ////CanvasGroup
+                //CanvasGroupFadeClip => "CanvasGroup Fade",
                 _ => "Unknown"
             };
 
@@ -1071,18 +1063,18 @@ namespace BeachHero
                 ShakeScaleClip => new Color(1.00f, 0.95f, 0.55f),        // Pale Gold
 
                 // Blendable (Magenta family — high contrast)
-                BlendableScaleClip => new Color(0.80f, 0.30f, 0.90f),      // Magenta
-                BlendablePositionClip => new Color(1.00f, 0.60f, 1.00f),   // Light Pink
-                BlendableRotationClip => new Color(0.90f, 0.70f, 1.00f),   // Lavender
-                BlendablePunchRotationClip => new Color(0.60f, 0.20f, 0.70f),   // Deep Purple
+                //BlendableScaleClip => new Color(0.80f, 0.30f, 0.90f),      // Magenta
+                //BlendablePositionClip => new Color(1.00f, 0.60f, 1.00f),   // Light Pink
+                //BlendableRotationClip => new Color(0.90f, 0.70f, 1.00f),   // Lavender
+                //BlendablePunchRotationClip => new Color(0.60f, 0.20f, 0.70f),   // Deep Purple
 
-                // Image 
-                ImageFadeClip => new Color(1.00f, 0.75f, 0.70f),      // Peach Tint
-                ImageFillAmountClip => new Color(1.00f, 0.65f, 0.85f),     // Light Rose
-                ImageGradientColorClip => new Color(1.00f, 0.55f, 0.75f), // Pinkish
+                //// Image 
+                //ImageFadeClip => new Color(1.00f, 0.75f, 0.70f),      // Peach Tint
+                //ImageFillAmountClip => new Color(1.00f, 0.65f, 0.85f),     // Light Rose
+                //ImageGradientColorClip => new Color(1.00f, 0.55f, 0.75f), // Pinkish
 
-                // CanvasGroup  
-                CanvasGroupFadeClip => new Color(0.55f, 0.85f, 0.95f), // Soft Cyan Mist
+                //// CanvasGroup  
+                //CanvasGroupFadeClip => new Color(0.55f, 0.85f, 0.95f), // Soft Cyan Mist
 
                 // misc
                 _ => Color.gray
@@ -1102,60 +1094,48 @@ namespace BeachHero
             _selectedClipIndex = -1;
         }
 
-        private void StartPreview(bool playImmediately = true)
+        private void StartPreview()
         {
             if (_sequencer == null) return;
 
-            DOTweenEditorPreview.Stop();
-
+            if (_previewSequence.IsActive)
+            {
+                _previewSequence.Cancel();
+            }
             _sequencer.ApplyAllFromStates();
             _sequencer.Kill();
             _sequencer.BuildSequence();
-
             _previewSequence = _sequencer._sequence;
-            if (_previewSequence == null)
+
+            if (!_previewSequence.IsValid)
             {
                 DebugUtils.LogWarning("No sequence built - check clips configuration.");
                 return;
             }
 
-            if (_autoReplay)
-            {
-                _previewSequence.SetLoops(10, LoopType.Restart);
-            }
-
-            DOTween.Init(false, true, LogBehaviour.ErrorsOnly);
-            DOTweenEditorPreview.PrepareTweenForPreview(_previewSequence, true, true, true);
-
-            DOTweenEditorPreview.Start(() => { SceneView.RepaintAll(); });
-
-            if (playImmediately)
-                _previewSequence.Restart();
-
+            _sequencer.Play();
             _isPlaying = true;
         }
 
         private void PausePreview()
         {
-            if (_previewSequence != null && _previewSequence.IsActive())
+            if (_previewSequence.IsPlaying)
             {
-                _previewSequence.Pause();
-                _isPlaying = false;
+                _previewSequence.SetPlaybackSpeed(0);
             }
+            _isPlaying = false;
         }
 
         private void StopPreviewAndCleanup()
         {
-            if (_previewSequence != null)
+            if (_previewSequence.IsActive)
             {
-                _previewSequence.Complete(true);
-                _previewSequence.Kill();
-                _previewSequence = null;
+                _previewSequence.Cancel();
             }
             if (_sequencer != null)
+            {
                 _sequencer.Kill();
-
-            DOTweenEditorPreview.Stop();
+            }
 
             _isPlaying = false;
 
@@ -1167,16 +1147,16 @@ namespace BeachHero
         {
             if (_sequencer.Clips.Length > 0)
             {
-                if (_previewSequence == null || _sequencer == null)
+                if (!_sequencer.IsActive)
                 {
                     _sequencer.ApplyAllFromStates();
                     _sequencer.BuildSequence();
                     _previewSequence = _sequencer._sequence;
-                    DOTweenEditorPreview.PrepareTweenForPreview(_previewSequence, true, true, false);
                 }
                 float normalized = Mathf.Clamp01(progress);
-                float time = normalized * _previewSequence.Duration();
-                _previewSequence.Goto(time, andPlay: false);
+                float time = normalized * _sequencer.Duration;
+                _previewSequence.SetPlaybackSpeed(0);
+                _previewSequence.SetSlider(time);
                 EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene);
                 SceneView.RepaintAll();
             }
