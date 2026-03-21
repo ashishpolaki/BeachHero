@@ -4,6 +4,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using UnityEditor.SceneManagement;
+using UnityEngine.UI;
 
 namespace BeachHero
 {
@@ -949,24 +950,16 @@ namespace BeachHero
             menu.AddItem(new GUIContent("Rotate/Rotate"), false, () => AddClip(typeof(RotateClip)));
             //Punch
             menu.AddItem(new GUIContent("Punch/Position"), false, () => AddClip(typeof(PunchPositionClip)));
-            menu.AddItem(new GUIContent("Punch/Rotation"), false, () => AddClip(typeof(PunchRotationClip)));
             menu.AddItem(new GUIContent("Punch/Scale"), false, () => AddClip(typeof(PunchScaleClip)));
-            menu.AddItem(new GUIContent("Punch/Anchor Position"), false, () => AddClip(typeof(PunchAnchorPosClip)));
             //Shake
             menu.AddItem(new GUIContent("Shake/Position"), false, () => AddClip(typeof(ShakePositionClip)));
-            menu.AddItem(new GUIContent("Shake/Rotation"), false, () => AddClip(typeof(ShakeRotationClip)));
             menu.AddItem(new GUIContent("Shake/Scale"), false, () => AddClip(typeof(ShakeScaleClip)));
-            //Blendable
-            //menu.AddItem(new GUIContent("Blendable/Scale"), false, () => AddClip(typeof(BlendableScaleClip)));
-            //menu.AddItem(new GUIContent("Blendable/Position"), false, () => AddClip(typeof(BlendablePositionClip)));
-            //menu.AddItem(new GUIContent("Blendable/Rotation"), false, () => AddClip(typeof(BlendableRotationClip)));
-            //menu.AddItem(new GUIContent("Blendable/Punch Rotation"), false, () => AddClip(typeof(BlendablePunchRotationClip)));
-            ////Image
-            //menu.AddItem(new GUIContent("Image/Fade"), false, () => AddClip(typeof(ImageFadeClip)));
-            //menu.AddItem(new GUIContent("Image/Fill Amount"), false, () => AddClip(typeof(ImageFillAmountClip)));
-            //menu.AddItem(new GUIContent("Image/Gradient Color"), false, () => AddClip(typeof(ImageGradientColorClip)));
-            ////CanvasGroup
-            //menu.AddItem(new GUIContent("CanvasGroup/Fade"), false, () => AddClip(typeof(CanvasGroupFadeClip)));
+            //Image
+            menu.AddItem(new GUIContent("Image/Fade"), false, () => AddClip(typeof(ImageFadeClip)));
+            menu.AddItem(new GUIContent("Image/Fill Amount"), false, () => AddClip(typeof(ImageFillAmountClip)));
+            menu.AddItem(new GUIContent("Image/Gradient Color"), false, () => AddClip(typeof(ImageGradientColorClip)));
+            //CanvasGroup
+            menu.AddItem(new GUIContent("CanvasGroup/Fade"), false, () => AddClip(typeof(CanvasGroupFadeClip)));
             menu.ShowAsContext();
         }
 
@@ -986,24 +979,16 @@ namespace BeachHero
                 RotateClip => "Rotate",
                 //Punch
                 PunchPositionClip => "Punch Pos",
-                PunchRotationClip => "Punch Rotation",
                 PunchScaleClip => "Punch Scale",
-                PunchAnchorPosClip => "Punch Anchor Pos",
                 //Shake
                 ShakePositionClip => "Shake Pos",
-                ShakeRotationClip => "Shake Rotation",
                 ShakeScaleClip => "Shake Scale",
-                //Blendable
-                //BlendableScaleClip => "Blend Scale",
-                //BlendablePositionClip => "Blend Pos",
-                //BlendableRotationClip => "Blend Rotation",
-                //BlendablePunchRotationClip => "Blend Punch Rotation",
-                ////Image
-                //ImageFadeClip => "Image Fade",
-                //ImageFillAmountClip => "Image Fill",
-                //ImageGradientColorClip => "Image Gradient",
-                ////CanvasGroup
-                //CanvasGroupFadeClip => "CanvasGroup Fade",
+                //Image
+                ImageFadeClip => "Image Fade",
+                ImageFillAmountClip => "Image Fill",
+                ImageGradientColorClip => "Image Gradient",
+                //CanvasGroup
+                CanvasGroupFadeClip => "CanvasGroup Fade",
                 _ => "Unknown"
             };
 
@@ -1031,6 +1016,11 @@ namespace BeachHero
                     {
                         targetName = cg.gameObject.name;
                     }
+                    Image img = targetValue as Image;
+                    if (img != null)
+                    {
+                        targetName = img.gameObject.name;
+                    }
                 }
             }
 
@@ -1053,28 +1043,21 @@ namespace BeachHero
 
                 // Punch (Green family, separated by tone)
                 PunchPositionClip => new Color(0.10f, 0.70f, 0.35f),      // Emerald
-                PunchRotationClip => new Color(0.00f, 0.80f, 0.55f),      // Mint
+                                                                          // Mint
                 PunchScaleClip => new Color(0.00f, 0.90f, 0.45f),         // Bright Green
-                PunchAnchorPosClip => new Color(0.20f, 0.65f, 0.40f),      // Forest Green
+                                                                          // Forest Green
 
                 // Shake (Golds)
                 ShakePositionClip => new Color(0.95f, 0.75f, 0.10f),      // Golden Yellow
-                ShakeRotationClip => new Color(1.00f, 0.85f, 0.30f),      // Warm Yellow
                 ShakeScaleClip => new Color(1.00f, 0.95f, 0.55f),        // Pale Gold
 
-                // Blendable (Magenta family — high contrast)
-                //BlendableScaleClip => new Color(0.80f, 0.30f, 0.90f),      // Magenta
-                //BlendablePositionClip => new Color(1.00f, 0.60f, 1.00f),   // Light Pink
-                //BlendableRotationClip => new Color(0.90f, 0.70f, 1.00f),   // Lavender
-                //BlendablePunchRotationClip => new Color(0.60f, 0.20f, 0.70f),   // Deep Purple
+                // Image 
+                ImageFadeClip => new Color(1.00f, 0.75f, 0.70f),      // Peach Tint
+                ImageFillAmountClip => new Color(1.00f, 0.65f, 0.85f),     // Light Rose
+                ImageGradientColorClip => new Color(1.00f, 0.55f, 0.75f), // Pinkish
 
-                //// Image 
-                //ImageFadeClip => new Color(1.00f, 0.75f, 0.70f),      // Peach Tint
-                //ImageFillAmountClip => new Color(1.00f, 0.65f, 0.85f),     // Light Rose
-                //ImageGradientColorClip => new Color(1.00f, 0.55f, 0.75f), // Pinkish
-
-                //// CanvasGroup  
-                //CanvasGroupFadeClip => new Color(0.55f, 0.85f, 0.95f), // Soft Cyan Mist
+                // CanvasGroup  
+                CanvasGroupFadeClip => new Color(0.55f, 0.85f, 0.95f), // Soft Cyan Mist
 
                 // misc
                 _ => Color.gray
@@ -1139,7 +1122,10 @@ namespace BeachHero
 
             _isPlaying = false;
 
-            EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene);
+            if (_sequencer != null)
+            {
+                EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene);
+            }
             SceneView.RepaintAll();
         }
 

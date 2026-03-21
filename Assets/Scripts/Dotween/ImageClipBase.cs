@@ -1,4 +1,5 @@
 using DG.Tweening;
+using LitMotion;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,8 +10,8 @@ namespace BeachHero
     public abstract class ImageClipBase : TweenClipBase
     {
         public Image target;
-        public float fromFillAmount = 1f;
-        public float toFillAmount = 0f;
+        public float fromValue = 1f;
+        public float toValue = 0f;
 
         public ImageClipBase()
         {
@@ -21,7 +22,7 @@ namespace BeachHero
         {
             if (target != null)
             {
-                target.fillAmount = fromFillAmount;
+                target.fillAmount = fromValue;
             }
         }
     }
@@ -29,45 +30,40 @@ namespace BeachHero
     [Serializable]
     public class ImageFillAmountClip : ImageClipBase
     {
-        protected override Tween CreateTweenCore()
+        protected override MotionHandle CreateTweenCore()
         {
             if (target == null)
             {
                 DebugUtils.LogError("Target Image is null.");
-                return null;
             }
-
-            return target.DOFillAmount(toFillAmount, duration);
+            return TweenManager.FillAmount(target, fromValue, toValue, duration, ease).Handle;
         }
     }
-
+    [Serializable]
     public class ImageFadeClip : ImageClipBase
     {
-        protected override Tween CreateTweenCore()
+        protected override MotionHandle CreateTweenCore()
         {
             if (target == null)
             {
                 DebugUtils.LogError("Target Image is null.");
-                return null;
             }
-
-            return target.DOFade(toFillAmount, duration);
+            return TweenManager.Fade(target, fromValue, toValue, duration, ease).Handle;
         }
     }
-
+    [Serializable]
     public class ImageGradientColorClip : ImageClipBase
     {
         public Color fromColor = Color.white;
         public Color toColor = Color.black;
 
-        protected override Tween CreateTweenCore()
+        protected override MotionHandle CreateTweenCore()
         {
             if (target == null)
             {
                 DebugUtils.LogError("Target Image is null.");
-                return null;
             }
-            return target.DOColor(toColor, duration);
+            return TweenManager.Color(target, fromColor, toColor, duration, ease).Handle;
         }
 
         public override void ApplyFromState()

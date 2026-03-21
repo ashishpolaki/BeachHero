@@ -10,7 +10,7 @@ namespace BeachHero
         protected override void DrawBaseFields(SerializedProperty property, ref float y, Rect position, GUIContent label)
         {
             base.DrawBaseFields(property, ref y, position, label);
-            DrawIfExists(property, ref y, position, "fromFillAmount");
+
             DrawIfExists(property, ref y, position, "target");
         }
 
@@ -18,7 +18,6 @@ namespace BeachHero
         {
             float baseHeight = base.GetPropertyHeight(property, label);
             int extraLines = 1;
-            extraLines += HasProperty(property, "fromFillAmount");
             extraLines += HasProperty(property, "target");
             float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;
             return baseHeight + extraLines * singleLineTotal;
@@ -42,7 +41,8 @@ namespace BeachHero
             DrawBaseFields(property, ref y, position, label);
 
             // draw ImageFadeClip fields via inherited helper
-            DrawIfExists(property, ref y, position, "toFillAmount");
+            DrawIfExists(property, ref y, position, "fromValue");
+            DrawIfExists(property, ref y, position, "toValue");
 
             PropertyEndCheck(property);
         }
@@ -51,7 +51,8 @@ namespace BeachHero
         {
             float baseHeight = base.GetPropertyHeight(property, label);
             int extraLines = 1;
-            extraLines += HasProperty(property, "toFillAmount");
+            extraLines += HasProperty(property, "fromValue");
+            extraLines += HasProperty(property, "toValue");
             float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;
             return baseHeight + extraLines * singleLineTotal;
         }
@@ -74,7 +75,8 @@ namespace BeachHero
             DrawBaseFields(property, ref y, position, label);
 
             // draw ImageFillAmountClip fields via inherited helper
-            DrawIfExists(property, ref y, position, "toFillAmount");
+            DrawIfExists(property, ref y, position, "fromValue");
+            DrawIfExists(property, ref y, position, "toValue");
 
             PropertyEndCheck(property);
         }
@@ -83,7 +85,8 @@ namespace BeachHero
         {
             float baseHeight = base.GetPropertyHeight(property, label);
             int extraLines = 1;
-            extraLines += HasProperty(property, "toFillAmount");
+            extraLines += HasProperty(property, "fromValue");
+            extraLines += HasProperty(property, "toValue");
             float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;
             return baseHeight + extraLines * singleLineTotal;
         }
@@ -115,7 +118,7 @@ namespace BeachHero
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             float baseHeight = base.GetPropertyHeight(property, label);
-            int extraLines = 2;
+            int extraLines = 0;
             extraLines += HasProperty(property, "fromColor");
             extraLines += HasProperty(property, "toColor");
             float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;

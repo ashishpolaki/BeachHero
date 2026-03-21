@@ -11,11 +11,12 @@ namespace BeachHero
         {
             base.DrawBaseFields(property, ref y, position, label);
             DrawIfExists(property, ref y, position, "target");
-            DrawIfExists(property, ref y, position, "strength");
-            DrawIfExists(property, ref y, position, "vibrato");
-            DrawIfExists(property, ref y, position, "randomness");
-            DrawIfExists(property, ref y, position, "fadeOut");
             DrawIfExists(property, ref y, position, "originalScale");
+            DrawIfExists(property, ref y, position, "startValue");
+            DrawIfExists(property, ref y, position, "strength");
+            DrawIfExists(property, ref y, position, "frequency");
+            DrawIfExists(property, ref y, position, "dampingRatio");
+            DrawIfExists(property, ref y, position, "randomSeed");
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -34,11 +35,12 @@ namespace BeachHero
             float baseHeight = base.GetPropertyHeight(property, label);
             int extraLines = 1;
             extraLines += HasProperty(property, "target");
-            extraLines += HasProperty(property, "strength");
-            extraLines += HasProperty(property, "vibrato");
-            extraLines += HasProperty(property, "randomness");
-            extraLines += HasProperty(property, "fadeOut");
             extraLines += HasProperty(property, "originalScale");
+            extraLines += HasProperty(property, "startValue");
+            extraLines += HasProperty(property, "strength");
+            extraLines += HasProperty(property, "frequency");
+            extraLines += HasProperty(property, "dampingRatio");
+            extraLines += HasProperty(property, "randomSeed");
             float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;
             return baseHeight + extraLines * singleLineTotal;
         }
@@ -50,15 +52,6 @@ namespace BeachHero
         protected override string HeaderLabel()
         {
             return "Shake Position";
-        }
-    }
-
-    [CustomPropertyDrawer(typeof(ShakeRotationClip), true)]
-    public class ShakeRotationClipDrawer : ShakeClipBaseDrawer
-    {
-        protected override string HeaderLabel()
-        {
-            return "Shake Rotation";
         }
     }
 

@@ -11,10 +11,11 @@ namespace BeachHero
         {
             base.DrawBaseFields(property, ref y, position, label);
             DrawIfExists(property, ref y, position, "target");
-            DrawIfExists(property, ref y, position, "punch");
-            DrawIfExists(property, ref y, position, "vibrato");
-            DrawIfExists(property, ref y, position, "elasticity");
             DrawIfExists(property, ref y, position, "originalScale");
+            DrawIfExists(property, ref y, position, "startValue");
+            DrawIfExists(property, ref y, position, "strength");
+            DrawIfExists(property, ref y, position, "transformSpace");
+            DrawIfExists(property, ref y, position, "frequency");
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
@@ -22,10 +23,11 @@ namespace BeachHero
             float baseHeight = base.GetPropertyHeight(property, label);
             int extraLines = 1;
             extraLines += HasProperty(property, "target");
-            extraLines += HasProperty(property, "punch");
-            extraLines += HasProperty(property, "vibrato");
-            extraLines += HasProperty(property, "elasticity");
             extraLines += HasProperty(property, "originalScale");
+            extraLines += HasProperty(property, "startValue");
+            extraLines += HasProperty(property, "strength");
+            extraLines += HasProperty(property, "transformSpace");
+            extraLines += HasProperty(property, "frequency");
             float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;
             return baseHeight + extraLines * singleLineTotal;
         }
@@ -51,30 +53,12 @@ namespace BeachHero
         }
     }
 
-    [CustomPropertyDrawer(typeof(PunchRotationClip), true)]
-    public class PunchRotationClipDrawer : PunchClipBaseDrawer
-    {
-        protected override string HeaderLabel()
-        {
-            return "Punch Rotation";
-        }
-    }
-
     [CustomPropertyDrawer(typeof(PunchScaleClip), true)]
     public class PunchScaleClipDrawer : PunchClipBaseDrawer
     {
         protected override string HeaderLabel()
         {
             return "Punch Scale";
-        }
-    }
-
-    [CustomPropertyDrawer(typeof(PunchAnchorPosClip), true)]
-    public class PunchAnchorPosClipDrawer : PunchClipBaseDrawer
-    {
-        protected override string HeaderLabel()
-        {
-            return "Punch Anchor Pos";
         }
     }
 }

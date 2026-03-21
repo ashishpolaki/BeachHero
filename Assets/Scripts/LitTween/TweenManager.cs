@@ -1,8 +1,8 @@
 // TweenManager.cs - Complete Static Manager for LitMotion
 using LitMotion;
 using LitMotion.Extensions;
-using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace BeachHero
 {
@@ -218,25 +218,75 @@ namespace BeachHero
         }
         #endregion
 
-        public static TweenHandle Shake(Transform transform, Vector3 strength, float duration,
-            Ease ease = Ease.Linear, System.Action onComplete = null)
+        #region Punch
+        public static TweenHandle PunchPosition(Transform transform, Vector3 amplitude, Vector3 strength,
+            int frequency, float dampingRatio, float duration, Ease ease = Ease.Linear,
+            TransformSpace transformSpace = TransformSpace.World, System.Action onComplete = null)
         {
-            var motion = LMotion.Shake.Create(transform.position, strength, duration).WithEase(ease);
+            var motion = LMotion.Punch.Create(amplitude, strength, duration).WithFrequency(frequency).WithDampingRatio(dampingRatio).WithEase(ease);
+            TweenHandle handle = default;
             if (onComplete != null)
+            {
                 motion = motion.WithOnComplete(onComplete);
-            var handle = motion.BindToPosition(transform);
-            return new TweenHandle(handle);
+            }
+            if (transformSpace == TransformSpace.World)
+            {
+                handle = new TweenHandle(motion.BindToPosition(transform));
+            }
+            else
+            {
+                handle = new TweenHandle(motion.BindToLocalPosition(transform));
+            }
+            return handle;
         }
 
-        public static TweenHandle Punch(Transform transform, Vector3 strength, float duration,
+        public static TweenHandle PunchScale(Transform transform, Vector3 amplitude, Vector3 strength,
+          int frequency, float dampingRatio, float duration, Ease ease = Ease.Linear,
+          System.Action onComplete = null)
+        {
+            var motion = LMotion.Punch.Create(amplitude, strength, duration).WithFrequency(frequency)
+                .WithDampingRatio(dampingRatio).WithEase(ease);
+            if (onComplete != null)
+            {
+                motion = motion.WithOnComplete(onComplete);
+            }
+            TweenHandle handle = new TweenHandle(motion.BindToLocalScale(transform));
+            return handle;
+        }
+        #endregion
+
+        #region Shake
+        public static TweenHandle ShakePosition(Transform transform, Vector3 startValue, Vector3 strength,
+            int frequency, float duration, float dampingRatio = 0, uint randomSeed = 123,
             Ease ease = Ease.Linear, System.Action onComplete = null)
         {
-            var motion = LMotion.Punch.Create(transform.position, strength, duration).WithEase(ease);
+            var motion = LMotion.Shake.Create(startValue, strength, duration).WithFrequency(frequency)
+             .WithDampingRatio(dampingRatio).WithRandomSeed(randomSeed).WithEase(ease);
+
             if (onComplete != null)
+            {
                 motion = motion.WithOnComplete(onComplete);
+            }
+
             var handle = motion.BindToPosition(transform);
             return new TweenHandle(handle);
         }
+        public static TweenHandle ShakeScale(Transform transform, Vector3 startValue, Vector3 strength,
+            int frequency, float duration, float dampingRatio = 0, uint randomSeed = 123,
+            Ease ease = Ease.Linear, System.Action onComplete = null)
+        {
+            var motion = LMotion.Shake.Create(startValue, strength, duration).WithFrequency(frequency)
+             .WithDampingRatio(dampingRatio).WithRandomSeed(randomSeed).WithEase(ease);
+            if (onComplete != null)
+            {
+                motion = motion.WithOnComplete(onComplete);
+            }
+            var handle = motion.BindToLocalScale(transform);
+            return new TweenHandle(handle);
+        }
+        #endregion
+
+        #region Generic Value Tweens
 
         public static TweenHandle SetFloat(float from, float to, float duration,
             System.Action<float> setter, Ease ease = Ease.Linear, System.Action onComplete = null)
@@ -276,11 +326,63 @@ namespace BeachHero
         {
             var motion = LMotion.Create(0, 0, 0);
             if (onComplete != null)
+            {
                 motion = motion.WithOnComplete(onComplete);
+            }
             var handle = motion.RunWithoutBinding();
             return new TweenHandle(handle);
         }
+        #endregion
 
+        #region Image
+        public static TweenHandle FillAmount(Image target, float from, float to, float duration,
+            Ease ease = Ease.Linear, System.Action onComplete = null)
+        {
+            var motion = LMotion.Create(from, to, duration).WithEase(ease);
+            if (onComplete != null)
+            {
+                motion = motion.WithOnComplete(onComplete);
+            }
+            var handle = motion.BindToFillAmount(target);
+            return new TweenHandle(handle);
+        }
+        public static TweenHandle Fade(Image target, float from, float to, float duration,
+            Ease ease = Ease.Linear, System.Action onComplete = null)
+        {
+            var motion = LMotion.Create(from, to, duration).WithEase(ease);
+            if (onComplete != null)
+            {
+                motion = motion.WithOnComplete(onComplete);
+            }
+            var handle = motion.BindToColorA(target);
+            return new TweenHandle(handle);
+        }
+        public static TweenHandle Color(Image target, Color from, Color to, float duration,
+            Ease ease = Ease.Linear, System.Action onComplete = null)
+        {
+            var motion = LMotion.Create(from, to, duration).WithEase(ease);
+            if (onComplete != null)
+            {
+                motion = motion.WithOnComplete(onComplete);
+            }
+            var handle = motion.BindToColor(target);
+            return new TweenHandle(handle);
+        }
+        #endregion
+
+        #region CanvasGroup 
+        public static TweenHandle Fade(CanvasGroup target, float from, float to, float duration,
+          Ease ease = Ease.Linear, System.Action onComplete = null)
+        {
+            var motion = LMotion.Create(from, to, duration).WithEase(ease);
+            if (onComplete != null)
+            {
+                motion = motion.WithOnComplete(onComplete);
+            }
+            var handle = motion.BindToAlpha(target);
+            return new TweenHandle(handle);
+        }
+        #endregion
     }
 
     public struct TweenHandle

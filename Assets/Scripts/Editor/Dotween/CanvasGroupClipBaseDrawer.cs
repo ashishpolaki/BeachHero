@@ -4,22 +4,22 @@ using UnityEngine;
 
 namespace BeachHero
 {
-    [CustomPropertyDrawer(typeof(CanvasGroupClipBase),true)]
+    [CustomPropertyDrawer(typeof(CanvasGroupClipBase), true)]
     public class CanvasGroupClipBaseDrawer : TweenClipBaseDrawer
     {
         protected override void DrawBaseFields(SerializedProperty property, ref float y, Rect position, GUIContent label)
         {
             base.DrawBaseFields(property, ref y, position, label);
-            DrawIfExists(property, ref y, position, "fromAlpha");
             DrawIfExists(property, ref y, position, "target");
+            DrawIfExists(property, ref y, position, "fromAlpha");
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             float baseHeight = base.GetPropertyHeight(property, label);
             int extraLines = 1;
-            extraLines += HasProperty(property, "fromAlpha");
             extraLines += HasProperty(property, "target");
+            extraLines += HasProperty(property, "fromAlpha");
             float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;
             return baseHeight + extraLines * singleLineTotal;
         }

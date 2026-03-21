@@ -95,6 +95,7 @@ namespace BeachHero
         protected void DrawIfExists(SerializedProperty parent, ref float y, Rect position, string propName, string labelOverride = null)
         {
             SerializedProperty prop = parent.FindPropertyRelative(propName);
+
             if (prop != null)
             {
                 Rect fieldRect = new Rect(position.x, y, position.width, EditorGUIUtility.singleLineHeight);

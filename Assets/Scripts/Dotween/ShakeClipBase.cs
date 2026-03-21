@@ -1,4 +1,4 @@
-using DG.Tweening;
+using LitMotion;
 using System;
 using UnityEngine;
 
@@ -8,11 +8,12 @@ namespace BeachHero
     public abstract class ShakeClipBase : TweenClipBase
     {
         public Transform target;
-        public Vector3 strength = Vector3.one;
-        public int vibrato = 10;
-        public float randomness = 90f;
-        public bool fadeOut = true;
         public Vector3 originalScale = Vector3.one;
+        public Vector3 startValue = Vector3.one;
+        public Vector3 strength = Vector3.one;
+        public int frequency = 10;
+        public float dampingRatio = 0.5f;
+        public uint randomSeed = 0;
 
         public ShakeClipBase()
         {
@@ -32,42 +33,26 @@ namespace BeachHero
     [Serializable]
     public class ShakePositionClip : ShakeClipBase
     {
-        protected override Tween CreateTweenCore()
+        protected override MotionHandle CreateTweenCore()
         {
             if (target == null)
             {
                 DebugUtils.LogError("Target Transform is null.");
-                return null;
             }
-            return target.DOShakePosition(duration, strength, vibrato, randomness, snapping, fadeOut);
-        }
-    }
-
-    [Serializable]
-    public class ShakeRotationClip : ShakeClipBase
-    {
-        protected override Tween CreateTweenCore()
-        {
-            if (target == null)
-            {
-                DebugUtils.LogError("Target Transform is null.");
-                return null;
-            }
-            return target.DOShakeRotation(duration, strength, vibrato, randomness, fadeOut);
+            return TweenManager.ShakePosition(target, startValue, strength, frequency, duration, dampingRatio, randomSeed, ease, null).Handle;
         }
     }
 
     [Serializable]
     public class ShakeScaleClip : ShakeClipBase
     {
-        protected override Tween CreateTweenCore()
+        protected override MotionHandle CreateTweenCore()
         {
             if (target == null)
             {
                 DebugUtils.LogError("Target Transform is null.");
-                return null;
             }
-            return target.DOShakeScale(duration, strength, vibrato, randomness, fadeOut);
+            return TweenManager.ShakeScale(target, startValue, strength, frequency, duration, dampingRatio, randomSeed, ease, null).Handle;
         }
     }
 }
