@@ -102,7 +102,10 @@ namespace BeachHero
         private void KillAllClips()
         {
             if (clips == null) return;
-            foreach (var c in clips) c?.KillTween();
+            foreach (var c in clips)
+            {
+                c?.KillTween();
+            }
         }
 
         public void ApplyAllFromStates()

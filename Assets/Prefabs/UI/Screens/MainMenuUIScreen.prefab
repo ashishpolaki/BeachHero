@@ -37,7 +37,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -162, y: 123.5}
+  m_AnchoredPosition: {x: -162, y: 109}
   m_SizeDelta: {x: 260, y: 155}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3975954916216579080
@@ -884,7 +884,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 162, y: 123.5}
+  m_AnchoredPosition: {x: 162, y: 109}
   m_SizeDelta: {x: 260, y: 155}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7148990948911149930
@@ -1001,7 +1001,7 @@ GameObject:
   - component: {fileID: 6775987231188612698}
   - component: {fileID: 637785682468258111}
   - component: {fileID: 7017788322635099548}
-  - component: {fileID: 1852807306873934527}
+  - component: {fileID: 4957659438004857057}
   m_Layer: 5
   m_Name: MainMenuUIScreen
   m_TagString: Untagged
@@ -1107,11 +1107,11 @@ MonoBehaviour:
   leaderBoardButton: {fileID: 869305587642893868}
   shareGameButton: {fileID: 7113716117991832987}
   levelNumberText: {fileID: 3942195231119110490}
-  panelOpenAnimation: {fileID: 1852807306873934527}
+  panelOpenAnimation: {fileID: 4957659438004857057}
   playButtonSprite: {fileID: 21300000, guid: c2a055ed4887b0b48b33f83f2bbfbe81, type: 3}
   tutorialCharacterPosition: {x: 318, y: -628, z: 0}
   speechBubblePosition: {x: 144, y: -76, z: 0}
---- !u!114 &1852807306873934527
+--- !u!114 &4957659438004857057
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1124,120 +1124,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clips:
-  - rid: 8537023256971444338
-  - rid: 8537023256971444339
-  - rid: 8537023256971444340
-  - rid: 8537023256971444341
-  - rid: 8537023256971444342
-  - rid: 8537023256971444348
-  triggerEvents:
-  - timePercent: 98.305084
-    onTrigger:
-      m_PersistentCalls:
-        m_Calls: []
-  loopCount: 0
+  - rid: 7129432895758532708
+  triggerEvents: []
   delayFrames: 0
-  loopType: 0
   timelineDuration: 1
   references:
     version: 2
     RefIds:
-    - rid: 8537023256971444338
-      type: {class: AnchorPositionClip, ns: BeachHero, asm: BeachHero}
-      data:
-        clipType: 0
-        startTime: 0
-        duration: 1
-        ease: 27
-        snapping: 0
-        overshoot: 1.70158
-        amplitude: 1
-        period: 0
-        moveTargetType: 1
-        fromPosition: {x: -162, y: -200, z: 0}
-        target: {fileID: 2919556460416423963}
-        toAnchoredPosition: {x: -162, y: 123.5}
-        rectAxis: 1
-    - rid: 8537023256971444339
-      type: {class: AnchorPositionClip, ns: BeachHero, asm: BeachHero}
-      data:
-        clipType: 0
-        startTime: 0
-        duration: 1
-        ease: 27
-        snapping: 0
-        overshoot: 1.70158
-        amplitude: 1
-        period: 0
-        moveTargetType: 1
-        fromPosition: {x: 162, y: -200, z: 0}
-        target: {fileID: 4699860009668411207}
-        toAnchoredPosition: {x: 162, y: 123.5}
-        rectAxis: 1
-    - rid: 8537023256971444340
-      type: {class: AnchorPositionClip, ns: BeachHero, asm: BeachHero}
-      data:
-        clipType: 0
-        startTime: 0
-        duration: 1
-        ease: 27
-        snapping: 0
-        overshoot: 1.3
-        amplitude: 1
-        period: 0
-        moveTargetType: 1
-        fromPosition: {x: 0, y: -200, z: 0}
-        target: {fileID: 2377908066080421926}
-        toAnchoredPosition: {x: 162, y: 234}
-        rectAxis: 1
-    - rid: 8537023256971444341
-      type: {class: AnchorPositionClip, ns: BeachHero, asm: BeachHero}
-      data:
-        clipType: 0
-        startTime: 0
-        duration: 1
-        ease: 27
-        snapping: 0
-        overshoot: 1.70158
-        amplitude: 1
-        period: 0
-        moveTargetType: 1
-        fromPosition: {x: -572, y: 212, z: 0}
-        target: {fileID: 4101281919612989922}
-        toAnchoredPosition: {x: -572, y: -12}
-        rectAxis: 2
-    - rid: 8537023256971444342
-      type: {class: AnchorPositionClip, ns: BeachHero, asm: BeachHero}
-      data:
-        clipType: 0
-        startTime: 0
-        duration: 1
-        ease: 27
-        snapping: 0
-        overshoot: 1.70158
-        amplitude: 1
-        period: 0
-        moveTargetType: 1
-        fromPosition: {x: 90, y: 155, z: 0}
-        target: {fileID: 2892421362999491527}
-        toAnchoredPosition: {x: 90, y: -73}
-        rectAxis: 2
-    - rid: 8537023256971444348
+    - rid: 7129432895758532708
       type: {class: PunchScaleClip, ns: BeachHero, asm: BeachHero}
       data:
         clipType: 4
         startTime: 0
         duration: 1
-        ease: 1
-        snapping: 0
-        overshoot: 1.70158
-        amplitude: 1
-        period: 0
+        ease: 0
         target: {fileID: 3583807033364480700}
-        punch: {x: 0.2, y: 0.2, z: 0.2}
-        vibrato: 5
-        elasticity: 1
         originalScale: {x: 1, y: 1, z: 1}
+        startValue: {x: 1, y: 1, z: 1}
+        strength: {x: 0.1, y: 0.1, z: 0.1}
+        transformSpace: 0
+        frequency: 2
 --- !u!1 &3182892744866452966
 GameObject:
   m_ObjectHideFlags: 0
@@ -1717,6 +1623,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1854,6 +1761,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1999,7 +1907,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 90, y: -73}
+  m_AnchoredPosition: {x: 90, y: -64}
   m_SizeDelta: {x: 132, y: 132}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9139970052764748259
@@ -2571,6 +2479,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -2708,6 +2617,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -2779,7 +2689,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 234}
+  m_AnchoredPosition: {x: 0, y: 181}
   m_SizeDelta: {x: 390, y: 396.1668}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8401742885123673693
@@ -2975,7 +2885,7 @@ PrefabInstance:
     - target: {fileID: 2077645177540679380, guid: a1cdaf26825d34144bb72e561315f746,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -12
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2077645177540679380, guid: a1cdaf26825d34144bb72e561315f746,
         type: 3}

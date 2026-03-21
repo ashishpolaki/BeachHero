@@ -84,10 +84,10 @@ namespace BeachHero
 
         public virtual void KillTween()
         {
-            if (_tween.IsActive())
-            {
-                _tween.Cancel();
-            }
+            //if (_tween.IsPlaying())
+            //{
+            //    _tween.Cancel();
+            //}
         }
     }
 }

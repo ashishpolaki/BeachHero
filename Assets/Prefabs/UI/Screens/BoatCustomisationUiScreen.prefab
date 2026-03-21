@@ -104,6 +104,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -335,7 +336,7 @@ GameObject:
   - component: {fileID: 6536501444728415889}
   - component: {fileID: 7948750116867649475}
   - component: {fileID: 2524975356916758404}
-  - component: {fileID: 4835613499673179982}
+  - component: {fileID: 5832238774042181361}
   m_Layer: 5
   m_Name: BoatCustomisationUiScreen
   m_TagString: Untagged
@@ -431,7 +432,7 @@ MonoBehaviour:
   boatSkinColorUIPrefab: {fileID: 2197957893336026270, guid: ae17426f3887ebd43806b789e260fcfc,
     type: 3}
   boatColorListContainer: {fileID: 6229853378310692231}
-  panelOpenAnimation: {fileID: 4835613499673179982}
+  panelOpenAnimation: {fileID: 5832238774042181361}
   screenBounds: {fileID: 2111526194186752255}
   boatScrollView: {fileID: 7236714827378950224}
   homeButton: {fileID: 832372154426100620}
@@ -444,7 +445,7 @@ MonoBehaviour:
   customisationCamera: {fileID: 4689292443042330732}
   camPositionOffset: {x: 2.55, y: 2.5, z: 4.87}
   camRotationOffset: {x: 17.191, y: 205.917, z: 357.561}
---- !u!114 &4835613499673179982
+--- !u!114 &5832238774042181361
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -456,127 +457,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b2f9017c8115d648b2e0ec1ef03c5b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clips:
-  - rid: 8537023492796186775
-  - rid: 8537023492796186776
-  - rid: 8537023492796186777
-  - rid: 8537023492796186778
-  - rid: 8537023492796186779
-  - rid: 8537023492796186780
-  - rid: 8537023492796186781
+  clips: []
   triggerEvents: []
-  loopCount: 0
   delayFrames: 0
-  loopType: 0
-  timelineDuration: 0.6
+  timelineDuration: 1
   references:
     version: 2
-    RefIds:
-    - rid: 8537023492796186775
-      type: {class: AnchorPositionClip, ns: BeachHero, asm: BeachHero}
-      data:
-        clipType: 0
-        startTime: 0
-        duration: 0.54017174
-        ease: 27
-        snapping: 0
-        overshoot: 1.70158
-        amplitude: 0.9
-        period: 0.5
-        moveTargetType: 1
-        fromPosition: {x: 0, y: 200, z: 0}
-        target: {fileID: 996054892665871352}
-        toAnchoredPosition: {x: 0, y: -97}
-        rectAxis: 1
-    - rid: 8537023492796186776
-      type: {class: ScaleClip, ns: BeachHero, asm: BeachHero}
-      data:
-        clipType: 1
-        startTime: 0.53181636
-        duration: 0.06818366
-        ease: 1
-        snapping: 0
-        overshoot: 1.70158
-        amplitude: 1
-        period: 0
-        fromScale: {x: 1, y: 0, z: 1}
-        toScale: {x: 1, y: 1, z: 1}
-        target: {fileID: 5070795766472346401}
-        scaleAxis: 1
-    - rid: 8537023492796186777
-      type: {class: ScaleClip, ns: BeachHero, asm: BeachHero}
-      data:
-        clipType: 1
-        startTime: 0.532369
-        duration: 0.067631006
-        ease: 1
-        snapping: 0
-        overshoot: 1.70158
-        amplitude: 1
-        period: 0
-        fromScale: {x: 1, y: 0, z: 1}
-        toScale: {x: 1, y: 1, z: 1}
-        target: {fileID: 5575191378709880320}
-        scaleAxis: 1
-    - rid: 8537023492796186778
-      type: {class: CanvasGroupFadeClip, ns: BeachHero, asm: BeachHero}
-      data:
-        clipType: 7
-        startTime: 0.05634267
-        duration: 0.2384161
-        ease: 18
-        snapping: 0
-        overshoot: 1.70158
-        amplitude: 1
-        period: 0
-        target: {fileID: 5390461048607733065}
-        fromAlpha: 0
-        toAlpha: 0.3
-    - rid: 8537023492796186779
-      type: {class: CanvasGroupFadeClip, ns: BeachHero, asm: BeachHero}
-      data:
-        clipType: 7
-        startTime: 0.293883
-        duration: 0.30611703
-        ease: 18
-        snapping: 0
-        overshoot: 1.70158
-        amplitude: 1
-        period: 0
-        target: {fileID: 5390461048607733065}
-        fromAlpha: 0.2
-        toAlpha: 1
-    - rid: 8537023492796186780
-      type: {class: AnchorPositionClip, ns: BeachHero, asm: BeachHero}
-      data:
-        clipType: 0
-        startTime: 0.05723323
-        duration: 0.5427668
-        ease: 3
-        snapping: 0
-        overshoot: 1.70158
-        amplitude: 1
-        period: 0
-        moveTargetType: 1
-        fromPosition: {x: 0, y: -2994, z: 0}
-        target: {fileID: 1313343459081593455}
-        toAnchoredPosition: {x: 0, y: -969}
-        rectAxis: 1
-    - rid: 8537023492796186781
-      type: {class: ScaleClip, ns: BeachHero, asm: BeachHero}
-      data:
-        clipType: 1
-        startTime: 0.53280485
-        duration: 0.15247482
-        ease: 34
-        snapping: 0
-        overshoot: 1.70158
-        amplitude: 3
-        period: 0.2
-        fromScale: {x: 0, y: 0, z: 1}
-        toScale: {x: 1, y: 1, z: 1}
-        target: {fileID: 4248511416572031806}
-        scaleAxis: 3
+    RefIds: []
 --- !u!1 &1026480165394448717
 GameObject:
   m_ObjectHideFlags: 0
@@ -970,6 +857,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1186,6 +1074,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1337,6 +1226,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1474,6 +1364,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1761,6 +1652,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1898,6 +1790,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -2694,12 +2587,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonAudioType: 1
   enableHover: 0
+  _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: 0.9
   hoverScale: 1.05
   tweenDuration: 0.15
   pressEase: 26
   releaseEase: 26
-  _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &2843097246753306914
 GameObject:
   m_ObjectHideFlags: 0
@@ -3147,12 +3040,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonAudioType: 8
   enableHover: 0
+  _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: 0.9
   hoverScale: 1.05
   tweenDuration: 0.15
   pressEase: 26
   releaseEase: 26
-  _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &4451953379518729841
 GameObject:
   m_ObjectHideFlags: 0
@@ -3856,6 +3749,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -4333,12 +4227,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonAudioType: 1
   enableHover: 0
+  _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: 0.9
   hoverScale: 1.05
   tweenDuration: 0.15
   pressEase: 26
   releaseEase: 26
-  _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &5727133989143238791
 GameObject:
   m_ObjectHideFlags: 0
@@ -5096,6 +4990,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -5612,6 +5507,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -5749,6 +5645,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -6096,12 +5993,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonAudioType: 8
   enableHover: 0
+  _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: 0.9
   hoverScale: 1.05
   tweenDuration: 0.15
   pressEase: 26
   releaseEase: 26
-  _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &8431639760793196934
 GameObject:
   m_ObjectHideFlags: 0
@@ -6563,6 +6460,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -6984,12 +6882,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1cdaf26825d34144bb72e561315f746, type: 3}
---- !u!224 &5070795766472346401 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3878760640359219283, guid: a1cdaf26825d34144bb72e561315f746,
-    type: 3}
-  m_PrefabInstance: {fileID: 8325807307573382002}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6244669395740660384 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2675894748096715218, guid: a1cdaf26825d34144bb72e561315f746,
