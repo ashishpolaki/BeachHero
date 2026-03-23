@@ -179,7 +179,7 @@ namespace BeachHero
 
         #region Rect
         public static TweenHandle MoveAnchorOnAxis(RectTransform target, float from, float to, float duration,
-            Ease ease = Ease.Linear, TransformAxis transformAxis = TransformAxis.XYZ,
+            Ease ease = Ease.Linear, TransformAxis transformAxis = TransformAxis.XY,
             int loops = 0, LoopType loopType = LoopType.Restart, System.Action onComplete = null)
         {
             var motion = LMotion.Create(from, to, duration).WithEase(ease);
