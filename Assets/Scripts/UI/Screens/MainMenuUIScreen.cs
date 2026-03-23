@@ -14,7 +14,7 @@ namespace BeachHero
         [SerializeField] private UIButton leaderBoardButton;
         [SerializeField] private UIButton shareGameButton;
         [SerializeField] private TextMeshProUGUI levelNumberText;
-        [SerializeField] private TweenSequencer panelOpenAnimation;
+        [SerializeField] private TweenAnimator panelOpenAnimation;
         [SerializeField] private Sprite playButtonSprite;
         [Header("Tutorial Positions")]
         [SerializeField] private Vector3 tutorialCharacterPosition;

@@ -16,7 +16,7 @@ namespace BeachHero
         #region Inspector Variables
         [SerializeField] private BoatSkinColorUI boatSkinColorUIPrefab;
         [SerializeField] private Transform boatColorListContainer;
-        [SerializeField] private TweenSequencer panelOpenAnimation;
+        [SerializeField] private TweenAnimator panelOpenAnimation;
         //  [SerializeField] private BoatPurchasePanel purchasePanel;
         //  [SerializeField] private BoatSkinUI boatSkinPrefab;
         //  [SerializeField] private Transform boatListContainer;

@@ -86,7 +86,7 @@ namespace BeachHero
         {
             if (EditorGUI.EndChangeCheck())
             {
-                TweenSequencerEditor.Instance.OnClipOrSequencerDataChanged();
+                TweenAnimatorEditor.Instance.OnClipOrSequencerDataChanged();
             }
             property.serializedObject.ApplyModifiedProperties();
             EditorGUI.EndProperty();

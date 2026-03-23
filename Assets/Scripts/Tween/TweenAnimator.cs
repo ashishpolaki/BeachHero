@@ -13,7 +13,7 @@ namespace BeachHero
         public UnityEvent onTrigger;
     }
 
-    public class TweenSequencer : MonoBehaviour
+    public class TweenAnimator : MonoBehaviour
     {
         [SerializeReference] private TweenClipBase[] clips;
         [SerializeField] private List<TriggerEvent> triggerEvents = new();

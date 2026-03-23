@@ -8,16 +8,16 @@ using UnityEngine.UI;
 
 namespace BeachHero
 {
-    [CustomEditor(typeof(TweenSequencer))]
-    public class TweenSequencerEditor : Editor
+    [CustomEditor(typeof(TweenAnimator))]
+    public class TweenAnimatorEditor : Editor
     {
-        public static TweenSequencerEditor Instance;
+        public static TweenAnimatorEditor Instance;
 
         private SerializedProperty _clipsProp;
         private SerializedProperty _timelineDurationProp;
         private SerializedProperty _triggerEventsProp;
         private SerializedProperty _delayProp;
-        private TweenSequencer _sequencer;
+        private TweenAnimator _animator;
         private FieldInfo _sequenceField;
 
         // preview
@@ -62,12 +62,12 @@ namespace BeachHero
             {
                 return;
             }
-            _sequencer = (TweenSequencer)target;
+            _animator = (TweenAnimator)target;
             _clipsProp = serializedObject.FindProperty("clips");
             _timelineDurationProp = serializedObject.FindProperty("timelineDuration");
             _triggerEventsProp = serializedObject.FindProperty("triggerEvents");
             _delayProp = serializedObject.FindProperty("delayFrames");
-            _sequenceField = typeof(TweenSequencer).GetField("_sequence", BindingFlags.NonPublic | BindingFlags.Instance);
+            _sequenceField = typeof(TweenAnimator).GetField("_sequence", BindingFlags.NonPublic | BindingFlags.Instance);
 
             if (_selectedClipIndex >= _clipsProp.arraySize) _selectedClipIndex = -1;
         }
@@ -135,15 +135,15 @@ namespace BeachHero
             // Ensure serialized changes are applied (defensive)
             serializedObject.ApplyModifiedProperties();
 
-            if (_sequencer == null) return;
+            if (_animator == null) return;
 
             // Apply states and rebuild the actual runtime sequence
-            _sequencer.ApplyAllFromStates();
-            _sequencer.BuildSequence();
+            _animator.ApplyAllFromStates();
+            _animator.BuildSequence();
 
             // Pull the runtime sequence from the private field (you already use _sequenceField)
             // _previewSequence = (TweenSequence)_sequenceField?.GetValue(_sequencer);
-            _previewSequence = _sequencer._sequence;
+            _previewSequence = _animator._sequence;
 
             if (_previewSequence.IsValid)
             {
@@ -153,8 +153,8 @@ namespace BeachHero
             }
 
             // Mark dirty so Unity will prompt to save scene/prefab changes
-            EditorUtility.SetDirty(_sequencer);
-            try { EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene); } catch { }
+            EditorUtility.SetDirty(_animator);
+            try { EditorSceneManager.MarkSceneDirty(_animator.gameObject.scene); } catch { }
             ScrubToProgress(_progress);
             SceneView.RepaintAll();
         }
@@ -203,8 +203,8 @@ namespace BeachHero
                 _triggerEventsProp.DeleteArrayElementAtIndex(_selectedTriggerIndex);
                 _selectedTriggerIndex = -1;
                 serializedObject.ApplyModifiedProperties();
-                EditorUtility.SetDirty(_sequencer);
-                try { EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene); } catch { }
+                EditorUtility.SetDirty(_animator);
+                try { EditorSceneManager.MarkSceneDirty(_animator.gameObject.scene); } catch { }
 
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.EndVertical();
@@ -253,7 +253,7 @@ namespace BeachHero
             if (_selectedClipIndex < 0 || _selectedClipIndex >= _clipsProp.arraySize) return;
 
             // record undo
-            Undo.RegisterCompleteObjectUndo(_sequencer, "Duplicate Clip");
+            Undo.RegisterCompleteObjectUndo(_animator, "Duplicate Clip");
 
             var srcProp = _clipsProp.GetArrayElementAtIndex(_selectedClipIndex);
             object srcObj = srcProp.managedReferenceValue;
@@ -280,10 +280,10 @@ namespace BeachHero
             }
 
             serializedObject.ApplyModifiedProperties();
-            EditorUtility.SetDirty(_sequencer);
+            EditorUtility.SetDirty(_animator);
             _selectedClipIndex = insertIndex;
             // mark scene dirty so user is prompted to save
-            try { EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene); } catch { }
+            try { EditorSceneManager.MarkSceneDirty(_animator.gameObject.scene); } catch { }
         }
 
         private void DeleteSelectedClip()
@@ -292,7 +292,7 @@ namespace BeachHero
             if (_selectedClipIndex < 0 || _selectedClipIndex >= _clipsProp.arraySize) return;
 
             // confirm? (optional) — we perform deletion immediately
-            Undo.RegisterCompleteObjectUndo(_sequencer, "Delete Clip");
+            Undo.RegisterCompleteObjectUndo(_animator, "Delete Clip");
 
             // Delete element (works for managedReference arrays as used)
             _clipsProp.DeleteArrayElementAtIndex(_selectedClipIndex);
@@ -302,8 +302,8 @@ namespace BeachHero
             int newIndex = Mathf.Clamp(_selectedClipIndex, 0, _clipsProp.arraySize - 1);
             _selectedClipIndex = (_clipsProp.arraySize == 0) ? -1 : newIndex;
 
-            EditorUtility.SetDirty(_sequencer);
-            try { EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene); } catch { }
+            EditorUtility.SetDirty(_animator);
+            try { EditorSceneManager.MarkSceneDirty(_animator.gameObject.scene); } catch { }
         }
 
         private void DeleteSelectedTrigger()
@@ -311,7 +311,7 @@ namespace BeachHero
             if (_triggerEventsProp == null || _selectedTriggerIndex < 0 || _selectedTriggerIndex >= _triggerEventsProp.arraySize)
                 return;
 
-            Undo.RegisterCompleteObjectUndo(_sequencer, "Delete Trigger");
+            Undo.RegisterCompleteObjectUndo(_animator, "Delete Trigger");
 
             _triggerEventsProp.DeleteArrayElementAtIndex(_selectedTriggerIndex);
             serializedObject.ApplyModifiedProperties();
@@ -320,8 +320,8 @@ namespace BeachHero
             int newIndex = Mathf.Clamp(_selectedTriggerIndex, 0, _triggerEventsProp.arraySize - 1);
             _selectedTriggerIndex = (_triggerEventsProp.arraySize == 0) ? -1 : newIndex;
 
-            EditorUtility.SetDirty(_sequencer);
-            try { EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene); } catch { }
+            EditorUtility.SetDirty(_animator);
+            try { EditorSceneManager.MarkSceneDirty(_animator.gameObject.scene); } catch { }
         }
 
         private void DuplicateSelectedTrigger()
@@ -329,7 +329,7 @@ namespace BeachHero
             if (_triggerEventsProp == null || _selectedTriggerIndex < 0 || _selectedTriggerIndex >= _triggerEventsProp.arraySize)
                 return;
 
-            Undo.RegisterCompleteObjectUndo(_sequencer, "Duplicate Trigger");
+            Undo.RegisterCompleteObjectUndo(_animator, "Duplicate Trigger");
 
             var srcProp = _triggerEventsProp.GetArrayElementAtIndex(_selectedTriggerIndex);
             int insertIndex = _selectedTriggerIndex + 1;
@@ -341,11 +341,11 @@ namespace BeachHero
             EditorJsonUtility.FromJsonOverwrite(EditorJsonUtility.ToJson(srcProp.managedReferenceValue), newElem.managedReferenceValue);
 
             serializedObject.ApplyModifiedProperties();
-            EditorUtility.SetDirty(_sequencer);
+            EditorUtility.SetDirty(_animator);
 
             _selectedTriggerIndex = insertIndex;
 
-            try { EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene); } catch { }
+            try { EditorSceneManager.MarkSceneDirty(_animator.gameObject.scene); } catch { }
         }
         #endregion
 
@@ -387,7 +387,7 @@ namespace BeachHero
             float total = ComputeTotalDuration();
             if (total <= 0f) total = 1f;
 
-            int sequencerClipsLength = _sequencer.Clips != null ? _sequencer.Clips.Length : 1;
+            int sequencerClipsLength = _animator.Clips != null ? _animator.Clips.Length : 1;
             float timelineHeight = TIMELINE_HEIGHT + ((CLIP_BAR_HEIGHT + CLIP_BAR_PADDING) * sequencerClipsLength)
                                    + TICK_AREA_HEIGHT + TRIGGER_AREA_HEIGHT;
             Rect timelineRect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, timelineHeight - 30);
@@ -453,7 +453,7 @@ namespace BeachHero
             }
 
             // draw tween clips into clipArea (clips appear below triggers now)
-            var clipsRuntime = _sequencer.Clips;
+            var clipsRuntime = _animator.Clips;
             if (clipsRuntime != null)
             {
                 for (int i = 0; i < clipsRuntime.Length; i++)
@@ -570,8 +570,8 @@ namespace BeachHero
                 {
                     _draggingTriggerIndex = -1;
                     serializedObject.ApplyModifiedProperties();
-                    EditorUtility.SetDirty(_sequencer);
-                    try { EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene); } catch { }
+                    EditorUtility.SetDirty(_animator);
+                    try { EditorSceneManager.MarkSceneDirty(_animator.gameObject.scene); } catch { }
                     Event.current.Use();
                 }
 
@@ -669,8 +669,8 @@ namespace BeachHero
                                 if (te != null) te.isExpanded = true;
                                 serializedObject.ApplyModifiedProperties();
 
-                                Selection.activeObject = _sequencer;
-                                EditorGUIUtility.PingObject(_sequencer);
+                                Selection.activeObject = _animator;
+                                EditorGUIUtility.PingObject(_animator);
 
                                 Event.current.Use();
                             }
@@ -707,7 +707,7 @@ namespace BeachHero
         private bool IsPointerOverTweenClipOrTriggerEvent(Vector2 mousePos, Rect inner, float total)
         {
             // check clips
-            var clipsRuntime = _sequencer.Clips;
+            var clipsRuntime = _animator.Clips;
             if (clipsRuntime != null)
             {
                 for (int i = 0; i < clipsRuntime.Length; i++)
@@ -759,7 +759,7 @@ namespace BeachHero
             _dragClipOriginalDuration = durProp != null ? durProp.floatValue : 0.1f;
 
             // capture undo
-            Undo.RecordObject(_sequencer, "Drag Clip");
+            Undo.RecordObject(_animator, "Drag Clip");
         }
 
         private void UpdateDrag(int index, Rect inner, float total)
@@ -814,7 +814,7 @@ namespace BeachHero
 
             // apply changes
             serializedObject.ApplyModifiedProperties();
-            EditorUtility.SetDirty(_sequencer);
+            EditorUtility.SetDirty(_animator);
             // update preview live if playing
 
             //if (_previewSequence != null && _previewSequence.IsActive())
@@ -857,7 +857,7 @@ namespace BeachHero
 
             // Show the serialized clip fields (this will include all public fields on the clip)
             EditorGUILayout.PropertyField(elem, true);
-            var clipObj = _sequencer.Clips[_selectedClipIndex];
+            var clipObj = _animator.Clips[_selectedClipIndex];
             GUILayout.FlexibleSpace();
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Capture From"))
@@ -874,15 +874,15 @@ namespace BeachHero
                         if (t != null) f.SetValue(clipObj, t.position);
                     }
                 }
-                EditorUtility.SetDirty(_sequencer);
+                EditorUtility.SetDirty(_animator);
             }
             if (GUILayout.Button("Remove"))
             {
                 _clipsProp.DeleteArrayElementAtIndex(_selectedClipIndex);
                 _selectedClipIndex = -1;
                 serializedObject.ApplyModifiedProperties();
-                EditorUtility.SetDirty(_sequencer);
-                EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene);
+                EditorUtility.SetDirty(_animator);
+                EditorSceneManager.MarkSceneDirty(_animator.gameObject.scene);
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.EndVertical();
                 return;
@@ -926,8 +926,8 @@ namespace BeachHero
                 newElem.isExpanded = true;
 
                 serializedObject.ApplyModifiedProperties();
-                EditorUtility.SetDirty(_sequencer);
-                try { EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene); } catch { }
+                EditorUtility.SetDirty(_animator);
+                try { EditorSceneManager.MarkSceneDirty(_animator.gameObject.scene); } catch { }
 
                 // select the newly added trigger
                 _selectedTriggerIndex = idx;
@@ -1079,16 +1079,16 @@ namespace BeachHero
 
         private void StartPreview()
         {
-            if (_sequencer == null) return;
+            if (_animator == null) return;
 
             if (_previewSequence.IsActive)
             {
                 _previewSequence.Cancel();
             }
-            _sequencer.ApplyAllFromStates();
-            _sequencer.Kill();
-            _sequencer.BuildSequence();
-            _previewSequence = _sequencer._sequence;
+            _animator.ApplyAllFromStates();
+            _animator.Kill();
+            _animator.BuildSequence();
+            _previewSequence = _animator._sequence;
 
             if (!_previewSequence.IsValid)
             {
@@ -1096,7 +1096,7 @@ namespace BeachHero
                 return;
             }
 
-            _sequencer.Play();
+            _animator.Play();
             _isPlaying = true;
         }
 
@@ -1115,35 +1115,35 @@ namespace BeachHero
             {
                 _previewSequence.Cancel();
             }
-            if (_sequencer != null)
+            if (_animator != null)
             {
-                _sequencer.Kill();
+                _animator.Kill();
             }
 
             _isPlaying = false;
 
-            if (_sequencer != null)
+            if (_animator != null)
             {
-                EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene);
+                EditorSceneManager.MarkSceneDirty(_animator.gameObject.scene);
             }
             SceneView.RepaintAll();
         }
 
         private void ScrubToProgress(float progress)
         {
-            if (_sequencer.Clips.Length > 0)
+            if (_animator.Clips.Length > 0)
             {
-                if (!_sequencer.IsActive)
+                if (!_animator.IsActive)
                 {
-                    _sequencer.ApplyAllFromStates();
-                    _sequencer.BuildSequence();
-                    _previewSequence = _sequencer._sequence;
+                    _animator.ApplyAllFromStates();
+                    _animator.BuildSequence();
+                    _previewSequence = _animator._sequence;
                 }
                 float normalized = Mathf.Clamp01(progress);
-                float time = normalized * _sequencer.Duration;
+                float time = normalized * _animator.Duration;
                 _previewSequence.SetPlaybackSpeed(0);
                 _previewSequence.SetSlider(time);
-                EditorSceneManager.MarkSceneDirty(_sequencer.gameObject.scene);
+                EditorSceneManager.MarkSceneDirty(_animator.gameObject.scene);
                 SceneView.RepaintAll();
             }
         }
@@ -1151,14 +1151,14 @@ namespace BeachHero
         private float ComputeTotalDuration()
         {
             // if user provided a positive timelineDuration, prefer it (user requested timelineDuration-driven length)
-            if (_sequencer != null && _sequencer.timelineDuration > 0f)
+            if (_animator != null && _animator.timelineDuration > 0f)
             {
-                return _sequencer.timelineDuration;
+                return _animator.timelineDuration;
             }
 
             // fallback: compute from clips
             float max = 0f;
-            var clipsRuntime = _sequencer.Clips;
+            var clipsRuntime = _animator.Clips;
             if (clipsRuntime == null) return 0f;
             foreach (var c in clipsRuntime)
             {
