@@ -58,7 +58,7 @@ namespace BeachHero
         private void OnPathDrawn()
         {
             HideInstructionText();
-           
+
             Close();
         }
 
@@ -73,7 +73,7 @@ namespace BeachHero
             Vector3 characterLocalPos = WorldToCanvasLocalPosition(
                 cam, canvas, level.GetDrowningCharacter(charIndex).position);
             TutorialController.GetInstance.TutorialHand.PlayPunchThenMoveLoop(playerLocalPos, characterLocalPos);
-            TutorialController.GetInstance.TutorialHand.SetHandSortingLayer(StringUtils.SPRITES_BELOW_UI_LAYER,2);
+            TutorialController.GetInstance.TutorialHand.SetHandSortingLayer(StringUtils.SPRITES_BELOW_UI_LAYER, 5);
         }
 
         private Vector3 WorldToCanvasLocalPosition(Camera camera, Canvas canvas, Vector3 worldPosition)

@@ -179,13 +179,18 @@ namespace BeachHero
 
         #region Rect
         public static TweenHandle MoveAnchorOnAxis(RectTransform target, float from, float to, float duration,
-            Ease ease = Ease.Linear, TransformAxis transformAxis = TransformAxis.XYZ, System.Action onComplete = null)
+            Ease ease = Ease.Linear, TransformAxis transformAxis = TransformAxis.XYZ,
+            int loops = 0, LoopType loopType = LoopType.Restart, System.Action onComplete = null)
         {
             var motion = LMotion.Create(from, to, duration).WithEase(ease);
             var handle = default(TweenHandle);
             if (onComplete != null)
             {
                 motion = motion.WithOnComplete(onComplete);
+            }
+            if (loops != 0)
+            {
+                motion = motion.WithLoops(loops,loopType);
             }
             switch (transformAxis)
             {
@@ -200,7 +205,7 @@ namespace BeachHero
             return handle;
         }
         public static TweenHandle MoveAnchor(RectTransform target, Vector2 from, Vector2 to, float duration,
-            Ease ease = Ease.Linear, TransformAxis transformAxis = TransformAxis.XYZ, System.Action onComplete = null)
+            Ease ease = Ease.Linear, TransformAxis transformAxis = TransformAxis.XY, System.Action onComplete = null)
         {
             var motion = LMotion.Create(from, to, duration).WithEase(ease);
             var handle = default(TweenHandle);
@@ -324,7 +329,7 @@ namespace BeachHero
 
         public static TweenHandle RunCallback(System.Action onComplete = null)
         {
-            var motion = LMotion.Create(0, 0, 0);
+            var motion = LMotion.Create(0, 0, 0.1f);
             if (onComplete != null)
             {
                 motion = motion.WithOnComplete(onComplete);

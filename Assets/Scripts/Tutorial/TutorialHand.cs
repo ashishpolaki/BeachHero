@@ -1,5 +1,5 @@
-using DG.Tweening;
 using UnityEngine;
+using LitMotion;
 
 namespace BeachHero
 {
@@ -24,11 +24,11 @@ namespace BeachHero
         [Header("Punch Animation Settings")]
         [SerializeField] private float punchYOffset = 100f;
         [SerializeField] private float initialPunchScale = 0.8f;
-        [SerializeField] private float punchScaleAmount = 0.2f;
+        [SerializeField] private float punchStrength = 0.2f;
         [SerializeField] private float punchDuration = 0.5f;
-        [SerializeField] private float punchElasticity = 0.2f;
+        [SerializeField] private int punchFrequency = 1;
 
-        private Tween activeTween;
+        private TweenSequence moveSequence;
 
         public void Init()
         {
@@ -52,9 +52,12 @@ namespace BeachHero
             handRect.gameObject.SetActive(true);
 
             Vector2 anchoredPos = handRect.anchoredPosition;
-            activeTween = handRect.DOAnchorPosY(anchoredPos.y + pointingMoveYOffset, pointingDuration)
-                .SetEase(pointingEase)
-                .SetLoops(-1, LoopType.Yoyo);
+            var tweenhandle = TweenManager.MoveAnchorOnAxis(handRect, handRect.anchoredPosition.y,
+                handRect.anchoredPosition.y + pointingMoveYOffset, pointingDuration,
+                pointingEase, TransformAxis.Y, -1, LoopType.Yoyo).Handle;
+            moveSequence = new TweenSequence(LSequence.Create());
+            moveSequence.Join(tweenhandle);
+            moveSequence.InitializeHandle();
         }
 
         public void Hide()
@@ -63,12 +66,12 @@ namespace BeachHero
             if (handRect) handRect.gameObject.SetActive(false);
         }
 
-        public void SetHandSortingLayer(string sortingLayer,int sortingOrder )
+        public void SetHandSortingLayer(string sortingLayer, int sortingOrder)
         {
             if (handCanvas != null)
             {
                 handCanvas.sortingLayerName = sortingLayer;
-                handCanvas.sortingOrder = sortingOrder; 
+                handCanvas.sortingOrder = sortingOrder;
             }
         }
 
@@ -82,29 +85,26 @@ namespace BeachHero
             handRect.localPosition = punchPosition;
             handRect.gameObject.SetActive(true);
 
-            Sequence seq = DOTween.Sequence();
-
             //Add handrect punch y offset
             handRect.anchoredPosition = new Vector2(handRect.anchoredPosition.x, handRect.anchoredPosition.y + punchYOffset);
-            seq.Append(handRect.DOPunchScale(Vector3.one * punchScaleAmount, punchDuration, 1, punchElasticity))
-               .Append(handRect.DOAnchorPos(
-                   new Vector2(movePosition.x, movePosition.y + moveYOffset),
-                   moveDuration
-               ).SetEase(moveEase)).SetLoops(-1,LoopType.Restart);
+            moveSequence = new TweenSequence(LSequence.Create());
+            var punch = TweenManager.PunchScale(handRect.transform, Vector3.one * initialPunchScale, Vector3.one * punchStrength
+                 , punchFrequency, 0, punchDuration).Handle;
+            var move = TweenManager.MoveAnchor(handRect, new Vector2(handRect.anchoredPosition.x, handRect.anchoredPosition.y + punchYOffset),
+                new Vector2(movePosition.x, movePosition.y + moveYOffset), moveDuration, moveEase, TransformAxis.XY).Handle;
 
-            activeTween = seq;
+            var loopHandle = TweenManager.RunCallback(() => { PlayPunchThenMoveLoop(punchPosition, movePosition); }).Handle;
+
+            moveSequence.Append(punch);
+            moveSequence.Append(move);
+            moveSequence.Append(loopHandle);
+            moveSequence.InitializeHandle();
         }
 
         //Kill  active tween 
         private void KillActiveTween()
         {
-            if (activeTween != null && activeTween.IsActive())
-            {
-                activeTween.Kill();
-                activeTween = null;
-            }
-
-            handRect?.DOKill(); // Kill any tweens attached to handRect itself
+            moveSequence.Cancel();
         }
 
         private void SetColor()
