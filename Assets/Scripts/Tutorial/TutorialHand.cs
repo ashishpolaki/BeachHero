@@ -7,6 +7,7 @@ namespace BeachHero
     {
         [Header("References")]
         [SerializeField] private RectTransform handRect;
+        [SerializeField] private Canvas handCanvas;
 
         [Header("Animations")]
         [SerializeField] private float pointingStartYOffset = 30f;
@@ -60,6 +61,15 @@ namespace BeachHero
         {
             KillActiveTween();
             if (handRect) handRect.gameObject.SetActive(false);
+        }
+
+        public void SetHandSortingLayer(string sortingLayer,int sortingOrder )
+        {
+            if (handCanvas != null)
+            {
+                handCanvas.sortingLayerName = sortingLayer;
+                handCanvas.sortingOrder = sortingOrder; 
+            }
         }
 
         public void PlayPunchThenMoveLoop(Vector3 punchPosition, Vector3 movePosition)

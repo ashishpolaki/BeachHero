@@ -17,7 +17,7 @@ namespace BeachHero
 
         private void SetAdaptiveFrameRate()
         {
-#if UNITY_ANDROID && UNITY_EDITOR
+#if UNITY_ANDROID && !UNITY_EDITOR
             int ram = SystemInfo.systemMemorySize; // in MB
             string gpu = SystemInfo.graphicsDeviceName.ToLower()
                     .Replace("(tm)", "")
@@ -26,7 +26,7 @@ namespace BeachHero
             int targetFPS = 30; // default
 
             // --- Primary check: RAM-based classification ---
-            if (ram >= 7900) // tolerance check
+            if (ram > 6000) // tolerance check
             {
                 targetFPS = 60; // high-end default
             }

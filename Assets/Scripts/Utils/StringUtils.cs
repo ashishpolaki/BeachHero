@@ -23,6 +23,8 @@ namespace BeachHero
 
         //Sorting Layers
         public const string SPRITES_ABOVE_UI_LAYER = "SpritesAboveUI";
+        public const string SPRITES_BELOW_UI_LAYER = "SpritesBelowUI";
+        public const string UI_LAYER = "UI";
 
         //Audio
         public const string MUSIC_ON = "Music";
