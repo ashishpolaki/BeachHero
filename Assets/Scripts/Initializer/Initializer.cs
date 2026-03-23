@@ -52,6 +52,7 @@ namespace BeachHero
             AudioController.GetInstance.Init();
             CameraController.GetInstance.Init();
             TutorialController.GetInstance.Init();
+            RemoteConfig.GetInstance.Init();
             AdController.GetInstance.Init();
             HapticsManager.GetInstance.Init();
             ES3.Init();
