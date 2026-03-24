@@ -1,4 +1,3 @@
-using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -107,12 +106,12 @@ namespace BeachHero
                 tc.TutorialHand.Hide();
                 tc.ClearButtonHighlight();
 
-                Tween buttonTween = tc.HighlightButton(playButton.transform, playButton.GetComponent<RectTransform>().sizeDelta, playButtonSprite, true);
-                buttonTween.OnComplete(() =>
-                {
-                    tc.EnsureTutorialCanvas(playButton.gameObject, StringUtils.SPRITES_ABOVE_UI_LAYER , IntUtils.TUTORIAL_CANVAS_LAYER);
-                    tc.TutorialHand.ShowHandPointing(playButton.transform);
-                });
+                //Tween buttonTween = tc.HighlightButton(playButton.transform, playButton.GetComponent<RectTransform>().sizeDelta, playButtonSprite, true);
+                //buttonTween.OnComplete(() =>
+                //{
+                //    tc.EnsureTutorialCanvas(playButton.gameObject, StringUtils.SPRITES_ABOVE_UI_LAYER , IntUtils.TUTORIAL_CANVAS_LAYER);
+                //    tc.TutorialHand.ShowHandPointing(playButton.transform);
+                //});
             }
             else if (tc.TutorialType == TutorialType.SpeedBoostPowerup)
             {
@@ -122,12 +121,12 @@ namespace BeachHero
                 tc.TutorialHand.Hide();
                 tc.ClearButtonHighlight();
 
-                Tween buttonTween = tc.HighlightButton(playButton.transform, playButton.GetComponent<RectTransform>().sizeDelta, playButtonSprite, true);
-                buttonTween.OnComplete(() =>
-                {
-                    tc.EnsureTutorialCanvas(playButton.gameObject, StringUtils.SPRITES_ABOVE_UI_LAYER, IntUtils.TUTORIAL_CANVAS_LAYER);
-                    tc.TutorialHand.ShowHandPointing(playButton.transform);
-                });
+                //Tween buttonTween = tc.HighlightButton(playButton.transform, playButton.GetComponent<RectTransform>().sizeDelta, playButtonSprite, true);
+                //buttonTween.OnComplete(() =>
+                //{
+                //    tc.EnsureTutorialCanvas(playButton.gameObject, StringUtils.SPRITES_ABOVE_UI_LAYER, IntUtils.TUTORIAL_CANVAS_LAYER);
+                //    tc.TutorialHand.ShowHandPointing(playButton.transform);
+                //});
             }
         }
         #endregion
@@ -152,19 +151,19 @@ namespace BeachHero
                 var tutorialType = type == PowerupType.Magnet ? TutorialType.MagnetPowerup : TutorialType.SpeedBoostPowerup;
                 TutorialController.GetInstance.SetCurrentTutorialType(tutorialType);
 
-                Tween buttonTween = TutorialController.GetInstance.HighlightButton(targetButton.transform, targetButton.GetComponent<RectTransform>().sizeDelta, powerupButtonSprite);
-                buttonTween.OnComplete(() =>
-                {
-                    TutorialController.GetInstance.EnsureTutorialCanvas(targetButton.gameObject, StringUtils.SPRITES_ABOVE_UI_LAYER, IntUtils.TUTORIAL_CANVAS_LAYER);
-                    TutorialController.GetInstance.TutorialHand.ShowHandPointing(targetButton.transform);
-                });
+                //Tween buttonTween = TutorialController.GetInstance.HighlightButton(targetButton.transform, targetButton.GetComponent<RectTransform>().sizeDelta, powerupButtonSprite);
+                //buttonTween.OnComplete(() =>
+                //{
+                //    TutorialController.GetInstance.EnsureTutorialCanvas(targetButton.gameObject, StringUtils.SPRITES_ABOVE_UI_LAYER, IntUtils.TUTORIAL_CANVAS_LAYER);
+                //    TutorialController.GetInstance.TutorialHand.ShowHandPointing(targetButton.transform);
+                //});
 
-                Tween characterMoveTween = TutorialController.GetInstance.TutorialCharacter.PlayAnimation(TutorialCharacterType.Talk, tutorialCharacterPosition);
-                characterMoveTween.OnComplete(() =>
-                {
-                    TutorialController.GetInstance.TutorialSpeechBubble.Show(type == PowerupType.Magnet ?
-                        StringUtils.MAGNET_POWERUP_TUTORIAL_MESSAGE : StringUtils.SPEEDBOOST_POWERUP_TUTORIAL_MESSAGE, speechBubblePosition);
-                });
+                //Tween characterMoveTween = TutorialController.GetInstance.TutorialCharacter.PlayAnimation(TutorialCharacterType.Talk, tutorialCharacterPosition);
+                //characterMoveTween.OnComplete(() =>
+                //{
+                //    TutorialController.GetInstance.TutorialSpeechBubble.Show(type == PowerupType.Magnet ?
+                //        StringUtils.MAGNET_POWERUP_TUTORIAL_MESSAGE : StringUtils.SPEEDBOOST_POWERUP_TUTORIAL_MESSAGE, speechBubblePosition);
+                //});
             }
 
             int balance = GameController.GetInstance.PowerupController.GetPowerupBalance(type);

@@ -29,6 +29,7 @@ namespace BeachHero
         [SerializeField] private int punchFrequency = 1;
 
         private TweenSequence moveSequence;
+        private TweenHandle moveTweenHandle;
 
         public void Init()
         {
@@ -52,12 +53,9 @@ namespace BeachHero
             handRect.gameObject.SetActive(true);
 
             Vector2 anchoredPos = handRect.anchoredPosition;
-            var tweenhandle = TweenManager.MoveAnchorOnAxis(handRect, handRect.anchoredPosition.y,
+            moveTweenHandle = TweenManager.MoveAnchorOnAxis(handRect, handRect.anchoredPosition.y,
                 handRect.anchoredPosition.y + pointingMoveYOffset, pointingDuration,
-                pointingEase, TransformAxis.Y, -1, LoopType.Yoyo).Handle;
-            moveSequence = new TweenSequence(LSequence.Create());
-            moveSequence.Join(tweenhandle);
-            moveSequence.InitializeHandle();
+                pointingEase, TransformAxis.Y, -1, LoopType.Yoyo);
         }
 
         public void Hide()
@@ -105,6 +103,7 @@ namespace BeachHero
         private void KillActiveTween()
         {
             moveSequence.Cancel();
+            moveTweenHandle.Cancel();
         }
 
         private void SetColor()

@@ -1298,7 +1298,7 @@ MonoBehaviour:
   highlightRect: {fileID: 9132944536631051859}
   highlightImage: {fileID: 3898262477239348767}
   buttonScaleDuration: 0.5
-  buttonScaleEase: 4
+  buttonScaleEase: 3
 --- !u!114 &7496375061834731397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1323,9 +1323,9 @@ MonoBehaviour:
   moveEase: 4
   punchYOffset: 50
   initialPunchScale: 0.7
-  punchScaleAmount: 0.2
+  punchStrength: 0.2
   punchDuration: 0.5
-  punchElasticity: 0.2
+  punchFrequency: 1
 --- !u!114 &7377420811723297455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1340,7 +1340,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterRoot: {fileID: 328386863670050659}
   animator: {fileID: 1006319654607630296}
-  moveEase: 18
+  moveEase: 17
   moveOffset: {x: 782, y: 0, z: 0}
   moveDuration: 0.7
 --- !u!114 &8827662420709818148

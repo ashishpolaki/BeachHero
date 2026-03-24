@@ -133,9 +133,11 @@ namespace BeachHero
                 {
                     hasDrawnPath = false;
                     drawnPoints.Clear();
+                    if (isPathDrawingAllowed)
+                    {
+                        OnDrawPathError?.Invoke();
+                    }
                 }
-                if (isPathDrawingAllowed)
-                    OnDrawPathError?.Invoke();
                 isPathDrawingAllowed = false;
                 AudioController.GetInstance.StopSound(AudioType.PathDraw);
             }

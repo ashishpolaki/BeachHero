@@ -1,7 +1,7 @@
-using DG.Tweening;
 using Sych.ShareAssets.Runtime;
 using TMPro;
 using UnityEngine;
+using LitMotion;
 
 namespace BeachHero
 {
@@ -42,16 +42,15 @@ namespace BeachHero
 
                 // Highlight the play button and show tutorial.
                 var tc = TutorialController.GetInstance;
-                Tween buttonTween = tc.HighlightButton(playButton.transform, playButton.GetComponent<RectTransform>().sizeDelta, playButtonSprite, true);
-                buttonTween.OnComplete(() =>
-                {
-                    tc.EnsureTutorialCanvas(playButton.gameObject, StringUtils.SPRITES_ABOVE_UI_LAYER, IntUtils.TUTORIAL_CANVAS_LAYER);
-                    tc.TutorialHand.ShowHandPointing(playButton.transform);
-                });
+                tc.HighlightButton(playButton.transform, playButton.GetComponent<RectTransform>().sizeDelta, playButtonSprite, true,
+                () =>
+               {
+                   tc.EnsureTutorialCanvas(playButton.gameObject, StringUtils.SPRITES_ABOVE_UI_LAYER, IntUtils.TUTORIAL_CANVAS_LAYER);
+                   tc.TutorialHand.ShowHandPointing(playButton.transform);
+               });
 
                 // Move the tutorial character and show welcome message.
-                Tween characterMoveTween = tc.TutorialCharacter.PlayAnimation(TutorialCharacterType.WaveHand, tutorialCharacterPosition);
-                characterMoveTween.OnComplete(() =>
+                tc.TutorialCharacter.PlayAnimation(TutorialCharacterType.WaveHand, tutorialCharacterPosition, () =>
                 {
                     tc.TutorialSpeechBubble.Show(StringUtils.TUTORIAL_WELCOME_MESSAGE, speechBubblePosition);
                 });

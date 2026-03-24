@@ -1,5 +1,5 @@
-using DG.Tweening;
 using System;
+using LitMotion;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,6 +27,7 @@ namespace BeachHero
         [Space(2), Header("Button Highlight Animation")]
         [SerializeField] private float buttonScaleDuration = 0.5f;
         [SerializeField] private Ease buttonScaleEase = Ease.OutBack;
+        private TweenHandle buttonTweenHandle;
         #endregion
 
         #region Events
@@ -50,10 +51,9 @@ namespace BeachHero
         #endregion
 
         #region Highlight COntrols
-        public Tween HighlightButton(Transform button, Vector2 size, Sprite sprite, bool sliced = false)
+        public void HighlightButton(Transform button, Vector2 size, Sprite sprite, bool sliced = false, Action onComplete = null)
         {
             blockerOverlay.SetActive(true);
-            highlightRect.DOKill();
 
             highlightRect.sizeDelta = Vector2.zero;
             highlightRect.position = button.position;
@@ -64,15 +64,14 @@ namespace BeachHero
             if (sliced)
                 highlightImage.pixelsPerUnitMultiplier = 100f;
 
-            return highlightRect.DOSizeDelta(size, buttonScaleDuration)
-                 .SetEase(buttonScaleEase);
+            buttonTweenHandle = TweenManager.SetSizeDelta(highlightRect, highlightRect.sizeDelta, size, buttonScaleDuration, buttonScaleEase, onComplete);
         }
 
         public void ClearButtonHighlight()
         {
-            highlightRect.DOKill();
             highlightRect.sizeDelta = Vector2.zero;
             highlightRect.gameObject.SetActive(false);
+            buttonTweenHandle.Cancel();
         }
         #endregion
 

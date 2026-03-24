@@ -24,10 +24,6 @@ namespace BeachHero
             {
                 motion = motion.WithOnComplete(onComplete);
             }
-            if (loopCount != 0)
-            {
-                motion.WithLoops(loopCount, loopType);
-            }
             switch (spaceType)
             {
                 case TransformSpace.World:
@@ -36,6 +32,10 @@ namespace BeachHero
                 case TransformSpace.Local:
                     handle = new TweenHandle(motion.BindToLocalPosition(target));
                     break;
+            }
+            if (loopCount != 0)
+            {
+                motion.WithLoops(loopCount, loopType);
             }
             return handle;
         }
@@ -178,6 +178,19 @@ namespace BeachHero
         #endregion
 
         #region Rect
+        public static TweenHandle SetSizeDelta(RectTransform target, Vector2 from, Vector2 to, float duration,
+            Ease ease = Ease.Linear, System.Action onComplete = null)
+        {
+            var motion = LMotion.Create(from, to, duration).WithEase(ease);
+            var handle = default(TweenHandle);
+
+            if (onComplete != null)
+            {
+                motion = motion.WithOnComplete(onComplete);
+            }
+            handle = new TweenHandle(motion.BindToSizeDelta(target));
+            return handle;
+        }
         public static TweenHandle MoveAnchorOnAxis(RectTransform target, float from, float to, float duration,
             Ease ease = Ease.Linear, TransformAxis transformAxis = TransformAxis.XY,
             int loops = 0, LoopType loopType = LoopType.Restart, System.Action onComplete = null)
@@ -190,7 +203,7 @@ namespace BeachHero
             }
             if (loops != 0)
             {
-                motion = motion.WithLoops(loops,loopType);
+                motion = motion.WithLoops(loops, loopType);
             }
             switch (transformAxis)
             {
