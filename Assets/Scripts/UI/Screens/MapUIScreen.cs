@@ -42,13 +42,13 @@ namespace BeachHero
             playButton.ButtonRegister(OnPlayButtonClick);
             rightArrowBtn.ButtonRegister(ScrollRight);
             leftArrowBtn.ButtonRegister(ScrollLeft);
-
             if (MapController.GetInstance != null)
             {
                 MapController.GetInstance.OnMapButtonsEnabled += () => SetMapButtonsVisibility(true);
                 MapController.GetInstance.OnShowPowerupSelection += PushPowerupSelectionScreen;
                 MapController.GetInstance.OnMapUnlocked += NewMapUnlock;
             }
+            OpenAnimator.Play();
         }
 
         public override void Close()

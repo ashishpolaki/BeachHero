@@ -149,7 +149,7 @@ namespace BeachHero
             {
                 float totalNow = Mathf.Max(0.0001f, _previewSequence.Duration);
                 float time = Mathf.Clamp01(_progress) * totalNow;
-                _previewSequence.SetSlider(time);
+                _previewSequence.SetTime(time);
             }
 
             // Mark dirty so Unity will prompt to save scene/prefab changes
@@ -1142,7 +1142,7 @@ namespace BeachHero
                 float normalized = Mathf.Clamp01(progress);
                 float time = normalized * _animator.Duration;
                 _previewSequence.SetPlaybackSpeed(0);
-                _previewSequence.SetSlider(time);
+                _previewSequence.SetTime(time);
                 EditorSceneManager.MarkSceneDirty(_animator.gameObject.scene);
                 SceneView.RepaintAll();
             }

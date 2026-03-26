@@ -1,7 +1,6 @@
 using Sych.ShareAssets.Runtime;
 using TMPro;
 using UnityEngine;
-using LitMotion;
 
 namespace BeachHero
 {
@@ -14,7 +13,6 @@ namespace BeachHero
         [SerializeField] private UIButton leaderBoardButton;
         [SerializeField] private UIButton shareGameButton;
         [SerializeField] private TextMeshProUGUI levelNumberText;
-        [SerializeField] private TweenAnimator panelOpenAnimation;
         [SerializeField] private Sprite playButtonSprite;
         [Header("Tutorial Positions")]
         [SerializeField] private Vector3 tutorialCharacterPosition;
@@ -24,7 +22,6 @@ namespace BeachHero
 
         public override void Open(ScreenTabType screenTabType)
         {
-            panelOpenAnimation.BuildSequence();
             base.Open(screenTabType);
             SetLevelNumber();
             AddListeners();
@@ -36,7 +33,7 @@ namespace BeachHero
             isWelcomeMessageShown = SaveSystem.LoadBool(StringUtils.SHOW_WELCOME_MESSAGE, false);
             if (!isWelcomeMessageShown)
             {
-                panelOpenAnimation.ApplyAllToStates();
+                OpenAnimator.ApplyAllToStates();
                 SaveSystem.SaveBool(StringUtils.SHOW_WELCOME_MESSAGE, true);
                 isWelcomeMessageShown = true;
 
@@ -54,10 +51,11 @@ namespace BeachHero
                 {
                     tc.TutorialSpeechBubble.Show(StringUtils.TUTORIAL_WELCOME_MESSAGE, speechBubblePosition);
                 });
+                UIController.GetInstance.EndTransition();
             }
             else
             {
-                panelOpenAnimation.Play();
+                OpenAnimator.Play();
             }
         }
 
@@ -65,7 +63,6 @@ namespace BeachHero
         {
             base.Close();
             RemoveListeners();
-            panelOpenAnimation.Kill();
         }
 
         private void AddListeners()

@@ -32,6 +32,7 @@ namespace BeachHero
         public void Hide();
         public void ChangeTab(ScreenTabType tab);
     }
+    [RequireComponent(typeof(TweenAnimator))]
     public class BaseScreen : MonoBehaviour, IScreen
     {
         [SerializeField] private RectTransform rect;
@@ -39,9 +40,11 @@ namespace BeachHero
         [SerializeField] private ScreenType screenType;
         [SerializeField] private ScreenTabType defaultOpenTab;
         [SerializeField] private List<BaseScreenTab> tabs;
+        [SerializeField] private TweenAnimator openAnimator;
 
         private ScreenTabType currentOpenTab;
 
+        public TweenAnimator OpenAnimator => openAnimator;
         public ScreenType ScreenType => screenType;
         public List<BaseScreenTab> Tabs { get => tabs; }
         public ScreenTabType DefaultOpenTab { get => defaultOpenTab; }
@@ -52,15 +55,19 @@ namespace BeachHero
         #region IScreen Implementation
         public virtual void Open(ScreenTabType screenTabType)
         {
+            UIController.GetInstance.StartTransition();
             if (notchSafeArea != null)
             {
                 UIController.GetInstance.NotchSafeArea.RegisterRectTransform(notchSafeArea);
             }
+            openAnimator.BuildSequence();
+            openAnimator.OnComplete(() => UIController.GetInstance.EndTransition());
             gameObject.SetActive(true);
             OpenInitialTab(screenTabType);
         }
         public virtual void Close()
         {
+            OpenAnimator.Kill();
             CloseAllTabs();
             gameObject.SetActive(false);
         }

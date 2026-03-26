@@ -1100,6 +1100,7 @@ MonoBehaviour:
   screenType: 1
   defaultOpenTab: 0
   tabs: []
+  openAnimator: {fileID: 4957659438004857057}
   boatCustomisationButton: {fileID: 971613588692747548}
   playButton: {fileID: 5887865604330089652}
   storeButton: {fileID: 2446996965009974112}
@@ -1107,7 +1108,6 @@ MonoBehaviour:
   leaderBoardButton: {fileID: 869305587642893868}
   shareGameButton: {fileID: 7113716117991832987}
   levelNumberText: {fileID: 3942195231119110490}
-  panelOpenAnimation: {fileID: 4957659438004857057}
   playButtonSprite: {fileID: 21300000, guid: c2a055ed4887b0b48b33f83f2bbfbe81, type: 3}
   tutorialCharacterPosition: {x: 318, y: -628, z: 0}
   speechBubblePosition: {x: 144, y: -76, z: 0}
@@ -1127,7 +1127,7 @@ MonoBehaviour:
   - rid: 7129432895758532708
   triggerEvents: []
   delayFrames: 0
-  timelineDuration: 1
+  timelineDuration: 0.41
   references:
     version: 2
     RefIds:
@@ -1136,7 +1136,7 @@ MonoBehaviour:
       data:
         clipType: 4
         startTime: 0
-        duration: 1
+        duration: 0.41
         ease: 0
         target: {fileID: 3583807033364480700}
         originalScale: {x: 1, y: 1, z: 1}
@@ -2256,7 +2256,7 @@ RectTransform:
   m_GameObject: {fileID: 7347245253756893811}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9849681, y: 0.9849681, z: 0.9849681}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8071212869900681318}

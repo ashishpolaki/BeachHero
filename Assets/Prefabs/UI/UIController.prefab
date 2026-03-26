@@ -128,12 +128,13 @@ MonoBehaviour:
   screenManager:
     screenConfig: {fileID: 11400000, guid: b46d68ad495a5bd43849ee648a8c0fe2, type: 2}
     uiHolder: {fileID: 7725578108729284783}
+    canvasGroup: {fileID: 3326294676655026714}
   fadeUI:
     fadeAnimator: {fileID: 4544963260863518255}
     fadeInDuration: 0.75
     fadeOutDuration: 0.75
-    fadeInEase: 5
-    fadeOutEase: 6
+    fadeInEase: 4
+    fadeOutEase: 25
   notchSafeArea:
     safePanels: []
     conformX: 1
@@ -414,6 +415,7 @@ GameObject:
   - component: {fileID: 5395178095304450007}
   - component: {fileID: 6043274633909972534}
   - component: {fileID: 8976626499814470623}
+  - component: {fileID: 3326294676655026714}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -504,6 +506,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &3326294676655026714
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4883524934719223783}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &7126001983028494119
 GameObject:
   m_ObjectHideFlags: 0

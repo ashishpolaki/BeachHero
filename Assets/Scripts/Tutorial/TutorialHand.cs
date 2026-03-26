@@ -91,12 +91,13 @@ namespace BeachHero
             var move = TweenManager.MoveAnchor(handRect, new Vector2(handRect.anchoredPosition.x, handRect.anchoredPosition.y + punchYOffset),
                 new Vector2(movePosition.x, movePosition.y + moveYOffset), moveDuration, moveEase, TransformAxis.XY).Handle;
 
-            var loopHandle = TweenManager.RunCallback(() => { PlayPunchThenMoveLoop(punchPosition, movePosition); }).Handle;
-
             moveSequence.Append(punch);
             moveSequence.Append(move);
-            moveSequence.Append(loopHandle);
+            moveSequence.AppendInterval(0.2f); // Small delay before looping
+            var loopHandle = TweenManager.RunCallback(() => { moveSequence.SetTime(0); }).Handle;
+            moveSequence.OnComplete(loopHandle);
             moveSequence.InitializeHandle();
+            moveSequence.Preserve();
         }
 
         //Kill  active tween 

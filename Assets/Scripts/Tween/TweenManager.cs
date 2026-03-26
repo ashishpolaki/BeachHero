@@ -3,6 +3,7 @@ using LitMotion;
 using LitMotion.Extensions;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 namespace BeachHero
 {
@@ -307,7 +308,7 @@ namespace BeachHero
         #region Generic Value Tweens
 
         public static TweenHandle SetFloat(float from, float to, float duration,
-            System.Action<float> setter, Ease ease = Ease.Linear, System.Action onComplete = null)
+            System.Action<float> setter = null, Ease ease = Ease.Linear, System.Action onComplete = null)
         {
             var motion = LMotion.Create(from, to, duration);
 
@@ -342,7 +343,7 @@ namespace BeachHero
 
         public static TweenHandle RunCallback(System.Action onComplete = null)
         {
-            var motion = LMotion.Create(0, 0, 0.1f);
+            var motion = LMotion.Create(0, 0, 0f);
             if (onComplete != null)
             {
                 motion = motion.WithOnComplete(onComplete);
@@ -453,6 +454,7 @@ namespace BeachHero
         public bool IsPlaying => handle.IsPlaying();
         public bool IsValid => handle.IsValid();
         public float Duration => (float)handle.TotalDuration;
+        public float CurrentTime => (float)sequenceBuilder.CurrentDuration;
 
         public TweenSequence(MotionSequenceBuilder builder)
         {
@@ -485,6 +487,10 @@ namespace BeachHero
             sequenceBuilder.Insert(time, motionHandle);
         }
 
+        public void OnComplete(MotionHandle motionHandle)
+        {
+            sequenceBuilder.Insert(sequenceBuilder.CurrentDuration, motionHandle);
+        }
         public void Cancel()
         {
             if (Handle.IsActive())
@@ -513,7 +519,7 @@ namespace BeachHero
             if (handle.IsActive())
                 handle.Complete();
         }
-        public void SetSlider(float val)
+        public void SetTime(float val)
         {
             handle.Time = val;
         }

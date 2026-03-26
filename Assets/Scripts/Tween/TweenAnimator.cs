@@ -28,6 +28,8 @@ namespace BeachHero
 
         public bool IsActive => _sequence.IsActive;
         public float Duration => _sequence.Duration;
+        private Action OnCompleteAction = null;
+
         public void BuildSequence()
         {
             // kill previous
@@ -75,9 +77,11 @@ namespace BeachHero
                     continue;
                 }
                 float triggerTime = Mathf.Clamp01(trigger.timePercent / 100f) * timelineDuration;
-                ;
                 _sequence.Insert(triggerTime, TweenManager.RunCallback(() => trigger.onTrigger?.Invoke()).Handle);
             }
+
+            // Add OnComplete callback
+            _sequence.OnComplete(TweenManager.SetFloat(0, 0, 0.1f,onComplete : () => OnCompleteAction?.Invoke()).Handle);
             _sequence.InitializeHandle();
             _sequence.Preserve();
             _sequence.SetPlaybackSpeed(0);
@@ -92,6 +96,10 @@ namespace BeachHero
             _sequence.SetPlaybackSpeed(1);
         }
 
+        public void OnComplete(Action action = null)
+        {
+            OnCompleteAction = action;
+        }
 
         public void Kill()
         {

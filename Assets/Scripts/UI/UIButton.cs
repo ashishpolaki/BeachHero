@@ -51,7 +51,12 @@ namespace BeachHero
         #region Pointers
         public void OnPointerDown(PointerEventData eventData)
         {
+            if (UIController.GetInstance.IsScreenTransitioning || UIController.GetInstance.IsInputBlocked)
+            {
+                return;
+            }
             PlayPressAnimation();
+            UIController.GetInstance.BlockInput(true);
         }
 
         private bool IsPointerInside(PointerEventData eventData)
@@ -77,6 +82,7 @@ namespace BeachHero
             else
             {
                 CancelPressAnimation();
+                UIController.GetInstance.BlockInput(false);
             }
         }
 
@@ -110,7 +116,12 @@ namespace BeachHero
             PlayAudio();
             AnimateScale(_originalScale, releaseEase, () =>
             {
-                OnButtonReleased?.Invoke();
+                // while the screen is in transition, the buttons action should not be happen.
+                if (!UIController.GetInstance.IsScreenTransitioning)
+                {
+                    OnButtonReleased?.Invoke();
+                }
+                UIController.GetInstance.BlockInput(false);
             });
         }
         #endregion

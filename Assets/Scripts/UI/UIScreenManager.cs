@@ -8,6 +8,8 @@ namespace BeachHero
     {
         [SerializeField] private ScreenConfigSO screenConfig;
         [SerializeField] private Transform uiHolder;
+        [SerializeField] private CanvasGroup canvasGroup;
+
         private Dictionary<ScreenType, BaseScreen> screenCache = new Dictionary<ScreenType, BaseScreen>();
         private Stack<BaseScreen> screenStack = new Stack<BaseScreen>();
 
@@ -79,7 +81,6 @@ namespace BeachHero
                 DebugUtils.LogError($"Screen not found for type: {screenType}");
                 return null;
             }
-
             return screenCache[screenType];
         }
         private void Show(ScreenType screenType, ScreenTabType tabType)
@@ -109,6 +110,11 @@ namespace BeachHero
                 var screen = screenStack.Pop();
                 screen.Close();
             }
+        }
+        public void EnableCanvasGroup(bool enable)
+        {
+            //canvasGroup.interactable = enable;
+            canvasGroup.blocksRaycasts = enable;
         }
     }
 }
