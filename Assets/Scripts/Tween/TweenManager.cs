@@ -454,7 +454,7 @@ namespace BeachHero
         public bool IsPlaying => handle.IsPlaying();
         public bool IsValid => handle.IsValid();
         public float Duration => (float)handle.TotalDuration;
-        public float CurrentTime => (float)sequenceBuilder.CurrentDuration;
+        public float CurrentDuration => (float)sequenceBuilder.CurrentDuration;
 
         public TweenSequence(MotionSequenceBuilder builder)
         {
