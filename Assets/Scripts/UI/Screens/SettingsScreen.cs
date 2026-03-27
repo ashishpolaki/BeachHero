@@ -26,7 +26,6 @@ namespace BeachHero
             soundToggle.Init(SaveSystem.LoadBool(StringUtils.SOUND_ON, true));
             musicToggle.Init(SaveSystem.LoadBool(StringUtils.MUSIC_ON, true));
             hapticToggle.Init(SaveSystem.LoadBool(StringUtils.HAPTICS_ON, true));
-            OpenAnimator.Play();
         }
 
         public override void Close()

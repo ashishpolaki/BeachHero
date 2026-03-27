@@ -26,7 +26,7 @@ namespace BeachHero
             int targetFPS = 30; // default
 
             // --- Primary check: RAM-based classification ---
-            if (ram > 6000) // tolerance check
+            if (ram > 4000) // tolerance check
             {
                 targetFPS = 60; // high-end default
             }

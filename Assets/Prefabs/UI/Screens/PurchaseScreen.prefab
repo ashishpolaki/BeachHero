@@ -744,6 +744,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: -9.87
   m_lineSpacingMax: 0
@@ -913,6 +914,7 @@ GameObject:
   - component: {fileID: 5484950827675996185}
   - component: {fileID: 2262295217961463482}
   - component: {fileID: 298371953524249392}
+  - component: {fileID: 8013073571815851642}
   m_Layer: 5
   m_Name: PurchaseScreen
   m_TagString: Untagged
@@ -1001,7 +1003,27 @@ MonoBehaviour:
   - {fileID: 7678241406615772708}
   - {fileID: 6054619579303062673}
   - {fileID: 6584582622504489420}
+  openAnimator: {fileID: 8013073571815851642}
   closePanelButton: {fileID: 3351561494461656533}
+--- !u!114 &8013073571815851642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2282056835638158529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b2f9017c8115d648b2e0ec1ef03c5b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clips: []
+  triggerEvents: []
+  delayFrames: 0
+  timelineDuration: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &2711077879364368364
 GameObject:
   m_ObjectHideFlags: 0
@@ -1186,6 +1208,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: -18.1
   m_lineSpacingMax: 0
@@ -1399,6 +1422,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -2321,6 +2345,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -3374,6 +3399,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -3512,6 +3538,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 19.7
   m_lineSpacingMax: 0
@@ -4082,6 +4109,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: -18.1
   m_lineSpacingMax: 0
@@ -4525,6 +4553,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -4664,6 +4693,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: -18.1
   m_lineSpacingMax: 0

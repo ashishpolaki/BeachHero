@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 5654317493966834982}
   - component: {fileID: 2574257011378521626}
   - component: {fileID: 7962121263356066592}
+  - component: {fileID: 592737214400862701}
   m_Layer: 5
   m_Name: PowerupSelectionUIScreen
   m_TagString: Untagged
@@ -175,6 +176,7 @@ MonoBehaviour:
   screenType: 7
   defaultOpenTab: 0
   tabs: []
+  openAnimator: {fileID: 592737214400862701}
   magnetButton: {fileID: 3636575030536423212}
   speedButton: {fileID: 4489962214280904090}
   playButton: {fileID: 3341441240902022548}
@@ -185,6 +187,25 @@ MonoBehaviour:
   playButtonSprite: {fileID: 21300000, guid: b11c09117255a014b8905d86db2a375c, type: 3}
   tutorialCharacterPosition: {x: 318, y: -1172, z: 0}
   speechBubblePosition: {x: 144, y: -614, z: 0}
+--- !u!114 &592737214400862701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 129744511828939037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b2f9017c8115d648b2e0ec1ef03c5b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clips: []
+  triggerEvents: []
+  delayFrames: 0
+  timelineDuration: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &139184882614853065
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,14 +415,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
-  button: {fileID: 4005015816727672685}
   enableHover: 0
+  _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: 0.9
   hoverScale: 1.05
   tweenDuration: 0.15
   pressEase: 26
   releaseEase: 26
-  _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &873153750107901456
 GameObject:
   m_ObjectHideFlags: 0
@@ -637,14 +657,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
-  button: {fileID: 8906281367012212818}
   enableHover: 0
+  _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: 0.9
   hoverScale: 1.05
   tweenDuration: 0.15
   pressEase: 26
   releaseEase: 26
-  _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &1761210790792339726
 GameObject:
   m_ObjectHideFlags: 0
@@ -751,6 +770,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -890,6 +910,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1027,6 +1048,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1269,14 +1291,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
-  button: {fileID: 5449183031456707673}
   enableHover: 0
+  _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: 0.9
   hoverScale: 1.05
   tweenDuration: 0.15
   pressEase: 26
   releaseEase: 26
-  _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &3294797091434040065
 GameObject:
   m_ObjectHideFlags: 0
@@ -1412,14 +1433,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
-  button: {fileID: 3341441240902022548}
   enableHover: 0
+  _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: 0.9
   hoverScale: 1.05
   tweenDuration: 0.15
   pressEase: 26
   releaseEase: 26
-  _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &3332856445115532565
 GameObject:
   m_ObjectHideFlags: 0
@@ -1749,6 +1769,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -2177,6 +2198,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -2344,14 +2366,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
-  button: {fileID: 2552755202613257296}
   enableHover: 0
+  _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: 0.9
   hoverScale: 1.05
   tweenDuration: 0.15
   pressEase: 26
   releaseEase: 26
-  _originalScale: {x: 1, y: 1, z: 1}
 --- !u!1 &7963564262379519079
 GameObject:
   m_ObjectHideFlags: 0
@@ -2456,6 +2477,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -2623,11 +2645,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
-  button: {fileID: 268068854696627224}
   enableHover: 0
+  _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: 0.9
   hoverScale: 1.05
   tweenDuration: 0.15
   pressEase: 26
   releaseEase: 26
-  _originalScale: {x: 1, y: 1, z: 1}

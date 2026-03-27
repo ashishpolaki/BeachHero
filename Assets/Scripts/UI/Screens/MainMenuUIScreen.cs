@@ -25,10 +25,8 @@ namespace BeachHero
             base.Open(screenTabType);
             SetLevelNumber();
             AddListeners();
-            OnOpenPanel();
         }
-
-        public void OnOpenPanel()
+        public override void OnScreenOpened()
         {
             isWelcomeMessageShown = SaveSystem.LoadBool(StringUtils.SHOW_WELCOME_MESSAGE, false);
             if (!isWelcomeMessageShown)
@@ -41,10 +39,10 @@ namespace BeachHero
                 var tc = TutorialController.GetInstance;
                 tc.HighlightButton(playButton.transform, playButton.GetComponent<RectTransform>().sizeDelta, playButtonSprite, true,
                 () =>
-               {
-                   tc.EnsureTutorialCanvas(playButton.gameObject, StringUtils.SPRITES_ABOVE_UI_LAYER, IntUtils.TUTORIAL_CANVAS_LAYER);
-                   tc.TutorialHand.ShowHandPointing(playButton.transform);
-               });
+                {
+                    tc.EnsureTutorialCanvas(playButton.gameObject, StringUtils.SPRITES_ABOVE_UI_LAYER, IntUtils.TUTORIAL_CANVAS_LAYER);
+                    tc.TutorialHand.ShowHandPointing(playButton.transform);
+                });
 
                 // Move the tutorial character and show welcome message.
                 tc.TutorialCharacter.PlayAnimation(TutorialCharacterType.WaveHand, tutorialCharacterPosition, () =>
@@ -55,7 +53,7 @@ namespace BeachHero
             }
             else
             {
-                OpenAnimator.Play();
+                base.OnScreenOpened();
             }
         }
 

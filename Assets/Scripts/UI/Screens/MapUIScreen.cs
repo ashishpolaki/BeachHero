@@ -48,7 +48,6 @@ namespace BeachHero
                 MapController.GetInstance.OnShowPowerupSelection += PushPowerupSelectionScreen;
                 MapController.GetInstance.OnMapUnlocked += NewMapUnlock;
             }
-            OpenAnimator.Play();
         }
 
         public override void Close()

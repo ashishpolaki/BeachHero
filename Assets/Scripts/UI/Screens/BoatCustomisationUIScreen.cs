@@ -53,7 +53,6 @@ namespace BeachHero
             selectedBoatIndex = -1;
             AddListeners();
             SetupCustomisation();
-            OpenAnimator.Play();
         }
         public override void Close()
         {

@@ -529,6 +529,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -668,6 +669,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1681,6 +1683,7 @@ GameObject:
   - component: {fileID: 7848902027259442100}
   - component: {fileID: 5979272571438445353}
   - component: {fileID: 9091393311805278801}
+  - component: {fileID: 4751164754394937174}
   m_Layer: 5
   m_Name: AdNotLoadedUIScreen
   m_TagString: Untagged
@@ -1761,22 +1764,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19be04a6a75b11247a8bb8ce18a9209b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openingAnimationData:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
   rect: {fileID: 0}
   notchSafeArea: {fileID: 0}
   screenType: 9
   defaultOpenTab: 0
   tabs: []
+  openAnimator: {fileID: 4751164754394937174}
   closePanelButton: {fileID: 482986000936917636}
   retryButton: {fileID: 7470932717933143331}
+--- !u!114 &4751164754394937174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8872674488754788144}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b2f9017c8115d648b2e0ec1ef03c5b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clips: []
+  triggerEvents: []
+  delayFrames: 0
+  timelineDuration: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &9058416047030293611
 GameObject:
   m_ObjectHideFlags: 0
@@ -2004,6 +2018,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0

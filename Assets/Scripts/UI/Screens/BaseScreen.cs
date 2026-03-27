@@ -64,6 +64,7 @@ namespace BeachHero
             openAnimator.OnComplete(() => UIController.GetInstance.EndTransition());
             gameObject.SetActive(true);
             OpenInitialTab(screenTabType);
+            OnScreenOpened();
         }
         public virtual void Close()
         {
@@ -90,6 +91,11 @@ namespace BeachHero
             {
                 CloseTab(currentOpenTab);
             }
+        }
+        public virtual void OnScreenOpened()
+        {
+            //override in child classes if you want to do something when the screen is opened.
+            OpenAnimator.Play();
         }
         #endregion
 

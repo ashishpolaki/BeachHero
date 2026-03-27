@@ -45,7 +45,6 @@ namespace BeachHero
             GameController.GetInstance.LevelController.OnPlayerTouch += HandleHidePanels;
             GameController.GetInstance.LevelController.OnDrawPathError += HandleShowPanels;
             GameController.GetInstance.LevelController.OnCompleteSpawnAnimation += HandleShowPanels;
-            OpenAnimator.Play();
         }
 
         public override void Close()
