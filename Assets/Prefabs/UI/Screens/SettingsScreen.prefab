@@ -1831,7 +1831,7 @@ RectTransform:
   m_GameObject: {fileID: 4998275856034997604}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.0055445204, y: 0.0055445204, z: 0.0055445204}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8470656813846145594}
@@ -3061,7 +3061,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   delayFrames: 0
-  timelineDuration: 1
+  timelineDuration: 0.5
   references:
     version: 2
     RefIds:
@@ -3070,8 +3070,8 @@ MonoBehaviour:
       data:
         clipType: 1
         startTime: 0
-        duration: 1
-        ease: 29
+        duration: 0.5
+        ease: 1
         fromScale: {x: 0, y: 0, z: 0}
         toScale: {x: 1, y: 1, z: 1}
         target: {fileID: 5103171061512787165}
