@@ -511,13 +511,13 @@ namespace BeachHero
                 player?.UpdateState();
             }
 
+            UpdateCollectables();
+
             // Start the Simulation after the path is drawn
             if (levelPhase != LevelPhase.Simulating)
             {
                 return;
             }
-
-            UpdateCollectables();
 
             if (levelPhase != LevelPhase.CompletedFail)
             {
