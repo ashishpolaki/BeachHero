@@ -247,7 +247,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _GradientTex:
-        m_Texture: {fileID: 1015316275}
+        m_Texture: {fileID: 934392671}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -348,7 +348,6 @@ GameObject:
   - component: {fileID: 280235832}
   - component: {fileID: 280235834}
   - component: {fileID: 280235835}
-  - component: {fileID: 280235836}
   m_Layer: 0
   m_Name: BeachHero.GameController
   m_TagString: Untagged
@@ -389,7 +388,6 @@ MonoBehaviour:
   powerupController: {fileID: 280235832}
   storeController: {fileID: 280235834}
   skinController: {fileID: 280235835}
-  leaderboardController: {fileID: 280235836}
   levelFailDelays:
   - type: 0
     seconds: 0
@@ -504,19 +502,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boatSkinsDatabase: {fileID: 11400000, guid: c40b3b52de16db6439f9702261e55ff2, type: 2}
---- !u!114 &280235836
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 280235824}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84ae7ed238a258547a023916076d1979, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  leaderboardID: CgkI-8igl5INEAIQAQ
 --- !u!1 &404070987
 GameObject:
   m_ObjectHideFlags: 0
@@ -561,6 +546,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4064ddef4074394ab2eef7efeef4046, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &481375571
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 481375572}
+  - component: {fileID: 481375573}
+  m_Layer: 0
+  m_Name: LeaderboardController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &481375572
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 481375571}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &481375573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 481375571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84ae7ed238a258547a023916076d1979, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leaderboardID: CgkI-8igl5INEAIQAQ
 --- !u!1 &500959292
 GameObject:
   m_ObjectHideFlags: 0
@@ -617,7 +647,7 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 500959292}
   m_Enabled: 1
---- !u!28 &1015316275
+--- !u!28 &934392671
 Texture2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -811,6 +841,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1288920829963502763, guid: f839c5c05a3e58c47b8f5ea49808c69c,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.4745098
+      objectReference: {fileID: 0}
     - target: {fileID: 6880726573010865678, guid: f839c5c05a3e58c47b8f5ea49808c69c,
         type: 3}
       propertyPath: m_Camera
@@ -1083,6 +1118,7 @@ SceneRoots:
   - {fileID: 404070988}
   - {fileID: 1215954460}
   - {fileID: 1629038579}
+  - {fileID: 481375572}
   - {fileID: 3390475}
   - {fileID: 4003980194419941433}
   - {fileID: 2093876624}

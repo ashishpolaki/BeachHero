@@ -7,7 +7,7 @@ namespace BeachHero
     {
         private void Awake()
         {
-            GameController.GetInstance.LeaderboardController.InitializeGPGS();
+            LeaderboardController.GetInstance.InitializeGPGS();
         }
 
         private void Start()
@@ -44,7 +44,7 @@ namespace BeachHero
                 Application.targetFrameRate = 60;
             }
         }
-        
+
         private async void AsyncLazyInit()
         {
             SetAdaptiveFrameRate();

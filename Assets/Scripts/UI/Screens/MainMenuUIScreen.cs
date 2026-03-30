@@ -100,7 +100,7 @@ namespace BeachHero
 
         private void OpenLeaderboards()
         {
-            GameController.GetInstance.LeaderboardController.ShowLeaderboardUI();
+            LeaderboardController.GetInstance.ShowLeaderboardUI();
         }
 
         private void OnSettingsButtonClick()

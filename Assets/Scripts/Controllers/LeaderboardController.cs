@@ -4,7 +4,7 @@ using GooglePlayGames.BasicApi;
 
 namespace BeachHero
 {
-    public class LeaderboardController : MonoBehaviour
+    public class LeaderboardController : SingleTon<LeaderboardController>
     {
         [Header("Google Play Leaderboard")]
         [SerializeField] private string leaderboardID;
