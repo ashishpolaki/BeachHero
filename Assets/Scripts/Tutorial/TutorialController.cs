@@ -20,6 +20,7 @@ namespace BeachHero
         [SerializeField] private TutorialHand tutorialHand;
         [SerializeField] private TutorialCharacter tutorialCharacter;
         [SerializeField] private TutorialSpeechBubble tutorialSpeechBubble;
+        [SerializeField] private TutorialSkipOverlay tutorialSkipOverlay;
         [SerializeField] private GameObject blockerOverlay;
         [SerializeField] private RectTransform highlightRect;
         [SerializeField] private Image highlightImage;
@@ -40,6 +41,7 @@ namespace BeachHero
         public TutorialCharacter TutorialCharacter => tutorialCharacter;
         public TutorialHand TutorialHand => tutorialHand;
         public TutorialSpeechBubble TutorialSpeechBubble => tutorialSpeechBubble;
+        public TutorialSkipOverlay TutorialSkipOverlay => tutorialSkipOverlay;
         #endregion
 
         #region Unity Methods

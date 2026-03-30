@@ -28,7 +28,6 @@ namespace BeachHero
             {
                 messageText.gameObject.SetActive(true);
                 messageAnimator.ShowText(message);
-                //messageText.text = message;
             }
         }
 
@@ -38,7 +37,9 @@ namespace BeachHero
         public void Hide()
         {
             if (bubbleBackground != null)
+            {
                 bubbleBackground.SetActive(false);
+            }
 
             if (messageText != null)
             {

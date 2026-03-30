@@ -4,7 +4,7 @@ using System;
 
 namespace BeachHero
 {
-    public enum TutorialCharacterType
+    public enum TutorialCharacterState
     {
         Idle,
         WaveHand,
@@ -32,7 +32,7 @@ namespace BeachHero
             moveTween.Cancel();
         }
 
-        public void PlayAnimation(TutorialCharacterType tutorialCharacterType, Vector3 pos, Action OnComplete = null)
+        public void PlayAnimation(TutorialCharacterState tutorialCharacterType, Vector3 pos, Action OnComplete = null)
         {
             characterRoot.transform.localPosition = pos + moveOffset;
             moveTween.Cancel();
@@ -40,21 +40,30 @@ namespace BeachHero
             characterRoot.SetActive(true);
             switch (tutorialCharacterType)
             {
-                case TutorialCharacterType.WaveHand:
+                case TutorialCharacterState.WaveHand:
                     animator.Play(waveHandAnim, 0, 0);
                     break;
-                case TutorialCharacterType.Cry:
+                case TutorialCharacterState.Cry:
                     animator.Play(cryAnim, 0, 0);
                     break;
-                case TutorialCharacterType.Talk:
+                case TutorialCharacterState.Talk:
                     animator.Play(talkAnim, 0, 0);
                     break;
-                case TutorialCharacterType.Idle:
+                case TutorialCharacterState.Idle:
                     animator.Play(idleAnim, 0, 0);
                     break;
                 default:
                     break;
             }
+        }
+
+        public void Hide()
+        {
+            moveTween.Cancel();
+            moveTween = TweenManager.Move(characterRoot.transform, characterRoot.transform.localPosition, characterRoot.transform.localPosition + moveOffset, moveDuration, 0, LoopType.Restart, TransformSpace.Local, moveEase, () =>
+            {
+                SkipAnimation();
+            });
         }
     }
 }

@@ -27,12 +27,17 @@ namespace BeachHero
         [SerializeField] private float panelSlideDuration = 0.5f;
         [SerializeField] private float panelSlideOffset = 200f;
         [SerializeField] private Ease panelSlideEase = Ease.OutBack;
+
+        [Header("Tutorial Positions")]
+        [SerializeField] private Vector3 tutorialCharacterPosition;
+        [SerializeField] private Vector3 speechBubblePosition;
         #endregion
 
         public override void Open(ScreenTabType screenTabType)
         {
             base.Open(screenTabType);
             SetPanelsToHiddenPosition();
+            TryShowTutorialHint();
 
             pauseButton.OnButtonReleased += OnPause;
             retryButton.OnButtonReleased += OnRetry;
@@ -63,6 +68,26 @@ namespace BeachHero
             GameController.GetInstance.LevelController.OnCompleteSpawnAnimation -= HandleShowPanels;
         }
 
+        public void TryShowTutorialHint()
+        {
+            // If the player loses n in a row, show the hint with the speech bubble
+            if (GameController.GetInstance.LevelController.ShouldShowConsecutiveLossHint())
+            {
+                GameController.GetInstance.LevelController.ResetLevelFailCounter();
+                TutorialController.GetInstance.TutorialCharacter.PlayAnimation(TutorialCharacterState.Cry, tutorialCharacterPosition, () =>
+                {
+                    TutorialController.GetInstance.TutorialSpeechBubble.Show(StringUtils.CONSECUTIVE_LOSE_HINT, speechBubblePosition);
+                });
+
+                //Add a skip button.
+                TutorialController.GetInstance.TutorialSkipOverlay.Show(() =>
+                {
+                    TutorialController.GetInstance.TutorialSpeechBubble.Hide();
+                    TutorialController.GetInstance.TutorialCharacter.Hide();
+                });
+            }
+        }
+
         #region Containers Animation
         private void SetPanelsToHiddenPosition()
         {
@@ -79,7 +104,7 @@ namespace BeachHero
             float rightPanelFromX = show ? panelSlideOffset : 0f;
             float rightPanelToX = show ? 0f : panelSlideOffset;
 
-            TweenManager.MoveAnchorOnAxis(powerupPanel, leftPanelFromX, leftPanelToX, panelSlideDuration, panelSlideEase,TransformAxis.X);
+            TweenManager.MoveAnchorOnAxis(powerupPanel, leftPanelFromX, leftPanelToX, panelSlideDuration, panelSlideEase, TransformAxis.X);
             TweenManager.MoveAnchorOnAxis(boatPanel, rightPanelFromX, rightPanelToX, panelSlideDuration, panelSlideEase, TransformAxis.X);
             TweenManager.MoveAnchorOnAxis(shopPanel, rightPanelFromX, rightPanelToX, panelSlideDuration, panelSlideEase, TransformAxis.X);
             TweenManager.MoveAnchorOnAxis(noAdsPanel, rightPanelFromX, rightPanelToX, panelSlideDuration, panelSlideEase, TransformAxis.X);

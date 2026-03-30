@@ -33,6 +33,7 @@ namespace BeachHero
         [SerializeField] private float magnetRadius = 5f;
         [SerializeField] private float spawnAnimationDuration = 1;
         [SerializeField] private Ease spawnAnimationEase = Ease.OutElastic;
+        [SerializeField] private int levelFailToShowHint = 2;
         #endregion
 
         #region Private Variables
@@ -63,6 +64,7 @@ namespace BeachHero
         private int targetDrownCharacters;
         [Tooltip("Number of characters saved by the player in current level")]
         private int drownCharactersCounter;
+        private int levelFailCounter;
         #endregion
 
         #region Properties
@@ -86,8 +88,11 @@ namespace BeachHero
         #region Unity Methods
         private void OnEnable()
         {
-            InputManager.GetInstance.OnMouseClickDown += OnMouseClickDown;
-            InputManager.GetInstance.OnMouseClickUp += OnMouseClickUp;
+            if (InputManager.GetInstance != null)
+            {
+                InputManager.GetInstance.OnMouseClickDown += OnMouseClickDown;
+                InputManager.GetInstance.OnMouseClickUp += OnMouseClickUp;
+            }
         }
 
         private void OnDisable()
@@ -220,7 +225,22 @@ namespace BeachHero
         {
             levelPhase = passed ? LevelPhase.CompletedSuccess : LevelPhase.CompletedFail;
             if (!passed)
+            {
                 player.StopMovement();
+            }
+            // If the player failed, increment the fail counter. If they passed, reset it.
+            levelFailCounter = passed ? 0 : levelFailCounter + 1; 
+        }
+        #endregion
+
+        #region Level Fail Hint
+        public bool ShouldShowConsecutiveLossHint()
+        {
+            return levelFailCounter >= levelFailToShowHint;
+        }
+        public void ResetLevelFailCounter()
+        {
+            levelFailCounter = 0;
         }
         #endregion
 
@@ -718,7 +738,7 @@ namespace BeachHero
                 }
             }
 
-            OnCompleteSpawnAnimation.Invoke();
+            OnCompleteSpawnAnimation?.Invoke();
         }
 
         private void SpawnTrails()

@@ -87,6 +87,9 @@ namespace BeachHero
         public const string TUTORIAL_WELCOME_MESSAGE = "WELCOME, BRAVE HERO!\nBEACH IS IN TROUBLE,\nITS TIME TO DIVE IN\nAND SAVE THE DAY!";
         public const string MAGNET_POWERUP_TUTORIAL_MESSAGE = "ACTIVATE THE MAGNET\n AND ATTRACT\n ALL THE STARFISH!";
         public const string SPEEDBOOST_POWERUP_TUTORIAL_MESSAGE = "HIT THE BOOST\nAND SPEED UP\nTHE BOAT!";
+
+        //Game Lose Message
+        public const string CONSECUTIVE_LOSE_HINT = "SAVE THE PEOPLE BEFORE\n THEY DROWN TO\n COMPLETE THIS LEVEL.";
     }
 
     public class IntUtils

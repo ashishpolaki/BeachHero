@@ -45,7 +45,7 @@ namespace BeachHero
                 });
 
                 // Move the tutorial character and show welcome message.
-                tc.TutorialCharacter.PlayAnimation(TutorialCharacterType.WaveHand, tutorialCharacterPosition, () =>
+                tc.TutorialCharacter.PlayAnimation(TutorialCharacterState.WaveHand, tutorialCharacterPosition, () =>
                 {
                     tc.TutorialSpeechBubble.Show(StringUtils.TUTORIAL_WELCOME_MESSAGE, speechBubblePosition);
                 });
