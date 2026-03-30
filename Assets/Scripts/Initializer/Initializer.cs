@@ -39,8 +39,12 @@ namespace BeachHero
             Application.targetFrameRate = targetFPS;
             DebugUtils.Log($"[AdaptiveFPS] GPU: {gpu} | RAM: {ram}MB | Target FPS: {targetFPS}");
 #endif
+            if (Application.isEditor)
+            {
+                Application.targetFrameRate = 60;
+            }
         }
-
+        
         private async void AsyncLazyInit()
         {
             SetAdaptiveFrameRate();

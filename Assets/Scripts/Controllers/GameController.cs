@@ -58,6 +58,10 @@ namespace BeachHero
             if (GameState == GameState.Playing || GameState == GameState.LevelWin)
             {
                 levelController.UpdateState();
+                if(EnvironmentController.GetInstance != null)
+                {
+                    EnvironmentController.GetInstance.UpdateWaterAnimation();
+                }
             }
         }
         private void OnDestroy()
