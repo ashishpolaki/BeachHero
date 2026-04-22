@@ -18,6 +18,26 @@ public class LevelSpline : MonoBehaviour
     [Range(0f, 1f)]
     public float percent;
 
+    public Vector3 GetTangent(float percent)
+    {
+        percent = Mathf.Clamp01(percent);
+
+        if (pathPoints == null || pathPoints.Count < 4)
+            return Vector3.forward;
+
+        return CatmullSplineUtils.GetTangentOnSpline(pathPoints, percent);
+    }
+
+    public Quaternion GetRotation(float percent)
+    {
+        Vector3 dir = GetTangent(percent);
+
+        if (dir == Vector3.zero)
+            return Quaternion.identity;
+
+        return Quaternion.LookRotation(dir, Vector3.up);
+    }
+
     // ---------------------------------------
     // GET POINT ON SPLINE (0 1)
     // ---------------------------------------
@@ -39,6 +59,7 @@ public class LevelSpline : MonoBehaviour
         if (target != null && pathPoints != null && pathPoints.Count >= 4)
         {
             target.position = GetPoint(percent);
+            target.rotation = GetRotation(percent);
         }
     }
 }
