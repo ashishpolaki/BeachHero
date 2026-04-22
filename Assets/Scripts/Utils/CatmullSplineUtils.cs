@@ -19,6 +19,35 @@ namespace BeachHero
             );
         }
 
+        public static Vector3 GetPointOnSpline(List<Vector3> points, float percent)
+        {
+            if (points == null || points.Count < 4)
+                return Vector3.zero;
+
+            percent = Mathf.Clamp01(percent);
+
+            int segmentCount = points.Count - 3;
+
+            //  FIX: handle last point explicitly
+            if (percent >= 1f)
+            {
+                return points[points.Count - 2]; // final visible point
+            }
+
+            float scaled = percent * segmentCount;
+
+            int index = Mathf.FloorToInt(scaled);
+            float t = scaled - index;
+
+            return GetPoint(
+                points[index],
+                points[index + 1],
+                points[index + 2],
+                points[index + 3],
+                t
+            );
+        }
+
         public static Vector3 GetTangent(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
         {
             // Derivative of Catmull-Rom spline
@@ -26,6 +55,32 @@ namespace BeachHero
                 -p0 + p2 +
                 2f * (2f * p0 - 5f * p1 + 4f * p2 - p3) * t +
                 3f * (-p0 + 3f * p1 - 3f * p2 + p3) * t * t
+            ).normalized;
+        }
+
+        public static Vector3 GetTangentOnSpline(List<Vector3> pathPoints, float percent)
+        {
+            percent = Mathf.Clamp01(percent);
+
+            int segmentCount = pathPoints.Count - 3;
+
+            if (segmentCount <= 0)
+                return Vector3.forward;
+
+            // Map percent to segment
+            float scaled = percent * segmentCount;
+
+            int segmentIndex = Mathf.FloorToInt(scaled);
+            float t = scaled - segmentIndex;
+
+            segmentIndex = Mathf.Clamp(segmentIndex, 0, segmentCount - 1);
+
+            return GetTangent(
+                pathPoints[segmentIndex],
+                pathPoints[segmentIndex + 1],
+                pathPoints[segmentIndex + 2],
+                pathPoints[segmentIndex + 3],
+                t
             ).normalized;
         }
 
