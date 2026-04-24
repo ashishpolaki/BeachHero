@@ -30,7 +30,9 @@ public class LevelSpline : MonoBehaviour
 
     public Quaternion GetRotation(float percent)
     {
-        Vector3 dir = GetTangent(percent);
+        float safePercent = Mathf.Clamp01(percent);
+        safePercent = Mathf.Min(safePercent, 0.98f);
+        Vector3 dir = GetTangent(safePercent);
 
         if (dir == Vector3.zero)
             return Quaternion.identity;
