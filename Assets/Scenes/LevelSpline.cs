@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+[System.Serializable]
+public class SplinePoint
+{
+    public Vector3 position;
+    public Quaternion rotation = Quaternion.identity;
+}
 public class LevelSpline : MonoBehaviour
 {
     [Header("Path Points")]
-    public List<Vector3> pathPoints = new List<Vector3>();
+    public List<SplinePoint> pathPoints = new List<SplinePoint>();
 
     [Header("Settings")]
     [Range(5, 100)]
@@ -14,6 +20,7 @@ public class LevelSpline : MonoBehaviour
 
     [Header("Target")]
     public Transform target;
+    public Transform visualChild; // rotation applied here
 
     [Range(0f, 1f)]
     public float percent;
@@ -25,24 +32,43 @@ public class LevelSpline : MonoBehaviour
         if (pathPoints == null || pathPoints.Count < 4)
             return Vector3.forward;
 
-        return CatmullSplineUtils.GetTangentOnSpline(pathPoints, percent);
+        List<Vector3> pts = GetPositions();
+        return CatmullSplineUtils.GetTangentOnSpline(pts, percent);
     }
 
+    public Quaternion GetTwistRotation(float percent)
+    {
+        percent = Mathf.Clamp01(percent);
+
+        int count = pathPoints.Count;
+        if (count < 2)
+            return Quaternion.identity;
+
+        float scaled = percent * (count - 1);
+        int i = Mathf.FloorToInt(scaled);
+        float t = scaled - i;
+
+        i = Mathf.Clamp(i, 0, count - 2);
+
+        Quaternion a = pathPoints[i].rotation;
+        Quaternion b = pathPoints[i + 1].rotation;
+
+        return Quaternion.Slerp(a, b, t);
+    }
     public Quaternion GetRotation(float percent)
     {
         float safePercent = Mathf.Clamp01(percent);
         safePercent = Mathf.Min(safePercent, 0.98f);
+
         Vector3 dir = GetTangent(safePercent);
 
         if (dir == Vector3.zero)
             return Quaternion.identity;
 
-        return Quaternion.LookRotation(dir, Vector3.up);
+        Quaternion forwardRot = Quaternion.LookRotation(dir, Vector3.up);
+        Quaternion twist = GetTwistRotation(safePercent);
+        return forwardRot * twist;
     }
-
-    // ---------------------------------------
-    // GET POINT ON SPLINE (0 1)
-    // ---------------------------------------
     public Vector3 GetPoint(float percent)
     {
         percent = Mathf.Clamp01(percent);
@@ -50,7 +76,16 @@ public class LevelSpline : MonoBehaviour
         if (pathPoints == null || pathPoints.Count < 4)
             return transform.position;
 
-        return CatmullSplineUtils.GetPointOnSpline(pathPoints, percent);
+        List<Vector3> pts = GetPositions();
+        return CatmullSplineUtils.GetPointOnSpline(pts, percent);
+    }
+
+    List<Vector3> GetPositions()
+    {
+        List<Vector3> pts = new List<Vector3>();
+        for (int i = 0; i < pathPoints.Count; i++)
+            pts.Add(pathPoints[i].position);
+        return pts;
     }
 
     // ---------------------------------------
@@ -58,14 +93,22 @@ public class LevelSpline : MonoBehaviour
     // ---------------------------------------
     private void OnValidate()
     {
+        UpdateTarget();
+    }
+
+    public void UpdateTarget()
+    {
         if (target != null && pathPoints != null && pathPoints.Count >= 4)
         {
             target.position = GetPoint(percent);
-            target.rotation = GetRotation(percent);
+
+            if (visualChild != null)
+                visualChild.rotation = GetRotation(percent);
         }
     }
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(LevelSpline))]
 public class LevelSplineEditor : Editor
 {
@@ -107,33 +150,54 @@ public class LevelSplineEditor : Editor
     }
 
     // ---------------------------------------
-    // MOVE POINTS (POSITION ONLY)
+    // DRAW + EDIT POINTS
     // ---------------------------------------
     void DrawPoints()
     {
         for (int i = 0; i < spline.pathPoints.Count; i++)
         {
-            Vector3 worldPos = spline.transform.TransformPoint(spline.pathPoints[i]);
+            var point = spline.pathPoints[i];
 
+            Vector3 worldPos = spline.transform.TransformPoint(point.position);
+
+            // POSITION HANDLE
             EditorGUI.BeginChangeCheck();
-
             Vector3 newWorldPos = Handles.PositionHandle(worldPos, Quaternion.identity);
-
             if (EditorGUI.EndChangeCheck())
             {
                 Undo.RecordObject(spline, "Move Point");
-
-                spline.pathPoints[i] = spline.transform.InverseTransformPoint(newWorldPos);
-
+                point.position = spline.transform.InverseTransformPoint(newWorldPos);
+                spline.UpdateTarget();
                 EditorUtility.SetDirty(spline);
             }
 
+            // ROTATION HANDLE
+            EditorGUI.BeginChangeCheck();
+            Quaternion newRot = Handles.RotationHandle(point.rotation, worldPos);
+            if (EditorGUI.EndChangeCheck())
+            {
+                Undo.RecordObject(spline, "Rotate Point");
+                point.rotation = newRot;
+                spline.UpdateTarget();
+                EditorUtility.SetDirty(spline);
+            }
+
+            // LABEL
             Handles.Label(worldPos + Vector3.up * 0.3f, $"P{i}");
+
+            // DEBUG ROTATION (YELLOW)
+            Handles.color = Color.yellow;
+
+            Vector3 forward = point.rotation * Vector3.forward;
+            Vector3 up = point.rotation * Vector3.up;
+
+            Handles.DrawLine(worldPos, worldPos + forward * 1f);
+            Handles.DrawLine(worldPos, worldPos + up * 0.5f);
         }
     }
 
     // ---------------------------------------
-    // DRAW CATMULL CURVE
+    // DRAW CURVE
     // ---------------------------------------
     void DrawCurve()
     {
@@ -151,10 +215,10 @@ public class LevelSplineEditor : Editor
         {
             Vector3 prev = spline.transform.TransformPoint(
                 CatmullSplineUtils.GetPoint(
-                    spline.pathPoints[i],
-                    spline.pathPoints[i + 1],
-                    spline.pathPoints[i + 2],
-                    spline.pathPoints[i + 3],
+                    spline.pathPoints[i].position,
+                    spline.pathPoints[i + 1].position,
+                    spline.pathPoints[i + 2].position,
+                    spline.pathPoints[i + 3].position,
                     0f
                 )
             );
@@ -164,10 +228,10 @@ public class LevelSplineEditor : Editor
                 float t = j / (float)resolution;
 
                 Vector3 p = CatmullSplineUtils.GetPoint(
-                    spline.pathPoints[i],
-                    spline.pathPoints[i + 1],
-                    spline.pathPoints[i + 2],
-                    spline.pathPoints[i + 3],
+                    spline.pathPoints[i].position,
+                    spline.pathPoints[i + 1].position,
+                    spline.pathPoints[i + 2].position,
+                    spline.pathPoints[i + 3].position,
                     t
                 );
 
@@ -186,11 +250,13 @@ public class LevelSplineEditor : Editor
     {
         Undo.RecordObject(spline, "Add Point");
 
-        Vector3 newPoint = Vector3.zero;
+        SplinePoint newPoint = new SplinePoint();
 
         if (spline.pathPoints.Count > 0)
         {
-            newPoint = spline.pathPoints[spline.pathPoints.Count - 1] + Vector3.forward * 2f;
+            var last = spline.pathPoints[spline.pathPoints.Count - 1];
+            newPoint.position = last.position + Vector3.forward * 2f;
+            newPoint.rotation = last.rotation;
         }
 
         spline.pathPoints.Add(newPoint);
@@ -206,9 +272,7 @@ public class LevelSplineEditor : Editor
         if (spline.pathPoints.Count == 0) return;
 
         Undo.RecordObject(spline, "Remove Point");
-
         spline.pathPoints.RemoveAt(spline.pathPoints.Count - 1);
-
         EditorUtility.SetDirty(spline);
     }
 
@@ -221,15 +285,19 @@ public class LevelSplineEditor : Editor
 
         Undo.RecordObject(spline, "Insert Mid Points");
 
-        List<Vector3> newPoints = new List<Vector3>();
+        List<SplinePoint> newPoints = new List<SplinePoint>();
 
         for (int i = 0; i < spline.pathPoints.Count - 1; i++)
         {
-            Vector3 a = spline.pathPoints[i];
-            Vector3 b = spline.pathPoints[i + 1];
+            var a = spline.pathPoints[i];
+            var b = spline.pathPoints[i + 1];
+
+            SplinePoint mid = new SplinePoint();
+            mid.position = (a.position + b.position) * 0.5f;
+            mid.rotation = Quaternion.Slerp(a.rotation, b.rotation, 0.5f);
 
             newPoints.Add(a);
-            newPoints.Add((a + b) * 0.5f);
+            newPoints.Add(mid);
         }
 
         newPoints.Add(spline.pathPoints[spline.pathPoints.Count - 1]);
@@ -239,3 +307,4 @@ public class LevelSplineEditor : Editor
         EditorUtility.SetDirty(spline);
     }
 }
+#endif
