@@ -63,8 +63,8 @@ public class LevelSpline : MonoBehaviour
 
         Quaternion a = pathPoints[i].rotation;
         Quaternion b = pathPoints[i + 1].rotation;
-
-        return Quaternion.Slerp(a, b, t);
+        Quaternion rot = Quaternion.Slerp(a, b, t);
+        return rot;
     }
     public Quaternion GetRotation(float percent)
     {
@@ -77,7 +77,7 @@ public class LevelSpline : MonoBehaviour
             return Quaternion.identity;
 
         Quaternion forwardRot = Quaternion.LookRotation(dir, Vector3.up);
-        Quaternion twist = GetTwistRotation(safePercent);
+        Quaternion twist = GetTwistRotation(percent);
         return forwardRot * twist;
     }
     public Vector3 GetPoint(float percent)
