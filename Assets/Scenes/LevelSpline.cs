@@ -35,7 +35,18 @@ public class LevelSpline : MonoBehaviour
         List<Vector3> pts = GetPositions();
         return CatmullSplineUtils.GetTangentOnSpline(pts, percent);
     }
+    public Quaternion GetForwardRotation(float percent)
+    {
+        float safePercent = Mathf.Clamp01(percent);
+        safePercent = Mathf.Min(safePercent, 0.98f);
 
+        Vector3 dir = GetTangent(safePercent);
+
+        if (dir == Vector3.zero)
+            return Quaternion.identity;
+
+        return Quaternion.LookRotation(dir, Vector3.back);
+    }
     public Quaternion GetTwistRotation(float percent)
     {
         percent = Mathf.Clamp01(percent);
@@ -102,8 +113,10 @@ public class LevelSpline : MonoBehaviour
         {
             target.position = GetPoint(percent);
 
+            target.rotation = GetForwardRotation(percent);
+
             if (visualChild != null)
-                visualChild.rotation = GetRotation(percent);
+                visualChild.localRotation = GetTwistRotation(percent);
         }
     }
 }
@@ -240,6 +253,39 @@ public class LevelSplineEditor : Editor
                 Handles.DrawLine(prev, p);
                 prev = p;
             }
+        }
+
+        Handles.color = Color.yellow;
+
+        int debugSteps = spline.resolution * (spline.pathPoints.Count - 3);
+
+        for (int i = 0; i <= debugSteps; i++)
+        {
+            float percent = i / (float)debugSteps;
+
+            Vector3 pos = spline.GetPoint(percent);
+            Quaternion rot = spline.GetRotation(percent);
+
+            pos = spline.transform.TransformPoint(pos);
+
+            float size = 0.5f;
+
+            Vector3 forward = rot * Vector3.forward;
+            Vector3 up = rot * Vector3.up;
+            Vector3 right = rot * Vector3.right;
+
+            // forward (yellow)
+          //  Handles.DrawLine(pos, pos + forward * size);
+
+            // up (cyan)
+            Handles.color = Color.cyan;
+            Handles.DrawLine(pos, pos + up * size * 0.7f);
+
+            //// right (red)
+            Handles.color = Color.red;
+            Handles.DrawLine(pos, pos + right * size * 0.7f);
+
+            Handles.color = Color.yellow;
         }
     }
 
