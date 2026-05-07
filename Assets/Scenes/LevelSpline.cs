@@ -1,27 +1,57 @@
 using BeachHero;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+[System.Serializable]
+public class MapLevelSpawnData
+{
+    public int levelNumber;
+
+    [Header("Spline Position")]
+    public int segmentIndex;
+
+    [Range(0f, 1f)]
+    public float t;
+
+    [Header("Transform")]
+    public Vector3 scale = Vector3.one;
+    public Vector3 rotation;
+}
 [System.Serializable]
 public class SplinePoint
 {
     public Vector3 position;
     public Quaternion rotation = Quaternion.identity;
 }
+public enum EditMode
+{
+    Spline,
+    Levels
+}
 public class LevelSpline : MonoBehaviour
 {
+    [Header("Edit Mode")]
+    public EditMode editMode;
+
     [Header("Path Points")]
     public List<SplinePoint> pathPoints = new List<SplinePoint>();
+
+    [Header("Levels")]
+    public List<MapLevelSpawnData> mapLevels = new List<MapLevelSpawnData>();
+    public GameObject levelPrefab;
+    public Transform levelspawnParent;
 
     [Header("Settings")]
     [Range(5, 100)]
     public int resolution = 20;
 
-    [Header("Target")]
+    [Header("Preview")]
     public Transform target;
-    public Transform visualChild; // rotation applied here
-
+    public Transform visualChild;
     [Range(0f, 1f)]
     public float percent;
 
@@ -63,22 +93,14 @@ public class LevelSpline : MonoBehaviour
 
         Quaternion a = pathPoints[i].rotation;
         Quaternion b = pathPoints[i + 1].rotation;
+
+        //if (Quaternion.Dot(a, b) < 0f)
+        //{
+        //    b = new Quaternion(-b.x, -b.y, -b.z, -b.w);
+        //}
+
         Quaternion rot = Quaternion.Slerp(a, b, t);
         return rot;
-    }
-    public Quaternion GetRotation(float percent)
-    {
-        float safePercent = Mathf.Clamp01(percent);
-        safePercent = Mathf.Min(safePercent, 0.98f);
-
-        Vector3 dir = GetTangent(safePercent);
-
-        if (dir == Vector3.zero)
-            return Quaternion.identity;
-
-        Quaternion forwardRot = Quaternion.LookRotation(dir, Vector3.up);
-        Quaternion twist = GetTwistRotation(percent);
-        return forwardRot * twist;
     }
     public Vector3 GetPoint(float percent)
     {
@@ -116,8 +138,111 @@ public class LevelSpline : MonoBehaviour
             target.rotation = GetForwardRotation(percent);
 
             if (visualChild != null)
-                visualChild.localRotation = GetTwistRotation(percent);
+            {
+                percent = Mathf.Clamp01(percent);
+
+                int count = pathPoints.Count;
+                Quaternion rot = Quaternion.identity;
+
+                float scaled = percent * (count - 1);
+                int i = Mathf.FloorToInt(scaled);
+                float t = scaled - i;
+
+                i = Mathf.Clamp(i, 0, count - 2);
+
+                Quaternion a = pathPoints[i].rotation;
+                Quaternion b = pathPoints[i + 1].rotation;
+
+                //  CRITICAL FIX (prevents flip)
+                if (Quaternion.Dot(a, b) < 0f)
+                {
+                    b = new Quaternion(-b.x, -b.y, -b.z, -b.w);
+                }
+
+                rot = Quaternion.Slerp(a, b, t);
+                rot = Quaternion.Normalize(rot);
+                DebugUtils.LogWarning($"Rot  {rot}");
+                visualChild.localRotation = rot;
+            }
         }
+    }
+
+
+    [Header("Debug")]
+    public bool showDebugObjects = true;
+    [Range(2, 100)]
+    public int debugCount = 20;
+    public Transform debugPrefab;
+
+    public List<Transform> debugObjects = new List<Transform>();
+
+    private void CreateDebugObjects()
+    {
+        if (debugObjects == null)
+            debugObjects = new List<Transform>();
+
+        // Create only if needed
+        while (debugObjects.Count < debugCount)
+        {
+            var obj = Instantiate(debugPrefab, transform);
+            debugObjects.Add(obj);
+        }
+
+        // Remove extras
+        while (debugObjects.Count > debugCount)
+        {
+            var last = debugObjects[^1];
+
+            if (last != null)
+            {
+                DestroyImmediate(last.gameObject);
+            }
+            debugObjects.RemoveAt(debugObjects.Count - 1);
+        }
+
+        //  Ensure all active
+        for (int i = 0; i < debugObjects.Count; i++)
+        {
+            debugObjects[i].gameObject.SetActive(true);
+        }
+    }
+    public void UpdateDebugObjects()
+    {
+        if (!showDebugObjects || debugPrefab == null || pathPoints.Count < 4)
+        {
+            return;
+        }
+        ClearDebugObjects();
+        CreateDebugObjects();
+        SetDebugPositionsAndRotations();
+    }
+    public void SetDebugPositionsAndRotations()
+    {
+        if (debugObjects == null || debugObjects.Count == 0)
+            return;
+
+        for (int i = 0; i < debugCount; i++)
+        {
+            float percent = i / (float)(debugCount - 1);
+
+            Vector3 pos = GetPoint(percent);
+            Quaternion rot = GetForwardRotation(percent);
+
+            debugObjects[i].position = pos;
+            debugObjects[i].rotation = rot;
+            debugObjects[i].GetChild(0).localRotation = GetTwistRotation(percent);
+        }
+    }
+    public void ClearDebugObjects()
+    {
+        for (int i = 0; i < debugObjects.Count; i++)
+        {
+            if (debugObjects[i] != null)
+            {
+                DestroyImmediate(debugObjects[i].gameObject);
+            }
+        }
+        debugObjects.Clear();
     }
 }
 
@@ -152,12 +277,18 @@ public class LevelSplineEditor : Editor
 
         if (GUILayout.Button("Insert Mid Points"))
             InsertMidPoints();
+
+        if (GUILayout.Button("Update Debug Objects"))
+        {
+            spline.UpdateDebugObjects();
+        }
     }
 
     private void OnSceneGUI()
     {
         if (spline.pathPoints == null) return;
-
+        spline.SetDebugPositionsAndRotations();
+        spline.OnSpriteUpdate();
         DrawPoints();
         DrawCurve();
     }
@@ -254,39 +385,7 @@ public class LevelSplineEditor : Editor
                 prev = p;
             }
         }
-
         Handles.color = Color.yellow;
-
-        int debugSteps = spline.resolution * (spline.pathPoints.Count - 3);
-
-        for (int i = 0; i <= debugSteps; i++)
-        {
-            float percent = i / (float)debugSteps;
-
-            Vector3 pos = spline.GetPoint(percent);
-            Quaternion rot = spline.GetRotation(percent);
-
-            pos = spline.transform.TransformPoint(pos);
-
-            float size = 0.5f;
-
-            Vector3 forward = rot * Vector3.forward;
-            Vector3 up = rot * Vector3.up;
-            Vector3 right = rot * Vector3.right;
-
-            // forward (yellow)
-          //  Handles.DrawLine(pos, pos + forward * size);
-
-            // up (cyan)
-            Handles.color = Color.cyan;
-            Handles.DrawLine(pos, pos + up * size * 0.7f);
-
-            //// right (red)
-            Handles.color = Color.red;
-            Handles.DrawLine(pos, pos + right * size * 0.7f);
-
-            Handles.color = Color.yellow;
-        }
     }
 
     // ---------------------------------------
@@ -296,16 +395,16 @@ public class LevelSplineEditor : Editor
     {
         Undo.RecordObject(spline, "Add Point");
 
-        SplinePoint newPoint = new SplinePoint();
+        SplinePoint p = new SplinePoint();
 
         if (spline.pathPoints.Count > 0)
         {
-            var last = spline.pathPoints[spline.pathPoints.Count - 1];
-            newPoint.position = last.position + Vector3.forward * 2f;
-            newPoint.rotation = last.rotation;
+            var last = spline.pathPoints[^1];
+            p.position = last.position + Vector3.forward * 2;
+            p.rotation = last.rotation;
         }
 
-        spline.pathPoints.Add(newPoint);
+        spline.pathPoints.Add(p);
 
         EditorUtility.SetDirty(spline);
     }
@@ -322,35 +421,75 @@ public class LevelSplineEditor : Editor
         EditorUtility.SetDirty(spline);
     }
 
-    // ---------------------------------------
-    // INSERT MID POINTS
-    // ---------------------------------------
     void InsertMidPoints()
     {
-        if (spline.pathPoints.Count < 2) return;
+        Undo.RecordObject(spline, "Insert Mid");
 
-        Undo.RecordObject(spline, "Insert Mid Points");
-
+        var list = new List<SplinePoint>();
         List<SplinePoint> newPoints = new List<SplinePoint>();
-
         for (int i = 0; i < spline.pathPoints.Count - 1; i++)
         {
             var a = spline.pathPoints[i];
             var b = spline.pathPoints[i + 1];
 
-            SplinePoint mid = new SplinePoint();
-            mid.position = (a.position + b.position) * 0.5f;
-            mid.rotation = Quaternion.Slerp(a.rotation, b.rotation, 0.5f);
+            list.Add(a);
 
-            newPoints.Add(a);
-            newPoints.Add(mid);
+            list.Add(new SplinePoint()
+            {
+                position = (a.position + b.position) * 0.5f,
+                rotation = Quaternion.Slerp(a.rotation, b.rotation, 0.5f)
+            });
         }
 
         newPoints.Add(spline.pathPoints[spline.pathPoints.Count - 1]);
+        list.Add(spline.pathPoints[^1]);
 
         spline.pathPoints = newPoints;
+        spline.pathPoints = list;
 
         EditorUtility.SetDirty(spline);
+    }
+    // -------------------------
+    // LEVEL MODE
+    // -------------------------
+    void DrawLevelButtons()
+    {
+        if (GUILayout.Button("Add Level"))
+        {
+            Undo.RecordObject(spline, "Add Level");
+
+            spline.mapLevels.Add(new MapLevelSpawnData()
+            {
+                levelNumber = spline.mapLevels.Count + 1,
+                segmentIndex = 0,
+                t = 0.5f
+            });
+
+            EditorUtility.SetDirty(spline);
+        }
+
+        if (GUILayout.Button("Spawn Map"))
+        {
+            // spline.SpawnMap();
+        }
+    }
+
+    void DrawLevels()
+    {
+        for (int i = 0; i < spline.mapLevels.Count; i++)
+        {
+            var level = spline.mapLevels[i];
+
+            //Vector3 pos = spline.transform.TransformPoint(
+            //    spline.GetPointOnSegment(level.segmentIndex, level.t)
+            //);
+
+            //Handles.color = Color.cyan;
+            //Handles.SphereHandleCap(0, pos, Quaternion.identity, 0.4f, EventType.Repaint);
+
+            //Handles.Label(pos + Vector3.up * 0.5f,
+            //    $"Level {level.levelNumber}\nSeg:{level.segmentIndex} t:{level.t:F2}");
+        }
     }
 }
 #endif
