@@ -3,6 +3,12 @@ using UnityEngine;
 
 namespace BeachHero
 {
+    [System.Serializable]
+    public class SplinePoint
+    {
+        public Vector3 position;
+        public Quaternion rotation = Quaternion.identity;
+    }
     public class CatmullSplineUtils
     {
         public static Vector3 GetPoint(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)

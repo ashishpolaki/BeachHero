@@ -13,19 +13,14 @@ public class MapLevelSpawnData
 
     [Header("Spline Position")]
     public int segmentIndex;
-
     [Range(0f, 1f)]
     public float t;
 
     [Header("Transform")]
     public Vector3 scale = Vector3.one;
     public Vector3 rotation;
-}
-[System.Serializable]
-public class SplinePoint
-{
-    public Vector3 position;
-    public Quaternion rotation = Quaternion.identity;
+
+    public LevelVisual levelVisual;
 }
 public enum EditMode
 {
@@ -39,10 +34,14 @@ public class LevelSpline : MonoBehaviour
 
     [Header("Path Points")]
     public List<SplinePoint> pathPoints = new List<SplinePoint>();
+    [System.NonSerialized] public int insertIndex = 0;
+    [System.NonSerialized] public int removeIndex = 0;
+    [System.NonSerialized] public int levelInsertIndex = 0;
+    [System.NonSerialized] public int levelRemoveIndex = 0;
 
     [Header("Levels")]
+    public LevelVisual levelPrefab;
     public List<MapLevelSpawnData> mapLevels = new List<MapLevelSpawnData>();
-    public GameObject levelPrefab;
     public Transform levelspawnParent;
 
     [Header("Settings")]
@@ -161,7 +160,6 @@ public class LevelSpline : MonoBehaviour
 
                 rot = Quaternion.Slerp(a, b, t);
                 rot = Quaternion.Normalize(rot);
-                DebugUtils.LogWarning($"Rot  {rot}");
                 visualChild.localRotation = rot;
             }
         }
@@ -263,36 +261,142 @@ public class LevelSplineEditor : Editor
 
         GUILayout.Space(10);
 
-        GUILayout.BeginHorizontal();
-
-        if (GUILayout.Button("Add Point"))
-            AddPoint();
-
-        if (GUILayout.Button("Remove Last"))
-            RemovePoint();
-
-        GUILayout.EndHorizontal();
-
-        GUILayout.Space(5);
-
-        if (GUILayout.Button("Insert Mid Points"))
-            InsertMidPoints();
-
-        if (GUILayout.Button("Update Debug Objects"))
+        if (spline.editMode == EditMode.Spline)
         {
-            spline.UpdateDebugObjects();
+            GUILayout.Label("Spline Tools", EditorStyles.boldLabel);
+
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Add Point")) AddPoint();
+            if (GUILayout.Button("Remove Last")) RemovePoint();
+            GUILayout.EndHorizontal();
+
+            //Mid points
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Insert Mid Point", GUILayout.Height(25)))
+            {
+                InsertMidPoint();
+            }
+            // Label + Field inline
+            GUILayout.Label("Index", GUILayout.Width(40));
+            spline.insertIndex = EditorGUILayout.IntField(spline.insertIndex, GUILayout.Width(50));
+            // Clamp safely
+            spline.insertIndex = Mathf.Clamp(
+                spline.insertIndex, 0, Mathf.Max(0, spline.pathPoints.Count - 2));
+            GUILayout.EndHorizontal();
+
+            // Remove point
+            GUILayout.BeginHorizontal();
+
+            if (GUILayout.Button("Remove Point", GUILayout.Height(25)))
+            {
+                RemovePointAtIndex();
+            }
+
+            // Label + Field inline
+            GUILayout.Label("Index", GUILayout.Width(40));
+
+            spline.removeIndex = EditorGUILayout.IntField(
+                spline.removeIndex,
+                GUILayout.Width(50)
+            );
+
+            // Clamp safely
+            spline.removeIndex = Mathf.Clamp(
+                spline.removeIndex,
+                0,
+                Mathf.Max(0, spline.pathPoints.Count - 1)
+            );
+
+            GUILayout.EndHorizontal();
+
+            // Update Debug Objects
+            if (GUILayout.Button("Update Debug Objects"))
+            {
+                spline.UpdateDebugObjects();
+            }
+        }
+        else if (spline.editMode == EditMode.Levels)
+        {
+            GUILayout.Label("Level Tools", EditorStyles.boldLabel);
+
+
+            GUILayout.BeginHorizontal();
+
+            if (GUILayout.Button("Add Level", GUILayout.Height(25)))
+            {
+                AddLevelAtMid();
+            }
+
+            if (GUILayout.Button("Remove Last Level", GUILayout.Height(25)))
+            {
+                RemoveLastLevel();
+            }
+
+            GUILayout.EndHorizontal();
+
+            // Add Level at Mid Index
+            GUILayout.BeginHorizontal();
+
+            if (GUILayout.Button("Add Level (Mid)", GUILayout.Height(25)))
+            {
+                AddLevelAtMid();
+            }
+
+            GUILayout.Label("Index", GUILayout.Width(40));
+
+            spline.levelInsertIndex = EditorGUILayout.IntField(
+                spline.levelInsertIndex,
+                GUILayout.Width(50)
+            );
+
+            spline.levelInsertIndex = Mathf.Clamp(
+                spline.levelInsertIndex,
+                0,
+                Mathf.Max(0, spline.pathPoints.Count - 2)
+            );
+
+            GUILayout.EndHorizontal();
+
+            // Remove Level at Index
+            GUILayout.BeginHorizontal();
+
+            if (GUILayout.Button("Remove Level", GUILayout.Height(25)))
+            {
+                RemoveLevelAtIndex();
+            }
+
+            GUILayout.Label("Index", GUILayout.Width(40));
+
+            spline.levelRemoveIndex = EditorGUILayout.IntField(
+                spline.levelRemoveIndex,
+                GUILayout.Width(50)
+            );
+
+            spline.levelRemoveIndex = Mathf.Clamp(
+                spline.levelRemoveIndex,
+                0,
+                Mathf.Max(0, spline.mapLevels.Count - 1)
+            );
+
+            GUILayout.EndHorizontal();
         }
     }
 
     private void OnSceneGUI()
     {
         if (spline.pathPoints == null) return;
-        spline.SetDebugPositionsAndRotations();
-        spline.OnSpriteUpdate();
-        DrawPoints();
-        DrawCurve();
-    }
 
+        if (spline.editMode == EditMode.Spline)
+        {
+            spline.SetDebugPositionsAndRotations();
+            DrawPoints();
+            DrawCurve();
+        }
+        else if (spline.editMode == EditMode.Levels)
+        {
+        }
+    }
+    #region Spline Logic
     // ---------------------------------------
     // DRAW + EDIT POINTS
     // ---------------------------------------
@@ -316,18 +420,31 @@ public class LevelSplineEditor : Editor
             }
 
             // ROTATION HANDLE
-            EditorGUI.BeginChangeCheck();
-            Quaternion newRot = Handles.RotationHandle(point.rotation, worldPos);
-            if (EditorGUI.EndChangeCheck())
+            float size = 0.3f / HandleUtility.GetHandleSize(worldPos);
+            using (new Handles.DrawingScope(Matrix4x4.TRS(worldPos, Quaternion.identity, Vector3.one * size)))
             {
-                Undo.RecordObject(spline, "Rotate Point");
-                point.rotation = newRot;
-                spline.UpdateTarget();
-                EditorUtility.SetDirty(spline);
-            }
+                EditorGUI.BeginChangeCheck();
 
+                Quaternion newRot = Handles.RotationHandle(point.rotation, Vector3.zero);
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    Undo.RecordObject(spline, "Rotate Point");
+
+                    point.rotation = newRot;
+                    spline.pathPoints[i] = point;
+
+                    spline.UpdateTarget();
+                    EditorUtility.SetDirty(spline);
+                }
+            }
+            GUIStyle pointLabelStyle = new GUIStyle(EditorStyles.boldLabel);
+            pointLabelStyle.normal.textColor = Color.white;
+            pointLabelStyle.fontSize = 22;
+            pointLabelStyle.alignment = TextAnchor.MiddleCenter;
             // LABEL
-            Handles.Label(worldPos + Vector3.up * 0.3f, $"P{i}");
+            Vector3 labelPos = worldPos + Vector3.up * HandleUtility.GetHandleSize(worldPos) * 0.3f;
+            Handles.Label(labelPos, $"P{i}", pointLabelStyle);
 
             // DEBUG ROTATION (YELLOW)
             Handles.color = Color.yellow;
@@ -400,7 +517,7 @@ public class LevelSplineEditor : Editor
         if (spline.pathPoints.Count > 0)
         {
             var last = spline.pathPoints[^1];
-            p.position = last.position + Vector3.forward * 2;
+            p.position = last.position + Vector3.up * 2;
             p.rotation = last.rotation;
         }
 
@@ -421,75 +538,144 @@ public class LevelSplineEditor : Editor
         EditorUtility.SetDirty(spline);
     }
 
-    void InsertMidPoints()
+    void RemovePointAtIndex()
     {
-        Undo.RecordObject(spline, "Insert Mid");
+        if (spline.pathPoints == null || spline.pathPoints.Count == 0)
+            return;
 
-        var list = new List<SplinePoint>();
-        List<SplinePoint> newPoints = new List<SplinePoint>();
-        for (int i = 0; i < spline.pathPoints.Count - 1; i++)
-        {
-            var a = spline.pathPoints[i];
-            var b = spline.pathPoints[i + 1];
+        int index = Mathf.Clamp(
+            spline.removeIndex,
+            0,
+            spline.pathPoints.Count - 1
+        );
 
-            list.Add(a);
+        Undo.RecordObject(spline, "Remove Point");
 
-            list.Add(new SplinePoint()
-            {
-                position = (a.position + b.position) * 0.5f,
-                rotation = Quaternion.Slerp(a.rotation, b.rotation, 0.5f)
-            });
-        }
-
-        newPoints.Add(spline.pathPoints[spline.pathPoints.Count - 1]);
-        list.Add(spline.pathPoints[^1]);
-
-        spline.pathPoints = newPoints;
-        spline.pathPoints = list;
+        spline.pathPoints.RemoveAt(index);
 
         EditorUtility.SetDirty(spline);
     }
-    // -------------------------
-    // LEVEL MODE
-    // -------------------------
-    void DrawLevelButtons()
+
+    void InsertMidPoint()
     {
-        if (GUILayout.Button("Add Level"))
+        if (spline.pathPoints == null || spline.pathPoints.Count < 2)
+            return;
+
+        int i = Mathf.Clamp(
+            spline.insertIndex,
+            0,
+            spline.pathPoints.Count - 2
+        );
+
+        Undo.RecordObject(spline, "Insert Mid Point");
+
+        var a = spline.pathPoints[i];
+        var b = spline.pathPoints[i + 1];
+
+        SplinePoint mid = new SplinePoint()
         {
-            Undo.RecordObject(spline, "Add Level");
+            position = (a.position + b.position) * 0.5f,
+            rotation = Quaternion.Slerp(a.rotation, b.rotation, 0.5f)
+        };
 
-            spline.mapLevels.Add(new MapLevelSpawnData()
-            {
-                levelNumber = spline.mapLevels.Count + 1,
-                segmentIndex = 0,
-                t = 0.5f
-            });
+        // insert at correct position
+        spline.pathPoints.Insert(i + 1, mid);
 
-            EditorUtility.SetDirty(spline);
-        }
-
-        if (GUILayout.Button("Spawn Map"))
-        {
-            // spline.SpawnMap();
-        }
+        EditorUtility.SetDirty(spline);
     }
+    #endregion
 
-    void DrawLevels()
+    #region Levels Logic
+
+    void AddLevelAtMid()
     {
-        for (int i = 0; i < spline.mapLevels.Count; i++)
+        if (spline.pathPoints.Count < 4) return;
+
+        int i = Mathf.Clamp(
+            spline.levelInsertIndex,
+            0,
+            spline.pathPoints.Count - 2
+        );
+
+        Undo.RecordObject(spline, "Add Level Mid");
+
+        float t = 0.5f;
+        float percent = (i + t) / (float)(spline.pathPoints.Count - 1);
+
+        Vector3 pos = spline.GetPoint(percent);
+        Quaternion rot = spline.GetForwardRotation(percent);
+
+        LevelVisual obj = (LevelVisual)PrefabUtility.InstantiatePrefab(
+            spline.levelPrefab,
+            spline.levelspawnParent
+        );
+
+        obj.transform.position = pos;
+        obj.transform.rotation = rot;
+
+        spline.mapLevels.Add(new MapLevelSpawnData()
         {
-            var level = spline.mapLevels[i];
+            levelNumber = spline.mapLevels.Count + 1,
+            segmentIndex = i,
+            t = t,
+            levelVisual = obj
+        });
 
-            //Vector3 pos = spline.transform.TransformPoint(
-            //    spline.GetPointOnSegment(level.segmentIndex, level.t)
-            //);
-
-            //Handles.color = Color.cyan;
-            //Handles.SphereHandleCap(0, pos, Quaternion.identity, 0.4f, EventType.Repaint);
-
-            //Handles.Label(pos + Vector3.up * 0.5f,
-            //    $"Level {level.levelNumber}\nSeg:{level.segmentIndex} t:{level.t:F2}");
-        }
+        EditorUtility.SetDirty(spline);
     }
+    void RemoveLastLevel()
+    {
+        if (spline.mapLevels.Count == 0) return;
+
+        Undo.RecordObject(spline, "Remove Last Level");
+
+        var last = spline.mapLevels[^1];
+
+        if (last.levelVisual != null)
+        {
+            Undo.DestroyObjectImmediate(last.levelVisual.gameObject);
+        }
+
+        spline.mapLevels.RemoveAt(spline.mapLevels.Count - 1);
+
+        EditorUtility.SetDirty(spline);
+    }
+    void RemoveLevelAtIndex()
+    {
+        if (spline.mapLevels.Count == 0) return;
+
+        int index = Mathf.Clamp(
+            spline.levelRemoveIndex,
+            0,
+            spline.mapLevels.Count - 1
+        );
+
+        Undo.RecordObject(spline, "Remove Level");
+
+        var level = spline.mapLevels[index];
+
+        if (level.levelVisual != null)
+        {
+            Undo.DestroyObjectImmediate(level.levelVisual.gameObject);
+        }
+
+        spline.mapLevels.RemoveAt(index);
+
+        EditorUtility.SetDirty(spline);
+    }
+    void AddLevel()
+    {
+        Undo.RecordObject(spline, "Add Level");
+
+        spline.mapLevels.Add(new MapLevelSpawnData()
+        {
+            levelNumber = spline.mapLevels.Count + 1,
+            segmentIndex = 0,
+            t = 0.5f
+        });
+
+        EditorUtility.SetDirty(spline);
+    }
+    #endregion
 }
 #endif
