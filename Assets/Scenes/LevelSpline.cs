@@ -324,7 +324,11 @@ public class LevelSplineEditor : Editor
 
             if (GUILayout.Button("Add Level", GUILayout.Height(25)))
             {
-                AddLevel();
+                showAddLevelPopup = true;
+                initPopupPos = true;
+
+                popupSegmentIndex = 0;
+                popupT = 0.5f;
             }
 
             if (GUILayout.Button("Remove Last Level", GUILayout.Height(25)))
@@ -394,6 +398,9 @@ public class LevelSplineEditor : Editor
         }
         else if (spline.editMode == EditMode.Levels)
         {
+            DrawAddLevelPopup();
+
+            SceneView.RepaintAll();
         }
     }
     #region Spline Logic
@@ -584,6 +591,141 @@ public class LevelSplineEditor : Editor
     #endregion
 
     #region Levels Logic
+    // POPUP
+    private bool showAddLevelPopup = false;
+    private Rect popupRect = new Rect(0, 0, 260, 160);
+    private bool initPopupPos = true;
+
+    // Drag
+    private bool isDragging = false;
+    private Vector2 dragOffset;
+
+    // Data
+    private int popupSegmentIndex = 0;
+    private float popupT = 0.5f;
+
+    void DrawAddLevelPopup()
+    {
+        if (!showAddLevelPopup) return;
+
+        SceneView sceneView = SceneView.currentDrawingSceneView;
+        if (sceneView == null) return;
+
+        if (initPopupPos)
+        {
+            popupRect.x = (sceneView.position.width - popupRect.width) / 2f;
+            popupRect.y = 40f;
+            initPopupPos = false;
+        }
+
+        Handles.BeginGUI();
+        EditorGUI.DrawRect(popupRect, new Color(0.18f, 0.18f, 0.18f, 0.95f));
+        DrawPopupHeader();
+        DrawPopupContent();
+        Handles.EndGUI();
+    }
+    void DrawPopupHeader()
+    {
+        Rect headerRect = new Rect(
+            popupRect.x,
+            popupRect.y,
+            popupRect.width,
+            25
+        );
+
+        GUI.Box(headerRect, "Add Level", EditorStyles.toolbarButton);
+
+        Event e = Event.current;
+
+        switch (e.type)
+        {
+            case EventType.MouseDown:
+                if (headerRect.Contains(e.mousePosition))
+                {
+                    isDragging = true;
+                    dragOffset = e.mousePosition - new Vector2(popupRect.x, popupRect.y);
+                    e.Use();
+                }
+                break;
+
+            case EventType.MouseDrag:
+                if (isDragging)
+                {
+                    popupRect.position = e.mousePosition - dragOffset;
+                    e.Use();
+                }
+                break;
+
+            case EventType.MouseUp:
+                isDragging = false;
+                break;
+        }
+    }
+    void DrawPopupContent()
+    {
+        GUILayout.BeginArea(new Rect(
+            popupRect.x + 10,
+            popupRect.y + 30,
+            popupRect.width - 20,
+            popupRect.height - 40
+        ));
+
+        GUILayout.Label("Segment Index");
+        popupSegmentIndex = EditorGUILayout.IntSlider(
+            popupSegmentIndex,
+            0,
+            Mathf.Max(0, spline.pathPoints.Count - 2)
+        );
+
+        GUILayout.Label("Percentage");
+        popupT = EditorGUILayout.Slider(popupT, 0f, 1f);
+
+        GUILayout.Space(10);
+
+        GUILayout.BeginHorizontal();
+
+        if (GUILayout.Button("OK"))
+        {
+            SpawnLevelFromPopup();
+            showAddLevelPopup = false;
+        }
+
+        if (GUILayout.Button("Cancel"))
+        {
+            showAddLevelPopup = false;
+        }
+
+        GUILayout.EndHorizontal();
+
+        GUILayout.EndArea();
+    }
+    
+    void SpawnLevelFromPopup()
+    {
+        if (spline.pathPoints.Count < 4) return;
+
+        Undo.RecordObject(spline, "Add Level Popup");
+
+        float percent = (popupSegmentIndex + popupT) / (float)(spline.pathPoints.Count - 1);
+
+        Vector3 pos = spline.GetPoint(percent);
+
+        LevelVisual obj = (LevelVisual)PrefabUtility.InstantiatePrefab(
+            spline.levelPrefab,
+            spline.levelspawnParent
+        );
+
+        obj.SetPositions(pos);
+        spline.mapLevels.Add(new MapLevelSpawnData()
+        {
+            levelNumber = spline.mapLevels.Count + 1,
+            segmentIndex = popupSegmentIndex,
+            t = popupT,
+            levelVisual = obj
+        });
+        EditorUtility.SetDirty(spline);
+    }
+
     void AddLevelAtMid()
     {
         if (spline.pathPoints.Count < 4) return;
@@ -657,38 +799,6 @@ public class LevelSplineEditor : Editor
         }
 
         spline.mapLevels.RemoveAt(index);
-
-        EditorUtility.SetDirty(spline);
-    }
-    void AddLevel()
-    {
-        if (spline.pathPoints.Count < 4) return;
-
-        Undo.RecordObject(spline, "Add Level");
-
-        float percent = spline.percent;
-        Vector3 pos = spline.GetPoint(percent);
-
-        //  Spawn prefab
-        LevelVisual levelVisual = (LevelVisual)PrefabUtility.InstantiatePrefab(
-            spline.levelPrefab,
-            spline.levelspawnParent);
-
-        levelVisual.SetPositions(pos);
-        levelVisual.Setup(spline.mapLevels.Count + 1);
-
-        //  Convert percent -> segment + t
-        float scaled = percent * (spline.pathPoints.Count - 1);
-        int segment = Mathf.FloorToInt(scaled);
-        float t = scaled - segment;
-
-        spline.mapLevels.Add(new MapLevelSpawnData()
-        {
-            levelNumber = spline.mapLevels.Count + 1,
-            segmentIndex = segment,
-            t = t,
-            levelVisual = levelVisual
-        });
 
         EditorUtility.SetDirty(spline);
     }
