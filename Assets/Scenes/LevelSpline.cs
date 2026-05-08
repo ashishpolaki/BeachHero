@@ -248,7 +248,7 @@ public class LevelSpline : MonoBehaviour
 [CustomEditor(typeof(LevelSpline))]
 public class LevelSplineEditor : Editor
 {
-    LevelSpline spline;
+    private LevelSpline spline;
 
     private void OnEnable()
     {
@@ -324,7 +324,7 @@ public class LevelSplineEditor : Editor
 
             if (GUILayout.Button("Add Level", GUILayout.Height(25)))
             {
-                AddLevelAtMid();
+                AddLevel();
             }
 
             if (GUILayout.Button("Remove Last Level", GUILayout.Height(25)))
@@ -511,7 +511,6 @@ public class LevelSplineEditor : Editor
     void AddPoint()
     {
         Undo.RecordObject(spline, "Add Point");
-
         SplinePoint p = new SplinePoint();
 
         if (spline.pathPoints.Count > 0)
@@ -522,7 +521,6 @@ public class LevelSplineEditor : Editor
         }
 
         spline.pathPoints.Add(p);
-
         EditorUtility.SetDirty(spline);
     }
 
@@ -586,7 +584,6 @@ public class LevelSplineEditor : Editor
     #endregion
 
     #region Levels Logic
-
     void AddLevelAtMid()
     {
         if (spline.pathPoints.Count < 4) return;
@@ -665,13 +662,32 @@ public class LevelSplineEditor : Editor
     }
     void AddLevel()
     {
+        if (spline.pathPoints.Count < 4) return;
+
         Undo.RecordObject(spline, "Add Level");
+
+        float percent = spline.percent;
+        Vector3 pos = spline.GetPoint(percent);
+
+        //  Spawn prefab
+        LevelVisual levelVisual = (LevelVisual)PrefabUtility.InstantiatePrefab(
+            spline.levelPrefab,
+            spline.levelspawnParent);
+
+        levelVisual.SetPositions(pos);
+        levelVisual.Setup(spline.mapLevels.Count + 1);
+
+        //  Convert percent -> segment + t
+        float scaled = percent * (spline.pathPoints.Count - 1);
+        int segment = Mathf.FloorToInt(scaled);
+        float t = scaled - segment;
 
         spline.mapLevels.Add(new MapLevelSpawnData()
         {
             levelNumber = spline.mapLevels.Count + 1,
-            segmentIndex = 0,
-            t = 0.5f
+            segmentIndex = segment,
+            t = t,
+            levelVisual = levelVisual
         });
 
         EditorUtility.SetDirty(spline);
