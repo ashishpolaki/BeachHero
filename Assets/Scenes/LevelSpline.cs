@@ -165,7 +165,7 @@ public class LevelSpline : MonoBehaviour
         }
     }
 
-
+    #region Debug Logic
     [Header("Debug")]
     public bool showDebugObjects = true;
     [Range(2, 100)]
@@ -242,6 +242,8 @@ public class LevelSpline : MonoBehaviour
         }
         debugObjects.Clear();
     }
+    #endregion
+
 }
 
 #if UNITY_EDITOR
@@ -249,12 +251,46 @@ public class LevelSpline : MonoBehaviour
 public class LevelSplineEditor : Editor
 {
     private LevelSpline spline;
+    private LevelVisual previewLevel;
+    private int selectedLevelIndex = -1;
+    private bool isPreviewLevel = false;
+
+    // POPUP
+    private bool showAddLevelPopup = false;
+    private Rect popupRect = new Rect(0, 0, 260, 260);
+    private bool initPopupPos = true;
+    private float popupRotationZ = 0f;
+    private float popupScale = 0.5f;
+
+    // Drag
+    private bool isDragging = false;
+    private Vector2 dragOffset;
+
+    // Data
+    private int popupSegmentIndex = 0;
+    private float popupT = 0.5f;
 
     private void OnEnable()
     {
         spline = (LevelSpline)target;
+        Selection.selectionChanged += OnSelectionChanged;
     }
-
+    private void OnDisable()
+    {
+        DestroyPreviewLevel();
+        Selection.selectionChanged -= OnSelectionChanged;
+    }
+    private void OnSelectionChanged()
+    {
+        // If nothing selected OR different object selected
+        if (Selection.activeGameObject == null ||
+            Selection.activeGameObject != spline.gameObject)
+        {
+            DestroyPreviewLevel();
+            showAddLevelPopup = false;
+            SceneView.RepaintAll();
+        }
+    }
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
@@ -318,8 +354,6 @@ public class LevelSplineEditor : Editor
         else if (spline.editMode == EditMode.Levels)
         {
             GUILayout.Label("Level Tools", EditorStyles.boldLabel);
-
-
             GUILayout.BeginHorizontal();
 
             if (GUILayout.Button("Add Level", GUILayout.Height(25)))
@@ -329,6 +363,11 @@ public class LevelSplineEditor : Editor
 
                 popupSegmentIndex = 0;
                 popupT = 0.5f;
+                popupRotationZ = 0f;
+                popupScale = 0.5f;
+
+                selectedLevelIndex = spline.mapLevels.Count;
+                CreatePreviewLevel();
             }
 
             if (GUILayout.Button("Remove Last Level", GUILayout.Height(25)))
@@ -395,11 +434,17 @@ public class LevelSplineEditor : Editor
             spline.SetDebugPositionsAndRotations();
             DrawPoints();
             DrawCurve();
+            DestroyPreviewLevel(); // If we switch to Spline mode, ensure no preview level remains
         }
         else if (spline.editMode == EditMode.Levels)
         {
+            HandleLevelSelection();
             DrawAddLevelPopup();
-
+            if (!showAddLevelPopup)
+            {
+                DestroyPreviewLevel(); // Ensure no preview level remains if popup is closed
+            }
+            UpdatePreviewLevel();
             SceneView.RepaintAll();
         }
     }
@@ -407,7 +452,7 @@ public class LevelSplineEditor : Editor
     // ---------------------------------------
     // DRAW + EDIT POINTS
     // ---------------------------------------
-    void DrawPoints()
+    private void DrawPoints()
     {
         for (int i = 0; i < spline.pathPoints.Count; i++)
         {
@@ -591,18 +636,139 @@ public class LevelSplineEditor : Editor
     #endregion
 
     #region Levels Logic
-    // POPUP
-    private bool showAddLevelPopup = false;
-    private Rect popupRect = new Rect(0, 0, 260, 160);
-    private bool initPopupPos = true;
+    void HandleLevelSelection()
+    {
+        Event e = Event.current;
+        
+        // Unique control ID
+        //int controlID = GUIUtility.GetControlID(FocusType.Passive);
+        //HandleUtility.AddDefaultControl(controlID);
+        if (e.type == EventType.MouseDown && e.button == 0 && !showAddLevelPopup)
+        {
+            Ray ray = HandleUtility.GUIPointToWorldRay(e.mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, LayerMask.GetMask("Map"));
+            if (hit.collider != null)
+            {
+                Debug.Log("Clicked on: " + hit.collider.name);
+                LevelVisual lv = hit.collider.GetComponent<LevelVisual>();
 
-    // Drag
-    private bool isDragging = false;
-    private Vector2 dragOffset;
+                if (lv != null)
+                {
+                    SelectLevel(lv);
 
-    // Data
-    private int popupSegmentIndex = 0;
-    private float popupT = 0.5f;
+                    //  Delay selection restore (important)
+                    EditorApplication.delayCall += () =>
+                    {
+                        if (spline != null)
+                            Selection.activeGameObject = spline.gameObject;
+                    };
+
+                    e.Use();
+                }
+            }
+        }
+    }
+    void DestroyPreviewLevel()
+    {
+        if (previewLevel != null && isPreviewLevel)
+        {
+            DestroyImmediate(previewLevel.gameObject);
+        }
+        previewLevel = null;
+        isPreviewLevel = false;
+    }
+    void ConfirmPreviewLevel()
+    {
+        if (previewLevel == null) return;
+
+        if (selectedLevelIndex >= 0 && selectedLevelIndex < spline.mapLevels.Count)
+        {
+            // EDIT EXISTING
+            var data = spline.mapLevels[selectedLevelIndex];
+
+            data.segmentIndex = popupSegmentIndex;
+            data.t = popupT;
+            data.rotation = new Vector3(0f, 0f, popupRotationZ);
+            data.scale = Vector3.one * popupScale;
+
+            spline.mapLevels[selectedLevelIndex] = data;
+        }
+        else
+        {
+            // ADD NEW
+            spline.mapLevels.Add(new MapLevelSpawnData()
+            {
+                levelNumber = selectedLevelIndex + 1,
+                segmentIndex = popupSegmentIndex,
+                t = popupT,
+                rotation = new Vector3(0f, 0f, popupRotationZ),
+                scale = Vector3.one * popupScale,
+                levelVisual = previewLevel
+            });
+        }
+
+        previewLevel = null;
+        selectedLevelIndex = -1;
+
+        EditorUtility.SetDirty(spline);
+    }
+
+    void SelectLevel(LevelVisual level)
+    {
+        for (int i = 0; i < spline.mapLevels.Count; i++)
+        {
+            if (spline.mapLevels[i].levelVisual == level)
+            {
+                selectedLevelIndex = i;
+
+                var data = spline.mapLevels[i];
+
+                // Load values into popup
+                popupSegmentIndex = data.segmentIndex;
+                popupT = data.t;
+                popupRotationZ = data.rotation.z;
+                popupScale = data.scale.x;
+
+                previewLevel = level; // EDIT EXISTING, NOT CREATE NEW
+                isPreviewLevel = false; // Since we're editing an existing level, we shouldn't destroy it when canceling
+
+                showAddLevelPopup = true;
+                initPopupPos = true;
+                return;
+            }
+        }
+    }
+    void UpdatePreviewLevel()
+    {
+        if (!showAddLevelPopup || previewLevel == null) return;
+        if (spline.pathPoints.Count < 4) return;
+
+        float percent = (popupSegmentIndex + popupT) / (float)(spline.pathPoints.Count - 1);
+
+        Vector3 pos = spline.GetPoint(percent);
+        Quaternion rot = Quaternion.Euler(0f, 0f, popupRotationZ);
+
+        previewLevel.transform.position = pos;
+        previewLevel.transform.rotation = rot;
+        previewLevel.Setup(selectedLevelIndex + 1, popupScale);
+    }
+
+    void CreatePreviewLevel()
+    {
+        if (previewLevel != null)
+            return;
+
+        previewLevel = (LevelVisual)PrefabUtility.InstantiatePrefab(
+            spline.levelPrefab,
+            spline.levelspawnParent
+        );
+
+        previewLevel.name = "PREVIEW_Level";
+        previewLevel.Setup(selectedLevelIndex + 1, popupScale);
+        // Optional: make it visually distinct
+        previewLevel.gameObject.hideFlags = HideFlags.DontSave;
+        isPreviewLevel = true;
+    }
 
     void DrawAddLevelPopup()
     {
@@ -670,6 +836,11 @@ public class LevelSplineEditor : Editor
             popupRect.height - 40
         ));
 
+        // LEVEL NUMBER (READ ONLY)
+        EditorGUILayout.LabelField("Level Number", (selectedLevelIndex + 1).ToString());
+        GUILayout.Space(5);
+
+        // SEGMENT
         GUILayout.Label("Segment Index");
         popupSegmentIndex = EditorGUILayout.IntSlider(
             popupSegmentIndex,
@@ -677,53 +848,34 @@ public class LevelSplineEditor : Editor
             Mathf.Max(0, spline.pathPoints.Count - 2)
         );
 
+        // PERCENTAGE
         GUILayout.Label("Percentage");
         popupT = EditorGUILayout.Slider(popupT, 0f, 1f);
+        GUILayout.Space(5);
+
+        // ROTATION Z
+        GUILayout.Label("Rotation (Z)");
+        popupRotationZ = EditorGUILayout.Slider(popupRotationZ, 0f, 360f);
+
+        // SCALE
+        GUILayout.Label("Scale");
+        popupScale = EditorGUILayout.Slider(popupScale, 0.1f, 0.7f);
 
         GUILayout.Space(10);
-
         GUILayout.BeginHorizontal();
-
         if (GUILayout.Button("OK"))
         {
-            SpawnLevelFromPopup();
+            ConfirmPreviewLevel();
             showAddLevelPopup = false;
         }
 
         if (GUILayout.Button("Cancel"))
         {
+            DestroyPreviewLevel();
             showAddLevelPopup = false;
         }
-
         GUILayout.EndHorizontal();
-
         GUILayout.EndArea();
-    }
-    
-    void SpawnLevelFromPopup()
-    {
-        if (spline.pathPoints.Count < 4) return;
-
-        Undo.RecordObject(spline, "Add Level Popup");
-
-        float percent = (popupSegmentIndex + popupT) / (float)(spline.pathPoints.Count - 1);
-
-        Vector3 pos = spline.GetPoint(percent);
-
-        LevelVisual obj = (LevelVisual)PrefabUtility.InstantiatePrefab(
-            spline.levelPrefab,
-            spline.levelspawnParent
-        );
-
-        obj.SetPositions(pos);
-        spline.mapLevels.Add(new MapLevelSpawnData()
-        {
-            levelNumber = spline.mapLevels.Count + 1,
-            segmentIndex = popupSegmentIndex,
-            t = popupT,
-            levelVisual = obj
-        });
-        EditorUtility.SetDirty(spline);
     }
 
     void AddLevelAtMid()
@@ -735,7 +887,7 @@ public class LevelSplineEditor : Editor
             0,
             spline.pathPoints.Count - 2
         );
-
+        selectedLevelIndex = spline.levelInsertIndex;
         Undo.RecordObject(spline, "Add Level Mid");
 
         float t = 0.5f;
@@ -752,9 +904,9 @@ public class LevelSplineEditor : Editor
         obj.transform.position = pos;
         obj.transform.rotation = rot;
 
-        spline.mapLevels.Add(new MapLevelSpawnData()
+        spline.mapLevels.Insert(spline.levelInsertIndex, new MapLevelSpawnData()
         {
-            levelNumber = spline.mapLevels.Count + 1,
+            levelNumber = selectedLevelIndex + 1,
             segmentIndex = i,
             t = t,
             levelVisual = obj
