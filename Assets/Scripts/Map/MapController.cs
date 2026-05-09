@@ -86,10 +86,10 @@ namespace BeachHero
             Quaternion a = pathPoints[i].rotation;
             Quaternion b = pathPoints[i + 1].rotation;
 
-            //if (Quaternion.Dot(a, b) < 0f)
-            //{
-            //    b = new Quaternion(-b.x, -b.y, -b.z, -b.w);
-            //}
+            if (Quaternion.Dot(a, b) < 0f)
+            {
+                b = new Quaternion(-b.x, -b.y, -b.z, -b.w);
+            }
 
             Quaternion rot = Quaternion.Slerp(a, b, t);
             return rot;
