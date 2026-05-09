@@ -70,15 +70,15 @@ namespace BeachHero
             MapController.GetInstance.CheckForMapUpdate();
             UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);
             MapController.GetInstance.PlaceBoatAtPreviousLevel();
-            if(MapController.GetInstance.IsNewMapUnlocked)
-            {
-                MapController.GetInstance.SetBoatObjectActive(false);
-            }
-            await UIController.GetInstance.FadeUI.FadeOutASync();
-            if (MapController.GetInstance.IsNewMapUnlocked)
-            {
-                MapController.GetInstance.SetBoatObjectActive(true);
-            }
+            //if(MapController.GetInstance.IsNewMapUnlocked)
+            //{
+            //    MapController.GetInstance.SetBoatObjectActive(false);
+            //}
+            //await UIController.GetInstance.FadeUI.FadeOutASync();
+            //if (MapController.GetInstance.IsNewMapUnlocked)
+            //{
+            //    MapController.GetInstance.SetBoatObjectActive(true);
+            //}
             MapController.GetInstance.AnimateBoatToCurrentLevel();
             GameController.GetInstance.SetGameState(GameState.Map);
         }

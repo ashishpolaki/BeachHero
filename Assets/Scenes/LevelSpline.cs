@@ -6,22 +6,6 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-[System.Serializable]
-public class MapLevelSpawnData
-{
-    public int levelNumber;
-
-    [Header("Spline Position")]
-    public int segmentIndex;
-    [Range(0f, 1f)]
-    public float t;
-
-    [Header("Transform")]
-    public Vector3 scale = Vector3.one;
-    public Vector3 rotation;
-
-    public LevelVisual levelVisual;
-}
 public enum EditMode
 {
     Spline,
@@ -93,10 +77,10 @@ public class LevelSpline : MonoBehaviour
         Quaternion a = pathPoints[i].rotation;
         Quaternion b = pathPoints[i + 1].rotation;
 
-        //if (Quaternion.Dot(a, b) < 0f)
-        //{
-        //    b = new Quaternion(-b.x, -b.y, -b.z, -b.w);
-        //}
+        if (Quaternion.Dot(a, b) < 0f)
+        {
+            b = new Quaternion(-b.x, -b.y, -b.z, -b.w);
+        }
 
         Quaternion rot = Quaternion.Slerp(a, b, t);
         return rot;
@@ -112,7 +96,7 @@ public class LevelSpline : MonoBehaviour
         return CatmullSplineUtils.GetPointOnSpline(pts, percent);
     }
 
-    List<Vector3> GetPositions()
+    public List<Vector3> GetPositions()
     {
         List<Vector3> pts = new List<Vector3>();
         for (int i = 0; i < pathPoints.Count; i++)
@@ -136,32 +120,7 @@ public class LevelSpline : MonoBehaviour
 
             target.rotation = GetForwardRotation(percent);
 
-            if (visualChild != null)
-            {
-                percent = Mathf.Clamp01(percent);
-
-                int count = pathPoints.Count;
-                Quaternion rot = Quaternion.identity;
-
-                float scaled = percent * (count - 1);
-                int i = Mathf.FloorToInt(scaled);
-                float t = scaled - i;
-
-                i = Mathf.Clamp(i, 0, count - 2);
-
-                Quaternion a = pathPoints[i].rotation;
-                Quaternion b = pathPoints[i + 1].rotation;
-
-                //  CRITICAL FIX (prevents flip)
-                if (Quaternion.Dot(a, b) < 0f)
-                {
-                    b = new Quaternion(-b.x, -b.y, -b.z, -b.w);
-                }
-
-                rot = Quaternion.Slerp(a, b, t);
-                rot = Quaternion.Normalize(rot);
-                visualChild.localRotation = rot;
-            }
+            visualChild.localRotation = GetTwistRotation(percent);
         }
     }
 
@@ -639,7 +598,7 @@ public class LevelSplineEditor : Editor
     void HandleLevelSelection()
     {
         Event e = Event.current;
-        
+
         // Unique control ID
         //int controlID = GUIUtility.GetControlID(FocusType.Passive);
         //HandleUtility.AddDefaultControl(controlID);

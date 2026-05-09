@@ -29,8 +29,8 @@ namespace BeachHero
         public override void Open(ScreenTabType screenTabType)
         {
             base.Open(screenTabType);
-            currentMapNumber = MapController.GetInstance.MapNumber;
-            totalMaps = MapController.GetInstance.TotalMaps;
+           // currentMapNumber = MapController.GetInstance.MapNumber;
+            totalMaps = 1;
 
             var particle = confettiParticleSystem.main;
             particle.startDelay = confettiDelay;
@@ -55,7 +55,7 @@ namespace BeachHero
             base.Close();
             SetMapButtonsVisibility(false);
             ResetTextAnimator();
-            MapController.GetInstance.SwitchMap(currentMapNumber, MapController.GetInstance.MapNumber);
+          //  MapController.GetInstance.SwitchMap(currentMapNumber, MapController.GetInstance.MapNumber);
             playButton.interactable = true;
             mapExitBtn.ButtonDeRegister(MapExitToHome);
             playButton.ButtonDeRegister(OnPlayButtonClick);

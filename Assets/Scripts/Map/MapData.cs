@@ -66,7 +66,7 @@ namespace BeachHero
             {
                 for (var i = startLevelIndex; i <= endLevelIndex; i++)
                 {
-                    levelVisuals[index].Setup(levelDatabaseSO.LevelDatas[i]);
+                   // levelVisuals[index].Setup(levelDatabaseSO.LevelDatas[i]);
                     index++;
                 }
             }

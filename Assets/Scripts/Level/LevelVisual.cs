@@ -6,9 +6,9 @@ namespace BeachHero
     public class LevelVisual : MonoBehaviour
     {
         [SerializeField] private LevelData levelData;
-        [SerializeField] private GameObject complete;
-        [SerializeField] private GameObject current;
+        [SerializeField] private SpriteRenderer levelIcon;
         [SerializeField] private TextMeshPro levelText;
+        [SerializeField] private BoxCollider2D boxCollider2D;
 
         public bool IsCurrentLevel => levelData.IsCurrentLevel;
 
@@ -20,26 +20,28 @@ namespace BeachHero
         {
             transform.position = positions;
         }
-
-        public void Setup(LevelData data)
+        public void Setup(int levelnumber, float scale)
         {
-            levelData = data;
-            UpdateVisual();
-            levelText.text = levelData.LevelNumber.ToString();
-            levelText.rectTransform.rotation = Quaternion.Euler(0, 0, -(transform.parent.eulerAngles.z));
+            levelData.LevelNumber = levelnumber;
+            levelIcon.transform.localScale = Vector3.one * scale;
+            boxCollider2D.size = Vector2.one * 2 * scale;
+            // UpdateVisual();
+            // levelText.text = levelData.LevelNumber.ToString();
+            // levelText.rectTransform.rotation = Quaternion.Euler(0, 0, -(transform.parent.eulerAngles.z));
         }
-
         private void UpdateVisual()
         {
-            complete.SetActive(false);
-            current.SetActive(false);
+            //    complete.SetActive(false);
+            //    current.SetActive(false);
 
-            if (levelData.IsCompleted)
-                complete.SetActive(true);
-            else if (levelData.IsCurrentLevel)
-            {
-                current.SetActive(true);
-            }
+            //    if (levelData.IsCompleted)
+            //    {
+            //        complete.SetActive(true);
+            //    }
+            //    else if (levelData.IsCurrentLevel)
+            //    {
+            //        current.SetActive(true);
+            //    }
         }
     }
 }
