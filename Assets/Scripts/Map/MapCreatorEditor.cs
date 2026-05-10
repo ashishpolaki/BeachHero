@@ -517,6 +517,13 @@ namespace BeachHero
                     Selection.activeGameObject = map.gameObject;
             };
             EditorUtility.SetDirty(map);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(newLevel.gameObject);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(map);
+
+            PrefabUtility.ApplyPrefabInstance(
+                map.gameObject,
+                InteractionMode.UserAction
+            );
         }
 
         void RemoveLevelAtIndex()
@@ -537,6 +544,11 @@ namespace BeachHero
             ReorderLevels();
 
             EditorUtility.SetDirty(map);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(map);
+            PrefabUtility.ApplyPrefabInstance(
+                map.gameObject,
+                InteractionMode.UserAction
+            );
         }
 
         void ReorderLevels()
@@ -623,7 +635,7 @@ namespace BeachHero
                 creator.levelPrefab,
                 map.LevelsParent
             );
-
+            Undo.RegisterCreatedObjectUndo(previewLevel, "Create Level");
             previewLevel.name = "PREVIEW_Level";
             previewLevel.Setup(selectedLevelIndex + 1, levelScale);
             // Optional: make it visually distinct
@@ -659,7 +671,7 @@ namespace BeachHero
             if (previewLevel == null) return;
 
             var levels = GetLevels();
-            previewLevel.hideFlags = HideFlags.None;
+            previewLevel.gameObject.hideFlags = HideFlags.None;
 
             if (selectedLevelIndex >= 0 && selectedLevelIndex < levels.Count)
             {
@@ -686,6 +698,16 @@ namespace BeachHero
                 });
             }
             previewLevel.name = $"Level_{selectedLevelIndex + 1}";
+            //  Record changes
+            PrefabUtility.RecordPrefabInstancePropertyModifications(previewLevel.gameObject);
+            PrefabUtility.RecordPrefabInstancePropertyModifications(map);
+
+            // APPLY to prefab
+            PrefabUtility.ApplyPrefabInstance(
+                map.gameObject,
+                InteractionMode.UserAction
+            );
+
             previewLevel = null;
             selectedLevelIndex = -1;
             EditorUtility.SetDirty(map);
