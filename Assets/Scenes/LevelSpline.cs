@@ -608,7 +608,6 @@ public class LevelSplineEditor : Editor
             RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, Mathf.Infinity, LayerMask.GetMask("Map"));
             if (hit.collider != null)
             {
-                Debug.Log("Clicked on: " + hit.collider.name);
                 LevelVisual lv = hit.collider.GetComponent<LevelVisual>();
 
                 if (lv != null)
@@ -796,43 +795,43 @@ public class LevelSplineEditor : Editor
         ));
 
         // LEVEL NUMBER (READ ONLY)
-        EditorGUILayout.LabelField("Level Number", (selectedLevelIndex + 1).ToString());
-        GUILayout.Space(5);
+            EditorGUILayout.LabelField("Level Number", (selectedLevelIndex + 1).ToString());
+            GUILayout.Space(5);
 
-        // SEGMENT
-        GUILayout.Label("Segment Index");
-        popupSegmentIndex = EditorGUILayout.IntSlider(
-            popupSegmentIndex,
-            0,
-            Mathf.Max(0, spline.pathPoints.Count - 2)
-        );
+            // SEGMENT
+            GUILayout.Label("Segment Index");
+            popupSegmentIndex = EditorGUILayout.IntSlider(
+                popupSegmentIndex,
+                0,
+                Mathf.Max(0, spline.pathPoints.Count - 2)
+            );
 
-        // PERCENTAGE
-        GUILayout.Label("Percentage");
-        popupT = EditorGUILayout.Slider(popupT, 0f, 1f);
-        GUILayout.Space(5);
+            // PERCENTAGE
+            GUILayout.Label("Percentage");
+            popupT = EditorGUILayout.Slider(popupT, 0f, 1f);
+            GUILayout.Space(5);
 
-        // ROTATION Z
-        GUILayout.Label("Rotation (Z)");
-        popupRotationZ = EditorGUILayout.Slider(popupRotationZ, 0f, 360f);
+            // ROTATION Z
+            GUILayout.Label("Rotation (Z)");
+            popupRotationZ = EditorGUILayout.Slider(popupRotationZ, 0f, 360f);
 
-        // SCALE
-        GUILayout.Label("Scale");
-        popupScale = EditorGUILayout.Slider(popupScale, 0.1f, 0.7f);
+            // SCALE
+            GUILayout.Label("Scale");
+            popupScale = EditorGUILayout.Slider(popupScale, 0.1f, 0.7f);
 
-        GUILayout.Space(10);
-        GUILayout.BeginHorizontal();
-        if (GUILayout.Button("OK"))
-        {
-            ConfirmPreviewLevel();
-            showAddLevelPopup = false;
-        }
+            GUILayout.Space(10);
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("OK"))
+            {
+                ConfirmPreviewLevel();
+                showAddLevelPopup = false;
+            }
 
-        if (GUILayout.Button("Cancel"))
-        {
-            DestroyPreviewLevel();
-            showAddLevelPopup = false;
-        }
+            if (GUILayout.Button("Cancel"))
+            {
+                DestroyPreviewLevel();
+                showAddLevelPopup = false;
+            }
         GUILayout.EndHorizontal();
         GUILayout.EndArea();
     }

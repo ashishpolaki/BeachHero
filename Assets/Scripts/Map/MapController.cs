@@ -5,15 +5,18 @@ using System.Collections.Generic;
 
 namespace BeachHero
 {
-    [System.Serializable]
+    [Serializable]
     public class MapLevelSpawnData
     {
         public int levelNumber;
 
         [Header("Spline Position")]
+#if UNITY_EDITOR
         public int segmentIndex;
         [Range(0f, 1f)]
         public float t;
+#endif
+        public float splinePercent;
 
         [Header("Transform")]
         public Vector3 scale = Vector3.one;

@@ -1,5 +1,4 @@
 #if UNITY_EDITOR
-using ES3Types;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
@@ -16,13 +15,14 @@ namespace BeachHero
         // ================= REFERENCES =================
         private MapCreator creator;
         private MapController map;
-        private EditMode editMode = EditMode.Spline;
+        private EditMode editMode = EditMode.Levels;
 
         // ===== TOOL WINDOW =====
         private Rect toolRect = new Rect(800, 20, 250, 220);
         private float splineHeight = 220f;
         private float levelHeight = 140f;
         private float debugExtraHeight = 25f;
+        private float addLevelExtraHeight = 150f;
         private bool isDragging;
         private Vector2 dragOffset;
 
@@ -30,14 +30,17 @@ namespace BeachHero
         private LevelVisual previewLevel;
         private int selectedLevelIndex = -1;
         private int levelSegmentIndex = 0;
-        private bool isPreviewLevel = false;
+        private int insertLevelNumber = 1;
+        private int removeLevelNumber = 1;
         private float levelRotationZ = 0f;
         private float levelScale = 0.5f;
         private float levelT = 0.5f;
+        private bool isPreviewLevel = false;
+        private bool showAddLevelUI = false;
 
         // ===== INDEX FIELDS =====
-        private int insertIndex = 1;
-        private int removeIndex = 0;
+        private int insertPointIndex = 1;
+        private int removePointIndex = 0;
 
         // ================= DEBUG =================
         private List<Transform> debugObjects = new List<Transform>();
@@ -59,6 +62,7 @@ namespace BeachHero
         {
             DestroyPreviewLevel();
             ClearDebug();
+            ReorderLevels();
             Selection.selectionChanged -= OnSelectionChanged;
         }
 
@@ -72,14 +76,16 @@ namespace BeachHero
         {
             if (map == null) return;
             DrawToolWindow();
+            DrawCurve();
             if (editMode == EditMode.Levels)
             {
-                UpdatePreview();
+                HandleLevelSelection();
+                UpdatePreviewLevel();
                 ClearDebug();
             }
             if (editMode == EditMode.Spline)
             {
-                DrawCurve();
+                showAddLevelUI = false;
                 DrawPoints();
                 DestroyPreviewLevel();
             }
@@ -102,6 +108,9 @@ namespace BeachHero
             else if (editMode == EditMode.Levels)
             {
                 height = levelHeight;
+
+                if (showAddLevelUI)
+                    height += addLevelExtraHeight;
             }
             toolRect.height = height;
 
@@ -231,7 +240,7 @@ namespace BeachHero
 
             if (pts.Count < 4) return;
 
-            Handles.color = Color.green;
+            Handles.color = Color.yellow;
 
             for (int i = 0; i < pts.Count - 3; i++)
             {
@@ -275,16 +284,16 @@ namespace BeachHero
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Insert Mid At Index"))
                 InsertMidPointAtIndex();
-            insertIndex = EditorGUILayout.IntField(insertIndex, GUILayout.Width(50));
-            insertIndex = Mathf.Clamp(insertIndex, 1, Mathf.Max(1, pts.Count - 1));
+            insertPointIndex = EditorGUILayout.IntField(insertPointIndex, GUILayout.Width(50));
+            insertPointIndex = Mathf.Clamp(insertPointIndex, 1, Mathf.Max(1, pts.Count - 1));
             GUILayout.EndHorizontal();
 
             // ===== REMOVE INDEX =====
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Remove At Index"))
                 RemovePointAtIndex();
-            removeIndex = EditorGUILayout.IntField(removeIndex, GUILayout.Width(50));
-            removeIndex = Mathf.Clamp(removeIndex, 0, Mathf.Max(0, pts.Count - 1));
+            removePointIndex = EditorGUILayout.IntField(removePointIndex, GUILayout.Width(50));
+            removePointIndex = Mathf.Clamp(removePointIndex, 0, Mathf.Max(0, pts.Count - 1));
             GUILayout.EndHorizontal();
             GUILayout.Space(5);
 
@@ -335,16 +344,16 @@ namespace BeachHero
             var pts = map.PathPoints;
 
             if (pts.Count < 2) return;
-            if (insertIndex <= 0 || insertIndex >= pts.Count) return;
+            if (insertPointIndex <= 0 || insertPointIndex >= pts.Count) return;
 
             Undo.RecordObject(map, "Insert Mid Point");
 
-            Vector3 a = pts[insertIndex - 1].position;
-            Vector3 b = pts[insertIndex].position;
+            Vector3 a = pts[insertPointIndex - 1].position;
+            Vector3 b = pts[insertPointIndex].position;
 
             Vector3 mid = (a + b) * 0.5f;
 
-            pts.Insert(insertIndex, new SplinePoint() { position = mid });
+            pts.Insert(insertPointIndex, new SplinePoint() { position = mid });
 
             EditorUtility.SetDirty(map);
         }
@@ -354,11 +363,11 @@ namespace BeachHero
             var pts = map.PathPoints;
 
             if (pts.Count <= 4) return;
-            if (removeIndex < 0 || removeIndex >= pts.Count) return;
+            if (removePointIndex < 0 || removePointIndex >= pts.Count) return;
 
             Undo.RecordObject(map, "Remove Point");
 
-            pts.RemoveAt(removeIndex);
+            pts.RemoveAt(removePointIndex);
 
             EditorUtility.SetDirty(map);
         }
@@ -369,21 +378,76 @@ namespace BeachHero
 
         void DrawLevelTools()
         {
-            if (GUILayout.Button("Add Level"))
-            {
-                // popupSegmentIndex = 0;
-                // popupT = 0.5f;
-                // CreatePreview();
-            }
+            var levels = GetLevels();
+            int count = levels.Count;
 
-            if (GUILayout.Button("Insert Level"))
+            // ===== NORMAL MODE =====
+            if (!showAddLevelUI)
             {
-                Debug.Log("Insert Level (next step)");
-            }
+                // ===== ADD LEVEL =====
+                if (GUILayout.Button("Add Level"))
+                {
+                    showAddLevelUI = true;
 
-            if (GUILayout.Button("Remove Level"))
+                    selectedLevelIndex = GetLevels().Count;
+                    // Set default segment and t based on last level
+                    if (levels.Count > 0)
+                    {
+                        var last = levels[^1];
+
+                        levelSegmentIndex = last.segmentIndex;
+                        levelT = last.t + 0.5f;
+
+                        if (levelT > 1f)
+                        {
+                            levelSegmentIndex += 1;
+                            levelT = 0.5f;
+                        }
+
+                        int maxSegment = Mathf.Max(0, map.PathPoints.Count - 2);
+                        levelSegmentIndex = Mathf.Clamp(levelSegmentIndex, 0, maxSegment);
+                    }
+                    // If no levels, start at beginning
+                    else
+                    {
+                        levelSegmentIndex = 0;
+                        levelT = 0f;
+                    }
+                    levelRotationZ = 0f;
+                    levelScale = 0.5f;
+
+                    CreatePreviewLevel();
+                }
+
+                // ===== INSERT LEVEL =====
+                GUILayout.BeginHorizontal();
+                GUI.enabled = count > 1;
+                if (GUILayout.Button("Insert Level", GUILayout.Width(120)))
+                {
+                    InsertLevelAtIndex();
+                }
+                insertLevelNumber = Mathf.RoundToInt(GUILayout.HorizontalSlider(insertLevelNumber, 1, Mathf.Max(1, count - 1)));
+                insertLevelNumber = EditorGUILayout.IntField(insertLevelNumber, GUILayout.Width(40));
+                insertLevelNumber = Mathf.Clamp(insertLevelNumber, 1, Mathf.Max(1, count - 1));//  CLAMP 
+                GUILayout.EndHorizontal();
+                GUI.enabled = true;
+
+                // ===== REMOVE LEVEL =====
+                GUI.enabled = count > 0;
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Remove Level", GUILayout.Width(120)))
+                {
+                    RemoveLevelAtIndex();
+                }
+                removeLevelNumber = Mathf.RoundToInt(GUILayout.HorizontalSlider(removeLevelNumber, 1, Mathf.Max(0, count)));
+                removeLevelNumber = EditorGUILayout.IntField(removeLevelNumber, GUILayout.Width(40));
+                removeLevelNumber = Mathf.Clamp(removeLevelNumber, 0, Mathf.Max(0, count));// CLAMP
+                GUILayout.EndHorizontal();
+                GUI.enabled = true;
+            }
+            else
             {
-                Debug.Log("Remove Level (next step)");
+                DrawAddLevelUI();
             }
         }
         private List<MapLevelSpawnData> GetLevels()
@@ -392,6 +456,155 @@ namespace BeachHero
                 .GetField("mapLevels", BindingFlags.NonPublic | BindingFlags.Instance);
 
             return (List<MapLevelSpawnData>)field.GetValue(map);
+        }
+        void InsertLevelAtIndex()
+        {
+            var levels = GetLevels();
+
+            if (creator.levelPrefab == null) return;
+            int index = insertLevelNumber - 1;
+            var newLevel = (LevelVisual)PrefabUtility.InstantiatePrefab(
+                creator.levelPrefab,
+                map.LevelsParent
+            );
+
+            newLevel.Setup(insertLevelNumber + 1, levelScale);
+
+            // Determine segment and t based on neighbors
+            var newSegment = levelSegmentIndex;
+            var newT = levelT;
+            if (index > 0 && index < levels.Count)
+            {
+                var prev = levels[index - 1];
+                var next = levels[index];
+
+                if (prev.segmentIndex == next.segmentIndex)
+                {
+                    //same segment -> interpolate t
+                    newSegment = prev.segmentIndex;
+                    newT = (prev.t + next.t) * 0.5f;
+                }
+                else
+                {
+                    // different segments -> choose closer one
+                    newSegment = prev.segmentIndex;
+                    newT = 1f; // end of previous segment
+                }
+            }
+
+            var data = new MapLevelSpawnData()
+            {
+                levelNumber = insertLevelNumber,
+                segmentIndex = newSegment,
+                t = newT,
+                rotation = new Vector3(0, 0, levelRotationZ),
+                scale = Vector3.one * levelScale,
+                levelVisual = newLevel
+            };
+
+            levels.Insert(index, data);
+
+            // Fix numbering
+            ReorderLevels();
+
+            selectedLevelIndex = index;
+            previewLevel = newLevel;
+            isPreviewLevel = false;
+
+            EditorApplication.delayCall += () =>
+            {
+                if (map != null)
+                    Selection.activeGameObject = map.gameObject;
+            };
+            EditorUtility.SetDirty(map);
+        }
+
+        void RemoveLevelAtIndex()
+        {
+            var levels = GetLevels();
+            if (levels.Count == 0) return;
+            int index = removeLevelNumber - 1;
+            if (index < 0 || index >= levels.Count) return;
+
+            var data = levels[index];
+
+            if (data.levelVisual != null)
+                DestroyImmediate(data.levelVisual.gameObject);
+
+            levels.RemoveAt(index);
+
+            //  Fix numbering
+            ReorderLevels();
+
+            EditorUtility.SetDirty(map);
+        }
+
+        void ReorderLevels()
+        {
+            var levels = GetLevels();
+
+            for (int i = 0; i < levels.Count; i++)
+            {
+                levels[i].levelNumber = i + 1;
+
+                if (levels[i].levelVisual != null)
+                {
+                    levels[i].levelVisual.name = $"Level_{i + 1}";
+                    levels[i].levelVisual.transform.position = map.GetPoint((levels[i].segmentIndex + levels[i].t) / (map.GetPositions().Count - 1));
+                    levels[i].levelVisual.transform.rotation = Quaternion.Euler(levels[i].rotation);
+                    levels[i].splinePercent = (levels[i].segmentIndex + levels[i].t) / (map.GetPositions().Count - 1);
+                    levels[i].levelVisual.Setup(i + 1, levels[i].scale.x);
+                }
+            }
+        }
+        void DrawAddLevelUI()
+        {
+            var pts = map.PathPoints;
+
+            EditorGUILayout.LabelField("Level Number", (selectedLevelIndex + 1).ToString());
+
+            GUILayout.Space(5);
+
+            // ===== SEGMENT =====
+            GUILayout.Label("Segment Index");
+            levelSegmentIndex = EditorGUILayout.IntSlider(
+                levelSegmentIndex,
+                0,
+                Mathf.Max(0, pts.Count - 2)
+            );
+
+            // ===== PERCENT =====
+            GUILayout.Label("Percentage");
+            levelT = EditorGUILayout.Slider(levelT, 0f, 1f);
+
+            GUILayout.Space(5);
+
+            // ===== ROTATION =====
+            GUILayout.Label("Rotation (Z)");
+            levelRotationZ = EditorGUILayout.Slider(levelRotationZ, 0f, 360f);
+
+            // ===== SCALE =====
+            GUILayout.Label("Scale");
+            levelScale = EditorGUILayout.Slider(levelScale, 0.1f, 0.7f);
+
+            GUILayout.Space(10);
+
+            GUILayout.BeginHorizontal();
+
+            if (GUILayout.Button("OK"))
+            {
+                ConfirmLevel();
+                showAddLevelUI = false;
+            }
+
+            if (GUILayout.Button("Cancel"))
+            {
+                DestroyPreviewLevel();
+                ReorderLevels();
+                showAddLevelUI = false;
+            }
+
+            GUILayout.EndHorizontal();
         }
 
         #region Preview Level
@@ -418,7 +631,7 @@ namespace BeachHero
             isPreviewLevel = true;
         }
 
-        void UpdatePreview()
+        void UpdatePreviewLevel()
         {
             if (previewLevel == null) return;
 
@@ -446,6 +659,7 @@ namespace BeachHero
             if (previewLevel == null) return;
 
             var levels = GetLevels();
+            previewLevel.hideFlags = HideFlags.None;
 
             if (selectedLevelIndex >= 0 && selectedLevelIndex < levels.Count)
             {
@@ -455,6 +669,7 @@ namespace BeachHero
                 data.t = levelT;
                 data.rotation = new Vector3(0, 0, levelRotationZ);
                 data.scale = Vector3.one * levelScale;
+                data.splinePercent = (data.segmentIndex + data.t) / (map.GetPositions().Count - 1);
 
                 levels[selectedLevelIndex] = data;
             }
@@ -470,7 +685,7 @@ namespace BeachHero
                     levelVisual = previewLevel
                 });
             }
-
+            previewLevel.name = $"Level_{selectedLevelIndex + 1}";
             previewLevel = null;
             selectedLevelIndex = -1;
             EditorUtility.SetDirty(map);
@@ -479,7 +694,7 @@ namespace BeachHero
 
         #endregion
 
-        #region Selection
+        #region Level Selection
         private void OnSelectionChanged()
         {
             if (Selection.activeGameObject == null ||
@@ -489,7 +704,7 @@ namespace BeachHero
                 SceneView.RepaintAll();
             }
         }
-        void HandleSelection()
+        private void HandleLevelSelection()
         {
             Event e = Event.current;
 
@@ -503,18 +718,16 @@ namespace BeachHero
                     Mathf.Infinity,
                     LayerMask.GetMask("Map")
                 );
-
                 if (hit.collider != null)
                 {
-                    LevelVisual lv = hit.collider.GetComponentInParent<LevelVisual>();
-
+                    LevelVisual lv = hit.collider.GetComponent<LevelVisual>();
                     if (lv != null)
                     {
                         SelectLevel(lv);
 
                         EditorApplication.delayCall += () =>
                         {
-                            Selection.activeGameObject = map.gameObject;
+                            Selection.activeGameObject = creator.gameObject;
                         };
 
                         e.Use();
@@ -539,9 +752,9 @@ namespace BeachHero
                     levelT = data.t;
                     levelRotationZ = data.rotation.z;
                     levelScale = data.scale.x;
-
                     previewLevel = level;
                     isPreviewLevel = false;
+                    showAddLevelUI = true;
 
                     return;
                 }
