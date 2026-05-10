@@ -25,6 +25,9 @@ namespace BeachHero
             levelData.LevelNumber = levelnumber;
             levelIcon.transform.localScale = Vector3.one * scale;
             boxCollider2D.size = Vector2.one * 2 * scale;
+            levelText.text = levelData.LevelNumber.ToString();
+            levelText.transform.rotation = Quaternion.identity;
+            levelText.fontSizeMax = 10 * scale;
             // UpdateVisual();
             // levelText.text = levelData.LevelNumber.ToString();
             // levelText.rectTransform.rotation = Quaternion.Euler(0, 0, -(transform.parent.eulerAngles.z));

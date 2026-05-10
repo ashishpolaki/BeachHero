@@ -766,10 +766,8 @@ namespace BeachHero
             {
                 if (levels[i].levelVisual == level)
                 {
-                    selectedLevelIndex = i;
-
+                    selectedLevelIndex = level.LevelNumber - 1;
                     var data = levels[i];
-
                     levelSegmentIndex = data.segmentIndex;
                     levelT = data.t;
                     levelRotationZ = data.rotation.z;
