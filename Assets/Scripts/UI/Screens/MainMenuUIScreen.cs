@@ -126,10 +126,8 @@ namespace BeachHero
                 tc.TutorialSpeechBubble.Hide();
             }
 
-            MapController.GetInstance.CheckForMapUpdate();
             UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);
             GameController.GetInstance.SetGameState(GameState.Map);
-            MapController.GetInstance.PlaceBoatAtCurrentLevel();
         }
         private void OnStoreButtonClicked()
         {

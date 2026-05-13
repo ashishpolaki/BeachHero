@@ -38,9 +38,10 @@ namespace BeachHero
         private bool isPreviewLevel = false;
         private bool showAddLevelUI = false;
 
-        // ===== INDEX FIELDS =====
+        // ===== SPLINE FIELDS =====
         private int insertPointIndex = 1;
         private int removePointIndex = 0;
+        private float splinePercent = 0f;
 
         // ================= DEBUG =================
         private List<Transform> debugObjects = new List<Transform>();
@@ -201,7 +202,7 @@ namespace BeachHero
                 {
                     Undo.RecordObject(map, "Move Point");
                     point.position = map.transform.InverseTransformPoint(newWorldPos);
-                    map.UpdateTarget();
+                    map.UpdateTargetMovement(splinePercent);
                     EditorUtility.SetDirty(map);
                 }
 
@@ -220,7 +221,7 @@ namespace BeachHero
                         point.rotation = newRot;
                         map.PathPoints[i] = point;
 
-                        map.UpdateTarget();
+                        map.UpdateTargetMovement(splinePercent);
                         EditorUtility.SetDirty(map);
                     }
                 }
@@ -300,12 +301,11 @@ namespace BeachHero
             // ===== PERCENT (WITH CHANGE CHECK) =====
             EditorGUI.BeginChangeCheck();
             EditorGUIUtility.labelWidth = 80;
-            float newPercent = EditorGUILayout.Slider("Percent", map.percent, 0f, 1f);
+            splinePercent = EditorGUILayout.Slider("Percent", splinePercent, 0f, 1f);
             if (EditorGUI.EndChangeCheck())
             {
                 Undo.RecordObject(map, "Change Percent");
-                map.percent = newPercent;
-                map.UpdateTarget();
+                map.UpdateTargetMovement(splinePercent);
                 EditorUtility.SetDirty(map);
             }
 
@@ -697,6 +697,7 @@ namespace BeachHero
                     levelVisual = previewLevel
                 });
             }
+            previewLevel.Setup(selectedLevelIndex + 1, levelScale);
             previewLevel.name = $"Level_{selectedLevelIndex + 1}";
             //  Record changes
             PrefabUtility.RecordPrefabInstancePropertyModifications(previewLevel.gameObject);
@@ -733,25 +734,16 @@ namespace BeachHero
             if (e.type == EventType.MouseDown && e.button == 0)
             {
                 Ray ray = HandleUtility.GUIPointToWorldRay(e.mousePosition);
-
-                RaycastHit2D hit = Physics2D.Raycast(
-                    ray.origin,
-                    ray.direction,
-                    Mathf.Infinity,
-                    LayerMask.GetMask("Map")
-                );
-                if (hit.collider != null)
+                if (Physics.Raycast(ray, out RaycastHit hitInfo, Mathf.Infinity, LayerMask.GetMask("Map")))
                 {
-                    LevelVisual lv = hit.collider.GetComponent<LevelVisual>();
+                    LevelVisual lv = hitInfo.collider.GetComponentInParent<LevelVisual>();
                     if (lv != null)
                     {
                         SelectLevel(lv);
-
                         EditorApplication.delayCall += () =>
                         {
                             Selection.activeGameObject = creator.gameObject;
                         };
-
                         e.Use();
                     }
                 }

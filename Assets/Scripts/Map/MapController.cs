@@ -1,7 +1,8 @@
-using UnityEngine;
 using System;
-using LitMotion;
 using System.Collections.Generic;
+using UnityEngine;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 
 namespace BeachHero
 {
@@ -35,12 +36,17 @@ namespace BeachHero
         [SerializeField] private Transform levelsParent;
         [SerializeField] private Transform target;
         [SerializeField] private Transform visualChild;
-
-        [Range(0f, 1f)]
-        public float percent;
+        [SerializeField] private Animator characterAnimator;
+        [SerializeField] private float moveSpeed = 0.5f;
 
         [Range(5, 100)]
         public int resolution = 20;
+        #endregion
+
+        #region Private Variables
+        private CancellationTokenSource moveCTS;
+        private int currentLevelIndex = -1;
+        private float currentPercent = 0f;
         #endregion
 
         #region Properties
@@ -60,6 +66,7 @@ namespace BeachHero
             List<Vector3> pts = GetPositions();
             return CatmullSplineUtils.GetTangentOnSpline(pts, percent);
         }
+
         public Quaternion GetForwardRotation(float percent)
         {
             float safePercent = Mathf.Clamp01(percent);
@@ -72,6 +79,7 @@ namespace BeachHero
 
             return Quaternion.LookRotation(dir, Vector3.back);
         }
+
         public Quaternion GetTwistRotation(float percent)
         {
             percent = Mathf.Clamp01(percent);
@@ -97,6 +105,7 @@ namespace BeachHero
             Quaternion rot = Quaternion.Slerp(a, b, t);
             return rot;
         }
+
         public Vector3 GetPoint(float percent)
         {
             percent = Mathf.Clamp01(percent);
@@ -116,25 +125,12 @@ namespace BeachHero
             return pts;
         }
 
-        public void UpdateTarget()
+        public void UpdateTargetMovement(float percent)
         {
-            if (target != null && pathPoints != null && pathPoints.Count >= 4)
-            {
-                target.position = GetPoint(percent);
-
-                target.rotation = GetForwardRotation(percent);
-
-                visualChild.localRotation = GetTwistRotation(percent);
-            }
+            target.position = GetPoint(percent);
+            target.rotation = GetForwardRotation(percent);
+            visualChild.localRotation = GetTwistRotation(percent);
         }
-        #endregion
-
-        #region Old Code
-
-        #region Events
-        public event Action OnMapButtonsEnabled;
-        public event Action OnShowPowerupSelection;
-        public event Action OnMapUnlocked;
         #endregion
 
         #region Unity Methods
@@ -144,8 +140,18 @@ namespace BeachHero
             {
                 GetInstance = this;
             }
-            InitializeMapVisuals();
         }
+        private void OnEnable()
+        {
+            InputManager.GetInstance.OnMouseClickDown += HandleMouseClick;
+        }
+        private void OnDisable()
+        {
+            if (InputManager.GetInstance != null)
+                InputManager.GetInstance.OnMouseClickDown -= HandleMouseClick;
+            moveCTS?.Cancel();
+        }
+
         private void OnDestroy()
         {
             if (GetInstance == this)
@@ -155,8 +161,99 @@ namespace BeachHero
         }
         #endregion
 
+        #region Input
+        public async void HandleMouseClick(Vector2 mousePos)
+        {
+            var ray = Camera.main.ScreenPointToRay(InputManager.MousePosition);
+            if (Physics.Raycast(ray, out RaycastHit hit, 100f, LayerMask.GetMask("Map")))
+            {
+                var levelVisual = hit.collider.GetComponent<LevelVisual>();
+                if (levelVisual != null)
+                {
+                    currentLevelIndex = levelVisual.LevelNumber - 1;
+                    float start = currentPercent;
+                    float end = mapLevels[currentLevelIndex].splinePercent;
+                    float distance = GetDistanceBetweenPercents(start, end);
+                    float baseSpeed = 1f;     // normal speed
+                    float maxSpeed = 5f;
+
+                    float speed = Mathf.Lerp(baseSpeed, maxSpeed, distance / 10f);
+                    speed = Mathf.Clamp(speed, baseSpeed, maxSpeed);
+                    float duration = distance / speed;
+                    await MoveAlongSplineAsync(start, end, duration);
+                }
+            }
+        }
+        #endregion
+
+        #region Movement
+        private float GetDistanceBetweenPercents(float startPercent, float endPercent)
+        {
+            var pts = PathPoints;
+            if (pts.Count < 4) return 0f;
+            float distance = 0f;
+            int steps = resolution * (pts.Count - 3); // same density as draw
+            float prevT = startPercent;
+            Vector3 prev = GetPoint(prevT);
+            for (int i = 1; i <= steps; i++)
+            {
+                float lerpT = i / (float)steps;
+                float t = Mathf.Lerp(startPercent, endPercent, lerpT);
+                Vector3 p = GetPoint(t);
+                distance += Vector3.Distance(prev, p);
+                prev = p;
+            }
+            return distance;
+        }
+
+        private async UniTask MoveAlongSplineAsync(float start, float end, float duration)
+        {
+            moveCTS?.Cancel();
+            moveCTS = new CancellationTokenSource();
+
+            var token = moveCTS.Token;
+
+            float time = 0f;
+            bool idleTriggered = false;
+
+            characterAnimator.CrossFade("Run", 0.1f);
+
+            try
+            {
+                while (time < duration)
+                {
+                    token.ThrowIfCancellationRequested();
+
+                    time += Time.deltaTime;
+
+                    float t = time / duration;
+                    t = Mathf.SmoothStep(0f, 1f, t);
+
+                    currentPercent = Mathf.Lerp(start, end, t);
+
+                    UpdateTargetMovement(currentPercent);
+
+                    if (!idleTriggered && t >= 0.9f)
+                    {
+                        characterAnimator.CrossFade("Idle", 0.3f);
+                        idleTriggered = true;
+                    }
+
+                    await UniTask.Yield(PlayerLoopTiming.Update, token);
+                }
+
+                currentPercent = end;
+                UpdateTargetMovement(end);
+            }
+            catch (OperationCanceledException)
+            {
+                // movement cancelled (safe)
+            }
+        }
+        #endregion
+
         #region Initialization
-        private void InitializeMapVisuals()
+        public void InitializeMapVisuals()
         {
             var levelNumber = GameController.GetInstance.CurrentLevelIndex + 1;
             //for (int i = 0; i < mapDatas.Length; i++)
@@ -171,7 +268,29 @@ namespace BeachHero
             //    }
             //}
             //SwitchMap(-1, savedMapNumber);
+
+            // Set level visuals to face camera
+            Vector3 camRot = Camera.main.transform.eulerAngles;
+            for (int i = 0; i < mapLevels.Count; i++)
+            {
+                var levelVisual = mapLevels[i].levelVisual;
+                if (levelVisual == null)
+                    continue;
+
+                var t = levelVisual.transform;
+                Vector3 euler = t.eulerAngles;
+                euler.x = camRot.x;
+                t.eulerAngles = euler;
+            }
         }
+        #endregion
+
+        #region Old Code
+
+        #region Events
+        public event Action OnMapButtonsEnabled;
+        public event Action OnShowPowerupSelection;
+        public event Action OnMapUnlocked;
         #endregion
 
         #region Map State Checking
@@ -198,7 +317,7 @@ namespace BeachHero
         #region Boat Movement
         public void PlaceBoatAtCurrentLevel()
         {
-            UnlockNewMap();
+           // UnlockNewMap();
             int levelNumber = GameController.GetInstance.CurrentLevelIndex + 1;
             PositionBoatAtLevel(levelNumber);
             OnMapButtonsEnabled?.Invoke();
@@ -391,7 +510,6 @@ namespace BeachHero
         //}
         #endregion
         #endregion
-
 
 #if UNITY_EDITOR
         public void GenerateLevelVisuals(int _mapIndex, List<BezierPoint> bezierPoints, Vector3[] linePoints)

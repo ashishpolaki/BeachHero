@@ -5,10 +5,24 @@ namespace BeachHero
 {
     public class LevelVisual : MonoBehaviour
     {
+        public enum LevelVisualState
+        {
+            Locked,
+            Unlocked,
+            Completed
+        }
+        [System.Serializable]
+        public struct LevelIconState
+        {
+            public LevelVisualState state;
+            public Sprite icon;
+        }
         [SerializeField] private LevelData levelData;
+        [SerializeField] private LevelIconState[] levelIconStates;
         [SerializeField] private SpriteRenderer levelIcon;
+        [SerializeField] private GameObject lockIcon;
         [SerializeField] private TextMeshPro levelText;
-        [SerializeField] private BoxCollider2D boxCollider2D;
+        [SerializeField] private BoxCollider boxCollider;
 
         public bool IsCurrentLevel => levelData.IsCurrentLevel;
 
@@ -24,7 +38,7 @@ namespace BeachHero
         {
             levelData.LevelNumber = levelnumber;
             levelIcon.transform.localScale = Vector3.one * scale;
-            boxCollider2D.size = Vector2.one * 2 * scale;
+            boxCollider.size = new Vector3((Vector2.one * 2 * scale).x, (Vector2.one * 2 * scale).y, 0.1f);
             levelText.text = levelData.LevelNumber.ToString();
             levelText.transform.rotation = Quaternion.identity;
             levelText.fontSizeMax = 10 * scale;
