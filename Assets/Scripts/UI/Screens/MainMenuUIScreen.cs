@@ -12,6 +12,7 @@ namespace BeachHero
         [SerializeField] private UIButton settingsButton;
         [SerializeField] private UIButton leaderBoardButton;
         [SerializeField] private UIButton shareGameButton;
+        [SerializeField] private UIButton noAdsButton;
         [SerializeField] private TextMeshProUGUI levelNumberText;
         [SerializeField] private Sprite playButtonSprite;
         [Header("Tutorial Positions")]
@@ -71,6 +72,18 @@ namespace BeachHero
             settingsButton.OnButtonReleased += (OnSettingsButtonClick);
             leaderBoardButton.OnButtonReleased += OpenLeaderboards;
             shareGameButton.OnButtonReleased += ShareClicked;
+            noAdsButton.OnButtonReleased += NoAdsButtonClicked;
+        }
+
+        private void RemoveListeners()
+        {
+            boatCustomisationButton.OnButtonReleased -= (OnBoatCustomisationButtonClicked);
+            playButton.OnButtonReleased -= OnPlayButtonClicked;
+            storeButton.OnButtonReleased -= (OnStoreButtonClicked);
+            settingsButton.OnButtonReleased -= (OnSettingsButtonClick);
+            leaderBoardButton.OnButtonReleased -= OpenLeaderboards;
+            shareGameButton.OnButtonReleased -= ShareClicked;
+            noAdsButton.OnButtonReleased -= NoAdsButtonClicked;
         }
 
         private void ShareClicked()
@@ -88,14 +101,9 @@ namespace BeachHero
             });
         }
 
-        private void RemoveListeners()
+        private void NoAdsButtonClicked()
         {
-            boatCustomisationButton.OnButtonReleased -= (OnBoatCustomisationButtonClicked);
-            playButton.OnButtonReleased -= OnPlayButtonClicked;
-            storeButton.OnButtonReleased -= (OnStoreButtonClicked);
-            settingsButton.OnButtonReleased -= (OnSettingsButtonClick);
-            leaderBoardButton.OnButtonReleased -= OpenLeaderboards;
-            shareGameButton.OnButtonReleased -= ShareClicked;
+            UIController.GetInstance.ScreenEvent(ScreenType.Store, UIScreenEvent.Push);
         }
 
         private void OpenLeaderboards()
