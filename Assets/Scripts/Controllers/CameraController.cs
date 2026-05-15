@@ -106,7 +106,14 @@ namespace BeachHero
                 }
             }
         }
-
+        public Vector3 GetCurrentCameraEulerAngles()
+                    {
+            if (cameraDictionary.TryGetValue(currentCameraType, out GameCameraConfig currentConfig))
+            {
+                return currentConfig.camera.transform.eulerAngles;
+            }
+            return Vector3.zero;
+        }
         public async void ShakeActiveCamera()
         {
             if (cameraDictionary.TryGetValue(currentCameraType, out GameCameraConfig currentConfig))
