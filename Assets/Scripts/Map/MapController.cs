@@ -278,7 +278,7 @@ namespace BeachHero
             }
             isLevelsInit = true;
             // Set level visuals to face camera
-            Vector3 camRot = CameraController.GetInstance.GetCurrentCameraEulerAngles();
+            Vector3 camRot = CameraController.GetInstance.GetCameraRotation(GameCameraType.GameView);
             for (int i = 0; i < mapLevels.Count; i++)
             {
                 var levelVisual = mapLevels[i].levelVisual;

@@ -15,7 +15,7 @@ namespace BeachHero
         // ================= REFERENCES =================
         private MapCreator creator;
         private MapController map;
-        private EditMode editMode = EditMode.Levels;
+        private EditMode editMode = EditMode.Spline;
 
         // ===== TOOL WINDOW =====
         private Rect toolRect = new Rect(800, 20, 250, 220);
@@ -23,6 +23,7 @@ namespace BeachHero
         private float levelHeight = 140f;
         private float debugExtraHeight = 25f;
         private float addLevelExtraHeight = 150f;
+        private float selectedPointExtraHeight = 150f;
         private bool isDragging;
         private Vector2 dragOffset;
 
@@ -37,15 +38,20 @@ namespace BeachHero
         private float levelT = 0.5f;
         private bool isPreviewLevel = false;
         private bool showAddLevelUI = false;
+        private bool showSelectedPointUI = false;
 
         // ===== SPLINE FIELDS =====
         private int insertPointIndex = 1;
         private int removePointIndex = 0;
         private float splinePercent = 0f;
+        private int selectedPointIndex = -1;
+        private Vector3 splinePointOffset;
+        private int referencePointIndex = 0;
 
         // ================= DEBUG =================
         private List<Transform> debugObjects = new List<Transform>();
         #endregion
+
 
         #region Unity Methods
         private void OnEnable()
@@ -64,6 +70,9 @@ namespace BeachHero
             DestroyPreviewLevel();
             ClearDebug();
             ReorderLevels();
+            selectedPointIndex = -1;
+            showSelectedPointUI = false;
+            splinePointOffset = Vector3.zero;
             Selection.selectionChanged -= OnSelectionChanged;
         }
 
@@ -83,6 +92,9 @@ namespace BeachHero
                 HandleLevelSelection();
                 UpdatePreviewLevel();
                 ClearDebug();
+                selectedPointIndex = -1;
+                showSelectedPointUI = false;
+                splinePointOffset = Vector3.zero;
             }
             if (editMode == EditMode.Spline)
             {
@@ -105,6 +117,9 @@ namespace BeachHero
 
                 if (creator.showDebug)
                     height += debugExtraHeight;
+
+                if (showSelectedPointUI)
+                    height += selectedPointExtraHeight;
             }
             else if (editMode == EditMode.Levels)
             {
@@ -148,7 +163,6 @@ namespace BeachHero
             if (e.type == EventType.MouseUp)
                 isDragging = false;
         }
-
         void DrawToolWindowContent()
         {
             GUILayout.BeginArea(new Rect(
@@ -168,12 +182,19 @@ namespace BeachHero
 
             GUILayout.EndHorizontal();
 
-            GUILayout.Space(10);
+            GUILayout.Space(3);
 
             // ===== CONTENT =====
             if (editMode == EditMode.Spline)
             {
-                DrawSplineTools();
+                if (showSelectedPointUI)
+                {
+                    DrawSelectedPointTools();
+                }
+                else
+                {
+                    DrawSplineTools();
+                }
             }
             else
             {
@@ -192,37 +213,45 @@ namespace BeachHero
             for (int i = 0; i < pts.Count; i++)
             {
                 var point = pts[i];
-
                 Vector3 worldPos = map.transform.TransformPoint(point.position);
-
-                // POSITION HANDLE
-                EditorGUI.BeginChangeCheck();
-                Vector3 newWorldPos = Handles.PositionHandle(worldPos, Quaternion.identity);
-                if (EditorGUI.EndChangeCheck())
+                bool isSelected = (i == selectedPointIndex);
+                if (Handles.Button(worldPos, Quaternion.identity, 0.2f, 0.2f, Handles.SphereHandleCap))
                 {
-                    Undo.RecordObject(map, "Move Point");
-                    point.position = map.transform.InverseTransformPoint(newWorldPos);
-                    map.UpdateCharacterTransform(splinePercent);
-                    EditorUtility.SetDirty(map);
+                    selectedPointIndex = i;
+                    showSelectedPointUI = true;
+                    Repaint();
                 }
-
-                // ROTATION HANDLE
-                float size = 0.3f / HandleUtility.GetHandleSize(worldPos);
-                using (new Handles.DrawingScope(Matrix4x4.TRS(worldPos, Quaternion.identity, Vector3.one * size)))
+                if (isSelected)
                 {
+                    // POSITION HANDLE
                     EditorGUI.BeginChangeCheck();
-
-                    Quaternion newRot = Handles.RotationHandle(point.rotation, Vector3.zero);
-
+                    Vector3 newWorldPos = Handles.PositionHandle(worldPos, Quaternion.identity);
                     if (EditorGUI.EndChangeCheck())
                     {
-                        Undo.RecordObject(map, "Rotate Point");
-
-                        point.rotation = newRot;
-                        map.PathPoints[i] = point;
-
+                        Undo.RecordObject(map, "Move Point");
+                        point.position = map.transform.InverseTransformPoint(newWorldPos);
                         map.UpdateCharacterTransform(splinePercent);
                         EditorUtility.SetDirty(map);
+                    }
+
+                    // ROTATION HANDLE
+                    float size = 0.3f / HandleUtility.GetHandleSize(worldPos);
+                    using (new Handles.DrawingScope(Matrix4x4.TRS(worldPos, Quaternion.identity, Vector3.one * size)))
+                    {
+                        EditorGUI.BeginChangeCheck();
+
+                        Quaternion newRot = Handles.RotationHandle(point.rotation, Vector3.zero);
+
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            Undo.RecordObject(map, "Rotate Point");
+
+                            point.rotation = newRot;
+                            map.PathPoints[i] = point;
+
+                            map.UpdateCharacterTransform(splinePercent);
+                            EditorUtility.SetDirty(map);
+                        }
                     }
                 }
                 GUIStyle pointLabelStyle = new GUIStyle(EditorStyles.boldLabel);
@@ -270,6 +299,93 @@ namespace BeachHero
                     Handles.DrawLine(prev, p);
                     prev = p;
                 }
+            }
+        }
+        void DrawSelectedPointTools()
+        {
+            GUILayout.Space(20);
+
+            var pts = map.PathPoints;
+            var point = pts[selectedPointIndex];
+            GUIStyle centeredLabel = new GUIStyle(EditorStyles.boldLabel);
+            centeredLabel.alignment = TextAnchor.MiddleCenter;
+            centeredLabel.fontSize = 16;
+            GUILayout.Label($"Selected Point = P{selectedPointIndex}", centeredLabel);
+            GUILayout.Space(1);
+
+            // ===== POSITION =====
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Pos : ", GUILayout.Width(40)); // label part
+            EditorGUI.BeginChangeCheck();
+            Vector3 newPos = EditorGUILayout.Vector3Field("", point.position); // no label here
+            if (EditorGUI.EndChangeCheck())
+            {
+                Undo.RecordObject(map, "Move Point");
+                point.position = newPos;
+                pts[selectedPointIndex] = point;
+                EditorUtility.SetDirty(map);
+            }
+            GUILayout.EndHorizontal();
+
+            // ===== ROTATION =====
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Rot : ", GUILayout.Width(40)); // label part
+            EditorGUI.BeginChangeCheck();
+            Vector3 euler = point.rotation.eulerAngles;
+            Vector3 newEuler = EditorGUILayout.Vector3Field("", euler);
+            if (EditorGUI.EndChangeCheck())
+            {
+                Undo.RecordObject(map, "Rotate Point");
+                point.rotation = Quaternion.Euler(newEuler);
+                pts[selectedPointIndex] = point;
+                EditorUtility.SetDirty(map);
+            }
+            GUILayout.EndHorizontal();
+
+            // ===== OFFSET (if you add it) =====
+            GUILayout.Space(30);
+            GUILayout.Label("Offset From Another Point", centeredLabel);
+            referencePointIndex = EditorGUILayout.IntField("From Index", referencePointIndex);
+            referencePointIndex = Mathf.Clamp(referencePointIndex, 0, map.PathPoints.Count - 1);
+
+            // ===== OFFSET =====
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Offset : ", GUILayout.Width(40)); // label part
+            EditorGUI.BeginChangeCheck();
+            splinePointOffset = EditorGUILayout.Vector3Field("", splinePointOffset);
+            if (EditorGUI.EndChangeCheck())
+            {
+                Undo.RecordObject(map, "Change Offset");
+                EditorUtility.SetDirty(map);
+            }
+            GUILayout.EndHorizontal();
+
+            // ===== APPLY BUTTON =====
+            if (GUILayout.Button("Apply Offset From Point"))
+            {
+                if (selectedPointIndex < 0 || selectedPointIndex >= pts.Count)
+                    return;
+
+                var source = pts[referencePointIndex];
+                var target = pts[selectedPointIndex];
+
+                Undo.RecordObject(map, "Apply Offset From Point");
+
+                //  Copy position + rotation
+                target.position = source.position + splinePointOffset;
+                target.rotation = source.rotation;
+
+                pts[selectedPointIndex] = target;
+
+                EditorUtility.SetDirty(map);
+            }
+
+            // ===== BACK BUTTON =====
+            GUILayout.Space(5);
+            if (GUILayout.Button("Back"))
+            {
+                showSelectedPointUI = false;
+                selectedPointIndex = -1;   //  GO BACK TO NORMAL UI
             }
         }
 

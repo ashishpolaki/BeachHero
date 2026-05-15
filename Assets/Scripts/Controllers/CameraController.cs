@@ -106,11 +106,19 @@ namespace BeachHero
                 }
             }
         }
-        public Vector3 GetCurrentCameraEulerAngles()
-                    {
-            if (cameraDictionary.TryGetValue(currentCameraType, out GameCameraConfig currentConfig))
+        public Vector3 GetCameraRotation(GameCameraType cameraType)
+        {
+            if (cameraDictionary.TryGetValue(cameraType, out GameCameraConfig currentConfig))
             {
                 return currentConfig.camera.transform.eulerAngles;
+            }
+            return Vector3.zero;
+        }
+        public Vector3 GetCameraPosition(GameCameraType cameraType)
+        {
+            if (cameraDictionary.TryGetValue(cameraType, out GameCameraConfig currentConfig))
+            {
+                return currentConfig.camera.transform.position;
             }
             return Vector3.zero;
         }
