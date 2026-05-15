@@ -36,8 +36,9 @@ namespace BeachHero
         {
             for (int i = 0; i < levelDatas.Count; i++)
             {
-                levelDatas[i].IsCurrentLevel = false;
-                levelDatas[i].IsCompleted = false;
+                levelDatas[i].LevelNumber = i + 1;
+                levelDatas[i].SetState(LevelVisualState.Locked);
+                levelDatas[i].MedalsEarned = 0;
             }
         }
         private void OnValidate()
@@ -60,15 +61,15 @@ namespace BeachHero
             {
                 if (i < currentLevelIndex)
                 {
-                    levelDatas[i].MarkComplete();
+                    levelDatas[i].SetState(LevelVisualState.Completed);
                 }
                 else if (i == currentLevelIndex)
                 {
-                    levelDatas[i].MarkCurrentLevel();
+                    levelDatas[i].SetState(LevelVisualState.Current);
                 }
                 else
                 {
-                    levelDatas[i].MarkIncomplete();
+                    levelDatas[i].SetState(LevelVisualState.Locked);
                 }
                 levelDatas[i].MedalsEarned = SaveSystem.LoadInt($"{StringUtils.MEDAL_EARNED_PREFIX}{i}", 0);
             }

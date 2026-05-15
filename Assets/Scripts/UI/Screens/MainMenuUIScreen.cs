@@ -133,7 +133,7 @@ namespace BeachHero
                 tc.TutorialCharacter.SkipAnimation();
                 tc.TutorialSpeechBubble.Hide();
             }
-
+            MapController.GetInstance.SyncCharacterToLevel();
             UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);
             GameController.GetInstance.SetGameState(GameState.Map);
         }

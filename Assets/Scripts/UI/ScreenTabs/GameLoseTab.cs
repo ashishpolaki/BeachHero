@@ -45,18 +45,16 @@ namespace BeachHero
         {
             await UIController.GetInstance.FadeUI.FadeInASync();
             GameController.GetInstance.SkipLevel();
-            MapController.GetInstance.CheckForMapUpdate();
             UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);
-            MapController.GetInstance.PlaceBoatAtPreviousLevel();
             await UIController.GetInstance.FadeUI.FadeOutASync();
-            MapController.GetInstance.AnimateBoatToCurrentLevel();
+            MapController.GetInstance.AnimateToLevel();
             GameController.GetInstance.SetGameState(GameState.Map);
         }
 
         private async void OnHomeASync()
         {
             await UIController.GetInstance.FadeUI.FadeInASync();
-            GameController.GetInstance.RetryLevel();
+            GameController.GetInstance.BackToMainMenu();
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
             await UIController.GetInstance.FadeUI.FadeOutASync();
         }

@@ -202,7 +202,7 @@ namespace BeachHero
                 {
                     Undo.RecordObject(map, "Move Point");
                     point.position = map.transform.InverseTransformPoint(newWorldPos);
-                    map.UpdateTargetMovement(splinePercent);
+                    map.UpdateCharacterTransform(splinePercent);
                     EditorUtility.SetDirty(map);
                 }
 
@@ -221,7 +221,7 @@ namespace BeachHero
                         point.rotation = newRot;
                         map.PathPoints[i] = point;
 
-                        map.UpdateTargetMovement(splinePercent);
+                        map.UpdateCharacterTransform(splinePercent);
                         EditorUtility.SetDirty(map);
                     }
                 }
@@ -305,7 +305,7 @@ namespace BeachHero
             if (EditorGUI.EndChangeCheck())
             {
                 Undo.RecordObject(map, "Change Percent");
-                map.UpdateTargetMovement(splinePercent);
+                map.UpdateCharacterTransform(splinePercent);
                 EditorUtility.SetDirty(map);
             }
 
@@ -720,6 +720,7 @@ namespace BeachHero
         #region Level Selection
         private void OnSelectionChanged()
         {
+            if (map == null) return;
             if (Selection.activeGameObject == null ||
                 Selection.activeGameObject != map.gameObject)
             {

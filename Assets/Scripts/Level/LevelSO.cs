@@ -124,21 +124,4 @@ namespace BeachHero
         public float scale;
     }
 
-    [System.Serializable]
-    public struct BezierKeyframe
-    {
-        public Vector3 position; // Keyframe position (world position)
-        public Vector3 inTangentLocal; // Incoming tangent (local position relative to position)
-        public Vector3 outTangentLocal; // Outgoing tangent (local position relative to position)
-
-        /// <summary>
-        /// Property to calculate the world position of the inTangent
-        /// </summary>
-        public Vector3 InTangentWorld => position + inTangentLocal;
-
-        /// <summary>
-        ///  Property to calculate the world position of the outTangent
-        /// </summary>
-        public Vector3 OutTangentWorld => position + outTangentLocal;
-    }
 }

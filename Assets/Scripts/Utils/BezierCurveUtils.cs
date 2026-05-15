@@ -3,6 +3,23 @@ using UnityEngine;
 
 namespace BeachHero
 {
+    [System.Serializable]
+    public struct BezierKeyframe
+    {
+        public Vector3 position; // Keyframe position (world position)
+        public Vector3 inTangentLocal; // Incoming tangent (local position relative to position)
+        public Vector3 outTangentLocal; // Outgoing tangent (local position relative to position)
+
+        /// <summary>
+        /// Property to calculate the world position of the inTangent
+        /// </summary>
+        public Vector3 InTangentWorld => position + inTangentLocal;
+
+        /// <summary>
+        ///  Property to calculate the world position of the outTangent
+        /// </summary>
+        public Vector3 OutTangentWorld => position + outTangentLocal;
+    }
     public class BezierCurveUtils
     {
         public static Vector3[] GeneratePath(BezierKeyframe[] bezierKeyframes, float resolution)
@@ -222,23 +239,23 @@ namespace BeachHero
             return even;
         }
 
-        public static Vector3 GetClosestPointOnBezierPath(List<BezierPoint> bezierPoints, Vector3 targetPosition, int resolution = 30)
+        public static Vector3 GetClosestPointOnBezierPath(List<BezierKeyframe> bezierPoints, Vector3 targetPosition, int resolution = 30)
         {
             Vector3 closestPoint = Vector3.zero;
             float minSqrDist = float.MaxValue;
 
             for (int i = 0; i < bezierPoints.Count - 1; i++)
             {
-                BezierPoint bp0 = bezierPoints[i];
-                BezierPoint bp1 = bezierPoints[i + 1];
+                BezierKeyframe bp0 = bezierPoints[i];
+                BezierKeyframe bp1 = bezierPoints[i + 1];
 
-                if (bp0.anchorPoint == null || bp1.anchorPoint == null)
+                if (bp0.position == null || bp1.position == null)
                     continue;
 
-                Vector3 p0 = bp0.anchorPoint;
-                Vector3 p1 = p0 + bp0.outTangent;
-                Vector3 p2 = bp1.anchorPoint + bp1.inTangent;
-                Vector3 p3 = bp1.anchorPoint;
+                Vector3 p0 = bp0.position;
+                Vector3 p1 = p0 + bp0.outTangentLocal;
+                Vector3 p2 = bp1.position + bp1.inTangentLocal;
+                Vector3 p3 = bp1.position;
 
                 for (int j = 0; j <= resolution; j++)
                 {
@@ -257,7 +274,7 @@ namespace BeachHero
             return closestPoint;
         }
 
-        public static void SampleEvenlySpacedPointsWithTangents(List<BezierPoint> bezierPoints, int totalSamples, out List<Vector3> sampledPoints, out List<Vector3> tangentVectors)
+        public static void SampleEvenlySpacedPointsWithTangents(List<BezierKeyframe> bezierPoints, int totalSamples, out List<Vector3> sampledPoints, out List<Vector3> tangentVectors)
         {
             sampledPoints = new List<Vector3>();
             tangentVectors = new List<Vector3>();
@@ -268,10 +285,10 @@ namespace BeachHero
             // Estimate total curve length
             for (int i = 0; i < bezierPoints.Count - 1; i++)
             {
-                Vector3 p0 = bezierPoints[i].anchorPoint;
-                Vector3 p1 = p0 + bezierPoints[i].outTangent;
-                Vector3 p3 = bezierPoints[i + 1].anchorPoint;
-                Vector3 p2 = p3 + bezierPoints[i + 1].inTangent;
+                Vector3 p0 = bezierPoints[i].position;
+                Vector3 p1 = p0 + bezierPoints[i].outTangentLocal;
+                Vector3 p3 = bezierPoints[i + 1].position;
+                Vector3 p2 = p3 + bezierPoints[i + 1].inTangentLocal;
 
                 float length = EstimateCurveLength(p0, p1, p2, p3, 20);
                 segmentLengths.Add(length);
@@ -280,20 +297,20 @@ namespace BeachHero
 
             float spacing = totalLength / (totalSamples - 1);
             float distanceSoFar = 0f;
-            Vector3 lastPoint = bezierPoints[0].anchorPoint;
+            Vector3 lastPoint = bezierPoints[0].position;
 
-            Vector3 firstTangent = EvaluateBezierDerivative(bezierPoints[0].anchorPoint, bezierPoints[0].anchorPoint + bezierPoints[0].outTangent
-                , bezierPoints[1].anchorPoint, bezierPoints[1].anchorPoint + bezierPoints[1].inTangent, 0f).normalized;
+            Vector3 firstTangent = EvaluateBezierDerivative(bezierPoints[0].position, bezierPoints[0].position + bezierPoints[0].outTangentLocal
+                , bezierPoints[1].position, bezierPoints[1].position + bezierPoints[1].inTangentLocal, 0f).normalized;
 
             sampledPoints.Add(lastPoint);
             tangentVectors.Add(firstTangent);
 
             for (int seg = 0; seg < bezierPoints.Count - 1; seg++)
             {
-                Vector3 p0 = bezierPoints[seg].anchorPoint;
-                Vector3 p1 = p0 + bezierPoints[seg].outTangent;
-                Vector3 p3 = bezierPoints[seg + 1].anchorPoint;
-                Vector3 p2 = p3 + bezierPoints[seg + 1].inTangent;
+                Vector3 p0 = bezierPoints[seg].position;
+                Vector3 p1 = p0 + bezierPoints[seg].outTangentLocal;
+                Vector3 p3 = bezierPoints[seg + 1].position;
+                Vector3 p2 = p3 + bezierPoints[seg + 1].inTangentLocal;
 
                 float segmentLength = segmentLengths[seg];
                 int steps = Mathf.CeilToInt(segmentLength * 10);
@@ -336,7 +353,7 @@ namespace BeachHero
             // Add final point if needed (ensures exactly totalSamples)
             if (sampledPoints.Count < totalSamples)
             {
-                Vector3 end = bezierPoints[bezierPoints.Count - 1].anchorPoint;
+                Vector3 end = bezierPoints[bezierPoints.Count - 1].position;
                 Vector3 finalTangent = (end - sampledPoints[sampledPoints.Count - 1]).normalized;
 
                 sampledPoints.Add(end);

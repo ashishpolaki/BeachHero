@@ -79,10 +79,6 @@ namespace BeachHero
         public const string GAME_SCENE = "Game";
         public const string INIT_SCENE = "Init";
 
-        //MAP
-        public const string MAP_NUMER = "MapNumber";
-        public const string MAP_UNLOCKED_DESCRIPTION = "NEW MAP UNLOCKED !";
-
         //Tutorial Speech Messages
         public const string TUTORIAL_WELCOME_MESSAGE = "WELCOME, BRAVE HERO!\nBEACH IS IN TROUBLE,\nITS TIME TO DIVE IN\nAND SAVE THE DAY!";
         public const string MAGNET_POWERUP_TUTORIAL_MESSAGE = "ACTIVATE THE MAGNET\n AND ATTRACT\n ALL THE STARFISH!";
@@ -107,9 +103,6 @@ namespace BeachHero
 
         // Level 
         public const int DEFAULT_LEVEL = 1;
-
-        //MAP
-        public const int DEFAULT_MAP_NUMBER = 1;
 
         //Scene
         public const int MAP_SCENE_LOAD_DELAY = 500; //1000 milliseconds = 1 second

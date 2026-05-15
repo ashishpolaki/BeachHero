@@ -44,7 +44,7 @@ namespace BeachHero
         private async void OnHomeASync()
         {
             await UIController.GetInstance.FadeUI.FadeInASync();
-            GameController.GetInstance.RetryLevel();
+            GameController.GetInstance.BackToMainMenu();
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
             await UIController.GetInstance.FadeUI.FadeOutASync();
         }

@@ -56,7 +56,7 @@ namespace BeachHero
             if (GameState == GameState.Playing || GameState == GameState.LevelWin)
             {
                 levelController.UpdateState();
-                if(EnvironmentController.GetInstance != null)
+                if (EnvironmentController.GetInstance != null)
                 {
                     EnvironmentController.GetInstance.UpdateWaterAnimation();
                 }
@@ -71,21 +71,21 @@ namespace BeachHero
         #region Initialization
         public void Init()
         {
-            currentLevelIndex = SaveSystem.LoadInt(StringUtils.LEVELNUMBER, IntUtils.DEFAULT_LEVEL) - 1;
+            currentLevelIndex = LoadCurrentLevelNumber() - 1;
             powerupController.Init();
             storeController.Init();
         }
         public void SpawnLevel()
         {
-            currentLevelIndex = SaveSystem.LoadInt(StringUtils.LEVELNUMBER, IntUtils.DEFAULT_LEVEL) - 1;
+            currentLevelIndex = LoadCurrentLevelNumber() - 1;
             InitializeLevel();
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
         }
         private void InitializeLevel()
         {
             SetGameState(GameState.NotStarted);
-            levelController.StartState(levelDatabaseSO.GetLevelByIndex(currentLevelIndex));
             CameraController.GetInstance.SetActiveCamera(GameCameraType.GameView);
+            levelController.StartState(levelDatabaseSO.GetLevelByIndex(currentLevelIndex));
             levelDatabaseSO.Init();
         }
         #endregion
@@ -100,6 +100,14 @@ namespace BeachHero
             levelController.InitializePlayerData(isFTUE);
             levelController.ResetAllSpawnedObjectsScale();
             UIController.GetInstance.ScreenEvent(ScreenType.Gameplay, UIScreenEvent.Open, screenTabType);
+        }
+        public void BackToMainMenu()
+        {
+            if (LoadCurrentLevelNumber() - 1 != currentLevelIndex)
+            {
+                currentLevelIndex = LoadCurrentLevelNumber() - 1;
+            }
+            InitializeLevel();
         }
         public void RetryLevel()
         {
@@ -116,8 +124,15 @@ namespace BeachHero
         }
         private void IncrementLevel()
         {
-            currentLevelIndex++;
-            SaveSystem.SaveInt(StringUtils.LEVELNUMBER, currentLevelIndex + 1);
+            if (LoadCurrentLevelNumber() == currentLevelIndex + 1)
+            {
+                currentLevelIndex++;
+                SaveSystem.SaveInt(StringUtils.LEVELNUMBER, currentLevelIndex + 1);
+            }
+            else
+            {
+                currentLevelIndex = LoadCurrentLevelNumber() - 1;
+            }
         }
         public void OnLevelWin()
         {
@@ -156,11 +171,12 @@ namespace BeachHero
         }
         public void SetMedalsForCurrentLevel()
         {
-            if(levelController.MedalsEarned == 0)
+            if (levelController.MedalsEarned == 0)
             {
                 levelController.UpdateMedalCount();
             }
             levelDatabaseSO.SetMedalsForLevel(currentLevelIndex, levelController.MedalsEarned);
+            MapController.GetInstance.OnLevelComplete(levelController.MedalsEarned);
         }
         private float GetLevelFailDelayInSeconds(LevelFailDelayType type)
         {
@@ -172,6 +188,15 @@ namespace BeachHero
                 }
             }
             return 0f;
+        }
+        public void SetLevel(int levelIndex)
+        {
+            currentLevelIndex = levelIndex;
+            levelController.StartState(levelDatabaseSO.GetLevelByIndex(levelIndex));
+        }
+        public int LoadCurrentLevelNumber()
+        {
+            return SaveSystem.LoadInt(StringUtils.LEVELNUMBER, IntUtils.DEFAULT_LEVEL);
         }
         #endregion
 
