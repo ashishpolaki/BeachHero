@@ -39,6 +39,7 @@ public class BeachHeroEditorWindow : EditorWindow
         public SerializedProperty whirlpoolObstaclesProperty;
         public SerializedProperty savedCharactersProperty;
         public SerializedProperty collectablesProperty;
+        public SerializedProperty medalRequirementsProperty;
 
         public LevelRepresentation(UnityEngine.Object levelObject)
         {
@@ -60,6 +61,7 @@ public class BeachHeroEditorWindow : EditorWindow
             whirlpoolObstaclesProperty = serializedLevelObject.FindProperty("obstacles").FindPropertyRelative("whirlpoolObstacles");
             savedCharactersProperty = serializedLevelObject.FindProperty("drownCharacters");
             collectablesProperty = serializedLevelObject.FindProperty("collectables");
+            medalRequirementsProperty = serializedLevelObject.FindProperty("medalRequirements");
         }
     }
 
@@ -133,7 +135,7 @@ public class BeachHeroEditorWindow : EditorWindow
     private string ASSETPATH = "Assets/ScriptableObjects/Levels/LevelsDatabase.asset";
     private string EDITOR_SCENE_NAME = "GameEditorScene";
     private string EDITOR_SCENE_PATH = "Assets/Scenes/GameEditorScene.unity";
-  //  private string GAME_SCENE_PATH = "Assets/Scenes/Game.unity";
+    //  private string GAME_SCENE_PATH = "Assets/Scenes/Game.unity";
     private string INIT_SCENE_PATH = "Assets/Scenes/Init.unity";
     private string TEST_SCENE_PATH = "Assets/Scenes/Test.unity";
     private string FILE_STRING = "file :";
@@ -399,6 +401,7 @@ public class BeachHeroEditorWindow : EditorWindow
 
         EditorGUILayout.PropertyField(levelDatabaseRepresentation.levelsListProperty.GetArrayElementAtIndex(selectedLevelIndex), new GUIContent(FILE_STRING));
         EditorGUILayout.PropertyField(levelRepresentation.levelTimeProperty);
+        DrawMedalRequirements(levelRepresentation.medalRequirementsProperty);
 
         //SpawnItems Header
         GUIStyle customStyle = new GUIStyle(EditorStyles.boldLabel)
@@ -429,7 +432,65 @@ public class BeachHeroEditorWindow : EditorWindow
             EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
         }
     }
+    private void DrawMedalRequirements(SerializedProperty medalProperty)
+    {
+        EditorGUILayout.Space(10);
 
+        GUIStyle headerStyle = new GUIStyle(EditorStyles.boldLabel)
+        {
+            fontSize = 16,
+            alignment = TextAnchor.MiddleCenter
+        };
+
+        EditorGUILayout.LabelField("Medal Requirements (On Collecting GameCurrency)", headerStyle);
+        SerializedProperty threeMedal = medalProperty.FindPropertyRelative("requiredCurrencyForThreeMedals");
+        SerializedProperty twoMedal = medalProperty.FindPropertyRelative("requiredCurrencyForTwoMedals");
+        SerializedProperty oneMedal = medalProperty.FindPropertyRelative("requiredCurrencyForOneMedal");
+
+        int maxCurrency = GetTotalGameCurrency(levelRepresentation.collectablesProperty);
+        EditorGUI.BeginChangeCheck();
+        int newThree = EditorGUILayout.IntSlider("3 Medals", threeMedal.intValue, 0, maxCurrency);
+        int newTwo = EditorGUILayout.IntSlider("2 Medals", twoMedal.intValue, 0, maxCurrency);
+
+        GUI.enabled = false;
+        int oneMin = 0;
+        int oneMax = Mathf.Max(0, newTwo - 1);
+        EditorGUILayout.BeginHorizontal();
+        EditorGUILayout.LabelField("1 Medal", GUILayout.Width(80));
+        EditorGUILayout.Space(5);
+        EditorGUILayout.LabelField($"{oneMin} -> {oneMax}");
+        EditorGUILayout.EndHorizontal();
+        GUI.enabled = true;
+
+        if (EditorGUI.EndChangeCheck())
+        {
+            // apply clamp ONLY when changed
+            newTwo = Mathf.Clamp(newTwo, 0, newThree);
+            newThree = maxCurrency;
+
+            twoMedal.intValue = newTwo;
+            threeMedal.intValue = newThree;
+        }
+    }
+    private int GetTotalGameCurrency(SerializedProperty collectablesProperty)
+    {
+        int total = 0;
+
+        for (int i = 0; i < collectablesProperty.arraySize; i++)
+        {
+            SerializedProperty element = collectablesProperty.GetArrayElementAtIndex(i);
+
+            SerializedProperty typeProp = element.FindPropertyRelative("type");
+
+            //  IMPORTANT: enum comparison
+            if ((CollectableType)typeProp.enumValueIndex == CollectableType.GameCurrency)
+            {
+                total++;
+            }
+        }
+
+        return total;
+    }
     private void SpawnPrefabItems(SerializedProperty spawnItemsProperty, int itemsPerRow, float previewSize)
     {
         for (int i = 0; i < spawnItemsProperty.arraySize; i++)
@@ -447,11 +508,11 @@ public class BeachHeroEditorWindow : EditorWindow
                     EditorGUILayout.LabelField(" Moving Obstacles ", new GUIStyle(EditorStyles.boldLabel) { fontSize = 14 }, GUILayout.Height(10 + EditorGUIUtility.singleLineHeight));
                     SpawnPrefabItem(spawnItemsProperty.GetArrayElementAtIndex(i).FindPropertyRelative("Prefab"), itemsPerRow, previewSize, spawnItemType);
                     break;
-                case SpawnItemType.WhirlpoolObstacle:
-                    EditorGUILayout.Space(5);
-                    EditorGUILayout.LabelField(" Cyclone Obstacle ", new GUIStyle(EditorStyles.boldLabel) { fontSize = 14 }, GUILayout.Height(10 + EditorGUIUtility.singleLineHeight));
-                    SpawnPrefabItem(spawnItemsProperty.GetArrayElementAtIndex(i).FindPropertyRelative("Prefab"), itemsPerRow, previewSize, spawnItemType);
-                    break;
+                //case SpawnItemType.WhirlpoolObstacle:
+                //    EditorGUILayout.Space(5);
+                //    EditorGUILayout.LabelField(" Cyclone Obstacle ", new GUIStyle(EditorStyles.boldLabel) { fontSize = 14 }, GUILayout.Height(10 + EditorGUIUtility.singleLineHeight));
+                //    SpawnPrefabItem(spawnItemsProperty.GetArrayElementAtIndex(i).FindPropertyRelative("Prefab"), itemsPerRow, previewSize, spawnItemType);
+                //    break;
                 case SpawnItemType.Collectable:
                     EditorGUILayout.Space(5);
                     EditorGUILayout.LabelField(" Collectables ", new GUIStyle(EditorStyles.boldLabel) { fontSize = 14 }, GUILayout.Height(10 + EditorGUIUtility.singleLineHeight));

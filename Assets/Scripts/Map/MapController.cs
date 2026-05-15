@@ -157,7 +157,6 @@ namespace BeachHero
                 InputManager.GetInstance.OnMouseClickDown -= HandleMapClick;
             moveCTS?.Cancel();
         }
-
         private void OnDestroy()
         {
             if (GetInstance == this)
@@ -170,25 +169,27 @@ namespace BeachHero
         #region Input
         public void HandleMapClick(Vector2 mousePos)
         {
-            var ray = Camera.main.ScreenPointToRay(InputManager.MousePosition);
-            if (Physics.Raycast(ray, out RaycastHit hit, 100f, LayerMask.GetMask("Map")))
+            if (GameController.GetInstance.GameState == GameState.Map)
             {
-                var levelVisual = hit.collider.GetComponent<LevelVisual>();
-                if (levelVisual != null)
+                var ray = Camera.main.ScreenPointToRay(InputManager.MousePosition);
+                if (Physics.Raycast(ray, out RaycastHit hit, 100f, LayerMask.GetMask("Map")))
                 {
-                    selectedLevelIndex = levelVisual.LevelNumber - 1;
-                    if (selectedLevelIndex == GameController.GetInstance.CurrentLevelIndex)
+                    var levelVisual = hit.collider.GetComponent<LevelVisual>();
+                    if (levelVisual != null)
                     {
-                        StartGame();
-                        return;
+                        selectedLevelIndex = levelVisual.LevelNumber - 1;
+                        if (selectedLevelIndex == GameController.GetInstance.CurrentLevelIndex)
+                        {
+                            StartGame();
+                            return;
+                        }
+                        GameController.GetInstance.SetLevel(selectedLevelIndex);
+                        MoveToLevelAsync(currentSplinePercent, mapLevels[selectedLevelIndex].splinePercent);
                     }
-                    GameController.GetInstance.SetLevel(selectedLevelIndex);
-                    MoveToLevelAsync(currentSplinePercent, mapLevels[selectedLevelIndex].splinePercent);
                 }
             }
         }
         #endregion
-
 
         #region Movement
         private float CalculateSplineDistance(float startPercent, float endPercent)
@@ -293,7 +294,6 @@ namespace BeachHero
             }
         }
         #endregion
-
 
         private async void StartGame()
         {

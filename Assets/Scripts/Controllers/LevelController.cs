@@ -377,7 +377,7 @@ namespace BeachHero
             {
                 MedalsEarned = 2;
             }
-            else if (gameCurrencyCount >= medalCurrencyRequirements.requiredCurrencyForOneMedal)
+            else 
             {
                 MedalsEarned = 1;
             }
