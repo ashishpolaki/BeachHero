@@ -39,6 +39,7 @@ namespace BeachHero
                 levelDatas[i].LevelNumber = i + 1;
                 levelDatas[i].SetState(LevelVisualState.Locked);
                 levelDatas[i].MedalsEarned = 0;
+                SaveSystem.SaveInt($"{StringUtils.MEDAL_EARNED_PREFIX}{i}", 0);
             }
         }
         private void OnValidate()

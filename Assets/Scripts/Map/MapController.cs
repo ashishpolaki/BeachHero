@@ -31,16 +31,13 @@ namespace BeachHero
 
         #region Inspector Variables
         [SerializeField] private LevelDatabaseSO levelDatabase;
-        [SerializeField] private List<SplinePoint> pathPoints = new List<SplinePoint>();
+        [SerializeField] private SplineSystem splineSystem;
         [SerializeField] private List<MapLevelSpawnData> mapLevels = new List<MapLevelSpawnData>();
         [SerializeField] private Transform levelsParent;
         [SerializeField] private Transform target;
         [SerializeField] private Transform visualChild;
         [SerializeField] private Animator characterAnimator;
-        [SerializeField] private float moveSpeed = 0.5f;
-
-        [Range(5, 100)]
-        public int resolution = 20;
+        [SerializeField] private float scrollSpeed = 5f;
         #endregion
 
         #region Private Variables
@@ -48,99 +45,25 @@ namespace BeachHero
         private float currentSplinePercent = 0f;
         private bool isLevelsInit = false;
         private int selectedLevelIndex = -1;
+
+        // === Camera Scroll Variables ===
+        private bool isDragging = false;
+        private float lastPointerY;
+        private float currentScrollY;
+        private const float cameraStartDistance = 4.3f;
+        private const float cameraEndDistance = 28.7f;
         #endregion
 
         #region Properties
-        public List<SplinePoint> PathPoints => pathPoints;
+        public SplineSystem SplineSystem => splineSystem;
         public List<MapLevelSpawnData> MapLevels => mapLevels;
         public Transform LevelsParent => levelsParent;
         #endregion
 
         public event Action OnMapButtonsEnabled;
 
-        #region Spline Methods
-        public Vector3 GetTangent(float percent)
-        {
-            percent = Mathf.Clamp01(percent);
-
-            if (pathPoints == null || pathPoints.Count < 4)
-                return Vector3.forward;
-
-            List<Vector3> pts = GetPositions();
-            return CatmullSplineUtils.GetTangentOnSpline(pts, percent);
-        }
-
-        public Quaternion GetForwardRotation(float percent, bool isForward = true)
-        {
-            float safePercent = Mathf.Clamp01(percent);
-            safePercent = Mathf.Min(safePercent, 0.98f);
-
-            Vector3 dir = GetTangent(percent);
-
-            if (dir == Vector3.zero)
-                return Quaternion.identity;
-
-            if (!isForward)
-                dir = -dir;
-
-            return Quaternion.LookRotation(dir, Vector3.back);
-        }
-
-        public Quaternion GetTwistRotation(float percent)
-        {
-            percent = Mathf.Clamp01(percent);
-
-            int count = pathPoints.Count;
-            if (count < 2)
-                return Quaternion.identity;
-
-            float scaled = percent * (count - 1);
-            int i = Mathf.FloorToInt(scaled);
-            float t = scaled - i;
-
-            i = Mathf.Clamp(i, 0, count - 2);
-
-            Quaternion a = pathPoints[i].rotation;
-            Quaternion b = pathPoints[i + 1].rotation;
-
-            if (Quaternion.Dot(a, b) < 0f)
-            {
-                b = new Quaternion(-b.x, -b.y, -b.z, -b.w);
-            }
-
-            Quaternion rot = Quaternion.Slerp(a, b, t);
-            return rot;
-        }
-
-        public Vector3 GetPoint(float percent)
-        {
-            percent = Mathf.Clamp01(percent);
-
-            if (pathPoints == null || pathPoints.Count < 4)
-                return transform.position;
-
-            List<Vector3> pts = GetPositions();
-            return CatmullSplineUtils.GetPointOnSpline(pts, percent);
-        }
-
-        public List<Vector3> GetPositions()
-        {
-            List<Vector3> pts = new List<Vector3>();
-            for (int i = 0; i < pathPoints.Count; i++)
-                pts.Add(pathPoints[i].position);
-            return pts;
-        }
-
-        public void UpdateCharacterTransform(float percent, bool isForward = true)
-        {
-            target.position = GetPoint(percent);
-            target.rotation = GetForwardRotation(percent, isForward);
-            visualChild.localRotation = GetTwistRotation(percent);
-        }
-        #endregion
-
         #region Unity Methods
-        public void Awake()
+        private void Awake()
         {
             if (GetInstance == null)
             {
@@ -150,11 +73,16 @@ namespace BeachHero
         private void OnEnable()
         {
             InputManager.GetInstance.OnMouseClickDown += HandleMapClick;
+            InputManager.GetInstance.OnMouseClickUp += HandleClickUp;
         }
         private void OnDisable()
         {
             if (InputManager.GetInstance != null)
+            {
                 InputManager.GetInstance.OnMouseClickDown -= HandleMapClick;
+                InputManager.GetInstance.OnMouseClickUp -= HandleClickUp;
+
+            }
             moveCTS?.Cancel();
         }
         private void OnDestroy()
@@ -164,9 +92,68 @@ namespace BeachHero
                 GetInstance = null;
             }
         }
+        public void UpdateState()
+        {
+            if (isDragging)
+            {
+                Vector2 pos = InputManager.MousePosition;
+                float currentY = pos.y;
+                float delta = currentY - lastPointerY;
+                Vector3 firstPos = mapLevels[0].levelVisual.transform.position;
+                Vector3 lastPos = mapLevels[MapLevels.Count - 1].levelVisual.transform.position;
+                Vector3 forward = CameraController.GetInstance.GetCameraForward(GameCameraType.Map);
+                float minY = firstPos.y - forward.y * cameraStartDistance;
+                float maxY = lastPos.y - forward.y * cameraEndDistance;
+
+                // ===== APPLY DRAG =====
+                currentScrollY -= delta * 0.01f * scrollSpeed;
+                currentScrollY = Mathf.Clamp(currentScrollY, minY, maxY);
+                lastPointerY = currentY;
+                MoveCamera();
+            }
+        }
+        #endregion
+
+        #region Camera 
+
+        private void MoveCamera()
+        {
+            Vector3 pos = CameraController.GetInstance.GetCameraPosition(GameCameraType.Map);
+            pos.y = currentScrollY;
+            CameraController.GetInstance.SetCameraPosition(pos);
+        }
+
+        void CenterCameraToCurrentLevel()
+        {
+            int index = GameController.GetInstance.CurrentLevelIndex;
+
+            if (index < 0 || index >= mapLevels.Count)
+                return;
+
+            Vector3 levelPos = mapLevels[index].levelVisual.transform.position;
+            Vector3 forward = CameraController.GetInstance.GetCameraForward(GameCameraType.Map);
+            Vector3 firstPos = mapLevels[0].levelVisual.transform.position;
+            Vector3 lastPos = mapLevels[MapLevels.Count - 1].levelVisual.transform.position;
+            float minY = firstPos.y - forward.y * cameraStartDistance;
+            float maxY = lastPos.y - forward.y * cameraEndDistance;
+            currentScrollY = levelPos.y - 7f;
+            currentScrollY = Mathf.Clamp(currentScrollY, minY, maxY);
+            MoveCamera();
+        }
+
         #endregion
 
         #region Input
+
+        private void HandleClickUp(Vector2 mousePos)
+        {
+            if (GameController.GetInstance.GameState != GameState.Map)
+            {
+                return;
+            }
+            isDragging = false;
+        }
+
         public void HandleMapClick(Vector2 mousePos)
         {
             if (GameController.GetInstance.GameState == GameState.Map)
@@ -187,28 +174,21 @@ namespace BeachHero
                         MoveToLevelAsync(currentSplinePercent, mapLevels[selectedLevelIndex].splinePercent);
                     }
                 }
+                else
+                {
+                    isDragging = true;
+                    lastPointerY = InputManager.MousePosition.y;
+                }
             }
         }
         #endregion
 
         #region Movement
-        private float CalculateSplineDistance(float startPercent, float endPercent)
+        public void UpdateCharacterTransform(float percent, bool isForward = true)
         {
-            var pts = PathPoints;
-            if (pts.Count < 4) return 0f;
-            float distance = 0f;
-            int steps = resolution * (pts.Count - 3); // same density as draw
-            float prevT = startPercent;
-            Vector3 prev = GetPoint(prevT);
-            for (int i = 1; i <= steps; i++)
-            {
-                float lerpT = i / (float)steps;
-                float t = Mathf.Lerp(startPercent, endPercent, lerpT);
-                Vector3 p = GetPoint(t);
-                distance += Vector3.Distance(prev, p);
-                prev = p;
-            }
-            return distance;
+            target.position = splineSystem.GetPoint(percent);
+            target.rotation = splineSystem.GetForwardRotation(percent, isForward);
+            visualChild.localRotation = splineSystem.GetTwistRotation(percent);
         }
 
         private async UniTask MoveAlongSplineAsync(float start, float end, float duration)
@@ -258,7 +238,7 @@ namespace BeachHero
 
         public async void MoveToLevelAsync(float start, float end)
         {
-            float distance = CalculateSplineDistance(start, end);
+            float distance = splineSystem.CalculateDistance(start, end);
             float baseSpeed = 1f;     // normal speed
             float maxSpeed = 5f;
 
@@ -272,13 +252,18 @@ namespace BeachHero
         #region Initialization
         public void InitializeMapVisuals()
         {
+            CenterCameraToCurrentLevel();
             if (isLevelsInit)
             {
                 return;
             }
             isLevelsInit = true;
+            SetupLevels();
+        }
+        public void SetupLevels()
+        {
             // Set level visuals to face camera
-            Vector3 camRot = CameraController.GetInstance.GetCameraRotation(GameCameraType.GameView);
+            Vector3 camRot = CameraController.GetInstance.GetCameraRotation(GameCameraType.Map);
             for (int i = 0; i < mapLevels.Count; i++)
             {
                 var levelVisual = mapLevels[i].levelVisual;

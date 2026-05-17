@@ -60,6 +60,10 @@ namespace BeachHero
                 {
                     EnvironmentController.GetInstance.UpdateWaterAnimation();
                 }
+                if(MapController.GetInstance != null && GameState == GameState.Map)
+                {
+                    MapController.GetInstance.UpdateState();
+                }
             }
         }
         private void OnDestroy()

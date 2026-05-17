@@ -28,7 +28,7 @@ namespace BeachHero
         public override void Close()
         {
             base.Close();
-            SetMapButtonsVisibility(false);
+           // SetMapButtonsVisibility(false);
             mapExitBtn.ButtonDeRegister(MapExitToHome);
             if (MapController.GetInstance != null)
             {

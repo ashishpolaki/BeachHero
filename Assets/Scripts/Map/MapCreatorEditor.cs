@@ -15,7 +15,9 @@ namespace BeachHero
         // ================= REFERENCES =================
         private MapCreator creator;
         private MapController map;
+        private SplineSystem splineSystem => map.SplineSystem;
         private EditMode editMode = EditMode.Spline;
+        private EditMode previousEditMode;
 
         // ===== TOOL WINDOW =====
         private Rect toolRect = new Rect(800, 20, 250, 220);
@@ -52,7 +54,6 @@ namespace BeachHero
         private List<Transform> debugObjects = new List<Transform>();
         #endregion
 
-
         #region Unity Methods
         private void OnEnable()
         {
@@ -85,24 +86,41 @@ namespace BeachHero
         private void OnSceneGUI()
         {
             if (map == null) return;
+            if (previousEditMode != editMode)
+            {
+                OnEditModeChanged(previousEditMode, editMode);
+                previousEditMode = editMode;
+            }
             DrawToolWindow();
             DrawCurve();
             if (editMode == EditMode.Levels)
             {
                 HandleLevelSelection();
                 UpdatePreviewLevel();
-                ClearDebug();
-                selectedPointIndex = -1;
-                showSelectedPointUI = false;
-                splinePointOffset = Vector3.zero;
             }
             if (editMode == EditMode.Spline)
             {
-                showAddLevelUI = false;
                 DrawPoints();
-                DestroyPreviewLevel();
             }
             SceneView.RepaintAll();
+        }
+        void OnEditModeChanged(EditMode oldMode, EditMode newMode)
+        {
+            if (newMode == EditMode.Spline)
+            {
+                //  RUN ONLY ONCE when entering spline
+                showAddLevelUI = false;
+                DestroyPreviewLevel();
+            }
+            if (newMode == EditMode.Levels)
+            {
+                // RUN ONLY ONCE when entering levels
+                selectedPointIndex = -1;
+                showSelectedPointUI = false;
+                splinePointOffset = Vector3.zero;
+                ClearDebug();
+            }
+            ReorderLevels();
         }
         #endregion
 
@@ -208,7 +226,7 @@ namespace BeachHero
         #region Spline Methods
         private void DrawPoints()
         {
-            var pts = map.PathPoints;
+            var pts = splineSystem.Points;
 
             for (int i = 0; i < pts.Count; i++)
             {
@@ -247,7 +265,7 @@ namespace BeachHero
                             Undo.RecordObject(map, "Rotate Point");
 
                             point.rotation = newRot;
-                            map.PathPoints[i] = point;
+                            splineSystem.Points[i] = point;
 
                             map.UpdateCharacterTransform(splinePercent);
                             EditorUtility.SetDirty(map);
@@ -266,7 +284,7 @@ namespace BeachHero
 
         void DrawCurve()
         {
-            var pts = map.PathPoints;
+            var pts = splineSystem.Points;
 
             if (pts.Count < 4) return;
 
@@ -283,9 +301,9 @@ namespace BeachHero
                         0f
                     ));
 
-                for (int j = 1; j <= map.resolution; j++)
+                for (int j = 1; j <= splineSystem.resolution; j++)
                 {
-                    float t = j / (float)map.resolution;
+                    float t = j / (float)splineSystem.resolution;
 
                     Vector3 p = map.transform.TransformPoint(
                         CatmullSplineUtils.GetPoint(
@@ -305,7 +323,7 @@ namespace BeachHero
         {
             GUILayout.Space(20);
 
-            var pts = map.PathPoints;
+            var pts = splineSystem.Points;
             var point = pts[selectedPointIndex];
             GUIStyle centeredLabel = new GUIStyle(EditorStyles.boldLabel);
             centeredLabel.alignment = TextAnchor.MiddleCenter;
@@ -346,7 +364,13 @@ namespace BeachHero
             GUILayout.Space(30);
             GUILayout.Label("Offset From Another Point", centeredLabel);
             referencePointIndex = EditorGUILayout.IntField("From Index", referencePointIndex);
-            referencePointIndex = Mathf.Clamp(referencePointIndex, 0, map.PathPoints.Count - 1);
+            referencePointIndex = Mathf.Clamp(referencePointIndex, 0, splineSystem.Points.Count - 1);
+            //Referencepointindex and selectedpointindex should not be the same
+            if (referencePointIndex == selectedPointIndex)
+            {
+                EditorGUILayout.HelpBox("Reference Point cannot be the same as Selected Point", MessageType.Warning);
+                GUI.enabled = false;
+            }
 
             // ===== OFFSET =====
             GUILayout.BeginHorizontal();
@@ -387,11 +411,31 @@ namespace BeachHero
                 showSelectedPointUI = false;
                 selectedPointIndex = -1;   //  GO BACK TO NORMAL UI
             }
+
+            // ===== NAVIGATION BUTTONS =====
+            GUILayout.BeginHorizontal();
+            GUI.enabled = selectedPointIndex > 0;
+            if (GUILayout.Button("<< Prev"))
+            {
+                selectedPointIndex--;
+                referencePointIndex--;
+                referencePointIndex = Mathf.Clamp(referencePointIndex, 0, pts.Count - 1);
+            }
+            GUI.enabled = true;
+            GUI.enabled = selectedPointIndex < splineSystem.Points.Count - 1;
+            if (GUILayout.Button("Next >>"))
+            {
+                selectedPointIndex++;
+                referencePointIndex++;
+                referencePointIndex = Mathf.Clamp(referencePointIndex, 0, pts.Count - 1);
+            }
+            GUI.enabled = true;
+            GUILayout.EndHorizontal();
         }
 
         void DrawSplineTools()
         {
-            var pts = map.PathPoints;
+            var pts = splineSystem.Points;
 
             // ===== ADD POINT =====
             if (GUILayout.Button("Add Point"))
@@ -427,7 +471,7 @@ namespace BeachHero
 
             // ===== RESOLUTION =====
             EditorGUIUtility.labelWidth = 80;
-            map.resolution = EditorGUILayout.IntSlider("Resolution", map.resolution, 5, 100);
+            splineSystem.resolution = EditorGUILayout.IntSlider("Resolution", splineSystem.resolution, 5, 100);
             EditorGUIUtility.labelWidth = 0;
 
             DrawDebugTools();
@@ -445,19 +489,19 @@ namespace BeachHero
             Undo.RecordObject(map, "Add Point");
             SplinePoint p = new SplinePoint();
 
-            if (map.PathPoints.Count > 0)
+            if (splineSystem.Points.Count > 0)
             {
-                var last = map.PathPoints[^1];
+                var last = splineSystem.Points[^1];
                 p.position = last.position + Vector3.up * 2;
                 p.rotation = last.rotation;
             }
 
-            map.PathPoints.Add(p);
+            splineSystem.Points.Add(p);
             EditorUtility.SetDirty(map);
         }
         void InsertMidPointAtIndex()
         {
-            var pts = map.PathPoints;
+            var pts = splineSystem.Points;
 
             if (pts.Count < 2) return;
             if (insertPointIndex <= 0 || insertPointIndex >= pts.Count) return;
@@ -476,7 +520,7 @@ namespace BeachHero
 
         void RemovePointAtIndex()
         {
-            var pts = map.PathPoints;
+            var pts = splineSystem.Points;
 
             if (pts.Count <= 4) return;
             if (removePointIndex < 0 || removePointIndex >= pts.Count) return;
@@ -520,7 +564,7 @@ namespace BeachHero
                             levelT = 0.5f;
                         }
 
-                        int maxSegment = Mathf.Max(0, map.PathPoints.Count - 2);
+                        int maxSegment = Mathf.Max(0, splineSystem.Points.Count - 2);
                         levelSegmentIndex = Mathf.Clamp(levelSegmentIndex, 0, maxSegment);
                     }
                     // If no levels, start at beginning
@@ -581,8 +625,7 @@ namespace BeachHero
             int index = insertLevelNumber - 1;
             var newLevel = (LevelVisual)PrefabUtility.InstantiatePrefab(
                 creator.levelPrefab,
-                map.LevelsParent
-            );
+                map.LevelsParent);
 
             newLevel.Setup(insertLevelNumber + 1, levelScale);
 
@@ -670,7 +713,6 @@ namespace BeachHero
         void ReorderLevels()
         {
             var levels = GetLevels();
-
             for (int i = 0; i < levels.Count; i++)
             {
                 levels[i].levelNumber = i + 1;
@@ -678,16 +720,17 @@ namespace BeachHero
                 if (levels[i].levelVisual != null)
                 {
                     levels[i].levelVisual.name = $"Level_{i + 1}";
-                    levels[i].levelVisual.transform.position = map.GetPoint((levels[i].segmentIndex + levels[i].t) / (map.GetPositions().Count - 1));
-                    levels[i].levelVisual.transform.rotation = Quaternion.Euler(levels[i].rotation);
-                    levels[i].splinePercent = (levels[i].segmentIndex + levels[i].t) / (map.GetPositions().Count - 1);
+                    levels[i].levelVisual.transform.position = splineSystem.GetPoint((levels[i].segmentIndex + levels[i].t) / (splineSystem.GetPositions().Count - 1));
+                    Vector3 rot = new Vector3(Camera.main.transform.eulerAngles.x, 0, levels[i].rotation.z);
+                    levels[i].levelVisual.transform.rotation = Quaternion.Euler(rot);
+                    levels[i].splinePercent = (levels[i].segmentIndex + levels[i].t) / (splineSystem.GetPositions().Count - 1);
                     levels[i].levelVisual.Setup(i + 1, levels[i].scale.x);
                 }
             }
         }
         void DrawAddLevelUI()
         {
-            var pts = map.PathPoints;
+            var pts = splineSystem.Points;
 
             EditorGUILayout.LabelField("Level Number", (selectedLevelIndex + 1).ToString());
 
@@ -763,12 +806,12 @@ namespace BeachHero
         {
             if (previewLevel == null) return;
 
-            int count = map.GetPositions().Count;
+            int count = splineSystem.GetPositions().Count;
             if (count < 2) return;
 
             float percent = (levelSegmentIndex + levelT) / (count - 1);
 
-            previewLevel.transform.position = map.GetPoint(percent);
+            previewLevel.transform.position = splineSystem.GetPoint(percent);
             previewLevel.transform.rotation = Quaternion.Euler(0, 0, levelRotationZ);
             previewLevel.Setup(selectedLevelIndex + 1, levelScale);
         }
@@ -797,7 +840,7 @@ namespace BeachHero
                 data.t = levelT;
                 data.rotation = new Vector3(0, 0, levelRotationZ);
                 data.scale = Vector3.one * levelScale;
-                data.splinePercent = (data.segmentIndex + data.t) / (map.GetPositions().Count - 1);
+                data.splinePercent = (data.segmentIndex + data.t) / (splineSystem.GetPositions().Count - 1);
 
                 levels[selectedLevelIndex] = data;
             }
@@ -918,7 +961,7 @@ namespace BeachHero
             if (creator.debugPrefab == null) return;
 
             int count = creator.debugCount;
-            int points = map.GetPositions().Count;
+            int points = splineSystem.GetPositions().Count;
 
             if (points < 4) return;
 
@@ -943,8 +986,8 @@ namespace BeachHero
 
                 var obj = debugObjects[i];
 
-                obj.position = map.GetPoint(percent);
-                obj.rotation = map.GetForwardRotation(percent);
+                obj.position = splineSystem.GetPoint(percent);
+                obj.rotation = splineSystem.GetForwardRotation(percent);
 
                 if (obj.childCount > 0)
                     obj.GetChild(0).localRotation = GetTwistRotation(percent);
@@ -964,7 +1007,7 @@ namespace BeachHero
         {
             percent = Mathf.Clamp01(percent);
 
-            int count = map.PathPoints.Count;
+            int count = splineSystem.Points.Count;
             if (count < 2)
                 return Quaternion.identity;
 
@@ -973,7 +1016,7 @@ namespace BeachHero
 
             i = Mathf.Clamp(i, 0, count - 2);
 
-            return map.PathPoints[i].rotation;
+            return splineSystem.Points[i].rotation;
         }
         #endregion
     }
