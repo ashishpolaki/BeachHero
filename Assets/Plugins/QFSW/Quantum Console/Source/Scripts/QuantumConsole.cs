@@ -970,10 +970,23 @@ namespace QFSW.QC
 
         protected void AppendLog(ILog log)
         {
-            _logStorage.AddLog(TruncateLog(log));
-            RequireFlush();
+            if (!HasSpecialChar(log.Text))
+            {
+                _logStorage.AddLog(TruncateLog(log));
+                RequireFlush();
+            }
         }
-
+        bool HasSpecialChar(string text)
+        {
+            foreach (char c in text)
+            {
+                if (char.IsSurrogate(c))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         protected void RequireFlush()
         {
             _consoleRequiresFlush = true;
@@ -1217,17 +1230,17 @@ namespace QFSW.QC
                 switch (type)
                 {
                     case LogType.Warning:
-                    {
-                        condition = ColorExtensions.ColorText(condition, _theme.WarningColor);
-                        break;
-                    }
+                        {
+                            condition = ColorExtensions.ColorText(condition, _theme.WarningColor);
+                            break;
+                        }
                     case LogType.Error:
                     case LogType.Assert:
                     case LogType.Exception:
-                    {
-                        condition = ColorExtensions.ColorText(condition, _theme.ErrorColor);
-                        break;
-                    }
+                        {
+                            condition = ColorExtensions.ColorText(condition, _theme.ErrorColor);
+                            break;
+                        }
                 }
             }
 

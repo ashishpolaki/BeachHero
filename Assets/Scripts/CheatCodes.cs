@@ -1,8 +1,11 @@
 #if CHEAT_CODE
 using QFSW.QC;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor.Build;
+using UnityEditor.Build.Reporting;
 
 namespace BeachHero
 {
@@ -61,17 +64,17 @@ namespace BeachHero
         #endregion
 
         #region Commands
-        [Command("Active-WaterGraphics")]
-        public static void ActivateWaterGraphics(bool isActive)
-        {
-          
-            var water = Resources.FindObjectsOfTypeAll<GameObject>()
-                     .FirstOrDefault(go => go.name == "Water");
-            water.SetActive(isActive);
-            if (water != null)
-            {
-            }
-        }
+        //[Command("Active-WaterGraphics")]
+        //public static void ActivateWaterGraphics(bool isActive)
+        //{
+
+        //    var water = Resources.FindObjectsOfTypeAll<GameObject>()
+        //             .FirstOrDefault(go => go.name == "Water");
+        //    water.SetActive(isActive);
+        //    if (water != null)
+        //    {
+        //    }
+        //}
 
         [Command("unlock-powerups")]
         public static void UnlockPowerups()
@@ -103,8 +106,19 @@ namespace BeachHero
             SaveSystem.SaveInt(StringUtils.SPEEDBOOST_BALANCE, IntUtils.DEFAULT_SPEEDBOOST_BALANCE);
             GameController.GetInstance.PowerupController.UpdateMagnetBalance(IntUtils.DEFAULT_MAGNET_BALANCE);
             GameController.GetInstance.PowerupController.UpdateSpeedBoostBalance(IntUtils.DEFAULT_SPEEDBOOST_BALANCE);
-            MapController.GetInstance.Awake();
+            var levelDatabase = AssetDatabase.LoadAssetAtPath<LevelDatabaseSO>("Assets/ScriptableObjects/Levels/LevelsDatabase.asset");
+            if (levelDatabase != null)
+            {
+                levelDatabase.ClearLevelsData();
+                EditorUtility.SetDirty(levelDatabase);
+                AssetDatabase.SaveAssets();
+            }
+            else
+            {
+                DebugUtils.LogWarning("LevelDatabase asset not found at " );
+            }
             GameController.GetInstance.SpawnLevel();
+            MapController.GetInstance.SetupLevels();
         }
 
         [Command("add-star-fish")]

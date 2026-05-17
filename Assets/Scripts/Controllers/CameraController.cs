@@ -114,6 +114,14 @@ namespace BeachHero
             }
             return Vector3.zero;
         }
+        public Vector3 GetCameraForward(GameCameraType cameraType)
+        {
+            if (cameraDictionary.TryGetValue(cameraType, out GameCameraConfig currentConfig))
+            {
+                return currentConfig.camera.transform.forward;
+            }
+            return Vector3.zero;
+        }
         public Vector3 GetCameraPosition(GameCameraType cameraType)
         {
             if (cameraDictionary.TryGetValue(cameraType, out GameCameraConfig currentConfig))
