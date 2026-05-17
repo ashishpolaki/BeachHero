@@ -721,10 +721,11 @@ namespace BeachHero
                 {
                     levels[i].levelVisual.name = $"Level_{i + 1}";
                     levels[i].levelVisual.transform.position = splineSystem.GetPoint((levels[i].segmentIndex + levels[i].t) / (splineSystem.GetPositions().Count - 1));
-                    Vector3 rot = new Vector3(Camera.main.transform.eulerAngles.x, 0, levels[i].rotation.z);
+                    Vector3 rot = new Vector3(Camera.main.transform.eulerAngles.x, 0, 0);
                     levels[i].levelVisual.transform.rotation = Quaternion.Euler(rot);
                     levels[i].splinePercent = (levels[i].segmentIndex + levels[i].t) / (splineSystem.GetPositions().Count - 1);
                     levels[i].levelVisual.Setup(i + 1, levels[i].scale.x);
+                    levels[i].levelVisual.SetRotation(new Vector3(0, 0, levels[i].rotation.z));
                 }
             }
         }
@@ -812,7 +813,7 @@ namespace BeachHero
             float percent = (levelSegmentIndex + levelT) / (count - 1);
 
             previewLevel.transform.position = splineSystem.GetPoint(percent);
-            previewLevel.transform.rotation = Quaternion.Euler(0, 0, levelRotationZ);
+            previewLevel.SetRotation(new Vector3(0, 0, levelRotationZ));
             previewLevel.Setup(selectedLevelIndex + 1, levelScale);
         }
 

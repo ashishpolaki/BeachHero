@@ -16,7 +16,7 @@ public class BeachHeroEditorWindow : EditorWindow
         public SerializedProperty levelsListProperty;
         public SerializedProperty spawnItemRepresentation;
 
-        public LevelDatabaseRepresentation(UnityEngine.Object levelDatabaseObject)
+        public LevelDatabaseRepresentation(Object levelDatabaseObject)
         {
             serializedLevelDatabaseObject = new SerializedObject(levelDatabaseObject);
             ReadFields();
@@ -41,7 +41,7 @@ public class BeachHeroEditorWindow : EditorWindow
         public SerializedProperty collectablesProperty;
         public SerializedProperty medalRequirementsProperty;
 
-        public LevelRepresentation(UnityEngine.Object levelObject)
+        public LevelRepresentation(Object levelObject)
         {
             serializedLevelObject = new SerializedObject(levelObject);
             ReadFields();

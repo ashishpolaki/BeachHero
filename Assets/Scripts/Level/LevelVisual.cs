@@ -33,6 +33,11 @@ namespace BeachHero
 
         public LevelVisualState State => levelData.State;
 
+        public void SetRotation(Vector3 _rot)
+        {
+            levelIcon.transform.localRotation = Quaternion.Euler(_rot);
+        }
+
         public void Setup(int levelnumber, float scale)
         {
             levelData.LevelNumber = levelnumber;
@@ -40,15 +45,11 @@ namespace BeachHero
             boxCollider.size = new Vector3((Vector2.one * 2 * scale).x, (Vector2.one * 2 * scale).y, 0.1f);
             levelText.text = levelData.LevelNumber.ToString();
             levelText.transform.rotation = Quaternion.identity;
-            lockIcon.transform.rotation = Quaternion.identity;
             levelText.fontSizeMax = 10 * scale;
             foreach (GameObject medal in medals)
             {
-                medal.transform.rotation = Quaternion.identity;
                 medal.gameObject.SetActive(false);
             }
-            // levelText.text = levelData.LevelNumber.ToString();
-            // levelText.rectTransform.rotation = Quaternion.Euler(0, 0, -(transform.parent.eulerAngles.z));
         }
         public void Setup(LevelData _levelData)
         {
