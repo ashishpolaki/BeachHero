@@ -5,48 +5,71 @@ namespace BeachHero
 {
     public class SettingsScreen : BaseScreen
     {
-        [SerializeField] private CustomToggle soundToggle;
-        [SerializeField] private CustomToggle musicToggle;
+        //[SerializeField] private CustomToggle soundToggle;
+        //[SerializeField] private CustomToggle musicToggle;
+        [SerializeField] private Slider soundSlider;
+        [SerializeField] private Slider musicSlider;
         [SerializeField] private CustomToggle hapticToggle;
         [SerializeField] private Button privacyPolicyButton;
         [SerializeField] private Button closePanelbutton;
         [SerializeField] private Button backButton;
+        [SerializeField] private float handleDisableValue = 0.175f;
 
         public override void Open(ScreenTabType screenTabType)
         {
             base.Open(screenTabType);
-            soundToggle.OnToggleChanged += OnSoundToggleChanged;
-            musicToggle.OnToggleChanged += OnMusicToggleChanged;
-            hapticToggle.OnToggleChanged += OnHapticToggleChanged;
+            soundSlider.onValueChanged.AddListener(OnSoundSliderChanged);
+            musicSlider.onValueChanged.AddListener(OnMusicSliderChanged);
+            //soundToggle.OnToggleChanged += OnSoundToggleChanged;
+            //musicToggle.OnToggleChanged += OnMusicToggleChanged;
+            // hapticToggle.OnToggleChanged += OnHapticToggleChanged;
             privacyPolicyButton.ButtonRegister(OnPrivacyPolicy);
             closePanelbutton.ButtonRegister(ClosePanel);
             backButton.ButtonRegister(ClosePanel);
-
-            // Initialize toggles based on saved settings
-            soundToggle.Init(SaveSystem.LoadBool(StringUtils.SOUND_ON, true));
-            musicToggle.Init(SaveSystem.LoadBool(StringUtils.MUSIC_ON, true));
-            hapticToggle.Init(SaveSystem.LoadBool(StringUtils.HAPTICS_ON, true));
+            LoadData();
         }
 
         public override void Close()
         {
             base.Close();
-            soundToggle.OnToggleChanged -= OnSoundToggleChanged;
-            musicToggle.OnToggleChanged -= OnMusicToggleChanged;
+            // soundToggle.OnToggleChanged -= OnSoundToggleChanged;
+            // musicToggle.OnToggleChanged -= OnMusicToggleChanged;
             hapticToggle.OnToggleChanged -= OnHapticToggleChanged;
             privacyPolicyButton.ButtonDeRegister(OnPrivacyPolicy);
             closePanelbutton.ButtonDeRegister(ClosePanel);
             backButton.ButtonDeRegister(ClosePanel);
         }
 
-        private void OnSoundToggleChanged(bool isOn)
+        private void LoadData()
         {
-            AudioController.GetInstance.OnSoundToggleChange(isOn);
+            // Initialize toggles based on saved settings
+            //soundToggle.Init(SaveSystem.LoadBool(StringUtils.SOUND_ON, true));
+            //musicToggle.Init(SaveSystem.LoadBool(StringUtils.MUSIC_ON, true));
+            hapticToggle.Init(SaveSystem.LoadBool(StringUtils.HAPTICS_ON, true));
+            soundSlider.value = AudioController.GetInstance.LoadSoundVolume();
+            musicSlider.value = AudioController.GetInstance.LoadMusicVolume();
         }
-        private void OnMusicToggleChanged(bool isOn)
+
+        private void OnSoundSliderChanged(float value)
         {
-            AudioController.GetInstance.OnGameMusicToggleChange(isOn);
+            AudioController.GetInstance.SetSoundVolume(value);
+            soundSlider.handleRect.gameObject.SetActive(value > handleDisableValue);
         }
+
+        private void OnMusicSliderChanged(float value)
+        {
+            AudioController.GetInstance.SetMusicVolume(value);
+            musicSlider.handleRect.gameObject.SetActive(value > handleDisableValue);
+        }
+
+        //private void OnSoundToggleChanged(bool isOn)
+        //{
+        //    AudioController.GetInstance.OnSoundToggleChange(isOn);
+        //}
+        //private void OnMusicToggleChanged(bool isOn)
+        //{
+        //    AudioController.GetInstance.OnGameMusicToggleChange(isOn);
+        //}
         private void OnHapticToggleChanged(bool isOn)
         {
             SaveSystem.SaveBool(StringUtils.HAPTICS_ON, isOn);

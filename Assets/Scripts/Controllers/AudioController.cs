@@ -65,10 +65,10 @@ namespace BeachHero
                 }
             }
         }
-        public void OnGameMusicVolumeChange(float volumeChange)
+        public void SetMusicVolume(float volumeChange)
         {
             gameMusicSource.volume = volumeChange * gameMusicVolumeMultiplier;
-            SaveSystem.SaveFloat(StringUtils.GAME_MUSIC_VOLUME, volumeChange);
+            SaveSystem.SaveFloat(StringUtils.MUSIC_VOLUME, volumeChange);
         }
 
         private void CreateMusicSource(AudioData audioData)
@@ -97,14 +97,30 @@ namespace BeachHero
         }
         private void FadeMusicVolume()
         {
-            float volume = SaveSystem.LoadFloat(StringUtils.GAME_MUSIC_VOLUME, audioSettings.GetAudioVolume(AudioType.GameMusic));
+            float volume = SaveSystem.LoadFloat(StringUtils.MUSIC_VOLUME, audioSettings.GetAudioVolume(AudioType.GameMusic));
             //  gameMusicSource.DOFade(volume, fadeMusicDuration);
-            // TweenManager.FadeAudio(gameMusicSource, volume, fadeMusicDuration);
             TweenManager.SetFloat(gameMusicSource.volume, volume, fadeMusicDuration, (x) => gameMusicSource.volume = x);
+        }
+        public float LoadMusicVolume()
+        {
+            return SaveSystem.LoadFloat(StringUtils.MUSIC_VOLUME, 1f);
         }
         #endregion
 
         #region SFX
+        public float LoadSoundVolume()
+        {
+            return SaveSystem.LoadFloat(StringUtils.SOUND_VOLUME, 1f);
+        }
+        public void SetSoundVolume(float volumeChange)
+        {
+            foreach (var audioSourceCase in audioSourcesPool)
+            {
+                if (audioSourceCase == null || audioSourceCase.AudioSource == null || audioSourceCase.AudioSource.clip == null) continue;
+                audioSourceCase.OverrideVolume(volumeChange);
+            }
+            SaveSystem.SaveFloat(StringUtils.SOUND_VOLUME, volumeChange);
+        }
         public void OnSoundToggleChange(bool isOn)
         {
             isSoundOn = isOn;
@@ -130,7 +146,8 @@ namespace BeachHero
             AudioClip clip = audioSettings.GetAudioClip(audioType);
             if (clip != null)
             {
-                sourceCase.Play(clip, GetVolume(audioType));
+                var audioMultiplier = LoadSoundVolume();
+                sourceCase.Play(clip, GetVolume(audioType) * audioMultiplier);
             }
         }
         public void PlaySoundInLoop(AudioType audioType)

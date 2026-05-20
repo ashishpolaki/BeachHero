@@ -29,6 +29,8 @@ namespace BeachHero
         //Audio
         public const string MUSIC_ON = "Music";
         public const string SOUND_ON = "Sound";
+        public const string SOUND_VOLUME = "SoundVolume";
+        public const string MUSIC_VOLUME = "MusicVolume";
 
         //Medals
         public const string TOTAL_MEDALS = "TotalMedals";
@@ -58,9 +60,6 @@ namespace BeachHero
         public const string BOAT_REPLACEABLE_COLORS_KEY = "_CanReplaceColors";
         public const string BOAT_TARGETCOLOR_PREFIX = "_TargetColor_";
         public const string BOAT_REPLACECOLOR_PREFIX = "_ReplaceColor_";
-
-        //Audio
-        public const string GAME_MUSIC_VOLUME = "GameMusicVolume";
 
         //Product Purchase
         public const string PRODUCT_PURCHASED_SUCCESS = "Purchase successful!";
