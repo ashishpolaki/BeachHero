@@ -30,13 +30,22 @@ namespace BeachHero
         public static MapController GetInstance { get; private set; }
 
         #region Inspector Variables
+        [Header("References")]
         [SerializeField] private LevelDatabaseSO levelDatabase;
         [SerializeField] private SplineSystem splineSystem;
-        [SerializeField] private List<MapLevelSpawnData> mapLevels = new List<MapLevelSpawnData>();
-        [SerializeField] private Transform levelsParent;
         [SerializeField] private Transform target;
         [SerializeField] private Transform visualChild;
         [SerializeField] private Animator characterAnimator;
+
+        [Header("Map")]
+        [SerializeField] private List<MapLevelSpawnData> mapLevels = new List<MapLevelSpawnData>();
+        [SerializeField] private Transform levelsParent;
+
+        [Header("Water")]
+        [SerializeField] private Transform[] waterTransforms;
+        [SerializeField] private float waterSpeed = 0.5f;
+
+        [Header("Camera Scroll")]
         [SerializeField] private float scrollSpeed = 5f;
         #endregion
 
@@ -52,6 +61,9 @@ namespace BeachHero
         private float currentScrollY;
         private const float cameraStartDistance = 4.3f;
         private const float cameraEndDistance = 28.7f;
+
+        private float spriteHeight;
+        private float spriteThreshold;
         #endregion
 
         #region Properties
@@ -69,6 +81,7 @@ namespace BeachHero
             {
                 GetInstance = this;
             }
+            InitializeWater();
         }
         private void OnEnable()
         {
@@ -110,6 +123,74 @@ namespace BeachHero
                 currentScrollY = Mathf.Clamp(currentScrollY, minY, maxY);
                 lastPointerY = currentY;
                 MoveCamera();
+            }
+
+            UpdateWaterLoop();
+        }
+        #endregion
+
+        #region Water
+        private void InitializeWater()
+        {
+            if (waterTransforms == null || waterTransforms.Length == 0)
+                return;
+
+            var sprite = waterTransforms[0].GetComponent<SpriteRenderer>();
+            spriteHeight = sprite.bounds.size.y;
+            spriteThreshold = spriteHeight * 2f;
+        }
+        private void UpdateWaterLoop()
+        {
+            if (waterTransforms == null || waterTransforms.Length == 0)
+                return;
+
+            float lowestY = float.MaxValue;
+            float highestY = float.MinValue;
+            int lowestIndex = 0;
+            int highestIndex = 0;
+            float moveDelta = waterSpeed * Time.deltaTime;
+            float camY = CameraController.GetInstance.GetCameraPosition(GameCameraType.Map).y;
+
+            for (int i = 0; i < waterTransforms.Length; i++)
+            {
+                Transform t = waterTransforms[i];
+                // Move first
+                Vector3 pos = t.position;
+                pos.y -= moveDelta;
+                t.position = pos;
+                float y = pos.y;
+
+                if (y < lowestY)
+                {
+                    lowestY = y;
+                    lowestIndex = i;
+                }
+
+                if (y > highestY)
+                {
+                    highestY = y;
+                    highestIndex = i;
+                }
+            }
+
+            //  Recycle bottom -> top
+            if (lowestY < camY - spriteThreshold)
+            {
+                Transform lowest = waterTransforms[lowestIndex];
+                Transform highest = waterTransforms[highestIndex];
+                Vector3 pos = lowest.position;
+                pos.y = highest.position.y + spriteHeight;
+                lowest.position = pos;
+            }
+
+            //  Recycle top -> bottom
+            if (highestY > camY + spriteThreshold)
+            {
+                Transform lowest = waterTransforms[lowestIndex];
+                Transform highest = waterTransforms[highestIndex];
+                Vector3 pos = highest.position;
+                pos.y = lowest.position.y - spriteHeight;
+                highest.position = pos;
             }
         }
         #endregion
@@ -280,6 +361,8 @@ namespace BeachHero
         }
         #endregion
 
+        #region Level Progression
+
         private async void StartGame()
         {
             await UIController.GetInstance.FadeUI.FadeInASync();
@@ -325,5 +408,6 @@ namespace BeachHero
                 MoveToLevelAsync(currentSplinePercent, mapLevels[selectedLevelIndex].splinePercent);
             }
         }
+        #endregion
     }
 }
