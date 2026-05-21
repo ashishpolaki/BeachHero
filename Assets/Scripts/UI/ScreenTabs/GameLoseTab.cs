@@ -11,11 +11,15 @@ namespace BeachHero
         [SerializeField] private Button homeButton;
         [SerializeField] private GameObject gameCurrencyBalanceObject;
         [SerializeField] private TextMeshProUGUI gameCurrencyBalanceText;
+        [SerializeField] private Sprite unEarnedStarSprite;
+        [SerializeField] private Sprite earnedStarSprite;
+        [SerializeField] private Image[] starImages;
 
         public override void Open()
         {
             base.Open();
             SetGameCurrency();
+            SetMedals();
             retryButton.onClick.AddListener(OnRetryClick);
             skipLevelButton.onClick.AddListener(OnSkipLevelClick);
             homeButton.ButtonRegister(OnHomeASync);
@@ -26,6 +30,17 @@ namespace BeachHero
             retryButton.onClick.RemoveListener(OnRetryClick);
             skipLevelButton.onClick.RemoveListener(OnSkipLevelClick);
             homeButton.ButtonDeRegisterAll();
+        }
+        private void SetMedals()
+        {
+            foreach (var starImage in starImages)
+            {
+                starImage.sprite = unEarnedStarSprite;
+            }
+            for (int i = 0; i < GameController.GetInstance.LevelController.MedalsEarned; i++)
+            {
+                starImages[i].sprite = earnedStarSprite;
+            }
         }
         private void SetGameCurrency()
         {

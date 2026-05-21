@@ -12,6 +12,9 @@ namespace BeachHero
         [SerializeField] private TextMeshProUGUI gameCurrencyBalanceText;
         [SerializeField] private TextMeshProUGUI collectedGameCurrencyText;
         [SerializeField] private TextMeshProUGUI multipleGameCurrencyTxt;
+        [SerializeField] private Sprite unEarnedStarSprite;
+        [SerializeField] private Sprite earnedStarSprite;
+        [SerializeField] private Image[] starImages;
 
         private int collectedGameCurrency = 0;
         private int adWatchGameCurrency = 0;
@@ -35,8 +38,20 @@ namespace BeachHero
         {
             collectedGameCurrency = GameController.GetInstance.LevelController.GameCurrencyCount;
             collectedGameCurrencyText.text = collectedGameCurrency.ToString();
+            SetMedals();
             SetADGameCurrency();
             SetGameCurrencyBalance(collectedGameCurrency);
+        }
+        private void SetMedals()
+        {
+            foreach (var starImage in starImages)
+            {
+                starImage.sprite = unEarnedStarSprite;
+            }
+            for (int i = 0; i < GameController.GetInstance.LevelController.MedalsEarned; i++)
+            {
+                starImages[i].sprite = earnedStarSprite;
+            }
         }
         private void SetADGameCurrency()
         {

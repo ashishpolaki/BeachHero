@@ -79,7 +79,6 @@ namespace BeachHero
         #endregion
 
         #region Actions
-        public event Action<int> OnMedalCountUpdated;
         public event Action OnPlayerTouch;
         public event Action OnDrawPathError;
         public event Action OnCompleteSpawnAnimation;
@@ -380,10 +379,6 @@ namespace BeachHero
             else 
             {
                 MedalsEarned = 1;
-            }
-            if (MedalsEarned > 0)
-            {
-                OnMedalCountUpdated?.Invoke(MedalsEarned);
             }
         }
         #endregion
