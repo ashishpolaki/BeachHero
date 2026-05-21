@@ -45,12 +45,12 @@ namespace BeachHero
             {
                 //Set slider with move duration
                 TweenManager.SetFloat(fillSlider.value, toggled ? 1f : 0f, moveDuration, val => fillSlider.value = val, Ease.OutQuad);
-                TweenManager.MoveAnchorOnAxis(knobRect, knobRect.anchoredPosition.x, toggled ? -knobAnchorX : knobAnchorX, moveDuration, Ease.Linear, TransformAxis.X);
+              //  TweenManager.MoveAnchorOnAxis(knobRect, knobRect.anchoredPosition.x, toggled ? -knobAnchorX : knobAnchorX, moveDuration, Ease.Linear, TransformAxis.X);
                 OnToggleChanged?.Invoke(toggled);
             }
             else
             {
-                knobRect.anchoredPosition = new Vector2(toggled ? -knobAnchorX : knobAnchorX, knobRect.anchoredPosition.y);
+              //  knobRect.anchoredPosition = new Vector2(toggled ? -knobAnchorX : knobAnchorX, knobRect.anchoredPosition.y);
                 fillSlider.value = toggled ? 1f : 0f;
             }
         }
