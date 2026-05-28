@@ -2,6 +2,7 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using TMPro;
 using UnityEngine;
 
 namespace BeachHero
@@ -40,6 +41,13 @@ namespace BeachHero
         [Header("Map")]
         [SerializeField] private List<MapLevelSpawnData> mapLevels = new List<MapLevelSpawnData>();
         [SerializeField] private Transform levelsParent;
+        [SerializeField] private TextMeshPro[] levelNumbersTexts;
+        [SerializeField] private Color underlayColor;
+        [SerializeField] private float underlayOffsetX;
+        [SerializeField] private float underlayOffsetY;
+        [SerializeField] private float underlayThickness; //Dilate
+        [SerializeField] private float underlaySoftness;
+
 
         [Header("Water")]
         [SerializeField] private Transform[] waterTransforms;
@@ -75,6 +83,16 @@ namespace BeachHero
         public event Action OnMapButtonsEnabled;
 
         #region Unity Methods
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (!Application.isPlaying)
+            {
+                if (levelsParent != null)
+                    levelNumbersTexts = levelsParent.GetComponentsInChildren<TextMeshPro>(true);
+            }
+        }
+#endif
         private void Awake()
         {
             if (GetInstance == null)
@@ -82,6 +100,7 @@ namespace BeachHero
                 GetInstance = this;
             }
             InitializeWater();
+            ApplyLevelNumberTextStyle();
         }
         private void OnEnable()
         {
@@ -359,6 +378,25 @@ namespace BeachHero
                 levelVisual.Setup(levelDatabase.LevelDatas[i]);
             }
         }
+        private void ApplyLevelNumberTextStyle()
+        {
+            if (levelNumbersTexts == null || levelNumbersTexts.Length == 0)
+                return;
+
+            Material sharedMat = new Material(levelNumbersTexts[0].fontMaterial);
+            sharedMat.EnableKeyword("UNDERLAY_ON");
+            sharedMat.SetColor("_UnderlayColor", underlayColor);
+            sharedMat.SetFloat("_UnderlayOffsetX", underlayOffsetX);
+            sharedMat.SetFloat("_UnderlayOffsetY", underlayOffsetY);
+            sharedMat.SetFloat("_UnderlaySoftness", underlaySoftness);
+            sharedMat.SetFloat("_UnderlayDilate", underlayThickness);
+            for (int i = 0; i < levelNumbersTexts.Length; i++)
+            {
+                var text = levelNumbersTexts[i];
+                if (text == null) continue;
+                text.fontMaterial = sharedMat;
+            }
+        }
         #endregion
 
         #region Level Progression
@@ -409,5 +447,7 @@ namespace BeachHero
             }
         }
         #endregion
+
+
     }
 }

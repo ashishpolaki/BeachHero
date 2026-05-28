@@ -4004,7 +4004,7 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls: []
   delayFrames: 0
-  timelineDuration: 0.5
+  timelineDuration: 0.25
   references:
     version: 2
     RefIds:
@@ -4013,7 +4013,7 @@ MonoBehaviour:
       data:
         clipType: 1
         startTime: 0
-        duration: 0.5
+        duration: 0.25
         ease: 1
         fromScale: {x: 0, y: 0, z: 0}
         toScale: {x: 1, y: 1, z: 1}
@@ -4032,7 +4032,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textStyles:
-  - text: {fileID: 8242218207695301696}
+  - texts:
+    - {fileID: 8242218207695301696}
     useOutline: 0
     outlineColor: {r: 0, g: 0, b: 0, a: 0}
     outlineWidth: 0
@@ -4042,7 +4043,9 @@ MonoBehaviour:
     underlayOffsetY: -1
     underlayThickness: 0.07
     underlaySoftness: 0.556
-  - text: {fileID: 7339460913834724202}
+  - texts:
+    - {fileID: 1815163397008616838}
+    - {fileID: 7339460913834724202}
     useOutline: 0
     outlineColor: {r: 0, g: 0, b: 0, a: 1}
     outlineWidth: 0.1
@@ -4052,27 +4055,9 @@ MonoBehaviour:
     underlayOffsetY: -1
     underlayThickness: 0.06
     underlaySoftness: 1
-  - text: {fileID: 1815163397008616838}
-    useOutline: 0
-    outlineColor: {r: 0, g: 0, b: 0, a: 1}
-    outlineWidth: 0.1
-    useUnderlay: 1
-    underlayColor: {r: 0.16078432, g: 0.07058824, b: 0.019607844, a: 1}
-    underlayOffsetX: 0
-    underlayOffsetY: -1
-    underlayThickness: 0.06
-    underlaySoftness: 1
-  - text: {fileID: 8425353394996174346}
-    useOutline: 0
-    outlineColor: {r: 0, g: 0, b: 0, a: 1}
-    outlineWidth: 0.1
-    useUnderlay: 1
-    underlayColor: {r: 0.16078432, g: 0.07058824, b: 0.019607844, a: 1}
-    underlayOffsetX: -0.14
-    underlayOffsetY: -0.51
-    underlayThickness: 0.04
-    underlaySoftness: 0.1
-  - text: {fileID: 5388468706983101378}
+  - texts:
+    - {fileID: 5388468706983101378}
+    - {fileID: 8425353394996174346}
     useOutline: 0
     outlineColor: {r: 0, g: 0, b: 0, a: 1}
     outlineWidth: 0.1

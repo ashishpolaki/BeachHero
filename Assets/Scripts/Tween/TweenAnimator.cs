@@ -81,7 +81,18 @@ namespace BeachHero
             }
 
             // Add OnComplete callback
-            _sequence.OnComplete(TweenManager.SetFloat(0, 0, 0.1f,onComplete : () => OnCompleteAction?.Invoke()).Handle);
+            _sequence.OnComplete(TweenManager.SetFloat(0, 0, 0.1f, onComplete: () =>
+           {
+               OnCompleteAction?.Invoke();
+#if UNITY_EDITOR
+               if (Application.isPlaying)
+               {
+                   Kill();
+               }
+#else
+                   Kill();
+#endif
+           }).Handle);
             _sequence.InitializeHandle();
             _sequence.Preserve();
             _sequence.SetPlaybackSpeed(0);

@@ -20,7 +20,9 @@ namespace BeachHero
         [SerializeField] private LevelData levelData;
         [SerializeField] private LevelIconState[] levelIconStates;
         [SerializeField] private SpriteRenderer levelIcon;
-        [SerializeField] private GameObject[] medals;
+        [SerializeField] private SpriteRenderer[] medalsList;
+        [SerializeField] private Sprite medalEarnedSprite;
+        [SerializeField] private Sprite medalUnearnedSprite;
         [SerializeField] private GameObject lockIcon;
         [SerializeField] private TextMeshPro levelText;
         [SerializeField] private BoxCollider boxCollider;
@@ -46,7 +48,7 @@ namespace BeachHero
             levelText.text = levelData.LevelNumber.ToString();
             levelText.transform.rotation = Quaternion.identity;
             levelText.fontSizeMax = 10 * scale;
-            foreach (GameObject medal in medals)
+            foreach (var medal in medalsList)
             {
                 medal.gameObject.SetActive(false);
             }
@@ -70,10 +72,13 @@ namespace BeachHero
         }
         private void SetMedals()
         {
-            for (int i = 0; i < medals.Length; i++)
-            {
-                medals[i].SetActive(i < levelData.MedalsEarned);
-            }
+            //If level visual is lower than current level number 
+            if (levelData.MedalsEarned > 0)
+                for (int i = 0; i < medalsList.Length; i++)
+                {
+                    medalsList[i].gameObject.SetActive(true);
+                    medalsList[i].sprite = i < levelData.MedalsEarned ? medalEarnedSprite : medalUnearnedSprite;
+                }
         }
         private void UpdateVisual()
         {

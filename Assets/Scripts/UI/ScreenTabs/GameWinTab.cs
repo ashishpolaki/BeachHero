@@ -37,7 +37,7 @@ namespace BeachHero
         private void SetGameCurrency()
         {
             collectedGameCurrency = GameController.GetInstance.LevelController.GameCurrencyCount;
-            collectedGameCurrencyText.text = collectedGameCurrency.ToString();
+            collectedGameCurrencyText.text = $"You Earned {collectedGameCurrency}";
             SetMedals();
             SetADGameCurrency();
             SetGameCurrencyBalance(collectedGameCurrency);

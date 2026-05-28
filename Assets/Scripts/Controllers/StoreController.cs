@@ -1,8 +1,8 @@
+using System;
+using Unity.Services.Core;
 using UnityEngine;
 using UnityEngine.Purchasing;
 using UnityEngine.Purchasing.Extension;
-using Unity.Services.Core;
-using System;
 
 namespace BeachHero
 {
@@ -102,7 +102,7 @@ namespace BeachHero
                         RealMoneyProduct storeProduct = GetRealMoneyProduct(item.definition.id);
                         if (storeProduct != null)
                         {
-                            storeProduct.realMoneyCost = item.metadata.localizedPriceString;
+                            storeProduct.realMoneyCost = item.metadata.localizedPrice.ToString("N0");
                         }
                     }
                 }
@@ -155,11 +155,11 @@ namespace BeachHero
                     switch (reward.itemType)
                     {
                         case StoreItemType.Magnet:
-                            GameController.GetInstance.PowerupController .UpdateMagnetBalance(reward.quantity);
+                            GameController.GetInstance.PowerupController.UpdateMagnetBalance(reward.quantity);
                             break;
 
                         case StoreItemType.SpeedBoost:
-                            GameController.GetInstance.PowerupController .UpdateSpeedBoostBalance(reward.quantity);
+                            GameController.GetInstance.PowerupController.UpdateSpeedBoostBalance(reward.quantity);
                             break;
 
                         case StoreItemType.GameCurrency:

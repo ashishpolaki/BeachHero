@@ -148,14 +148,18 @@ MonoBehaviour:
   - state: 0
     icon: {fileID: -402768064, guid: 3a12d78502c0d494080599eba9292965, type: 3}
   - state: 1
-    icon: {fileID: 1056187885, guid: 3a12d78502c0d494080599eba9292965, type: 3}
-  - state: 2
     icon: {fileID: 1391982446, guid: 3a12d78502c0d494080599eba9292965, type: 3}
+  - state: 2
+    icon: {fileID: 1056187885, guid: 3a12d78502c0d494080599eba9292965, type: 3}
   levelIcon: {fileID: 6642349849736210371}
-  medals:
-  - {fileID: 185683112014664961}
-  - {fileID: 4305772989898493780}
-  - {fileID: 4046966974761524241}
+  medalsList:
+  - {fileID: 3730381800461989215}
+  - {fileID: 3648894608740775679}
+  - {fileID: 5358143117937879752}
+  medalEarnedSprite: {fileID: -252209203, guid: 1d13c6e8e1d6e8b45b2df0eb663f0ff0,
+    type: 3}
+  medalUnearnedSprite: {fileID: 1923478682, guid: 1d13c6e8e1d6e8b45b2df0eb663f0ff0,
+    type: 3}
   lockIcon: {fileID: 6357307412066825776}
   levelText: {fileID: 8804353568797048240}
   boxCollider: {fileID: 6536325409873297837}
@@ -589,7 +593,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -8307289339249815117, guid: b37fcac4a65b16446911098729a2e811, type: 2}
+  - {fileID: -9219548683257091789, guid: a1f88a85ca911344db1847b7c4c92a87, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -633,8 +637,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b37fcac4a65b16446911098729a2e811, type: 2}
-  m_sharedMaterial: {fileID: -8307289339249815117, guid: b37fcac4a65b16446911098729a2e811,
+  m_fontAsset: {fileID: 11400000, guid: a1f88a85ca911344db1847b7c4c92a87, type: 2}
+  m_sharedMaterial: {fileID: -9219548683257091789, guid: a1f88a85ca911344db1847b7c4c92a87,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
