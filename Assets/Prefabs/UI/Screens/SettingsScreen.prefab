@@ -452,7 +452,7 @@ GameObject:
   - component: {fileID: 8807467860647912735}
   - component: {fileID: 5388468706983101378}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: privacyTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -509,16 +509,16 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b37fcac4a65b16446911098729a2e811, type: 2}
-  m_sharedMaterial: {fileID: -8307289339249815117, guid: b37fcac4a65b16446911098729a2e811,
+  m_fontAsset: {fileID: 11400000, guid: a1f88a85ca911344db1847b7c4c92a87, type: 2}
+  m_sharedMaterial: {fileID: -9219548683257091789, guid: a1f88a85ca911344db1847b7c4c92a87,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4287029501
+  m_fontColor: {r: 0.9921569, g: 0.87843144, b: 0.5254902, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -976,6 +976,10 @@ MonoBehaviour:
   knobRect: {fileID: 564444048673158704}
   fillSlider: {fileID: 2777054198998364754}
   moveDuration: 0.3
+  onText: {fileID: 0}
+  offText: {fileID: 0}
+  enableTextColor: {r: 0, g: 0, b: 0, a: 0}
+  disableTextColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &2407901207649028208
 GameObject:
   m_ObjectHideFlags: 0
@@ -1181,16 +1185,16 @@ MonoBehaviour:
       m_Calls: []
   m_text: ON
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b37fcac4a65b16446911098729a2e811, type: 2}
-  m_sharedMaterial: {fileID: -8307289339249815117, guid: b37fcac4a65b16446911098729a2e811,
+  m_fontAsset: {fileID: 11400000, guid: a1f88a85ca911344db1847b7c4c92a87, type: 2}
+  m_sharedMaterial: {fileID: -9219548683257091789, guid: a1f88a85ca911344db1847b7c4c92a87,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4287029501
+  m_fontColor: {r: 0.99215686, g: 0.8784314, b: 0.5254902, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1300,7 +1304,7 @@ GameObject:
   - component: {fileID: 4564216106230000979}
   - component: {fileID: 8242218207695301696}
   m_Layer: 5
-  m_Name: Text
+  m_Name: PanelText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1355,23 +1359,23 @@ MonoBehaviour:
       m_Calls: []
   m_text: SETTINGS
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b37fcac4a65b16446911098729a2e811, type: 2}
-  m_sharedMaterial: {fileID: -8307289339249815117, guid: b37fcac4a65b16446911098729a2e811,
+  m_fontAsset: {fileID: 11400000, guid: a1f88a85ca911344db1847b7c4c92a87, type: 2}
+  m_sharedMaterial: {fileID: -9219548683257091789, guid: a1f88a85ca911344db1847b7c4c92a87,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
-  m_enableVertexGradient: 1
+    rgba: 4287029501
+  m_fontColor: {r: 0.9921569, g: 0.87843144, b: 0.5254902, a: 1}
+  m_enableVertexGradient: 0
   m_colorMode: 2
   m_fontColorGradient:
-    topLeft: {r: 0.9921569, g: 0.9725491, b: 0.9176471, a: 1}
-    topRight: {r: 0.9921569, g: 0.9725491, b: 0.9176471, a: 1}
-    bottomLeft: {r: 0.9921569, g: 0.8705883, b: 0.45882356, a: 1}
-    bottomRight: {r: 0.9921569, g: 0.8705883, b: 0.45882356, a: 1}
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 0.9286527, b: 0.2028302, a: 1}
+    bottomRight: {r: 1, g: 0.9286527, b: 0.2028302, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
@@ -1381,8 +1385,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 104.13
-  m_fontSizeBase: 104.13
+  m_fontSize: 104
+  m_fontSizeBase: 104
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2087,7 +2091,7 @@ GameObject:
   - component: {fileID: 2467316351377328396}
   - component: {fileID: 8425353394996174346}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: backTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2142,16 +2146,16 @@ MonoBehaviour:
       m_Calls: []
   m_text: BACK
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b37fcac4a65b16446911098729a2e811, type: 2}
-  m_sharedMaterial: {fileID: -8307289339249815117, guid: b37fcac4a65b16446911098729a2e811,
+  m_fontAsset: {fileID: 11400000, guid: a1f88a85ca911344db1847b7c4c92a87, type: 2}
+  m_sharedMaterial: {fileID: -9219548683257091789, guid: a1f88a85ca911344db1847b7c4c92a87,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4287029501
+  m_fontColor: {r: 0.99215686, g: 0.8784314, b: 0.5254902, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2767,6 +2771,10 @@ MonoBehaviour:
   knobRect: {fileID: 831679114104922926}
   fillSlider: {fileID: 1869619254575627622}
   moveDuration: 0.3
+  onText: {fileID: 0}
+  offText: {fileID: 0}
+  enableTextColor: {r: 0, g: 0, b: 0, a: 0}
+  disableTextColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &5511890909596664260
 GameObject:
   m_ObjectHideFlags: 0
@@ -3445,7 +3453,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.175
+  m_Value: 0.329
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -3830,6 +3838,10 @@ MonoBehaviour:
   knobRect: {fileID: 7896525593787838915}
   fillSlider: {fileID: 4496858115043764488}
   moveDuration: 0.3
+  onText: {fileID: 7339460913834724202}
+  offText: {fileID: 1815163397008616838}
+  enableTextColor: {r: 1, g: 1, b: 1, a: 1}
+  disableTextColor: {r: 0.9921569, g: 0.87843144, b: 0.5254902, a: 1}
 --- !u!1 &7694396556233150704
 GameObject:
   m_ObjectHideFlags: 0
@@ -3879,6 +3891,7 @@ GameObject:
   - component: {fileID: 2255511351221053264}
   - component: {fileID: 7772287385165318189}
   - component: {fileID: 8060188011037741396}
+  - component: {fileID: 8511024405700970919}
   m_Layer: 5
   m_Name: SettingsScreen
   m_TagString: Untagged
@@ -3963,6 +3976,7 @@ MonoBehaviour:
   defaultOpenTab: 0
   tabs: []
   openAnimator: {fileID: 8060188011037741396}
+  uiScreenTextStyler: {fileID: 8511024405700970919}
   soundSlider: {fileID: 677337554682672177}
   musicSlider: {fileID: 7618441679384167808}
   hapticToggle: {fileID: 6336980283136995331}
@@ -4005,6 +4019,69 @@ MonoBehaviour:
         toScale: {x: 1, y: 1, z: 1}
         target: {fileID: 5103171061512787165}
         scaleAxis: 4
+--- !u!114 &8511024405700970919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7724533275446175859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d2aeefe81fe0e1499d1db4359d8efa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textStyles:
+  - text: {fileID: 8242218207695301696}
+    useOutline: 0
+    outlineColor: {r: 0, g: 0, b: 0, a: 0}
+    outlineWidth: 0
+    useUnderlay: 1
+    underlayColor: {r: 0.16078432, g: 0.07058824, b: 0.019607844, a: 1}
+    underlayOffsetX: -0.26
+    underlayOffsetY: -1
+    underlayThickness: 0.07
+    underlaySoftness: 0.556
+  - text: {fileID: 7339460913834724202}
+    useOutline: 0
+    outlineColor: {r: 0, g: 0, b: 0, a: 1}
+    outlineWidth: 0.1
+    useUnderlay: 1
+    underlayColor: {r: 0.16078432, g: 0.07058824, b: 0.019607844, a: 1}
+    underlayOffsetX: 0
+    underlayOffsetY: -1
+    underlayThickness: 0.06
+    underlaySoftness: 1
+  - text: {fileID: 1815163397008616838}
+    useOutline: 0
+    outlineColor: {r: 0, g: 0, b: 0, a: 1}
+    outlineWidth: 0.1
+    useUnderlay: 1
+    underlayColor: {r: 0.16078432, g: 0.07058824, b: 0.019607844, a: 1}
+    underlayOffsetX: 0
+    underlayOffsetY: -1
+    underlayThickness: 0.06
+    underlaySoftness: 1
+  - text: {fileID: 8425353394996174346}
+    useOutline: 0
+    outlineColor: {r: 0, g: 0, b: 0, a: 1}
+    outlineWidth: 0.1
+    useUnderlay: 1
+    underlayColor: {r: 0.16078432, g: 0.07058824, b: 0.019607844, a: 1}
+    underlayOffsetX: -0.14
+    underlayOffsetY: -0.51
+    underlayThickness: 0.04
+    underlaySoftness: 0.1
+  - text: {fileID: 5388468706983101378}
+    useOutline: 0
+    outlineColor: {r: 0, g: 0, b: 0, a: 1}
+    outlineWidth: 0.1
+    useUnderlay: 1
+    underlayColor: {r: 0.16078432, g: 0.07058824, b: 0.019607844, a: 1}
+    underlayOffsetX: -0.14
+    underlayOffsetY: -0.51
+    underlayThickness: 0.04
+    underlaySoftness: 0.1
 --- !u!1 &7777530131385278569
 GameObject:
   m_ObjectHideFlags: 0
@@ -4454,8 +4531,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: OFF
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b37fcac4a65b16446911098729a2e811, type: 2}
-  m_sharedMaterial: {fileID: -8307289339249815117, guid: b37fcac4a65b16446911098729a2e811,
+  m_fontAsset: {fileID: 11400000, guid: a1f88a85ca911344db1847b7c4c92a87, type: 2}
+  m_sharedMaterial: {fileID: -9219548683257091789, guid: a1f88a85ca911344db1847b7c4c92a87,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -4768,7 +4845,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.175
+  m_Value: 0.591
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

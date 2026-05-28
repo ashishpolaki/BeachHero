@@ -87,7 +87,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6631174607394499551}
   - component: {fileID: 1256922562944015724}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: UIController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,6 +152,7 @@ GameObject:
   - component: {fileID: 3688673190397716425}
   - component: {fileID: 7403112901167651828}
   - component: {fileID: 7482115119001445587}
+  - component: {fileID: 1961345126751123448}
   m_Layer: 5
   m_Name: LoadingUI
   m_TagString: Untagged
@@ -225,6 +226,30 @@ MonoBehaviour:
   loadingFillSlider: {fileID: 7888368348698627883}
   backgroundPanel: {fileID: 217312118784974231}
   minimumLoadingDuration: 1
+  uiScreenTextStyler: {fileID: 1961345126751123448}
+--- !u!114 &1961345126751123448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3075912564308695415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d2aeefe81fe0e1499d1db4359d8efa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textStyles:
+  - text: {fileID: 3720333847082091126}
+    useOutline: 1
+    outlineColor: {r: 0, g: 0, b: 0, a: 1}
+    outlineWidth: 0.108
+    useUnderlay: 0
+    underlayColor: {r: 0, g: 0, b: 0, a: 0}
+    underlayOffsetX: 0
+    underlayOffsetY: 0
+    underlayThickness: 0
+    underlaySoftness: 0
 --- !u!1 &3164020879171981291
 GameObject:
   m_ObjectHideFlags: 0
@@ -577,16 +602,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: LOADING...
+  m_text: LOADING.....
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b37fcac4a65b16446911098729a2e811, type: 2}
-  m_sharedMaterial: {fileID: -8307289339249815117, guid: b37fcac4a65b16446911098729a2e811,
+  m_fontAsset: {fileID: 11400000, guid: a1f88a85ca911344db1847b7c4c92a87, type: 2}
+  m_sharedMaterial: {fileID: -9219548683257091789, guid: a1f88a85ca911344db1847b7c4c92a87,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -637,9 +662,9 @@ MonoBehaviour:
   m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
-  m_isRichText: 1
-  m_EmojiFallbackSupport: 1
-  m_parseCtrlCharacters: 1
+  m_isRichText: 0
+  m_EmojiFallbackSupport: 0
+  m_parseCtrlCharacters: 0
   m_isOrthographic: 1
   m_isCullingEnabled: 0
   m_horizontalMapping: 0
@@ -648,7 +673,7 @@ MonoBehaviour:
   m_geometrySortingOrder: 0
   m_IsTextObjectScaleStatic: 0
   m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
+  m_useMaxVisibleDescender: 0
   m_pageToDisplay: 1
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0

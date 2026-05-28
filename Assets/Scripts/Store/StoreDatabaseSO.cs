@@ -5,6 +5,7 @@ namespace BeachHero
     [CreateAssetMenu(fileName = "StoreDatabaseSO", menuName = "Scriptable Objects/Store/StoreDatabaseSO")]
     public class StoreDatabaseSO : ScriptableObject
     {
-        public StoreProduct[] StoreProducts;
+        public RealMoneyProduct[] RealMoneyProducts;
+        public GameCurrencyProduct[] GameCurrencyProducts;
     }
 }

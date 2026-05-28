@@ -12,70 +12,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ad70d65a293e094aad559e4b404c6a1, type: 3}
   m_Name: StoreDatabase
   m_EditorClassIdentifier: 
-  StoreProducts:
+  RealMoneyProducts:
   - index: 0
-    isRealMoney: 1
-    isGameCurrency: 1
-    contents:
-    - itemType: 0
-      quantity: 2
     Id: magnet_booster
     Type: 0
     realMoneyCost: $ 1
-    gameCurrencyCost: 30
-  - index: 1
-    isRealMoney: 1
-    isGameCurrency: 1
-    contents:
-    - itemType: 1
+    rewards:
+    - itemType: 0
       quantity: 2
+  - index: 1
     Id: speed_booster
     Type: 0
     realMoneyCost: $ 10
-    gameCurrencyCost: 50
+    rewards:
+    - itemType: 1
+      quantity: 2
   - index: 2
-    isRealMoney: 1
-    isGameCurrency: 0
-    contents:
-    - itemType: 4
-      quantity: 50
-    Id: star_fish.50
-    Type: 0
-    realMoneyCost: $ 1
-    gameCurrencyCost: 50
-  - index: 3
-    isRealMoney: 1
-    isGameCurrency: 0
-    contents:
-    - itemType: 2
-      quantity: -1
     Id: no_ads
     Type: 1
     realMoneyCost: $ 3
-    gameCurrencyCost: 50
-  - index: 4
-    isRealMoney: 1
-    isGameCurrency: 0
-    contents:
-    - itemType: 1
-      quantity: 3
-    - itemType: 0
-      quantity: 2
+    rewards:
+    - itemType: 2
+      quantity: -1
+  - index: 3
     Id: welcome_pack
     Type: 0
     realMoneyCost: $ 10
-    gameCurrencyCost: 50
-  - index: 5
-    isRealMoney: 1
-    isGameCurrency: 0
-    contents:
+    rewards:
     - itemType: 1
       quantity: 3
     - itemType: 0
       quantity: 2
-    - itemType: 4
-      quantity: 15
+  - index: 4
     Id: supreme_pack
     Type: 0
     realMoneyCost: $ 12
+    rewards:
+    - itemType: 1
+      quantity: 3
+    - itemType: 0
+      quantity: 2
+    - itemType: 3
+      quantity: 15
+  GameCurrencyProducts:
+  - index: 5
     gameCurrencyCost: 50
+    rewards:
+    - itemType: 0
+      quantity: 1
+  - index: 6
+    gameCurrencyCost: 55
+    rewards:
+    - itemType: 1
+      quantity: 1

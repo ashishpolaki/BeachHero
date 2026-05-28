@@ -7,6 +7,7 @@ namespace BeachHero
     public class HeaderUI : MonoBehaviour
     {
         #region Inspector Variables
+        [SerializeField] private UiScreenTextStyler uiScreenTextStyler;
         [SerializeField] private GameObject magnetBalanceObject;
         [SerializeField] private TextMeshProUGUI magnetBalanceText;
         [SerializeField] private Button addMagnetButton;
@@ -27,6 +28,7 @@ namespace BeachHero
             GameController.GetInstance.StoreController.OnGameCurrencyBalanceChange += OnGameCurrencyBalanceChange;
             GameController.GetInstance.PowerupController.OnSpeedBoostBalanceChange += OnSpeedBoostBalanceChange;
             UpdateBalances();
+            uiScreenTextStyler.ApplyStyle();
         }
 
         private void OnDisable()

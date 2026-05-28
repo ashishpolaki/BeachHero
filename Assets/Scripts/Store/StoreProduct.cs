@@ -5,20 +5,25 @@ using UnityEngine.UI;
 namespace BeachHero
 {
     [System.Serializable]
-    public class StoreProduct
+    public class RealMoneyProduct
     {
         public int index;
-        public bool isRealMoney;
-        public bool isGameCurrency;
-        public StoreProductContent[] contents;      // Items given when purchased
-        [Show("isRealMoney")] public string Id;                    // Matches Google Play Console Product ID
-        [Show("isRealMoney")] public ProductType Type;
-        [Show("isRealMoney")] public string realMoneyCost;
-        [Show("isGameCurrency")] public int gameCurrencyCost;
+        public string Id;                 // Google Play ID
+        public ProductType Type;
+        public string realMoneyCost;
+        public StoreReward[] rewards;
     }
 
     [System.Serializable]
-    public class StoreProductContent
+    public class GameCurrencyProduct
+    {
+        public int index;
+        public int gameCurrencyCost;
+        public StoreReward[] rewards;
+    }
+
+    [System.Serializable]
+    public class StoreReward
     {
         public StoreItemType itemType;              // What kind of item is rewarded
         public int quantity;                        // How much of it is rewarded
@@ -32,21 +37,34 @@ namespace BeachHero
         GameCurrency
     }
 
+    //Ui
     [System.Serializable]
-    public struct StoreProductUI
+    public struct RealMoneyProductUI
     {
         public int index;
-        public StoreProductContentUI[] contentUis;
-
-        public Button gameCurrencyPurchaseButton;
-        public Button realMoneyPurchaseButton;
-
-        public TextMeshProUGUI gameCurrencyPriceText;
-        public TextMeshProUGUI realMoneyPriceText;
+        public Button purchaseButton;
+        public TextMeshProUGUI priceText;
+        public StoreRewardUI[] storeRewardUIs;
     }
 
     [System.Serializable]
-    public struct StoreProductContentUI
+    public struct GameCurrencyProductUI
+    {
+        public int index;
+        public Button purchaseButton;
+        public TextMeshProUGUI priceText;
+        public StoreRewardUI[] storeRewardUIs;
+    }
+    [System.Serializable]
+    public struct RewardAdItemUI
+    {
+        public StoreItemType itemType;
+        public int quantity;
+        public TextMeshProUGUI quantityText;
+        public Button watchAdButton;
+    }
+    [System.Serializable]
+    public struct StoreRewardUI
     {
         public StoreItemType itemType;
         public TextMeshProUGUI quantityText;

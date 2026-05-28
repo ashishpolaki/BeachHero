@@ -57,13 +57,17 @@ namespace BeachHero
         {
             await UnityServices.InitializeAsync();
             var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
-            foreach (var product in storeDatabase.StoreProducts)
+
+            // Add Real Money Products from Store Database
+            foreach (var product in storeDatabase.RealMoneyProducts)
             {
                 if (!string.IsNullOrEmpty(product.Id))
                 {
                     builder.AddProduct(product.Id, product.Type);
                 }
             }
+
+            // Add Boat Skins that are for sale with real money
             foreach (var boatSkin in boatSkinDatabase.BoatSkins)
             {
                 if (boatSkin.IsRealMoney && !boatSkin.IsDefaultBoat && !string.IsNullOrEmpty(boatSkin.ID))
@@ -73,6 +77,7 @@ namespace BeachHero
             }
             UnityPurchasing.Initialize(this, builder);
         }
+
         public void OnInitialized(IStoreController controller, IExtensionProvider extensions)
         {
             m_StoreController = controller;
@@ -94,7 +99,7 @@ namespace BeachHero
                     else
                     {
                         //Store Product
-                        StoreProduct storeProduct = GetStoreProduct(item.definition.id);
+                        RealMoneyProduct storeProduct = GetRealMoneyProduct(item.definition.id);
                         if (storeProduct != null)
                         {
                             storeProduct.realMoneyCost = item.metadata.localizedPriceString;
@@ -107,12 +112,12 @@ namespace BeachHero
 
         public void OnInitializeFailed(InitializationFailureReason error)
         {
-            DebugUtils.Log("OnInitializeFailed InitializationFailureReason:" + error);
+            DebugUtils.LogError("OnInitializeFailed InitializationFailureReason:" + error);
         }
 
         public void OnInitializeFailed(InitializationFailureReason error, string message)
         {
-            DebugUtils.Log("OnInitializeFailed InitializationFailureReason:" + error + " message: " + message);
+            DebugUtils.LogError("OnInitializeFailed InitializationFailureReason:" + error + " message: " + message);
         }
 
         private void InitBalances()
@@ -121,55 +126,11 @@ namespace BeachHero
         }
         #endregion
 
-        #region Purchase
-        public void PurchaseWithRealMoney(int index, PurchaseItemType purchaseItemType)
-        {
-            currentIndex = index;
-            currentPurchaseItemType = purchaseItemType;
-
-            if (currentPurchaseItemType == PurchaseItemType.BoatSkin)
-            {
-                string productID = GameController.GetInstance.SkinController.GetBoatSkinByIndex(currentIndex).ID;
-                m_StoreController.InitiatePurchase(productID);
-            }
-            else
-            {
-                m_StoreController.InitiatePurchase(GetProductID(currentIndex));
-            }
-        }
-        public void RetryPurchase()
-        {
-            if (currentPurchaseItemType == PurchaseItemType.BoatSkin)
-            {
-                string productID = GameController.GetInstance.SkinController.GetBoatSkinByIndex(currentIndex).ID;
-                m_StoreController.InitiatePurchase(productID);
-            }
-            else
-            {
-                m_StoreController.InitiatePurchase(GetProductID(currentIndex));
-            }
-        }
-        public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs purchaseEvent)
-        {
-            if (currentPurchaseItemType == PurchaseItemType.StoreProduct)
-            {
-                StoreItemBought();
-            }
-            else if (currentPurchaseItemType == PurchaseItemType.BoatSkin)
-            {
-                GameController.GetInstance.SkinController.UnlockBoatSkin(currentIndex);
-            }
-            DebugUtils.Log($"Processing purchase for Store Product: {purchaseEvent.purchasedProduct.definition.id}");
-            // Return a flag indicating whether this product has completely been received, or if the application needs 
-            // to be reminded of this purchase at next app launch. Use PurchaseProcessingResult.Pending when still 
-            // saving purchased products to the cloud, and when that save is delayed. 
-            return PurchaseProcessingResult.Complete;
-        }
-        //StoreItem
+        #region Purchase with Game Currency
         public void BuyStoreItemWithGameCurrency(int index)
         {
             currentIndex = index;
-            var storeItem = GetStoreProduct(currentIndex);
+            var storeItem = GetGameCurrencyProduct(currentIndex);
             if (storeItem != null && GameCurrencyBalance >= storeItem.gameCurrencyCost)
             {
                 StoreItemBought();
@@ -180,29 +141,34 @@ namespace BeachHero
                 HandleInSufficientGameCurrency();
             }
         }
+
         private void StoreItemBought()
         {
-            var storeItem = GetStoreProduct(currentIndex);
+            var storeItem = GetGameCurrencyProduct(currentIndex);
             //Show Purchase Dialog
             if (storeItem != null)
             {
-                for (int i = 0; i < storeItem.contents.Length; i++)
+                for (int i = 0; i < storeItem.rewards.Length; i++)
                 {
-                    if (storeItem.contents[i].itemType == StoreItemType.Magnet)
+                    var reward = storeItem.rewards[i];
+
+                    switch (reward.itemType)
                     {
-                        GameController.GetInstance.PowerupController.UpdateMagnetBalance(storeItem.contents[i].quantity);
-                    }
-                    if (storeItem.contents[i].itemType == StoreItemType.GameCurrency)
-                    {
-                        GameCurrencyBalance += storeItem.contents[i].quantity;
-                    }
-                    if (storeItem.contents[i].itemType == StoreItemType.SpeedBoost)
-                    {
-                        GameController.GetInstance.PowerupController.UpdateSpeedBoostBalance(storeItem.contents[i].quantity);
-                    }
-                    if (storeItem.contents[i].itemType == StoreItemType.NoAds)
-                    {
-                        AdController.GetInstance.PurchasedNoADsPack();
+                        case StoreItemType.Magnet:
+                            GameController.GetInstance.PowerupController .UpdateMagnetBalance(reward.quantity);
+                            break;
+
+                        case StoreItemType.SpeedBoost:
+                            GameController.GetInstance.PowerupController .UpdateSpeedBoostBalance(reward.quantity);
+                            break;
+
+                        case StoreItemType.GameCurrency:
+                            GameCurrencyBalance += reward.quantity;
+                            break;
+
+                        case StoreItemType.NoAds:
+                            AdController.GetInstance.PurchasedNoADsPack();
+                            break;
                     }
                 }
                 OnStoreItemPurchaseAction?.Invoke(true);
@@ -239,13 +205,14 @@ namespace BeachHero
                 HandleInSufficientGameCurrency();
             }
         }
+        #endregion
 
+        #region Game Currency Balance Management
         public void IncrementGameCurrencyBalance(int amount)
         {
             GameCurrencyBalance += amount;
             DebugUtils.Log($"Game currency balance increased by {amount}. New balance: {GameCurrencyBalance}");
         }
-
         public void DeductGameCurrencyBalance(int cost)
         {
             if (GameCurrencyBalance >= cost)
@@ -262,7 +229,54 @@ namespace BeachHero
         {
             UIController.GetInstance.ScreenEvent(ScreenType.Purchase, UIScreenEvent.Push, ScreenTabType.InsufficientGameCurrency);
         }
+        #endregion
 
+        #region Purchase With Real Money
+        public void PurchaseWithRealMoney(int index, PurchaseItemType purchaseItemType)
+        {
+            currentIndex = index;
+            currentPurchaseItemType = purchaseItemType;
+
+            if (currentPurchaseItemType == PurchaseItemType.BoatSkin)
+            {
+                string productID = GameController.GetInstance.SkinController.GetBoatSkinByIndex(currentIndex).ID;
+                m_StoreController.InitiatePurchase(productID);
+            }
+            else
+            {
+                m_StoreController.InitiatePurchase(GetRealMoneyProductID(currentIndex));
+            }
+        }
+
+        public void RetryPurchase()
+        {
+            if (currentPurchaseItemType == PurchaseItemType.BoatSkin)
+            {
+                string productID = GameController.GetInstance.SkinController.GetBoatSkinByIndex(currentIndex).ID;
+                m_StoreController.InitiatePurchase(productID);
+            }
+            else
+            {
+                m_StoreController.InitiatePurchase(GetRealMoneyProductID(currentIndex));
+            }
+        }
+
+        public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs purchaseEvent)
+        {
+            if (currentPurchaseItemType == PurchaseItemType.StoreProduct)
+            {
+                StoreItemBought();
+            }
+            else if (currentPurchaseItemType == PurchaseItemType.BoatSkin)
+            {
+                GameController.GetInstance.SkinController.UnlockBoatSkin(currentIndex);
+            }
+            DebugUtils.Log($"Processing purchase for Store Product: {purchaseEvent.purchasedProduct.definition.id}");
+            // Return a flag indicating whether this product has completely been received, or if the application needs 
+            // to be reminded of this purchase at next app launch. Use PurchaseProcessingResult.Pending when still 
+            // saving purchased products to the cloud, and when that save is delayed. 
+            return PurchaseProcessingResult.Complete;
+        }
         public void OnPurchaseFailed(Product product, PurchaseFailureDescription failureDescription)
         {
             if (currentPurchaseItemType == PurchaseItemType.StoreProduct)
@@ -293,7 +307,6 @@ namespace BeachHero
             //            }
             //            return;
         }
-
         public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
         {
             if (currentPurchaseItemType == PurchaseItemType.StoreProduct)
@@ -326,10 +339,10 @@ namespace BeachHero
         }
         #endregion
 
-        #region GetStore_Products
-        public StoreProduct GetStoreProduct(int index)
+        #region Get Game Currency Helpers
+        public GameCurrencyProduct GetGameCurrencyProduct(int index)
         {
-            foreach (var product in storeDatabase.StoreProducts)
+            foreach (var product in storeDatabase.GameCurrencyProducts)
             {
                 if (product.index == index)
                 {
@@ -338,9 +351,23 @@ namespace BeachHero
             }
             return null;
         }
-        public StoreProduct GetStoreProduct(string id)
+        #endregion
+
+        #region Get Real Money Helpers 
+        public RealMoneyProduct GetRealMoneyProduct(int index)
         {
-            foreach (var product in storeDatabase.StoreProducts)
+            foreach (var product in storeDatabase.RealMoneyProducts)
+            {
+                if (product.index == index)
+                {
+                    return product;
+                }
+            }
+            return null;
+        }
+        public RealMoneyProduct GetRealMoneyProduct(string id)
+        {
+            foreach (var product in storeDatabase.RealMoneyProducts)
             {
                 if (string.Equals(product.Id, id, System.StringComparison.OrdinalIgnoreCase))
                 {
@@ -349,9 +376,9 @@ namespace BeachHero
             }
             return null;
         }
-        public string GetProductID(int index)
+        public string GetRealMoneyProductID(int index)
         {
-            foreach (var product in storeDatabase.StoreProducts)
+            foreach (var product in storeDatabase.RealMoneyProducts)
             {
                 if (product.index == index)
                 {
@@ -361,6 +388,5 @@ namespace BeachHero
             return string.Empty;
         }
         #endregion
-
     }
 }

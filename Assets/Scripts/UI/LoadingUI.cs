@@ -10,6 +10,7 @@ namespace BeachHero
         [SerializeField] private Slider loadingFillSlider;
         [SerializeField] private GameObject backgroundPanel;
         [SerializeField] private float minimumLoadingDuration = 1;
+        [SerializeField] private UiScreenTextStyler uiScreenTextStyler;
 
         private void SetActiveLoadingScreen(bool enable)
         {
@@ -25,6 +26,10 @@ namespace BeachHero
 
         public async Task LoadSceneAsync(string sceneName)
         {
+            if (uiScreenTextStyler != null)
+            {
+                uiScreenTextStyler.ApplyStyle();
+            }
             SetActiveLoadingScreen(true);
             var asyncOperation = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
             asyncOperation.allowSceneActivation = false;

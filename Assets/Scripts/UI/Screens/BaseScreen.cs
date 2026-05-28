@@ -35,15 +35,21 @@ namespace BeachHero
     [RequireComponent(typeof(TweenAnimator))]
     public class BaseScreen : MonoBehaviour, IScreen
     {
+        #region Inspector Variables
         [SerializeField] private RectTransform rect;
         [SerializeField] private RectTransform notchSafeArea;
         [SerializeField] private ScreenType screenType;
         [SerializeField] private ScreenTabType defaultOpenTab;
         [SerializeField] private List<BaseScreenTab> tabs;
         [SerializeField] private TweenAnimator openAnimator;
+        [SerializeField] private UiScreenTextStyler uiScreenTextStyler;
+        #endregion
 
+        #region Private Variables
         private ScreenTabType currentOpenTab;
+        #endregion
 
+        #region Properties 
         public TweenAnimator OpenAnimator => openAnimator;
         public ScreenType ScreenType => screenType;
         public List<BaseScreenTab> Tabs { get => tabs; }
@@ -51,6 +57,7 @@ namespace BeachHero
         public ScreenTabType CurrentOpenTab { get => currentOpenTab; }
         public bool IsScreenOpen { get => gameObject.activeSelf; }
         public bool IsAnyTabOpened { get => tabs.Exists(tab => tab.IsOpen); }
+        #endregion
 
         #region IScreen Implementation
         public virtual void Open(ScreenTabType screenTabType)
@@ -59,6 +66,10 @@ namespace BeachHero
             if (notchSafeArea != null)
             {
                 UIController.GetInstance.NotchSafeArea.RegisterRectTransform(notchSafeArea);
+            }
+            if (uiScreenTextStyler != null)
+            {
+                uiScreenTextStyler.ApplyStyle();
             }
             openAnimator.BuildSequence();
             openAnimator.OnComplete(() => UIController.GetInstance.EndTransition());
@@ -95,7 +106,7 @@ namespace BeachHero
         public virtual void OnScreenOpened()
         {
             //override in child classes if you want to do something when the screen is opened.
-            OpenAnimator.Play();
+            openAnimator.Play();
         }
         #endregion
 

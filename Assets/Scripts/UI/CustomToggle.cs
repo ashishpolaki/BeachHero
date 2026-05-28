@@ -1,5 +1,6 @@
 using LitMotion;
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -11,6 +12,10 @@ namespace BeachHero
         [SerializeField] private RectTransform knobRect;
         [SerializeField] private Slider fillSlider;
         [SerializeField] private float moveDuration = 0.25f;
+        [SerializeField] private TextMeshProUGUI onText;
+        [SerializeField] private TextMeshProUGUI offText;
+        [SerializeField] private Color enableTextColor;
+        [SerializeField] private Color disableTextColor;
 
         private bool toggled = false;
         private float knobAnchorX;
@@ -52,6 +57,13 @@ namespace BeachHero
             {
               //  knobRect.anchoredPosition = new Vector2(toggled ? -knobAnchorX : knobAnchorX, knobRect.anchoredPosition.y);
                 fillSlider.value = toggled ? 1f : 0f;
+            }
+
+            //Set Color
+            if(onText != null && offText != null)
+            {
+                onText.color = toggled ? enableTextColor : disableTextColor;
+                offText.color = !toggled ? enableTextColor : disableTextColor;
             }
         }
     }

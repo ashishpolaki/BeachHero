@@ -1,26 +1,19 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace BeachHero
 {
-    [System.Serializable]
-    public struct RewardAdItemUI
-    {
-        public StoreItemType itemType;
-        public int quantity;
-        public TextMeshProUGUI quantityText;
-        public Button watchAdButton;
-    }
     public class StoreUIScreen : BaseScreen
     {
         [SerializeField] private Button homeButton;
         [SerializeField] private Transform content;
         private int currentPurchaseIndex;
 
-        public StoreProductUI[] storeProducts;
+        public RealMoneyProductUI[] realMoneyProductsList;
+        public GameCurrencyProductUI[] gameCurrencyProductsList;
         public RewardAdItemUI[] rewardAdItems;
 
+        #region BaseScreen Overrides
         public override void Open(ScreenTabType screenTabType)
         {
             base.Open(screenTabType);
@@ -33,12 +26,9 @@ namespace BeachHero
             base.Close();
             RemoveListener();
         }
+        #endregion
 
-        private void OpenHome()
-        {
-            UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
-        }
-
+        #region Initialize
         private void InitializeRewardedADItems()
         {
             for (int i = 0; i < rewardAdItems.Length; i++)
@@ -50,35 +40,27 @@ namespace BeachHero
                 }
             }
         }
-
         private void InitializeIAPItems()
         {
-            for (int i = 0; i < storeProducts.Length; i++)
+            for (int i = 0; i < realMoneyProductsList.Length; i++)
             {
-                StoreProduct product = GameController.GetInstance.StoreController.GetStoreProduct(storeProducts[i].index);
+                RealMoneyProduct product = GameController.GetInstance.StoreController.GetRealMoneyProduct(realMoneyProductsList[i].index);
                 if (product != null)
                 {
                     int productIndex = i;
-                    if (product.isRealMoney)
-                    {
-                        storeProducts[productIndex].realMoneyPriceText.text = product.realMoneyCost;
-                    }
-                    if (product.isGameCurrency)
-                    {
-                        storeProducts[productIndex].gameCurrencyPriceText.text = product.gameCurrencyCost.ToString();
-                    }
+                    realMoneyProductsList[productIndex].priceText.text = product.realMoneyCost;
 
-                    // Set Quantity Text for Product Contents
-                    if (storeProducts[productIndex].contentUis.Length > 0)
+                    // Set Quantity Text 
+                    if (realMoneyProductsList[productIndex].storeRewardUIs.Length > 0)
                     {
-                        for (int j = 0; j < storeProducts[productIndex].contentUis.Length; j++)
+                        for (int j = 0; j < realMoneyProductsList[productIndex].storeRewardUIs.Length; j++)
                         {
                             int contentUIIndex = j;
-                            if (storeProducts[productIndex].contentUis[contentUIIndex].itemType == product.contents[contentUIIndex].itemType)
+                            if (realMoneyProductsList[productIndex].storeRewardUIs[contentUIIndex].itemType == product.rewards[contentUIIndex].itemType)
                             {
-                                if (storeProducts[productIndex].contentUis[contentUIIndex].quantityText != null)
+                                if (realMoneyProductsList[productIndex].storeRewardUIs[contentUIIndex].quantityText != null)
                                 {
-                                    storeProducts[productIndex].contentUis[contentUIIndex].quantityText.text = product.contents[contentUIIndex].quantity.ToString();
+                                    realMoneyProductsList[productIndex].storeRewardUIs[contentUIIndex].quantityText.text = product.rewards[contentUIIndex].quantity.ToString();
                                 }
                             }
                         }
@@ -87,26 +69,58 @@ namespace BeachHero
             }
         }
 
+        private void InitializeGameCurrencyProducts()
+        {
+            for (int i = 0; i < gameCurrencyProductsList.Length; i++)
+            {
+                GameCurrencyProduct product = GameController.GetInstance.StoreController.GetGameCurrencyProduct(gameCurrencyProductsList[i].index);
+                if (product != null)
+                {
+                    int productIndex = i;
+                    // Set Game Currency Price Text
+                    gameCurrencyProductsList[productIndex].priceText.text = product.gameCurrencyCost.ToString();
+
+                    if (gameCurrencyProductsList[productIndex].storeRewardUIs.Length > 0)
+                    {
+                        for (int j = 0; j < gameCurrencyProductsList[productIndex].storeRewardUIs.Length; j++)
+                        {
+                            int contentUIIndex = j;
+                            if (gameCurrencyProductsList[productIndex].storeRewardUIs[contentUIIndex].itemType == product.rewards[contentUIIndex].itemType)
+                            {
+                                if (gameCurrencyProductsList[productIndex].storeRewardUIs[contentUIIndex].quantityText != null)
+                                {
+                                    gameCurrencyProductsList[productIndex].storeRewardUIs[contentUIIndex].quantityText.text = product.rewards[contentUIIndex].quantity.ToString();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region Button Listeners
         private void AddListener()
         {
             GameController.GetInstance.StoreController.OnStoreItemPurchaseAction += OnPurchaseSuccess;
-            homeButton.ButtonRegister(OpenHome);
-            //Store Products
-            for (int i = 0; i < storeProducts.Length; i++)
+            homeButton.ButtonRegister(OpenHomeButtonListener);
+            //Real Money Products
+            for (int i = 0; i < realMoneyProductsList.Length; i++)
             {
-                // Game Currency button
-                if (storeProducts[i].gameCurrencyPurchaseButton != null)
+                if (realMoneyProductsList[i].purchaseButton != null)
                 {
                     int index = i;
-                    storeProducts[index].gameCurrencyPurchaseButton.ButtonRegister(() => GameCurrencyPurchaseButton(storeProducts[index].index));
-                }
-                // Real Money button
-                if (storeProducts[i].realMoneyPurchaseButton != null)
-                {
-                    int index = i;
-                    storeProducts[index].realMoneyPurchaseButton.ButtonRegister(() => RealMoneyPurchaseButton(storeProducts[index].index));
+                    realMoneyProductsList[index].purchaseButton.ButtonRegister(() => RealMoneyPurchaseButton(realMoneyProductsList[index].index));
                 }
             }
+
+            // Game Currency Products
+            for (int i = 0; i < gameCurrencyProductsList.Length; i++)
+            {
+                int index = i;
+                gameCurrencyProductsList[index].purchaseButton.ButtonRegister(() => GameCurrencyPurchaseButton(gameCurrencyProductsList[index].index));
+            }
+
             // Rewarded AD Items
             for (int i = 0; i < rewardAdItems.Length; i++)
             {
@@ -124,28 +138,42 @@ namespace BeachHero
         private void RemoveListener()
         {
             GameController.GetInstance.StoreController.OnStoreItemPurchaseAction -= OnPurchaseSuccess;
-            homeButton.ButtonDeRegister(OpenHome);
-            //Store Products
-            for (int i = 0; i < storeProducts.Length; i++)
+            homeButton.ButtonDeRegister(OpenHomeButtonListener);
+            //Real Money Products
+            for (int i = 0; i < realMoneyProductsList.Length; i++)
             {
-                if (storeProducts[i].gameCurrencyPurchaseButton != null)
+                if (realMoneyProductsList[i].purchaseButton != null)
                 {
-                    storeProducts[i].gameCurrencyPurchaseButton.ButtonDeRegisterAll();
-                }
-                if (storeProducts[i].realMoneyPurchaseButton != null)
-                {
-                    storeProducts[i].realMoneyPurchaseButton.ButtonDeRegisterAll();
+                    int index = i;
+                    realMoneyProductsList[index].purchaseButton.ButtonDeRegister(() => RealMoneyPurchaseButton(realMoneyProductsList[index].index));
                 }
             }
+
+            // Game Currency Products
+            for (int i = 0; i < gameCurrencyProductsList.Length; i++)
+            {
+                int index = i;
+                gameCurrencyProductsList[index].purchaseButton.ButtonDeRegister(() => GameCurrencyPurchaseButton(gameCurrencyProductsList[index].index));
+            }
+
             // Rewarded AD Items
             for (int i = 0; i < rewardAdItems.Length; i++)
             {
                 if (rewardAdItems[i].watchAdButton != null)
                 {
-                    rewardAdItems[i].watchAdButton.ButtonDeRegisterAll();
+                    int index = i;
+                    rewardAdItems[index].watchAdButton.ButtonDeRegister(() =>
+                    {
+                        HandleRewardAdButton(index);
+                    });
                 }
             }
         }
+        private void OpenHomeButtonListener()
+        {
+            UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
+        }
+        #endregion
 
         private void HandleRewardAdButton(int index)
         {
@@ -159,7 +187,7 @@ namespace BeachHero
                 {
                     GameController.GetInstance.PowerupController.UpdateMagnetBalance(rewardAdItems[index].quantity);
                 }
-                else if(rewardAdItems[index].itemType == StoreItemType.SpeedBoost)
+                else if (rewardAdItems[index].itemType == StoreItemType.SpeedBoost)
                 {
                     GameController.GetInstance.PowerupController.UpdateSpeedBoostBalance(rewardAdItems[index].quantity);
                 }
