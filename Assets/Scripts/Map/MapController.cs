@@ -41,6 +41,8 @@ namespace BeachHero
         [Header("Map")]
         [SerializeField] private List<MapLevelSpawnData> mapLevels = new List<MapLevelSpawnData>();
         [SerializeField] private Transform levelsParent;
+
+        [Header("LevelNumbers Text Style")]
         [SerializeField] private TextMeshPro[] levelNumbersTexts;
         [SerializeField] private Color underlayColor;
         [SerializeField] private float underlayOffsetX;
@@ -55,6 +57,11 @@ namespace BeachHero
 
         [Header("Camera Scroll")]
         [SerializeField] private float scrollSpeed = 5f;
+
+        [Header("Coming Soon")]
+        [SerializeField] private TextMeshPro comingSoonTxt;
+        [SerializeField] private float comingSoonOffsetY;
+        [SerializeField] private float comingSoonOffsetFromLastLevel;
         #endregion
 
         #region Private Variables
@@ -135,7 +142,7 @@ namespace BeachHero
                 Vector3 lastPos = mapLevels[MapLevels.Count - 1].levelVisual.transform.position;
                 Vector3 forward = CameraController.GetInstance.GetCameraForward(GameCameraType.Map);
                 float minY = firstPos.y - forward.y * cameraStartDistance;
-                float maxY = lastPos.y - forward.y * cameraEndDistance;
+                float maxY = lastPos.y - forward.y * (cameraEndDistance - comingSoonOffsetFromLastLevel);
 
                 // ===== APPLY DRAG =====
                 currentScrollY -= delta * 0.01f * scrollSpeed;
@@ -235,7 +242,7 @@ namespace BeachHero
             Vector3 firstPos = mapLevels[0].levelVisual.transform.position;
             Vector3 lastPos = mapLevels[MapLevels.Count - 1].levelVisual.transform.position;
             float minY = firstPos.y - forward.y * cameraStartDistance;
-            float maxY = lastPos.y - forward.y * cameraEndDistance;
+            float maxY = lastPos.y - forward.y * (cameraEndDistance - comingSoonOffsetFromLastLevel);
             currentScrollY = levelPos.y - 7f;
             currentScrollY = Mathf.Clamp(currentScrollY, minY, maxY);
             MoveCamera();
@@ -359,6 +366,7 @@ namespace BeachHero
             }
             isLevelsInit = true;
             SetupLevels();
+            SetComingSoonText();
         }
         public void SetupLevels()
         {
@@ -376,6 +384,14 @@ namespace BeachHero
                 t.eulerAngles = euler;
 
                 levelVisual.Setup(levelDatabase.LevelDatas[i]);
+            }
+        }
+        private void SetComingSoonText()
+        {
+            if (comingSoonTxt != null && mapLevels.Count > 0)
+            {
+                float Y = (mapLevels[^1].levelVisual.transform.position.y + comingSoonOffsetY);
+                comingSoonTxt.transform.position = new Vector3 (comingSoonTxt.transform.position.x, Y, 0);
             }
         }
         private void ApplyLevelNumberTextStyle()
@@ -447,7 +463,5 @@ namespace BeachHero
             }
         }
         #endregion
-
-
     }
 }

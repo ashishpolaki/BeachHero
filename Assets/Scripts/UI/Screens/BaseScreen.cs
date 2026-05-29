@@ -16,7 +16,8 @@ namespace BeachHero
         NoInternet,
         AdNotLoaded,
         Settings,
-        Purchase
+        Purchase,
+        RateUs
     }
     public interface IScreen
     {

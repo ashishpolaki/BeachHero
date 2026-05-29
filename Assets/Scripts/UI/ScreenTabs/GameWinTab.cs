@@ -80,6 +80,15 @@ namespace BeachHero
         }
         private async void OnNextLevel()
         {
+            bool rateUsShown = SaveSystem.LoadBool(StringUtils.RATE_US_SHOWN, false);
+            if (!rateUsShown)
+            {
+                if (GameController.GetInstance.CurrentLevelIndex + 1 > IntUtils.RATE_US_TRIGGER_LEVEL)
+                {
+                    UIController.GetInstance.ScreenEvent(ScreenType.RateUs, UIScreenEvent.Push);
+                    return;
+                }
+            }
             await UIController.GetInstance.FadeUI.FadeInASync();
             GameController.GetInstance.NextLevel();
             UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);

@@ -15,6 +15,9 @@ namespace BeachHero
         //ToonShader (ShaderGraph Properties)
         public const string TINT_COLOR = "_Tint";
 
+        //RateUS
+        public const string RATE_US_SHOWN = "RateUsShown";
+
         //Tags
         public const string PLAYER_TAG = "Player";
         public const string OBSTACLE_TAG = "Obstacle";
@@ -113,6 +116,10 @@ namespace BeachHero
 
         //Sorting Layers
         public const int TUTORIAL_CANVAS_LAYER = 2;
+
+        //Rate Us
+        public const int RATE_US_TRIGGER_LEVEL = 5;
+        public const int RATE_US_MIN_RATING_FOR_STORE = 3;
     }
 
 }

@@ -91,6 +91,14 @@ namespace BeachHero
                     SaveSystem.SaveInt($"{StringUtils.MEDAL_EARNED_PREFIX}{levelIndex}", medals);
                 }
             }
+
+            //Set TotalMedals as well
+            int totalmedals = 0;
+            for (int i = 0; i < levelDatas.Count; i++)
+            {
+                medals += levelDatas[i].MedalsEarned;
+            }
+            SaveSystem.SaveInt(StringUtils.TOTAL_MEDALS, totalmedals);
         }
         #endregion
     }
