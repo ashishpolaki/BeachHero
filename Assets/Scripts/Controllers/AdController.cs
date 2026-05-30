@@ -14,12 +14,19 @@ namespace BeachHero
         private RewardedAd rewardedAd;
 
         private Action<Reward> pendingRewardCallback;
+        private Action onInterstitialClosed;
         private bool isBannerActive = false;
         private bool isInterstitialActive = false;
         private bool isRewardEarned = false;
+        private bool skipNextInterstitial = false;
+        private int interstitialInterval = 3;
+        private int interstitialCounter = 0;
         private string gameName = "Beach Hero";
 
-        private bool isInternetAvailable => Application.internetReachability != NetworkReachability.NotReachable;
+        #region Properties
+        private bool IsInternetAvailable => Application.internetReachability != NetworkReachability.NotReachable;
+        #endregion
+
         #region Ad Id's
         // test id's ----------------------------------------
         private readonly string androidAppId = "ca-app-pub-3940256099942544~3347511713";
@@ -35,7 +42,7 @@ namespace BeachHero
         private readonly string iosRewardedAdId = "ca-app-pub-3940256099942544/1712485313";
 
         // orginal id's -------------------------------------
-        //   private string androidAppId = "";
+        // private string androidAppId = "";
         //private string androidRewardedAdId = "";
         //private string androidInterstitialAdId = "";
         //private string androidBannerAdId = "ca-app-pub-9358123754024746/6409681398";
@@ -57,6 +64,7 @@ namespace BeachHero
 #endif
             MobileAds.SetiOSAppPauseOnBackground(true);
 
+            MobileAds.RaiseAdEventsOnUnityMainThread = true;
             // Initialize the Google Mobile Ads SDK.
             MobileAds.Initialize((initStatus) =>
             {
@@ -79,14 +87,21 @@ namespace BeachHero
             RequestADs();
         }
 
+        #region No Ads
         public void PurchasedNoADsPack()
         {
             SaveSystem.SaveBool(StringUtils.NO_ADS_PURCHASED, true);
         }
+        private bool NoAdsPurchased()
+        {
+          return  SaveSystem.LoadBool(StringUtils.NO_ADS_PURCHASED, false);
+        }
+        #endregion
+
 
         public void RequestADs()
         {
-            if (!isInternetAvailable)
+            if (!IsInternetAvailable)
             {
                 return;
             }
@@ -313,7 +328,7 @@ namespace BeachHero
             {
                 pendingRewardCallback = onUserEarnedReward;
             }
-            if (!isInternetAvailable)
+            if (!IsInternetAvailable)
             {
                 // Show no internet dialog
                 UIController.GetInstance.ScreenEvent(ScreenType.NoInternet, UIScreenEvent.Push);
@@ -322,16 +337,14 @@ namespace BeachHero
             //If rewarded ad not loaded
             if (rewardedAd == null || !rewardedAd.CanShowAd())
             {
-                UIController.GetInstance.ScreenEvent(ScreenType.AdNotLoaded, UIScreenEvent.Push);
+                UIController.GetInstance.ScreenEvent(ScreenType.NoInternet, UIScreenEvent.Push);
                 RequestRewardedAD();
                 return;
             }
-
             if (rewardedAd != null && rewardedAd.CanShowAd())
             {
                 rewardedAd.Show((Reward reward) =>
                 {
-                    DebugUtils.Log("Reward earned");
                     isRewardEarned = true;
                 });
             }
@@ -383,7 +396,9 @@ namespace BeachHero
         IEnumerator IHandleRewardWithDelay(Reward reward)
         {
             yield return new WaitForSeconds(0.05f);
-            pendingRewardCallback?.Invoke(reward );
+            interstitialCounter = 0;
+            skipNextInterstitial = true;
+            pendingRewardCallback?.Invoke(reward);
             pendingRewardCallback = null;
         }
         #endregion
@@ -391,12 +406,7 @@ namespace BeachHero
         #region Interstitial AD
         public void RequestInterstitial()
         {
-            if (!isInternetAvailable)
-            {
-                return;
-            }
-
-            if (SaveSystem.LoadBool(StringUtils.NO_ADS_PURCHASED, false))
+            if (!IsInternetAvailable || NoAdsPurchased())
             {
                 return;
             }
@@ -432,10 +442,11 @@ namespace BeachHero
                     RegisterInterestialEventHandlers(interstitial);
                 });
         }
-
-        public void ShowInterstitialAd()
+        public void ShowInterstitialAd(Action action = null)
         {
-            if (SaveSystem.LoadBool(StringUtils.NO_ADS_PURCHASED, false))
+            if (action != null)
+                onInterstitialClosed = action;
+            if (!IsInternetAvailable || NoAdsPurchased())
             {
                 return;
             }
@@ -447,6 +458,26 @@ namespace BeachHero
             {
                 RequestInterstitial();
             }
+        }
+        public bool ShouldShowInterstitial()
+        {
+            // Skip only once the interstitial ad, when the user watched rewarded ad.
+            if (skipNextInterstitial)
+            {
+                skipNextInterstitial = false; 
+                return false; 
+            }
+            if (!IsInternetAvailable || NoAdsPurchased())
+            {
+                return false;
+            }
+            interstitialCounter++;
+            if (interstitialCounter >= interstitialInterval)
+            {
+                interstitialCounter = 0;
+                return true;
+            }
+            return false;
         }
 
         private void RegisterInterestialEventHandlers(InterstitialAd interstitialAd)
@@ -480,6 +511,8 @@ namespace BeachHero
                 RequestInterstitial();
                 //Fade Black Screen
                 isInterstitialActive = false;
+                onInterstitialClosed?.Invoke();
+                onInterstitialClosed = null;
                 DebugUtils.Log("Interstitial ad full screen content closed.");
             };
             // Raised when the ad failed to open full screen content.
@@ -496,12 +529,7 @@ namespace BeachHero
         #region Banner AD
         public void RequestBanner()
         {
-            if (!isInternetAvailable)
-            {
-                return;
-            }
-
-            if (SaveSystem.LoadBool(StringUtils.NO_ADS_PURCHASED, false))
+            if (!IsInternetAvailable || NoAdsPurchased())
             {
                 return;
             }
@@ -593,6 +621,11 @@ namespace BeachHero
 
         public void HideBanner()
         {
+            if (!IsInternetAvailable || NoAdsPurchased())
+            {
+                return;
+            }
+
             if (bannerView != null)
             {
                 isBannerActive = false;
@@ -602,10 +635,11 @@ namespace BeachHero
 
         public void ShowBanner()
         {
-            if (SaveSystem.LoadBool(StringUtils.NO_ADS_PURCHASED, false))
+            if (!IsInternetAvailable || NoAdsPurchased())
             {
                 return;
             }
+
             //  if (AllStringConstants.isTutorialInProgress)
             //     return;
             if (bannerView != null && !isBannerActive)

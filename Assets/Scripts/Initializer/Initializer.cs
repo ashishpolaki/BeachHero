@@ -57,7 +57,6 @@ namespace BeachHero
             CameraController.GetInstance.Init();
             TutorialController.GetInstance.Init();
             RemoteConfig.GetInstance.Init();
-            AdController.GetInstance.Init();
             HapticsManager.GetInstance.Init();
             ES3.Init();
             Febucci.UI.Core.TAnimBuilder.InitializeGlobalDatabase();
@@ -67,6 +66,7 @@ namespace BeachHero
             await UIController.GetInstance.LoadingUI.LoadSceneAsync(StringUtils.GAME_SCENE);
             GameController.GetInstance.SpawnLevel();
             await SceneLoader.GetInstance.UnloadScene(StringUtils.INIT_SCENE);
+            AdController.GetInstance.Init();
             await UIController.GetInstance.LoadingUI.DisableLoadingScreen();
         }
     }

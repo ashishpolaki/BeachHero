@@ -11,7 +11,6 @@ namespace BeachHero
         [SerializeField] private Button homeButton;
         [SerializeField] private TextMeshProUGUI gameCurrencyBalanceText;
         [SerializeField] private TextMeshProUGUI collectedGameCurrencyText;
-        [SerializeField] private TextMeshProUGUI multipleGameCurrencyTxt;
         [SerializeField] private Sprite unEarnedStarSprite;
         [SerializeField] private Sprite earnedStarSprite;
         [SerializeField] private Image[] starImages;
@@ -64,7 +63,7 @@ namespace BeachHero
                 adWatchGameCurrency = IntUtils.BASE_GAME_CURRENCY_REWARD;
             }
             //Animate game currency balance object
-            multipleGameCurrencyTxt.text = adWatchGameCurrency.ToString();
+
         }
         private void SetGameCurrencyBalance(int gameCurrency)
         {
@@ -78,7 +77,7 @@ namespace BeachHero
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
             UIController.GetInstance.FadeUI.FadeOut();
         }
-        private async void OnNextLevel()
+        private void OnNextLevel()
         {
             bool rateUsShown = SaveSystem.LoadBool(StringUtils.RATE_US_SHOWN, false);
             if (!rateUsShown)
@@ -89,6 +88,17 @@ namespace BeachHero
                     return;
                 }
             }
+            if (AdController.GetInstance.ShouldShowInterstitial())
+            {
+                AdController.GetInstance.ShowInterstitialAd(ContinueToNextLevel);
+            }
+            else
+            {
+                ContinueToNextLevel();
+            }
+        }
+        private async void ContinueToNextLevel()
+        {
             await UIController.GetInstance.FadeUI.FadeInASync();
             GameController.GetInstance.NextLevel();
             UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);

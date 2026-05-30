@@ -734,6 +734,7 @@ namespace BeachHero
             }
 
             OnCompleteSpawnAnimation?.Invoke();
+            AdController.GetInstance.ShowBanner();
         }
 
         private void SpawnTrails()

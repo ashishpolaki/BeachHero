@@ -27,6 +27,12 @@ namespace BeachHero
             SetLevelNumber();
             AddListeners();
         }
+        public override void Close()
+        {
+            base.Close();
+            RemoveListeners();
+        }
+
         public override void OnScreenOpened()
         {
             isWelcomeMessageShown = SaveSystem.LoadBool(StringUtils.SHOW_WELCOME_MESSAGE, false);
@@ -56,12 +62,6 @@ namespace BeachHero
             {
                 base.OnScreenOpened();
             }
-        }
-
-        public override void Close()
-        {
-            base.Close();
-            RemoveListeners();
         }
 
         private void AddListeners()

@@ -17,6 +17,7 @@ namespace BeachHero
             resumeButton.ButtonRegister(OnResumeButtonClick);
             homeButton.ButtonRegister(OnHomeASync);
             settingsButton.ButtonRegister(OnSettings);
+            AdController.GetInstance.HideBanner();
         }
         public override void Close()
         {
@@ -33,11 +34,13 @@ namespace BeachHero
         }
         private void OnPanelCloseClick()
         {
+            AdController.GetInstance.ShowBanner();
             GameController.GetInstance.SetGameState(GameState.Playing);
             Close();
         }
         private void OnResumeButtonClick()
         {
+            AdController.GetInstance.ShowBanner();
             GameController.GetInstance.SetGameState(GameState.Playing);
             Close();
         }

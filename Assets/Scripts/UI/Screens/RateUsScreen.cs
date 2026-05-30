@@ -56,7 +56,7 @@ namespace BeachHero
 
         private void HandleStarButton(int index)
         {
-            for (int i = 0; i < index; i++)
+            for (int i = 0; i < starImages.Length; i++)
             {
                 starImages[i].sprite = i <= index ? activeStarSprite : inactiveStarSprite;
             }

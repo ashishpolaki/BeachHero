@@ -145,7 +145,7 @@ namespace BeachHero
                 if (realMoneyProductsList[i].purchaseButton != null)
                 {
                     int index = i;
-                    realMoneyProductsList[index].purchaseButton.ButtonDeRegister(() => RealMoneyPurchaseButton(realMoneyProductsList[index].index));
+                    realMoneyProductsList[index].purchaseButton.ButtonDeRegisterAll();
                 }
             }
 
@@ -153,7 +153,7 @@ namespace BeachHero
             for (int i = 0; i < gameCurrencyProductsList.Length; i++)
             {
                 int index = i;
-                gameCurrencyProductsList[index].purchaseButton.ButtonDeRegister(() => GameCurrencyPurchaseButton(gameCurrencyProductsList[index].index));
+                gameCurrencyProductsList[index].purchaseButton.ButtonDeRegisterAll();
             }
 
             // Rewarded AD Items
@@ -162,10 +162,7 @@ namespace BeachHero
                 if (rewardAdItems[i].watchAdButton != null)
                 {
                     int index = i;
-                    rewardAdItems[index].watchAdButton.ButtonDeRegister(() =>
-                    {
-                        HandleRewardAdButton(index);
-                    });
+                    rewardAdItems[index].watchAdButton.ButtonDeRegisterAll();
                 }
             }
         }
