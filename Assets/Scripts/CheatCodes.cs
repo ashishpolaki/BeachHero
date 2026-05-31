@@ -72,6 +72,11 @@ public class CheatCodes : MonoBehaviour
     //    {
     //    }
     //}
+    [Command("PurchaseNoAds")]
+    public void PurchaseNoAds()
+    {
+        SaveSystem.SaveBool(StringUtils.NO_ADS_PURCHASED, true);
+    }
 
     [Command("unlock-powerups")]
     public static void UnlockPowerups()

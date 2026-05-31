@@ -10,6 +10,7 @@ namespace BeachHero
         //  [SerializeField] private ParticleSystem bloodParticle;
         [SerializeField] private GameObject graphicsSkin;
         [SerializeField] private GameObject graphicsUI;
+        [SerializeField] private GameObject lifeguardObj;
         [SerializeField] private Animator animatorRef;
         [SerializeField] private SkinnedMeshRenderer meshRenderer;
         [SerializeField] private float waitTimePercentage;
@@ -63,6 +64,7 @@ namespace BeachHero
             pickUpParticle.gameObject.SetActive(false);
             angryparticleSystem.Stop();
             angryparticleSystem.gameObject.SetActive(false);
+            lifeguardObj.SetActive(true);
             graphicsUI.SetActive(true);
             graphicsSkin.SetActive(true);
             animatorRef.enabled = true;
@@ -97,6 +99,7 @@ namespace BeachHero
         {
             isDrown = true;
             animatorRef.SetTrigger(DRAWN_HASH);
+            lifeguardObj.SetActive(false);
             angryparticleSystem.gameObject.SetActive(true);
             angryparticleSystem.Play();
             AudioController.GetInstance.PlaySound(AudioType.Die);

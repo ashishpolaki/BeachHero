@@ -100,7 +100,7 @@ namespace BeachHero
         }
         private void OnHomePressed()
         {
-            UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
+            Close();
         }
         //private void ChangeBoatColor(int direction)
         //{

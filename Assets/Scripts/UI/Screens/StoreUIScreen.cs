@@ -168,7 +168,7 @@ namespace BeachHero
         }
         private void OpenHomeButtonListener()
         {
-            UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
+            Close();
         }
         #endregion
 

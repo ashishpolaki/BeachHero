@@ -118,7 +118,7 @@ namespace BeachHero
 
         private void OnBoatCustomisationButtonClicked()
         {
-            UIController.GetInstance.ScreenEvent(ScreenType.BoatCustomisation, UIScreenEvent.Open);
+            UIController.GetInstance.ScreenEvent(ScreenType.BoatCustomisation, UIScreenEvent.Push);
         }
 
         private void OnPlayButtonClicked()
@@ -139,7 +139,7 @@ namespace BeachHero
         }
         private void OnStoreButtonClicked()
         {
-            UIController.GetInstance.ScreenEvent(ScreenType.Store, UIScreenEvent.Open);
+            UIController.GetInstance.ScreenEvent(ScreenType.Store, UIScreenEvent.Push);
         }
 
         private void SetLevelNumber()

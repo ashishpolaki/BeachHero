@@ -28,7 +28,6 @@ public class EditorSceneController : MonoBehaviour
     private static string icebergObstaclePath = "Assets/Prefabs/Obstacles/Iceberg.prefab";
     private static string shipWreckObstaclePath = "Assets/Prefabs/Obstacles/ShipWreck.prefab";
 
-
     public EditorSceneController()
     {
         instance = this;
