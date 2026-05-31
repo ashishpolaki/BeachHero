@@ -57,29 +57,29 @@ namespace BeachHero
                 UpdateText(gameCurrencyBalanceText, store.GameCurrencyBalance);
             }
 
-            if (magnetBalanceObject != null)
-            {
-                // Magnet
-                bool isMagnetUnlocked = GameController.GetInstance.PowerupController.IsPowerupUnlocked(PowerupType.Magnet);
-                magnetBalanceObject.SetActive(isMagnetUnlocked);
-                if (isMagnetUnlocked)
-                {
-                    SetupAddButton(addMagnetButton);
-                    UpdateText(magnetBalanceText, GameController.GetInstance.PowerupController.MagnetBalance);
-                }
-            }
+            //if (magnetBalanceObject != null)
+            //{
+            //    // Magnet
+            //    bool isMagnetUnlocked = GameController.GetInstance.PowerupController.IsPowerupUnlocked(PowerupType.Magnet);
+            //    magnetBalanceObject.SetActive(isMagnetUnlocked);
+            //    if (isMagnetUnlocked)
+            //    {
+            //        SetupAddButton(addMagnetButton);
+            //        UpdateText(magnetBalanceText, GameController.GetInstance.PowerupController.MagnetBalance);
+            //    }
+            //}
 
-            if (speedBoostBalanceObject != null)
-            {
-                //Speed Boost
-                bool isSpeedBoostUnlocked = GameController.GetInstance.PowerupController.IsPowerupUnlocked(PowerupType.SpeedBoost);
-                speedBoostBalanceObject.SetActive(isSpeedBoostUnlocked);
-                if (isSpeedBoostUnlocked)
-                {
-                    SetupAddButton(addSpeedBoostButton);
-                    UpdateText(speedBoostBalanceText, GameController.GetInstance.PowerupController.SpeedBoostBalance);
-                }
-            }
+            //if (speedBoostBalanceObject != null)
+            //{
+            //    //Speed Boost
+            //    bool isSpeedBoostUnlocked = GameController.GetInstance.PowerupController.IsPowerupUnlocked(PowerupType.SpeedBoost);
+            //    speedBoostBalanceObject.SetActive(isSpeedBoostUnlocked);
+            //    if (isSpeedBoostUnlocked)
+            //    {
+            //        SetupAddButton(addSpeedBoostButton);
+            //        UpdateText(speedBoostBalanceText, GameController.GetInstance.PowerupController.SpeedBoostBalance);
+            //    }
+            //}
         }
 
         private void UpdateText(TextMeshProUGUI text, int _balance)
@@ -93,7 +93,7 @@ namespace BeachHero
             {
                 button.ButtonRegister(() =>
                 {
-                    UIController.GetInstance.ScreenEvent(ScreenType.Store, UIScreenEvent.Open);
+                    UIController.GetInstance.ScreenEvent(ScreenType.Store, UIScreenEvent.Push);
                 });
             }
         }
@@ -101,10 +101,7 @@ namespace BeachHero
         {
             if (button != null)
             {
-                button.ButtonDeRegister(() =>
-                {
-                    UIController.GetInstance.ScreenEvent(ScreenType.Store, UIScreenEvent.Open);
-                });
+                button.ButtonDeRegisterAll();
             }
         }
 

@@ -133,8 +133,8 @@ namespace BeachHero
         {
             int unlockLevel = powerupType switch
             {
-                PowerupType.Magnet => IntUtils.MAGNET_UNLOCK_LEVEL,
-                PowerupType.SpeedBoost => IntUtils.SPEEDBOOST_UNLOCK_LEVEL,
+                PowerupType.Magnet => RemoteConfig.GetInstance.MagnetUnlockLevel,
+                PowerupType.SpeedBoost => RemoteConfig.GetInstance.SpeedBoostUnlockLevel,
                 _ => -1
             };
 

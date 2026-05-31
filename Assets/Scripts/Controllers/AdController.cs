@@ -19,7 +19,6 @@ namespace BeachHero
         private bool isInterstitialActive = false;
         private bool isRewardEarned = false;
         private bool skipNextInterstitial = false;
-        private int interstitialInterval = 3;
         private int interstitialCounter = 0;
         private string gameName = "Beach Hero";
 
@@ -52,6 +51,8 @@ namespace BeachHero
         //private string iosInterstitialAdID = "";
         //private string iosRewardedAdId = "";
         #endregion
+
+        #region Initialize
 
         public void Init()
         {
@@ -86,19 +87,12 @@ namespace BeachHero
             });
             RequestADs();
         }
-
-        #region No Ads
-        public void PurchasedNoADsPack()
+        private AdRequest CreateAdRequest()
         {
-            SaveSystem.SaveBool(StringUtils.NO_ADS_PURCHASED, true);
+            AdRequest adRequest = new AdRequest();
+            adRequest.Keywords.Add(gameName);
+            return adRequest;
         }
-        private bool NoAdsPurchased()
-        {
-          return  SaveSystem.LoadBool(StringUtils.NO_ADS_PURCHASED, false);
-        }
-        #endregion
-
-
         public void RequestADs()
         {
             if (!IsInternetAvailable)
@@ -118,6 +112,19 @@ namespace BeachHero
             // Request Native Overlay Ad
             RequestNativeOverlay();
         }
+        #endregion
+
+        #region No Ads
+        public void PurchasedNoADsPack()
+        {
+            SaveSystem.SaveBool(StringUtils.NO_ADS_PURCHASED, true);
+        }
+        private bool NoAdsPurchased()
+        {
+            return SaveSystem.LoadBool(StringUtils.NO_ADS_PURCHASED, false);
+        }
+        #endregion
+
 
         #region NativeOverlay AD
         public void RequestNativeOverlay()
@@ -283,6 +290,11 @@ namespace BeachHero
         }
         public void RequestRewardedAD()
         {
+            if (!IsInternetAvailable)
+            {
+                return;
+            }
+
             // These ad units are configured to always serve test ads.
 #if UNITY_ANDROID
             string _adUnitId = androidRewardedAdId;
@@ -298,7 +310,6 @@ namespace BeachHero
                 rewardedAd = null;
             }
             isRewardEarned = false;
-            DebugUtils.Log("Loading the rewarded ad.");
 
             // create our request used to load the ad.
             var adRequest = new AdRequest();
@@ -410,7 +421,11 @@ namespace BeachHero
             {
                 return;
             }
-
+            //Check Remote COnfig
+            if (!RemoteConfig.GetInstance.IsAllAdsEnabled || !RemoteConfig.GetInstance.IsInterstitialAdsEnabled)
+            {
+                return;
+            }
             // These ad units are configured to always serve test ads.
 #if UNITY_ANDROID
             string adUnitId = androidInterstitialAdId;
@@ -445,34 +460,46 @@ namespace BeachHero
         public void ShowInterstitialAd(Action action = null)
         {
             if (action != null)
-                onInterstitialClosed = action;
-            if (!IsInternetAvailable || NoAdsPurchased())
             {
-                return;
+                onInterstitialClosed = action;
             }
             if (interstitial != null && interstitial.CanShowAd())
             {
                 interstitial.Show();
             }
-            else
-            {
-                RequestInterstitial();
-            }
         }
         public bool ShouldShowInterstitial()
         {
-            // Skip only once the interstitial ad, when the user watched rewarded ad.
-            if (skipNextInterstitial)
-            {
-                skipNextInterstitial = false; 
-                return false; 
-            }
             if (!IsInternetAvailable || NoAdsPurchased())
             {
                 return false;
             }
+
+            //Check Remote COnfig
+            if (!RemoteConfig.GetInstance.IsAllAdsEnabled || !RemoteConfig.GetInstance.IsInterstitialAdsEnabled)
+            {
+                return false;
+            }
             interstitialCounter++;
-            if (interstitialCounter >= interstitialInterval)
+            if (GameController.GetInstance.CurrentLevelIndex + 1 < RemoteConfig.GetInstance.AdsStartLevel)
+            {
+                return false;
+            }
+
+            // Skip only once the interstitial ad, when the user watched rewarded ad.
+            if (skipNextInterstitial)
+            {
+                skipNextInterstitial = false;
+                return false;
+            }
+
+            if (interstitial == null || interstitial.CanShowAd())
+            {
+                RequestInterstitial();
+                return false;
+            }
+
+            if (interstitialCounter >= RemoteConfig.GetInstance.InterstitialInterval)
             {
                 interstitialCounter = 0;
                 return true;
@@ -534,6 +561,12 @@ namespace BeachHero
                 return;
             }
 
+            //Check Remote COnfig
+            if (!RemoteConfig.GetInstance.IsAllAdsEnabled || !RemoteConfig.GetInstance.IsBannerAdsEnabled)
+            {
+                return;
+            }
+
             if (bannerView == null)
             {
 #if UNITY_ANDROID
@@ -550,17 +583,62 @@ namespace BeachHero
             }
         }
 
-        private AdRequest CreateAdRequest()
+
+        public void HideBanner()
         {
-            AdRequest adRequest = new AdRequest();
-            adRequest.Keywords.Add(gameName);
-            return adRequest;
+            if (!IsInternetAvailable || NoAdsPurchased())
+            {
+                return;
+            }
+
+            //Check Remote COnfig
+            if (!RemoteConfig.GetInstance.IsAllAdsEnabled || !RemoteConfig.GetInstance.IsBannerAdsEnabled)
+            {
+                return;
+            }
+
+            if (bannerView != null)
+            {
+                isBannerActive = false;
+                bannerView.Hide();
+            }
         }
+
+        public void ShowBanner()
+        {
+            if (!IsInternetAvailable || NoAdsPurchased())
+            {
+                return;
+            }
+
+            //Check Remote COnfig
+            if (!RemoteConfig.GetInstance.IsAllAdsEnabled || !RemoteConfig.GetInstance.IsBannerAdsEnabled)
+            {
+                return;
+            }
+            if (GameController.GetInstance.CurrentLevelIndex + 1 < RemoteConfig.GetInstance.AdsStartLevel)
+            {
+                return;
+            }
+
+            //  if (AllStringConstants.isTutorialInProgress)
+            //     return;
+            if (bannerView != null && !isBannerActive)
+            {
+                bannerView.Show();
+                isBannerActive = true;
+            }
+            else
+            {
+                RequestBanner();
+            }
+        }
+
 
         /// <summary>
         /// Destroys the banner view.
         /// </summary>
-        public void DestroyAd()
+        public void DestroyBannerAd()
         {
             if (bannerView != null)
             {
@@ -619,39 +697,6 @@ namespace BeachHero
             DebugUtils.Log("Banner ad closed full screen content.");
         }
 
-        public void HideBanner()
-        {
-            if (!IsInternetAvailable || NoAdsPurchased())
-            {
-                return;
-            }
-
-            if (bannerView != null)
-            {
-                isBannerActive = false;
-                bannerView.Hide();
-            }
-        }
-
-        public void ShowBanner()
-        {
-            if (!IsInternetAvailable || NoAdsPurchased())
-            {
-                return;
-            }
-
-            //  if (AllStringConstants.isTutorialInProgress)
-            //     return;
-            if (bannerView != null && !isBannerActive)
-            {
-                bannerView.Show();
-                isBannerActive = true;
-            }
-            else
-            {
-                RequestBanner();
-            }
-        }
         #endregion
     }
 }

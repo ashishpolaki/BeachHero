@@ -36,14 +36,14 @@ namespace BeachHero
                 tutorialActive = false;
             }
             UpdateLevelNumber();
-            SetupPowerup(PowerupType.Magnet, magnetButton);
+           // SetupPowerup(PowerupType.Magnet, magnetButton);
             SetupPowerup(PowerupType.SpeedBoost, speedButton);
         }
         public override void Close()
         {
             base.Close();
             RemoveListeners();
-            magnetButton.DeInitialize();
+           // magnetButton.DeInitialize();
             speedButton.DeInitialize();
         }
         #endregion

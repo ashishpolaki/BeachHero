@@ -82,7 +82,7 @@ namespace BeachHero
             bool rateUsShown = SaveSystem.LoadBool(StringUtils.RATE_US_SHOWN, false);
             if (!rateUsShown)
             {
-                if (GameController.GetInstance.CurrentLevelIndex + 1 > IntUtils.RATE_US_TRIGGER_LEVEL)
+                if (GameController.GetInstance.CurrentLevelIndex + 1 > RemoteConfig.GetInstance.RateUsShowLevel)
                 {
                     UIController.GetInstance.ScreenEvent(ScreenType.RateUs, UIScreenEvent.Push);
                     return;

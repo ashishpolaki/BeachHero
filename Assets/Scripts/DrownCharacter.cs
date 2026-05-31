@@ -111,6 +111,7 @@ namespace BeachHero
             AudioController.GetInstance.PlaySound(AudioType.Collect2);
             pickUpParticle.gameObject.SetActive(true);
             pickUpParticle.Play();
+            lifeguardObj.SetActive(false);
             graphicsSkin.SetActive(false);
             graphicsUI.SetActive(false);
             isPickedUp = true;

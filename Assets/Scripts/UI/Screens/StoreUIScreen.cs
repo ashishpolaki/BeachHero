@@ -19,6 +19,7 @@ namespace BeachHero
             base.Open(screenTabType);
             InitializeIAPItems();
             InitializeRewardedADItems();
+            InitializeGameCurrencyProducts();
             AddListener();
         }
         public override void Close()

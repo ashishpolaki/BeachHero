@@ -95,8 +95,15 @@ namespace BeachHero
         //Powerup
         public const int MAGNET_UNLOCK_LEVEL = 2;
         public const int SPEEDBOOST_UNLOCK_LEVEL = 3;
+        public const int SHIELD_UNLOCK_LEVEL = 4;
+        public const int FREEZE_UNLOCK_LEVEL = 5;
+        public const int STARFISH_MULTIPLIER_UNLOCK_LEVEL = 6;
+        //Powerup Balances
         public const int DEFAULT_MAGNET_BALANCE = 2;
         public const int DEFAULT_SPEEDBOOST_BALANCE = 2;
+        public const int DEFAULT_SHIELD_BALANCE = 2;
+        public const int DEFAULT_FREEZE_BALANCE = 2;
+        public const int DEFAULT_STARFISHMULTIPLIER_BALANCE = 2;
 
         //Game Currency
         public const int DEFAULT_GAME_CURRENCY_BALANCE = 100;
@@ -120,6 +127,10 @@ namespace BeachHero
         //Rate Us
         public const int RATE_US_TRIGGER_LEVEL = 5;
         public const int RATE_US_MIN_RATING_FOR_STORE = 3;
+
+        //Ads
+        public const int INTERSTITIAL_AD_INTERVAL = 3;
+        public const int ADS_START_LEVEL = 1;
     }
 
 }

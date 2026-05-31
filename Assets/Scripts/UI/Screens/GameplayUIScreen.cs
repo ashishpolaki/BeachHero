@@ -33,6 +33,7 @@ namespace BeachHero
         [SerializeField] private Vector3 speechBubblePosition;
         #endregion
 
+        #region INterface Methods
         public override void Open(ScreenTabType screenTabType)
         {
             base.Open(screenTabType);
@@ -45,13 +46,13 @@ namespace BeachHero
             shopBtn.OnButtonReleased += OnShop;
             noAdsBtn.OnButtonReleased += OnNoAds;
             //Powerups
-            magnetPowerupButton.Init(PowerupType.Magnet, 3);
-            speedBoostPowerupButton.Init(PowerupType.SpeedBoost, 3);
+          //  magnetPowerupButton.Init(PowerupType.Magnet, SaveSystem.LoadInt(StringUtils.MAGNET_BALANCE 3);
+            speedBoostPowerupButton.Init(PowerupType.SpeedBoost);
+            //
             GameController.GetInstance.LevelController.OnPlayerTouch += HandleHidePanels;
             GameController.GetInstance.LevelController.OnDrawPathError += HandleShowPanels;
             GameController.GetInstance.LevelController.OnCompleteSpawnAnimation += HandleShowPanels;
         }
-
         public override void Close()
         {
             base.Close();
@@ -61,13 +62,16 @@ namespace BeachHero
             shopBtn.OnButtonReleased -= OnShop;
             noAdsBtn.OnButtonReleased -= OnNoAds;
             //Powerups
-            magnetPowerupButton.DeInitialize();
+           // magnetPowerupButton.DeInitialize();
             speedBoostPowerupButton.DeInitialize();
+            //
             GameController.GetInstance.LevelController.OnPlayerTouch -= HandleHidePanels;
             GameController.GetInstance.LevelController.OnDrawPathError -= HandleShowPanels;
             GameController.GetInstance.LevelController.OnCompleteSpawnAnimation -= HandleShowPanels;
         }
+        #endregion
 
+        #region Tutorial
         public void TryShowTutorialHint()
         {
             // If the player loses n in a row, show the hint with the speech bubble
@@ -87,6 +91,7 @@ namespace BeachHero
                 });
             }
         }
+        #endregion
 
         #region Containers Animation
         private void SetPanelsToHiddenPosition()
@@ -120,6 +125,7 @@ namespace BeachHero
         }
         #endregion
 
+        #region Handle Button Listener
         private void OnBoatCustomize()
         {
             GameController.GetInstance.SetGameState(GameState.Paused);
@@ -150,5 +156,7 @@ namespace BeachHero
             GameController.GetInstance.StartGameplay();
             GameController.GetInstance.LevelController.PlaySpawnAnimations();
         }
+        #endregion
+
     }
 }
