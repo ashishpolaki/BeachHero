@@ -163,7 +163,9 @@ namespace BeachHero
         public async void PlayVictoryAnimation()
         {
             currentBoat.PlayVictoryAnimation();
-            CameraController.GetInstance.OnPlayerBlendCamera(this.transform);
+            // CameraController.GetInstance.OnPlayerWin(this.transform);
+            CameraController.GetInstance.SetCameraFollow(this.transform, GameCameraType.VictoryClose);
+            CameraController.GetInstance.SetActiveCamera(GameCameraType.VictoryClose);
             AudioController.GetInstance.PlaySound(AudioType.Joy);
             await Task.Delay(1000); // Wait for 1 seconds to allow the animation to play
             GameController.GetInstance.LevelWinFeedback();

@@ -18,6 +18,7 @@ namespace BeachHero
         [SerializeField] private PowerupUIButton speedBoostPowerupButton;
 
         [Header("UI Panels")]
+        [SerializeField] private RectTransform starProgressBar;
         [SerializeField] private RectTransform powerupPanel;
         [SerializeField] private RectTransform boatPanel;
         [SerializeField] private RectTransform shopPanel;
@@ -31,6 +32,29 @@ namespace BeachHero
         [Header("Tutorial Positions")]
         [SerializeField] private Vector3 tutorialCharacterPosition;
         [SerializeField] private Vector3 speechBubblePosition;
+
+        //Star Bar
+        [Header("Star Bar")]
+        [SerializeField] private Vector3 starBarPunchScale = new Vector3(0.3f, 0.3f, 0.3f);
+        [SerializeField] private float starBarPunchDuration = 0.3f;
+        [SerializeField] private Ease starBarPunchEase = Ease.OutBounce;
+        private bool isStarBarWorldPosCached = false;
+        private Vector3 cachedStarBarWorldPos;
+        public Vector3 StarBarWorldPosition
+        {
+            get
+            {
+                if (!isStarBarWorldPosCached)
+                {
+                    isStarBarWorldPosCached = true;
+                    var cameraPos = CameraController.GetInstance.GetCameraPosition(GameCameraType.GameView);
+                    Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(CameraController.GetInstance.GetMainCamera, starProgressBar.position);
+                    cachedStarBarWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(screenPoint.x, screenPoint.y, cameraPos.y));
+                }
+                return cachedStarBarWorldPos;
+            }
+        }
+        private TweenHandle coinCollectionTween;
         #endregion
 
         #region INterface Methods
@@ -46,12 +70,13 @@ namespace BeachHero
             shopBtn.OnButtonReleased += OnShop;
             noAdsBtn.OnButtonReleased += OnNoAds;
             //Powerups
-          //  magnetPowerupButton.Init(PowerupType.Magnet, SaveSystem.LoadInt(StringUtils.MAGNET_BALANCE 3);
+            //  magnetPowerupButton.Init(PowerupType.Magnet, SaveSystem.LoadInt(StringUtils.MAGNET_BALANCE 3);
             speedBoostPowerupButton.Init(PowerupType.SpeedBoost);
             //
             GameController.GetInstance.LevelController.OnPlayerTouch += HandleHidePanels;
             GameController.GetInstance.LevelController.OnDrawPathError += HandleShowPanels;
             GameController.GetInstance.LevelController.OnCompleteSpawnAnimation += HandleShowPanels;
+            GameController.GetInstance.OnCoinCollect += HandleCoinCollection;
         }
         public override void Close()
         {
@@ -62,12 +87,13 @@ namespace BeachHero
             shopBtn.OnButtonReleased -= OnShop;
             noAdsBtn.OnButtonReleased -= OnNoAds;
             //Powerups
-           // magnetPowerupButton.DeInitialize();
+            // magnetPowerupButton.DeInitialize();
             speedBoostPowerupButton.DeInitialize();
             //
             GameController.GetInstance.LevelController.OnPlayerTouch -= HandleHidePanels;
             GameController.GetInstance.LevelController.OnDrawPathError -= HandleShowPanels;
             GameController.GetInstance.LevelController.OnCompleteSpawnAnimation -= HandleShowPanels;
+            GameController.GetInstance.OnCoinCollect -= HandleCoinCollection;
         }
         #endregion
 
@@ -126,6 +152,18 @@ namespace BeachHero
         #endregion
 
         #region Handle Button Listener
+        private void HandleCoinCollection()
+        {
+            starProgressBar.transform.localScale = Vector3.one * 0.5f;
+            coinCollectionTween.Cancel();
+            coinCollectionTween = TweenManager.PunchScale(starProgressBar.transform, starProgressBar.localScale,
+                starBarPunchScale, 2, 1, starBarPunchDuration, ease: starBarPunchEase,
+                onComplete: () =>
+                {
+                    starProgressBar.transform.localScale = Vector3.one * 0.5f;
+                });
+        }
+
         private void OnBoatCustomize()
         {
             GameController.GetInstance.SetGameState(GameState.Paused);

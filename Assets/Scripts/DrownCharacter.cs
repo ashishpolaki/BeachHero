@@ -115,7 +115,7 @@ namespace BeachHero
             graphicsSkin.SetActive(false);
             graphicsUI.SetActive(false);
             isPickedUp = true;
-            GameController.GetInstance.OnCharacterPickUp();
+            GameController.GetInstance.LevelController.OnDrownCharacterPickUp();
         }
     }
 }

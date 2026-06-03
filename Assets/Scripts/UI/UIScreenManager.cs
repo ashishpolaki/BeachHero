@@ -13,6 +13,19 @@ namespace BeachHero
         private Dictionary<ScreenType, BaseScreen> screenCache = new Dictionary<ScreenType, BaseScreen>();
         private Stack<BaseScreen> screenStack = new Stack<BaseScreen>();
 
+        public T GetScreen<T>(ScreenType screenType) where T : BaseScreen
+        {
+            System.Type type = typeof(T);
+
+            if (screenCache.TryGetValue(screenType, out BaseScreen screen))
+            {
+                return screen as T;
+            }
+
+            DebugUtils.LogError($"Screen of type {type} not found.");
+            return null;
+        }
+
         public void ScreenEvent(ScreenType screenType, UIScreenEvent uIEvent, ScreenTabType tabType)
         {
             switch (uIEvent)

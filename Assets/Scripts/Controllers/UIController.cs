@@ -41,6 +41,10 @@ namespace BeachHero
         {
             screenManager.ScreenEvent(screenType, uIScreenEvent, screenTabType);
         }
+        public Vector3 StarProgressBarWorldPosition()
+        {
+            return screenManager.GetScreen<GameplayUIScreen>(ScreenType.Gameplay).StarBarWorldPosition;
+        }
         public void StartTransition()
         {
             IsScreenTransitioning = true;
@@ -58,7 +62,7 @@ namespace BeachHero
         public void BlockInput(bool block)
         {
             IsInputBlocked = block;
-          //  screenManager.EnableCanvasGroup(!block);
+            //  screenManager.EnableCanvasGroup(!block);
         }
         #endregion
     }

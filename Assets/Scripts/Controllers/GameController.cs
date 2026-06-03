@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -48,6 +49,10 @@ namespace BeachHero
         public PowerupController PowerupController => powerupController;
         public StoreController StoreController => storeController;
         public SkinController SkinController => skinController;
+        #endregion
+
+        #region Events
+        public event Action OnCoinCollect;
         #endregion
 
         #region Unity Methods
@@ -208,13 +213,13 @@ namespace BeachHero
         #endregion
 
         #region Collect
-        public void OnCharacterPickUp()
-        {
-            levelController.OnDrownCharacterPickUp();
-        }
         public void OnGameCurrencyPickup()
         {
             levelController.OnGameCurrencyCollect();
+        }
+        public void OnGameCurrencyUIAnimation()
+        {
+            OnCoinCollect?.Invoke();
         }
         #endregion
 

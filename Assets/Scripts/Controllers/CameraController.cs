@@ -21,7 +21,7 @@ namespace BeachHero
         private GameCameraType currentCameraType = GameCameraType.None;
         private GameCameraType previousCameraType = GameCameraType.None;
         private Dictionary<GameCameraType, GameCameraConfig> cameraDictionary = new Dictionary<GameCameraType, GameCameraConfig>();
-
+        public Camera GetMainCamera => mainCamera;
         #region Initialization
         public void Init()
         {
@@ -37,12 +37,12 @@ namespace BeachHero
         #endregion
 
         #region Player Camera Blend Switch
-        public void OnPlayerBlendCamera(Transform playerTarget)
+        public void OnPlayerWin(Transform playerTarget)
         {
-            SetCameraFollow(playerTarget, GameCameraType.VictoryWide);
+         //   SetCameraFollow(playerTarget, GameCameraType.VictoryWide);
             SetCameraFollow(playerTarget, GameCameraType.VictoryClose);
-            SetActiveCamera(GameCameraType.VictoryWide);
-            StartCoroutine(PlayerCameraBlend());
+            SetActiveCamera(GameCameraType.VictoryClose);
+        //    StartCoroutine(PlayerCameraBlend());
         }
         IEnumerator PlayerCameraBlend()
         {

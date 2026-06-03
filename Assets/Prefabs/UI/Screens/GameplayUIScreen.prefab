@@ -2454,7 +2454,7 @@ GameObject:
   - component: {fileID: 5397027217195372123}
   - component: {fileID: 7751905714672076985}
   m_Layer: 5
-  m_Name: Medals
+  m_Name: StarProgressBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4195,7 +4195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rect: {fileID: 0}
-  notchSafeArea: {fileID: 0}
+  notchSafeArea: {fileID: 1594764779621576546}
   screenType: 4
   defaultOpenTab: 0
   tabs:
@@ -4210,6 +4210,7 @@ MonoBehaviour:
   noAdsBtn: {fileID: 1684634957774939956}
   magnetPowerupButton: {fileID: 9142884822784002214}
   speedBoostPowerupButton: {fileID: 3724941201248131954}
+  starProgressBar: {fileID: 5397027217195372123}
   powerupPanel: {fileID: 1599777372907131934}
   boatPanel: {fileID: 7603684751741150302}
   shopPanel: {fileID: 5229974600624317038}
@@ -4219,6 +4220,9 @@ MonoBehaviour:
   panelSlideEase: 26
   tutorialCharacterPosition: {x: 355, y: -11, z: 0}
   speechBubblePosition: {x: 167, y: 514, z: 0}
+  starBarPunchScale: {x: 0.2, y: -0.2, z: 0.1}
+  starBarPunchDuration: 0.3
+  starBarPunchEase: 0
 --- !u!114 &2230607765178972565
 MonoBehaviour:
   m_ObjectHideFlags: 0

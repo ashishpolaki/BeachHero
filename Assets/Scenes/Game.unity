@@ -3406,6 +3406,7 @@ MonoBehaviour:
   - {fileID: 433597610, guid: 1fcd89c631f68fa41b538103e1cec842, type: 3}
   - {fileID: -2023894242, guid: 1fcd89c631f68fa41b538103e1cec842, type: 3}
   waterRenderer: {fileID: 2073459226}
+  waterAnimationSpeed: 1.2
 --- !u!1 &1207955769
 GameObject:
   m_ObjectHideFlags: 0
@@ -3737,17 +3738,17 @@ PrefabInstance:
     - target: {fileID: 5459318474868316024, guid: e76a62356041eae47b1adfec2c47be66,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.9
+      value: -28
       objectReference: {fileID: 0}
     - target: {fileID: 5459318474868316024, guid: e76a62356041eae47b1adfec2c47be66,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 0.8191521
       objectReference: {fileID: 0}
     - target: {fileID: 5459318474868316024, guid: e76a62356041eae47b1adfec2c47be66,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.7071068
+      value: 0.5735764
       objectReference: {fileID: 0}
     - target: {fileID: 6657573512175329085, guid: e76a62356041eae47b1adfec2c47be66,
         type: 3}
@@ -5469,8 +5470,8 @@ Transform:
   m_GameObject: {fileID: 2073459225}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.7071068, z: 0.7071068, w: 0}
-  m_LocalPosition: {x: 0, y: -0.5, z: 7.53}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalPosition: {x: 0, y: -0.5, z: 4.8907}
+  m_LocalScale: {x: 2.56149, y: 2.44215, z: 2.7}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1157621205}
@@ -5617,13 +5618,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8443162349547700830}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.001110127, y: 0.99863994, z: 0.052095998, w: 0.0017698791}
-  m_LocalPosition: {x: -0.01, y: 0.14, z: -3.52}
-  m_LocalScale: {x: 5.2131844, y: 3.161223, z: 3.742441}
+  m_LocalRotation: {x: -0.0011753732, y: 0.9998881, z: 0.014810438, w: 0.0017272399}
+  m_LocalPosition: {x: -0.01, y: 0.14, z: -2.48}
+  m_LocalScale: {x: 10.141208, y: 3.161223, z: 3.742441}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1157621205}
-  m_LocalEulerAnglesHint: {x: -5.973, y: 179.80301, z: -0.117000006}
+  m_LocalEulerAnglesHint: {x: -1.697, y: 179.804, z: -0.132}
 --- !u!1 &3711229291184784917
 GameObject:
   m_ObjectHideFlags: 0
@@ -5747,7 +5748,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

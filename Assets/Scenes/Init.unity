@@ -242,7 +242,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _GradientTex:
-        m_Texture: {fileID: 812467666}
+        m_Texture: {fileID: 954303432}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -642,7 +642,7 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 500959292}
   m_Enabled: 1
---- !u!28 &812467666
+--- !u!28 &954303432
 Texture2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1115,37 +1115,22 @@ PrefabInstance:
     - target: {fileID: 5459318474868316024, guid: e76a62356041eae47b1adfec2c47be66,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 8.9
+      value: -28
       objectReference: {fileID: 0}
     - target: {fileID: 5459318474868316024, guid: e76a62356041eae47b1adfec2c47be66,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 0.8191521
       objectReference: {fileID: 0}
     - target: {fileID: 5459318474868316024, guid: e76a62356041eae47b1adfec2c47be66,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.7071068
+      value: 0.5735764
       objectReference: {fileID: 0}
     - target: {fileID: 6050798142971913930, guid: e76a62356041eae47b1adfec2c47be66,
         type: 3}
       propertyPath: m_RequiresDepthTextureOption
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6657573512175329085, guid: e76a62356041eae47b1adfec2c47be66,
-        type: 3}
-      propertyPath: field of view
-      value: 17.37556
-      objectReference: {fileID: 0}
-    - target: {fileID: 6657573512175329085, guid: e76a62356041eae47b1adfec2c47be66,
-        type: 3}
-      propertyPath: orthographic size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6657573512175329085, guid: e76a62356041eae47b1adfec2c47be66,
-        type: 3}
-      propertyPath: m_OcclusionCulling
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
