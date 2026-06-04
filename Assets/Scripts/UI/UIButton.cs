@@ -23,6 +23,7 @@ namespace BeachHero
         private TweenHandle scaleHandle;
         [Tooltip("Event triggered when button animation completes")]
         public event System.Action OnButtonReleased;
+        public event System.Action OnButtonPressed;
 
         #region Unity Methods
         private void Awake()
@@ -109,6 +110,7 @@ namespace BeachHero
         }
         public virtual void PlayPressAnimation()
         {
+            OnButtonPressed?.Invoke();
             AnimateScale(Vector3.one * pressedScale, pressEase);
         }
         public virtual void PlayReleaseAnimation()

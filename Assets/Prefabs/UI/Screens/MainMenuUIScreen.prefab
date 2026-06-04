@@ -1029,6 +1029,10 @@ MonoBehaviour:
   tabs: []
   openAnimator: {fileID: 4957659438004857057}
   uiScreenTextStyler: {fileID: 4484652679048783822}
+  playButtonSprite: {fileID: 21300000, guid: c2a055ed4887b0b48b33f83f2bbfbe81, type: 3}
+  buttonsShineEffect:
+  - {fileID: 6141731314663002349}
+  - {fileID: 4284996757027870282}
   boatCustomisationButton: {fileID: 971613588692747548}
   playButton: {fileID: 5887865604330089652}
   storeButton: {fileID: 2446996965009974112}
@@ -1037,7 +1041,6 @@ MonoBehaviour:
   shareGameButton: {fileID: 7113716117991832987}
   noAdsButton: {fileID: 5943553242421759411}
   levelNumberText: {fileID: 3942195231119110490}
-  playButtonSprite: {fileID: 21300000, guid: c2a055ed4887b0b48b33f83f2bbfbe81, type: 3}
   tutorialCharacterPosition: {x: 355, y: -11, z: 0}
   speechBubblePosition: {x: 167, y: 514, z: 0}
 --- !u!114 &4957659438004857057
@@ -1434,6 +1437,7 @@ GameObject:
   - component: {fileID: 5664848389818520404}
   - component: {fileID: 3124474705223618393}
   - component: {fileID: 5943553242421759411}
+  - component: {fileID: 4284996757027870282}
   m_Layer: 5
   m_Name: NoAdsBar
   m_TagString: Untagged
@@ -1482,7 +1486,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: bba6d46cf9b018d4d8df51f85ac8350c, type: 2}
   m_Color: {r: 0.9622642, g: 0.9622642, b: 0.9622642, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -1520,6 +1524,26 @@ MonoBehaviour:
   tweenDuration: 0.15
   pressEase: 26
   releaseEase: 26
+--- !u!114 &4284996757027870282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4130976297580587677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b743020052cadc46b6e78688cf1404f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 3124474705223618393}
+  shineWidth: 0.019
+  shineIntensity: 0.46
+  shineRotation: 0.84
+  ease: 0
+  duration: 3
+  loop: 1
+  loopDelay: 0.1
 --- !u!1 &4696696418241639894
 GameObject:
   m_ObjectHideFlags: 0
@@ -1832,7 +1856,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -5.9764, y: 8}
+  m_AnchoredPosition: {x: -0, y: 17}
   m_SizeDelta: {x: 151.1529, y: 114.8496}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8292145416871410242
@@ -1863,9 +1887,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '0
-
-'
+  m_text: Play
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a1f88a85ca911344db1847b7c4c92a87, type: 2}
   m_sharedMaterial: {fileID: -9219548683257091789, guid: a1f88a85ca911344db1847b7c4c92a87,
@@ -1893,12 +1915,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 81.92
+  m_fontSize: 73
   m_fontSizeBase: 54.3
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 81.92
+  m_fontSizeMax: 73
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -2800,6 +2822,7 @@ GameObject:
   - component: {fileID: 6944883660934015366}
   - component: {fileID: 5993284834546111571}
   - component: {fileID: 5887865604330089652}
+  - component: {fileID: 6141731314663002349}
   m_Layer: 5
   m_Name: PlayButton
   m_TagString: Untagged
@@ -2847,7 +2870,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: bba6d46cf9b018d4d8df51f85ac8350c, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -2929,6 +2952,26 @@ MonoBehaviour:
   tweenDuration: 0.15
   pressEase: 26
   releaseEase: 26
+--- !u!114 &6141731314663002349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9179211002936764314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b743020052cadc46b6e78688cf1404f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  image: {fileID: 6944883660934015366}
+  shineWidth: 0.05
+  shineIntensity: 0.48
+  shineRotation: 1.51
+  ease: 0
+  duration: 3
+  loop: 1
+  loopDelay: 0.5
 --- !u!1001 &2612062954113083190
 PrefabInstance:
   m_ObjectHideFlags: 0

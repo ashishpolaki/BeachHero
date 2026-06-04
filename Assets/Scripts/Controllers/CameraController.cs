@@ -36,21 +36,6 @@ namespace BeachHero
         }
         #endregion
 
-        #region Player Camera Blend Switch
-        public void OnPlayerWin(Transform playerTarget)
-        {
-         //   SetCameraFollow(playerTarget, GameCameraType.VictoryWide);
-            SetCameraFollow(playerTarget, GameCameraType.VictoryClose);
-            SetActiveCamera(GameCameraType.VictoryClose);
-        //    StartCoroutine(PlayerCameraBlend());
-        }
-        IEnumerator PlayerCameraBlend()
-        {
-            yield return new WaitForSeconds(playerFarToNearBlendDelay);
-            SetActiveCamera(GameCameraType.VictoryClose);
-        }
-        #endregion
-
         #region Camera Modifications
         public void SetActiveCamera(GameCameraType type)
         {

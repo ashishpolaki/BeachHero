@@ -6,6 +6,11 @@ namespace BeachHero
 {
     public class MainMenuUIScreen : BaseScreen
     {
+        [Header("References")]
+        [SerializeField] private Sprite playButtonSprite;
+        [SerializeField] private ShineEffect[] buttonsShineEffect;
+
+        [Header("UI References")]
         [SerializeField] private UIButton boatCustomisationButton;
         [SerializeField] private UIButton playButton;
         [SerializeField] private UIButton storeButton;
@@ -14,7 +19,7 @@ namespace BeachHero
         [SerializeField] private UIButton shareGameButton;
         [SerializeField] private UIButton noAdsButton;
         [SerializeField] private TextMeshProUGUI levelNumberText;
-        [SerializeField] private Sprite playButtonSprite;
+
         [Header("Tutorial Positions")]
         [SerializeField] private Vector3 tutorialCharacterPosition;
         [SerializeField] private Vector3 speechBubblePosition;
@@ -26,11 +31,20 @@ namespace BeachHero
             base.Open(screenTabType);
             SetLevelNumber();
             AddListeners();
+            for (int i = 0; i < buttonsShineEffect.Length; i++)
+            {
+                int index = i;
+                buttonsShineEffect[index].Play();
+            }
         }
         public override void Close()
         {
             base.Close();
             RemoveListeners();
+            for (int i = 0; i < buttonsShineEffect.Length; i++)
+            {
+                buttonsShineEffect[i].Stop();
+            }
         }
 
         public override void OnScreenOpened()
@@ -144,8 +158,8 @@ namespace BeachHero
 
         private void SetLevelNumber()
         {
-            int currentLevelNumber = GameController.GetInstance.CurrentLevelIndex + 1;
-            levelNumberText.text = $"{currentLevelNumber}";
+            //int currentLevelNumber = GameController.GetInstance.CurrentLevelIndex + 1;
+            //levelNumberText.text = $"{currentLevelNumber}";
         }
     }
 }

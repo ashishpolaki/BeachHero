@@ -6,9 +6,9 @@ namespace BeachHero
 {
     public class GameWinTab : BaseScreenTab
     {
-        [SerializeField] private Button nextLevelButton;
-        [SerializeField] private Button multiplyGameCurrencyButton;
-        [SerializeField] private Button homeButton;
+        [SerializeField] private UIButton nextLevelButton;
+        [SerializeField] private UIButton multiplyGameCurrencyButton;
+        [SerializeField] private UIButton homeButton;
         [SerializeField] private TextMeshProUGUI gameCurrencyBalanceText;
         [SerializeField] private TextMeshProUGUI collectedGameCurrencyText;
         [SerializeField] private Sprite unEarnedStarSprite;
@@ -17,21 +17,31 @@ namespace BeachHero
 
         private int collectedGameCurrency = 0;
         private int adWatchGameCurrency = 0;
+        private TweenHandle watchAdTween;
 
         public override void Open()
         {
             base.Open();
             SetGameCurrency();
-            nextLevelButton.ButtonRegister(OnNextLevel);
-            multiplyGameCurrencyButton.ButtonRegister(OnWatchAd);
-            homeButton.ButtonRegister(OnHomeASync);
+            nextLevelButton.OnButtonReleased += (OnNextLevel);
+            multiplyGameCurrencyButton.OnButtonReleased += (OnWatchAd);
+            multiplyGameCurrencyButton.OnButtonPressed += OnWatchRewardedAd;
+            homeButton.OnButtonReleased += (OnHomeASync);
+            watchAdTween = TweenManager.Scale(Vector3.one, Vector3.one * 1.1f, multiplyGameCurrencyButton.transform, 0.8f, LitMotion.Ease.InOutSine,
+                 loops: -1, loopType: LitMotion.LoopType.Yoyo);
         }
         public override void Close()
         {
             base.Close();
-            nextLevelButton.ButtonDeRegisterAll();
-            multiplyGameCurrencyButton.ButtonDeRegisterAll();
-            homeButton.ButtonDeRegisterAll();
+            nextLevelButton.OnButtonReleased -= (OnNextLevel);
+            multiplyGameCurrencyButton.OnButtonReleased -= (OnWatchAd);
+            multiplyGameCurrencyButton.OnButtonPressed -= OnWatchRewardedAd;
+            homeButton.OnButtonReleased -= (OnHomeASync);
+            watchAdTween.Cancel();
+        }
+        private void OnWatchRewardedAd()
+        {
+            watchAdTween.Cancel();
         }
         private void SetGameCurrency()
         {
@@ -72,10 +82,12 @@ namespace BeachHero
         }
         private async void OnHomeASync()
         {
-            await UIController.GetInstance.FadeUI.FadeInASync();
+            // await UIController.GetInstance.FadeUI.FadeInASync();
+            await UIController.GetInstance.LoadingUI.ShowLoadingScreen();
             GameController.GetInstance.BackToMainMenu();
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
-            UIController.GetInstance.FadeUI.FadeOut();
+            await UIController.GetInstance.LoadingUI.DisableLoadingScreen();
+            // UIController.GetInstance.FadeUI.FadeOut();
         }
         private void OnNextLevel()
         {
@@ -99,11 +111,11 @@ namespace BeachHero
         }
         private async void ContinueToNextLevel()
         {
-            await UIController.GetInstance.FadeUI.FadeInASync();
+            await UIController.GetInstance.LoadingUI.ShowLoadingScreen();
             GameController.GetInstance.NextLevel();
             UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);
-            await UIController.GetInstance.FadeUI.FadeOutASync();
             MapController.GetInstance.AnimateToLevel();
+            await UIController.GetInstance.LoadingUI.DisableLoadingScreen();
             GameController.GetInstance.SetGameState(GameState.Map);
         }
         private void OnWatchAd()

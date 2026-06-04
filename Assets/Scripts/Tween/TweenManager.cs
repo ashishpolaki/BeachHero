@@ -1,9 +1,9 @@
 // TweenManager.cs - Complete Static Manager for LitMotion
 using LitMotion;
 using LitMotion.Extensions;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
 
 namespace BeachHero
 {
@@ -86,11 +86,17 @@ namespace BeachHero
         #endregion
 
         #region Scale
-        public static TweenHandle Scale(Vector3 from, Vector3 to, Transform target,
-        float duration, Ease ease = Ease.Linear, System.Action onComplete = null)
+        public static TweenHandle Scale(Vector3 from, Vector3 to, Transform target, float duration,
+            Ease ease = Ease.Linear,
+      Action onComplete = null, int loops = 0, LoopType loopType = LoopType.Restart)
         {
             var motion = LMotion.Create(from, to, duration)
                                 .WithEase(ease);
+
+            if (loops != 0)
+            {
+                motion.WithLoops(loops, loopType);
+            }
 
             if (onComplete != null)
                 motion = motion.WithOnComplete(onComplete);
@@ -165,7 +171,7 @@ namespace BeachHero
 
             if (loops != 0)
             {
-                motion.WithLoops(loops);
+                motion.WithLoops(loops, loopType);
             }
 
             if (onComplete != null)
@@ -308,13 +314,28 @@ namespace BeachHero
         #region Generic Value Tweens
 
         public static TweenHandle SetFloat(float from, float to, float duration,
-            System.Action<float> setter = null, Ease ease = Ease.Linear, System.Action onComplete = null)
+            Action<float> setter = null, Ease ease = Ease.Linear, float delay = 0f,
+            int loops = 0, LoopType loopType = LoopType.Restart, Action onComplete = null)
         {
             var motion = LMotion.Create(from, to, duration);
 
+            //Ease
             if (ease != Ease.Linear)
                 motion = motion.WithEase(ease);
 
+            //Delay
+            if (delay > 0f)
+            {
+                motion = motion.WithDelay(delay, DelayType.FirstLoop);
+            }
+
+            //Loops
+            if (loops != 0)
+            {
+                motion.WithLoops(loops, loopType);
+            }
+
+            //OnComplete
             if (onComplete != null)
                 motion = motion.WithOnComplete(onComplete);
 
@@ -401,6 +422,26 @@ namespace BeachHero
             var handle = motion.BindToAlpha(target);
             return new TweenHandle(handle);
         }
+        #endregion
+
+        #region Animations
+        public static TweenSequence PlayButtonIntroAttentionAnimation(Transform transform, float duration = 0.2f, float _scale = 1.1f)
+        {
+            TweenSequence seq = new TweenSequence(LSequence.Create());
+            // Intro attention (snappy - Quad)
+            var tweenHandle1 = Scale(Vector3.zero, Vector3.one * _scale, transform, duration, Ease.OutQuad);
+            seq.Append(tweenHandle1.Handle);
+            var tweenHandle2 = Scale(Vector3.one * _scale, Vector3.one, transform, duration, Ease.InQuad);
+            seq.Append(tweenHandle2.Handle);
+            return seq;
+        }
+        public static TweenHandle PlayIdleLoopAnimation(Transform transform, float duration = 0.8f, float _scale = 1.1f)
+        {
+            //  Idle loop (smooth - Sine)
+            return Scale(Vector3.one, Vector3.one * _scale, transform, duration, Ease.InOutSine,
+                  loops: -1, loopType: LoopType.Yoyo);
+        }
+
         #endregion
     }
 

@@ -9,8 +9,9 @@ namespace BeachHero
     {
         [SerializeField] private Slider loadingFillSlider;
         [SerializeField] private GameObject backgroundPanel;
-        [SerializeField] private float minimumLoadingDuration = 1;
         [SerializeField] private UiScreenTextStyler uiScreenTextStyler;
+        [SerializeField] private float minimumLoadingDuration = 1;
+        [SerializeField] private float loadDuration = 0.5f;
 
         private void SetActiveLoadingScreen(bool enable)
         {
@@ -23,6 +24,20 @@ namespace BeachHero
         //    Vector2 scaledSize = ScreenResolutionUtils.GetSizeDeltaFromOrthoReference(referenceCharacterSize.x, referenceCharacterSize.y);
         //    tutorialCharacter.sizeDelta = scaledSize;
         //}
+
+        public async Task ShowLoadingScreen()
+        {
+            SetActiveLoadingScreen(true);
+            float barProgress = 0;
+            while (barProgress <= loadDuration)
+            {
+                barProgress += Time.deltaTime;
+                float progress = Mathf.Clamp01(barProgress / loadDuration);
+                loadingFillSlider.value = progress;
+                await Task.Yield();
+            }
+             loadingFillSlider.value = 1; // Ensure the bar is full
+        }
 
         public async Task LoadSceneAsync(string sceneName)
         {

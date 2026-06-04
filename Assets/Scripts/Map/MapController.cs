@@ -391,7 +391,7 @@ namespace BeachHero
             if (comingSoonTxt != null && mapLevels.Count > 0)
             {
                 float Y = (mapLevels[^1].levelVisual.transform.position.y + comingSoonOffsetY);
-                comingSoonTxt.transform.position = new Vector3 (comingSoonTxt.transform.position.x, Y, 0);
+                comingSoonTxt.transform.position = new Vector3(comingSoonTxt.transform.position.x, Y, 0);
             }
         }
         private void ApplyLevelNumberTextStyle()
@@ -419,9 +419,9 @@ namespace BeachHero
 
         private async void StartGame()
         {
-            await UIController.GetInstance.FadeUI.FadeInASync();
+            await UIController.GetInstance.LoadingUI.ShowLoadingScreen();
             GameController.GetInstance.StartGameplay();
-            await UIController.GetInstance.FadeUI.FadeOutASync();
+            await UIController.GetInstance.LoadingUI.DisableLoadingScreen();
             GameController.GetInstance.LevelController.PlaySpawnAnimations();
         }
 

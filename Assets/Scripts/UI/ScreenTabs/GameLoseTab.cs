@@ -6,30 +6,40 @@ namespace BeachHero
 {
     public class GameLoseTab : BaseScreenTab
     {
-        [SerializeField] private Button retryButton;
-        [SerializeField] private Button skipLevelButton;
-        [SerializeField] private Button homeButton;
+        [SerializeField] private UIButton retryButton;
+        [SerializeField] private UIButton skipLevelButton;
+        [SerializeField] private UIButton homeButton;
         [SerializeField] private GameObject gameCurrencyBalanceObject;
         [SerializeField] private TextMeshProUGUI gameCurrencyBalanceText;
         [SerializeField] private Sprite unEarnedStarSprite;
         [SerializeField] private Sprite earnedStarSprite;
         [SerializeField] private Image[] starImages;
 
+        private TweenHandle watchAdTween;
+
         public override void Open()
         {
             base.Open();
             SetGameCurrency();
             SetMedals();
-            retryButton.onClick.AddListener(OnRetryClick);
-            skipLevelButton.onClick.AddListener(OnSkipLevelClick);
-            homeButton.ButtonRegister(OnHomeASync);
+            retryButton.OnButtonReleased += (OnRetryClick);
+            skipLevelButton.OnButtonPressed += (OnWatchRewardedAd);
+            skipLevelButton.OnButtonReleased += OnSkipLevelClick;
+            homeButton.OnButtonReleased += (OnHomeASync);
+            watchAdTween = TweenManager.PlayIdleLoopAnimation(skipLevelButton.transform);   
         }
         public override void Close()
         {
             base.Close();
-            retryButton.onClick.RemoveListener(OnRetryClick);
-            skipLevelButton.onClick.RemoveListener(OnSkipLevelClick);
-            homeButton.ButtonDeRegisterAll();
+            retryButton.OnButtonReleased -= (OnRetryClick);
+            skipLevelButton.OnButtonPressed -= (OnWatchRewardedAd);
+            skipLevelButton.OnButtonReleased -= (OnSkipLevelClick);
+            homeButton.OnButtonReleased -= (OnHomeASync);
+            watchAdTween.Cancel();
+        }
+        private void OnWatchRewardedAd()
+        {
+            watchAdTween.Cancel();
         }
         private void SetMedals()
         {
@@ -58,20 +68,20 @@ namespace BeachHero
         }
         private async void OnSkipLevelASync()
         {
-            await UIController.GetInstance.FadeUI.FadeInASync();
+            await UIController.GetInstance.LoadingUI.ShowLoadingScreen();
             GameController.GetInstance.SkipLevel();
             UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);
-            await UIController.GetInstance.FadeUI.FadeOutASync();
+            await UIController.GetInstance.LoadingUI.DisableLoadingScreen();
             MapController.GetInstance.AnimateToLevel();
             GameController.GetInstance.SetGameState(GameState.Map);
         }
 
         private async void OnHomeASync()
         {
-            await UIController.GetInstance.FadeUI.FadeInASync();
+            await UIController.GetInstance.LoadingUI.ShowLoadingScreen();
             GameController.GetInstance.BackToMainMenu();
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
-            await UIController.GetInstance.FadeUI.FadeOutASync();
+            await UIController.GetInstance.LoadingUI.DisableLoadingScreen();
         }
         private void OnRetryClick()
         {

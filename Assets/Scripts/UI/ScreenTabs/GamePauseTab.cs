@@ -46,10 +46,10 @@ namespace BeachHero
         }
         private async void OnHomeASync()
         {
-            await UIController.GetInstance.FadeUI.FadeInASync();
+            await UIController.GetInstance.LoadingUI.ShowLoadingScreen();
             GameController.GetInstance.BackToMainMenu();
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
-            await UIController.GetInstance.FadeUI.FadeOutASync();
+            await UIController.GetInstance.LoadingUI.DisableLoadingScreen();
         }
     }
 }
