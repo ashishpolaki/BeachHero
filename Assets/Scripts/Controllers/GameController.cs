@@ -136,6 +136,11 @@ namespace BeachHero
         }
         private void IncrementLevel()
         {
+            if(currentLevelIndex + 1 >= levelDatabaseSO.TotalLevelsCount)
+            {
+                // If there are no more levels, stay on the current level.
+                return;
+            }
             if (LoadCurrentLevelNumber() == currentLevelIndex + 1)
             {
                 currentLevelIndex++;

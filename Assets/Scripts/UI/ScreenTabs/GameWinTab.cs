@@ -73,7 +73,6 @@ namespace BeachHero
                 adWatchGameCurrency = IntUtils.BASE_GAME_CURRENCY_REWARD;
             }
             //Animate game currency balance object
-
         }
         private void SetGameCurrencyBalance(int gameCurrency)
         {
@@ -114,8 +113,8 @@ namespace BeachHero
             await UIController.GetInstance.LoadingUI.ShowLoadingScreen();
             GameController.GetInstance.NextLevel();
             UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);
-            MapController.GetInstance.AnimateToLevel();
             await UIController.GetInstance.LoadingUI.DisableLoadingScreen();
+            MapController.GetInstance.AnimateToLevel();
             GameController.GetInstance.SetGameState(GameState.Map);
         }
         private void OnWatchAd()

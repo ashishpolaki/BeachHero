@@ -1,5 +1,7 @@
 using TMPro;
 using UnityEngine;
+using LitMotion;
+using System;
 
 namespace BeachHero
 {
@@ -17,6 +19,9 @@ namespace BeachHero
             public LevelVisualState state;
             public Sprite icon;
         }
+
+        #region Serialized Fields
+        [Header("References")]
         [SerializeField] private LevelData levelData;
         [SerializeField] private LevelIconState[] levelIconStates;
         [SerializeField] private SpriteRenderer levelIcon;
@@ -27,6 +32,17 @@ namespace BeachHero
         [SerializeField] private TextMeshPro levelText;
         [SerializeField] private BoxCollider boxCollider;
 
+        [Header("Animation")]
+        [SerializeField] private float pressedScale = 0.9f;
+        [SerializeField] private float hoverScale = 1.05f;
+        [SerializeField] private float tweenDuration = 0.15f;
+        [SerializeField] private Ease pressEase = Ease.OutBack;
+        [SerializeField] private Ease releaseEase = Ease.OutBack;
+        private TweenHandle scaleTween;
+        private Vector3 _originalScale;
+        #endregion
+
+        #region Properties
         public bool IsCurrentLevel => levelData.State == LevelVisualState.Current;
 
         public int LevelNumber => levelData.LevelNumber;
@@ -34,12 +50,12 @@ namespace BeachHero
         public LevelData LevelData => levelData;
 
         public LevelVisualState State => levelData.State;
+        #endregion
 
         public void SetRotation(Vector3 _rot)
         {
             levelIcon.transform.localRotation = Quaternion.Euler(_rot);
         }
-
         public void Setup(int levelnumber, float scale)
         {
             levelData.LevelNumber = levelnumber;
@@ -56,6 +72,7 @@ namespace BeachHero
         public void Setup(LevelData _levelData)
         {
             levelData = _levelData;
+            _originalScale = levelIcon.transform.localScale;
             UpdateVisual();
         }
         private void SetLevelIcon()
@@ -99,5 +116,22 @@ namespace BeachHero
             levelData.State = LevelVisualState.Current;
             UpdateVisual();
         }
+
+        #region Animation
+        public void PressAnimation(Action action = null)
+        {
+            AnimateScale(_originalScale * pressedScale, pressEase, action);
+        }
+        public void ReleaseAnimation(Action action = null)
+        {
+            AnimateScale(_originalScale, releaseEase, action);
+        }
+        private void AnimateScale(Vector3 target, Ease ease, System.Action onComplete = null)
+        {
+            scaleTween.Cancel();
+            scaleTween = TweenManager.Scale(levelIcon.transform.localScale, target, levelIcon.transform, tweenDuration, ease, onComplete);
+        }
+
+        #endregion
     }
 }

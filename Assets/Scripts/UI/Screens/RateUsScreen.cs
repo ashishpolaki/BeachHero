@@ -16,6 +16,7 @@ namespace BeachHero
         public override void Open(ScreenTabType screenTabType)
         {
             base.Open(screenTabType);
+            currentRating = 0;
             SaveSystem.SaveBool(StringUtils.RATE_US_SHOWN, true);
             for (int i = 0; i < starImages.Length; i++)
             {
@@ -41,7 +42,7 @@ namespace BeachHero
 
         private void HandleSubmitButton()
         {
-            if(currentRating >= IntUtils.RATE_US_MIN_RATING_FOR_STORE)
+            if(currentRating >= IntUtils.RATE_US_MIN_RATING_FOR_STORE || currentRating == 0)
             {
                 //Go to playstore.
                 var url = "https://play.google.com/store/apps/details?id=com.hunterKirito.BeachHero";

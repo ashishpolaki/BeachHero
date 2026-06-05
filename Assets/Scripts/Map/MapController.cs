@@ -68,6 +68,7 @@ namespace BeachHero
         private CancellationTokenSource moveCTS;
         private float currentSplinePercent = 0f;
         private bool isLevelsInit = false;
+        private bool isInLevelTransition = false;
         private int selectedLevelIndex = -1;
 
         // === Camera Scroll Variables ===
@@ -85,9 +86,8 @@ namespace BeachHero
         public SplineSystem SplineSystem => splineSystem;
         public List<MapLevelSpawnData> MapLevels => mapLevels;
         public Transform LevelsParent => levelsParent;
-        #endregion
-
         public event Action OnMapButtonsEnabled;
+        #endregion
 
         #region Unity Methods
 #if UNITY_EDITOR
@@ -155,7 +155,7 @@ namespace BeachHero
         }
         #endregion
 
-        #region Water
+        #region Water Methods
         private void InitializeWater()
         {
             if (waterTransforms == null || waterTransforms.Length == 0)
@@ -165,6 +165,7 @@ namespace BeachHero
             spriteHeight = sprite.bounds.size.y;
             spriteThreshold = spriteHeight * 2f;
         }
+
         private void UpdateWaterLoop()
         {
             if (waterTransforms == null || waterTransforms.Length == 0)
@@ -221,7 +222,7 @@ namespace BeachHero
         }
         #endregion
 
-        #region Camera 
+        #region Camera Methods
 
         private void MoveCamera()
         {
@@ -250,8 +251,7 @@ namespace BeachHero
 
         #endregion
 
-        #region Input
-
+        #region Input Methods
         private void HandleClickUp(Vector2 mousePos)
         {
             if (GameController.GetInstance.GameState != GameState.Map)
@@ -271,14 +271,22 @@ namespace BeachHero
                     var levelVisual = hit.collider.GetComponent<LevelVisual>();
                     if (levelVisual != null)
                     {
-                        selectedLevelIndex = levelVisual.LevelNumber - 1;
-                        if (selectedLevelIndex == GameController.GetInstance.CurrentLevelIndex)
+                        Action action = () =>
                         {
-                            StartGame();
-                            return;
-                        }
-                        GameController.GetInstance.SetLevel(selectedLevelIndex);
-                        MoveToLevelAsync(currentSplinePercent, mapLevels[selectedLevelIndex].splinePercent);
+                            // Prevent clicking another level while in transition
+                            if (!isInLevelTransition)
+                            {
+                                isInLevelTransition = true;
+                                selectedLevelIndex = levelVisual.LevelNumber - 1;
+                                // if the selected level is not the current level, set it as current.
+                                if (selectedLevelIndex != GameController.GetInstance.CurrentLevelIndex)
+                                {
+                                    GameController.GetInstance.SetLevel(selectedLevelIndex);
+                                }
+                                StartGame();
+                            }
+                        };
+                        levelVisual.PressAnimation(() => levelVisual.ReleaseAnimation(action));
                     }
                 }
                 else
@@ -302,37 +310,74 @@ namespace BeachHero
         {
             moveCTS?.Cancel();
             moveCTS = new CancellationTokenSource();
-
             var token = moveCTS.Token;
 
-            float time = 0f;
-            bool idleTriggered = false;
+            float totalDistance = Mathf.Abs(end - start);
+            float coveredDistance = 0f;
+            float currentSpeed = 0f;
+            float minSpeed = 0.05f; // IMPORTANT (prevents stopping early)
+            float maxSpeed = 0.08f;
+            float acceleration = 0.3f;
+            float deceleration = 0.5f;
+            float slowDownDistance = 0.08f;
+            float idleTriggerDistance = 0.01f;
             bool isForward = end > start;
+            bool isIdle = false;
+
             characterAnimator.CrossFade("Run", 0.1f);
             try
             {
-                while (time < duration)
+                while (coveredDistance < totalDistance)
                 {
                     token.ThrowIfCancellationRequested();
 
-                    time += Time.deltaTime;
+                    float remainingDistance = totalDistance - coveredDistance;
 
-                    float t = time / duration;
-                    t = Mathf.SmoothStep(0f, 1f, t);
+                    // Movement
+                    if (remainingDistance < slowDownDistance)
+                    {
+                        if (remainingDistance < idleTriggerDistance)
+                        {
+                            currentSpeed = Mathf.MoveTowards(currentSpeed, 0.1f, deceleration * Time.deltaTime);
+                        }
+                        else
+                        {
+                            currentSpeed = Mathf.MoveTowards(currentSpeed, minSpeed, deceleration * Time.deltaTime);
+                        }
 
+                    }
+                    else
+                    {
+                        currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpeed, acceleration * Time.deltaTime);
+                    }
+
+                    // Animation
+                    if (remainingDistance < idleTriggerDistance)
+                    {
+                        if (!isIdle)
+                        {
+                            characterAnimator.CrossFade("Idle", 0.2f);
+                            isIdle = true;
+                        }
+                    }
+
+                    float delta = currentSpeed * Time.deltaTime;
+
+                    // Prevent overshoot
+                    if (coveredDistance + delta > totalDistance)
+                    {
+                        delta = totalDistance - coveredDistance;
+                    }
+
+                    coveredDistance += delta;
+
+                    float t = coveredDistance / totalDistance;
                     currentSplinePercent = Mathf.Lerp(start, end, t);
 
                     UpdateCharacterTransform(currentSplinePercent, isForward);
 
-                    if (!idleTriggered && t >= 0.9f)
-                    {
-                        characterAnimator.CrossFade("Idle", 0.3f);
-                        idleTriggered = true;
-                    }
-
                     await UniTask.Yield(PlayerLoopTiming.Update, token);
                 }
-
                 currentSplinePercent = end;
                 UpdateCharacterTransform(end, isForward);
                 StartGame();
@@ -353,6 +398,15 @@ namespace BeachHero
             speed = Mathf.Clamp(speed, baseSpeed, maxSpeed);
             float duration = distance / speed;
             await MoveAlongSplineAsync(start, end, duration);
+        }
+        #endregion
+        #region Reset
+
+        public void ResetData()
+        {
+            isInLevelTransition = false;
+            moveCTS?.Cancel();
+            characterAnimator.CrossFade("Idle", 0.1f);
         }
         #endregion
 
@@ -419,6 +473,8 @@ namespace BeachHero
 
         private async void StartGame()
         {
+            isInLevelTransition = false;
+            currentSplinePercent = mapLevels[selectedLevelIndex].splinePercent;
             await UIController.GetInstance.LoadingUI.ShowLoadingScreen();
             GameController.GetInstance.StartGameplay();
             await UIController.GetInstance.LoadingUI.DisableLoadingScreen();
@@ -458,6 +514,7 @@ namespace BeachHero
             }
             else
             {
+                isInLevelTransition = true;
                 selectedLevelIndex = GameController.GetInstance.CurrentLevelIndex;
                 MoveToLevelAsync(currentSplinePercent, mapLevels[selectedLevelIndex].splinePercent);
             }

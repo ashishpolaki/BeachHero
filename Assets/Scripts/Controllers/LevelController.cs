@@ -211,7 +211,7 @@ namespace BeachHero
         private void StartSimulation()
         {
             player.StartMovement(smoothedDrawnPoints.ToArray());
-            playerPathDrawTrail.SetTrailSpeed(player.MovementSpeed / 2f);
+            playerPathDrawTrail.InitializeTrail(smoothedDrawnPoints.ToArray(), player.MovementSpeed / 2f);
             startPointBehaviour.StopRippleAnimation();
             levelPhase = LevelPhase.Simulating;
             if (playerMode == PlayerMode.FTUE)
@@ -280,6 +280,16 @@ namespace BeachHero
                 return savedCharactersList[index].transform;
 
             return null;
+        }
+        #endregion
+
+        #region Path Trail 
+        public void TrimTrailFromStart()
+        {
+            if (playerPathDrawTrail != null)
+            {
+                playerPathDrawTrail.TrimTrailFromStart();
+            }
         }
         #endregion
 

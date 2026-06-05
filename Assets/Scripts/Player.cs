@@ -250,6 +250,7 @@ namespace BeachHero
                 if (distanceToNextPoint < 0.1f) // Threshold to determine if the point is reached
                 {
                     nextPointIndex++;
+                    GameController.GetInstance.LevelController.TrimTrailFromStart();
                     if (nextPointIndex >= pointsList.Length)
                     {
                         if (GameController.GetInstance.LevelController.IsLevelPassed)
@@ -261,6 +262,7 @@ namespace BeachHero
                             GameController.GetInstance.OnLevelFailed(LevelFailDelayType.None);
                         }
                         StopMovement();
+                        GameController.GetInstance.LevelController.TrimTrailFromStart();
                     }
                 }
             }

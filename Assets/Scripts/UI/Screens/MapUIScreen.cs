@@ -45,6 +45,7 @@ namespace BeachHero
         {
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
             GameController.GetInstance.SetGameState(GameState.NotStarted);
+            MapController.GetInstance.ResetData();
         }
     }
 }
