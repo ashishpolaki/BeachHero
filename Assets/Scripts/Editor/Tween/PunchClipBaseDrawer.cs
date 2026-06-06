@@ -16,6 +16,7 @@ namespace BeachHero
             DrawIfExists(property, ref y, position, "strength");
             DrawIfExists(property, ref y, position, "transformSpace");
             DrawIfExists(property, ref y, position, "frequency");
+            DrawIfExists(property, ref y, position, "damper");
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
@@ -28,6 +29,7 @@ namespace BeachHero
             extraLines += HasProperty(property, "strength");
             extraLines += HasProperty(property, "transformSpace");
             extraLines += HasProperty(property, "frequency");
+            extraLines += HasProperty(property, "damper");
             float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;
             return baseHeight + extraLines * singleLineTotal;
         }

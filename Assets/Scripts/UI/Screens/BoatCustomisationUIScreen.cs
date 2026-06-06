@@ -101,6 +101,7 @@ namespace BeachHero
         private void OnHomePressed()
         {
             Close();
+            GameController.GetInstance.SetPreviousGameState();
         }
         //private void ChangeBoatColor(int direction)
         //{

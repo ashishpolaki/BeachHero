@@ -11,6 +11,7 @@ namespace BeachHero
         public Vector3 originalScale = Vector3.one;
         public Vector3 startValue = Vector3.one;
         public Vector3 strength = Vector3.one;
+        public float damper = 1f;
         public TransformSpace transformSpace = TransformSpace.World;
         public int frequency = 1;
 
@@ -38,7 +39,7 @@ namespace BeachHero
             {
                 DebugUtils.LogError("Target Transform is null.");
             }
-            return TweenManager.PunchPosition(target, startValue, strength, frequency, 0, duration, ease, transformSpace, null).Handle;
+            return TweenManager.PunchPosition(target, startValue, strength, frequency, damper, duration, ease, transformSpace, null).Handle;
         }
     }
 
@@ -51,7 +52,7 @@ namespace BeachHero
             {
                 DebugUtils.LogError("Target Transform is null.");
             }
-            return TweenManager.PunchScale(target, startValue, strength, frequency, 0, duration, ease, null).Handle;
+            return TweenManager.PunchScale(target, startValue, strength, frequency, damper, duration, ease, null).Handle;
         }
     }
 }

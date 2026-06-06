@@ -82,6 +82,8 @@ namespace BeachHero
         public event Action OnPlayerTouch;
         public event Action OnDrawPathError;
         public event Action OnCompleteSpawnAnimation;
+        public event Action<int> OnMedalCountUpdated;
+        public event Action OnCoinCollectAnimation;
         #endregion
 
         #region Unity Methods
@@ -228,7 +230,7 @@ namespace BeachHero
                 player.StopMovement();
             }
             // If the player failed, increment the fail counter. If they passed, reset it.
-            levelFailCounter = passed ? 0 : levelFailCounter + 1; 
+            levelFailCounter = passed ? 0 : levelFailCounter + 1;
         }
         #endregion
 
@@ -376,17 +378,22 @@ namespace BeachHero
         #endregion
 
         #region Medals
-        public void UpdateMedalCount()
+        public void CalculateStars()
         {
-            if (gameCurrencyCount >= medalCurrencyRequirements.requiredCurrencyForThreeMedals)
+            UpdateStarsCount();
+            OnMedalCountUpdated?.Invoke(MedalsEarned);
+        }
+        public void UpdateStarsCount()
+        {
+            if (gameCurrencyCount >= medalCurrencyRequirements.requiredCurrencyForThreeMedals && MedalsEarned < 3)
             {
                 MedalsEarned = 3;
             }
-            else if (gameCurrencyCount >= medalCurrencyRequirements.requiredCurrencyForTwoMedals)
+            else if (gameCurrencyCount >= medalCurrencyRequirements.requiredCurrencyForTwoMedals && MedalsEarned < 2)
             {
                 MedalsEarned = 2;
             }
-            else 
+            else if (gameCurrencyCount >= medalCurrencyRequirements.requiredCurrencyForOneMedal && MedalsEarned < 1)
             {
                 MedalsEarned = 1;
             }
@@ -397,7 +404,10 @@ namespace BeachHero
         public void OnGameCurrencyCollect()
         {
             gameCurrencyCount++;
-            UpdateMedalCount();
+        }
+        public void OnGameCurrencyAnimation()
+        {
+            OnCoinCollectAnimation?.Invoke();
         }
         private void EnsureCollectableList(CollectableType type)
         {

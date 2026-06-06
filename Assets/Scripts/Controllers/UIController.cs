@@ -41,9 +41,9 @@ namespace BeachHero
         {
             screenManager.ScreenEvent(screenType, uIScreenEvent, screenTabType);
         }
-        public Vector3 StarProgressBarWorldPosition()
+        public Vector3 StarsPanelWorldPosition()
         {
-            return screenManager.GetScreen<GameplayUIScreen>(ScreenType.Gameplay).StarBarWorldPosition;
+            return screenManager.GetScreen<GameplayUIScreen>(ScreenType.Gameplay).StarsPanelWorldPosition;
         }
         public void StartTransition()
         {

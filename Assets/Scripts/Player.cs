@@ -129,8 +129,11 @@ namespace BeachHero
         }
         public void UpdateBoat(int boatIndex, int boatColorIndex, float speed, GameObject boatPrefab)
         {
-            movementSpeed = speed;
             boatRotationSpeed = rotationSpeed;
+            if (speed > 0)
+            {
+                movementSpeed = speed;
+            }
 
             //Boat
             foreach (var boatObject in boatObjects.Values)

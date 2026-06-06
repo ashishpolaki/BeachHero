@@ -40,19 +40,17 @@ namespace BeachHero
         private int currentLevelIndex;
 
         private GameState gameState = GameState.NotStarted;
+        private GameState previousGameState = GameState.NotStarted;
 
         #region Properties
         public GameState GameState => gameState;
+        public GameState PreviousGameState => previousGameState;
         public int CurrentLevelIndex => currentLevelIndex;
         public PoolController PoolManager => poolManager;
         public LevelController LevelController => levelController;
         public PowerupController PowerupController => powerupController;
         public StoreController StoreController => storeController;
         public SkinController SkinController => skinController;
-        #endregion
-
-        #region Events
-        public event Action OnCoinCollect;
         #endregion
 
         #region Unity Methods
@@ -136,7 +134,7 @@ namespace BeachHero
         }
         private void IncrementLevel()
         {
-            if(currentLevelIndex + 1 >= levelDatabaseSO.TotalLevelsCount)
+            if (currentLevelIndex + 1 >= levelDatabaseSO.TotalLevelsCount)
             {
                 // If there are no more levels, stay on the current level.
                 return;
@@ -190,7 +188,7 @@ namespace BeachHero
         {
             if (levelController.MedalsEarned == 0)
             {
-                levelController.UpdateMedalCount();
+                levelController.UpdateStarsCount();
             }
             levelDatabaseSO.SetMedalsForLevel(currentLevelIndex, levelController.MedalsEarned);
             MapController.GetInstance.OnLevelComplete(levelController.MedalsEarned);
@@ -222,16 +220,17 @@ namespace BeachHero
         {
             levelController.OnGameCurrencyCollect();
         }
-        public void OnGameCurrencyUIAnimation()
-        {
-            OnCoinCollect?.Invoke();
-        }
         #endregion
 
         #region Utilities
         public void SetGameState(GameState state)
         {
+            previousGameState = gameState;
             gameState = state;
+        }
+        public void SetPreviousGameState()
+        {
+            gameState = previousGameState;
         }
         #endregion
     }

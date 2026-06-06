@@ -53,12 +53,12 @@ namespace BeachHero
             AudioController.GetInstance.PlaySound(AudioType.Collect1);
             GameController.GetInstance.OnGameCurrencyPickup();
 
-            Vector3 moveTarget = UIController.GetInstance.StarProgressBarWorldPosition();
+            Vector3 moveTarget = UIController.GetInstance.StarsPanelWorldPosition();
             moveTween = TweenManager.Move(transform, transform.position, moveTarget, moveDuration,
             onComplete: () =>
             {
                 ResetState();
-                GameController.GetInstance.OnGameCurrencyUIAnimation();
+                GameController.GetInstance.LevelController.OnGameCurrencyAnimation();
             });
         }
 

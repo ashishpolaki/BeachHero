@@ -1,0 +1,90 @@
+using LitMotion;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace BeachHero
+{
+    public class StarsPanelUI : MonoBehaviour
+    {
+        #region Inspector Variables
+
+        [Header("References")]
+        [SerializeField] private Image[] starImages;
+        [SerializeField] private Sprite emptyStarSprite;
+        [SerializeField] private Sprite filledStarSprite;
+        [SerializeField] private Transform starPanel;
+        public Transform StarPanel => starPanel;
+
+        [Header("StarPanel Anim Settings")]
+        [SerializeField] private Vector3 starPanelAnimScale = new Vector3(1.03f, 1.03f, 1.03f);
+        [SerializeField] private float starPanelAnimDuration = 0.09f;
+        [SerializeField] private Ease starPanelAnimEase = Ease.OutQuad;
+        [SerializeField] private float starPanelAnimReturnDuration = 0.09f;
+        [SerializeField] private Ease starPanelAnimReturnEase = Ease.InQuad;
+
+        [Header("Star Anim Settings")]
+        [SerializeField] private Vector3 starPunchScale = new Vector3(-0.5f, -0.5f, 1);
+        [SerializeField] private int starPunchFrequency = 3;
+        [SerializeField] private float starPunchDamper = 0.55f;
+        [SerializeField] private float starPunchDuration = 0.55f;
+        #endregion
+
+        #region Private Variables
+        private TweenHandle starPanelTween;
+        private int starsCollected;
+        #endregion
+
+        public void Open()
+        {
+            GameController.GetInstance.LevelController.OnMedalCountUpdated += UpdateStarFill;
+            GameController.GetInstance.LevelController.OnCoinCollectAnimation += HandleCoinCollection;
+        }
+
+        public void Close()
+        {
+            GameController.GetInstance.LevelController.OnMedalCountUpdated -= UpdateStarFill;
+            GameController.GetInstance.LevelController.OnCoinCollectAnimation -= HandleCoinCollection;
+
+            starsCollected = 0;
+            for (int i = 0; i < starImages.Length; i++)
+            {
+                starImages[i].sprite = emptyStarSprite;
+                starImages[i].transform.localScale = Vector3.one;
+            }
+        }
+
+        private void HandleCoinCollection()
+        {
+            starPanel.transform.localScale = Vector3.one;
+            starPanelTween.Cancel();
+            starPanelTween = TweenManager.Scale(starPanel.localScale, starPanelAnimScale, starPanel.transform, starPanelAnimDuration, starPanelAnimEase,
+                onComplete: () =>
+                {
+                    TweenManager.Scale(starPanel.localScale, Vector3.one, starPanel.transform, starPanelAnimReturnDuration, starPanelAnimReturnEase);
+                    GameController.GetInstance.LevelController.CalculateStars();
+                });
+        }
+
+        private void UpdateStarFill(int starsEarned)
+        {
+            if (starsEarned <= starsCollected)
+                return;
+
+            if (starImages == null)
+                return;
+
+            starPanelTween.Complete();
+
+            // ONLY animate new stars
+            for (int i = starsCollected; i < starsEarned; i++)
+            {
+                int index = i;
+                TweenManager.PunchScale(starImages[index].transform, Vector3.one, starPunchScale, starPunchFrequency, starPunchDamper, starPunchDuration, onComplete: () =>
+                 {
+                     starImages[index].sprite = filledStarSprite;
+                 });
+            }
+            starsCollected = starsEarned;
+        }
+    }
+}

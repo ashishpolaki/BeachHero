@@ -25,6 +25,7 @@ namespace BeachHero
         public override void Close()
         {
             base.Close();
+            GameController.GetInstance.SetPreviousGameState();
             RemoveListener();
         }
         #endregion

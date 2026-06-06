@@ -267,7 +267,7 @@ namespace BeachHero
 
         public static TweenHandle PunchScale(Transform transform, Vector3 amplitude, Vector3 strength,
           int frequency, float dampingRatio, float duration, Ease ease = Ease.Linear,
-          System.Action onComplete = null)
+          Action onComplete = null)
         {
             var motion = LMotion.Punch.Create(amplitude, strength, duration).WithFrequency(frequency)
                 .WithDampingRatio(dampingRatio).WithEase(ease);

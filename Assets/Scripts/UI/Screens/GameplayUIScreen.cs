@@ -1,11 +1,15 @@
 using LitMotion;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace BeachHero
 {
     public class GameplayUIScreen : BaseScreen
     {
         #region Inspector Variables
+        [Header("References")]
+        [SerializeField] private StarsPanelUI starsPanelUI;
+
         [Header("Buttons")]
         [SerializeField] private UIButton pauseButton;
         [SerializeField] private UIButton retryButton;
@@ -18,11 +22,8 @@ namespace BeachHero
         [SerializeField] private PowerupUIButton speedBoostPowerupButton;
 
         [Header("UI Panels")]
-        [SerializeField] private RectTransform starProgressBar;
-        [SerializeField] private RectTransform powerupPanel;
-        [SerializeField] private RectTransform boatPanel;
-        [SerializeField] private RectTransform shopPanel;
-        [SerializeField] private RectTransform noAdsPanel;
+        [SerializeField] private RectTransform leftPanel;
+        [SerializeField] private RectTransform rightPanel;
 
         [Header("Panel Animation Settings")]
         [SerializeField] private float panelSlideDuration = 0.5f;
@@ -32,29 +33,25 @@ namespace BeachHero
         [Header("Tutorial Positions")]
         [SerializeField] private Vector3 tutorialCharacterPosition;
         [SerializeField] private Vector3 speechBubblePosition;
+        #endregion
 
-        //Star Bar
-        [Header("Star Bar")]
-        [SerializeField] private Vector3 starBarPunchScale = new Vector3(0.3f, 0.3f, 0.3f);
-        [SerializeField] private float starBarPunchDuration = 0.3f;
-        [SerializeField] private Ease starBarPunchEase = Ease.OutBounce;
-        private bool isStarBarWorldPosCached = false;
-        private Vector3 cachedStarBarWorldPos;
-        public Vector3 StarBarWorldPosition
+        #region Properties
+        private bool isStarPanelPosCached = false;
+        private Vector3 cachedStarPanelPos;
+        public Vector3 StarsPanelWorldPosition
         {
             get
             {
-                if (!isStarBarWorldPosCached)
+                if (!isStarPanelPosCached)
                 {
-                    isStarBarWorldPosCached = true;
+                    isStarPanelPosCached = true;
                     var cameraPos = CameraController.GetInstance.GetCameraPosition(GameCameraType.GameView);
-                    Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(CameraController.GetInstance.GetMainCamera, starProgressBar.position);
-                    cachedStarBarWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(screenPoint.x, screenPoint.y, cameraPos.y));
+                    Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(CameraController.GetInstance.GetMainCamera, starsPanelUI.StarPanel.position);
+                    cachedStarPanelPos = CameraController.GetInstance.GetMainCamera.ScreenToWorldPoint(new Vector3(screenPoint.x, screenPoint.y, cameraPos.y));
                 }
-                return cachedStarBarWorldPos;
+                return cachedStarPanelPos;
             }
         }
-        private TweenHandle coinCollectionTween;
         #endregion
 
         #region INterface Methods
@@ -63,7 +60,9 @@ namespace BeachHero
             base.Open(screenTabType);
             SetPanelsToHiddenPosition();
             TryShowTutorialHint();
+            starsPanelUI.Open();
 
+            //buttons
             pauseButton.OnButtonReleased += OnPause;
             retryButton.OnButtonReleased += OnRetry;
             boatCustomisationBtn.OnButtonReleased += OnBoatCustomize;
@@ -72,28 +71,32 @@ namespace BeachHero
             //Powerups
             //  magnetPowerupButton.Init(PowerupType.Magnet, SaveSystem.LoadInt(StringUtils.MAGNET_BALANCE 3);
             speedBoostPowerupButton.Init(PowerupType.SpeedBoost);
-            //
+
+            // Events
             GameController.GetInstance.LevelController.OnPlayerTouch += HandleHidePanels;
             GameController.GetInstance.LevelController.OnDrawPathError += HandleShowPanels;
             GameController.GetInstance.LevelController.OnCompleteSpawnAnimation += HandleShowPanels;
-            GameController.GetInstance.OnCoinCollect += HandleCoinCollection;
         }
         public override void Close()
         {
             base.Close();
+            starsPanelUI.Close();
+
+            //buttons
             pauseButton.OnButtonReleased -= OnPause;
             retryButton.OnButtonReleased -= OnRetry;
             boatCustomisationBtn.OnButtonReleased -= OnBoatCustomize;
             shopBtn.OnButtonReleased -= OnShop;
             noAdsBtn.OnButtonReleased -= OnNoAds;
+
             //Powerups
             // magnetPowerupButton.DeInitialize();
             speedBoostPowerupButton.DeInitialize();
-            //
+
+            //Events
             GameController.GetInstance.LevelController.OnPlayerTouch -= HandleHidePanels;
             GameController.GetInstance.LevelController.OnDrawPathError -= HandleShowPanels;
             GameController.GetInstance.LevelController.OnCompleteSpawnAnimation -= HandleShowPanels;
-            GameController.GetInstance.OnCoinCollect -= HandleCoinCollection;
         }
         #endregion
 
@@ -122,10 +125,8 @@ namespace BeachHero
         #region Containers Animation
         private void SetPanelsToHiddenPosition()
         {
-            powerupPanel.anchoredPosition = new Vector2(-panelSlideOffset, powerupPanel.anchoredPosition.y);
-            boatPanel.anchoredPosition = new Vector2(panelSlideOffset, boatPanel.anchoredPosition.y);
-            shopPanel.anchoredPosition = new Vector2(panelSlideOffset, shopPanel.anchoredPosition.y);
-            noAdsPanel.anchoredPosition = new Vector2(panelSlideOffset, noAdsPanel.anchoredPosition.y);
+            leftPanel.anchoredPosition = new Vector2(-panelSlideOffset, leftPanel.anchoredPosition.y);
+            rightPanel.anchoredPosition = new Vector2(panelSlideOffset, rightPanel.anchoredPosition.y);
         }
         private void AnimatePanels(bool show)
         {
@@ -135,10 +136,8 @@ namespace BeachHero
             float rightPanelFromX = show ? panelSlideOffset : 0f;
             float rightPanelToX = show ? 0f : panelSlideOffset;
 
-            TweenManager.MoveAnchorOnAxis(powerupPanel, leftPanelFromX, leftPanelToX, panelSlideDuration, panelSlideEase, TransformAxis.X);
-            TweenManager.MoveAnchorOnAxis(boatPanel, rightPanelFromX, rightPanelToX, panelSlideDuration, panelSlideEase, TransformAxis.X);
-            TweenManager.MoveAnchorOnAxis(shopPanel, rightPanelFromX, rightPanelToX, panelSlideDuration, panelSlideEase, TransformAxis.X);
-            TweenManager.MoveAnchorOnAxis(noAdsPanel, rightPanelFromX, rightPanelToX, panelSlideDuration, panelSlideEase, TransformAxis.X);
+            TweenManager.MoveAnchorOnAxis(leftPanel, leftPanelFromX, leftPanelToX, panelSlideDuration, panelSlideEase, TransformAxis.X);
+            TweenManager.MoveAnchorOnAxis(rightPanel, rightPanelFromX, rightPanelToX, panelSlideDuration, panelSlideEase, TransformAxis.X);
         }
 
         private void HandleShowPanels()
@@ -152,18 +151,6 @@ namespace BeachHero
         #endregion
 
         #region Handle Button Listener
-        private void HandleCoinCollection()
-        {
-            starProgressBar.transform.localScale = Vector3.one * 0.5f;
-            coinCollectionTween.Cancel();
-            coinCollectionTween = TweenManager.PunchScale(starProgressBar.transform, starProgressBar.localScale,
-                starBarPunchScale, 2, 1, starBarPunchDuration, ease: starBarPunchEase,
-                onComplete: () =>
-                {
-                    starProgressBar.transform.localScale = Vector3.one * 0.5f;
-                });
-        }
-
         private void OnBoatCustomize()
         {
             GameController.GetInstance.SetGameState(GameState.Paused);
@@ -195,6 +182,5 @@ namespace BeachHero
             GameController.GetInstance.LevelController.PlaySpawnAnimations();
         }
         #endregion
-
     }
 }
