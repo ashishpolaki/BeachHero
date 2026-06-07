@@ -58,7 +58,6 @@ namespace BeachHero
         private void OnPathDrawn()
         {
             HideInstructionText();
-
             Close();
         }
 
