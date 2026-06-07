@@ -66,10 +66,11 @@ namespace BeachHero
                 });
 
                 // Move the tutorial character and show welcome message.
-                tc.TutorialCharacter.PlayAnimation(TutorialCharacterState.WaveHand, tutorialCharacterPosition, () =>
-                {
-                    tc.TutorialSpeechBubble.Show(StringUtils.TUTORIAL_WELCOME_MESSAGE, speechBubblePosition);
-                });
+                tc.TutorialCharacter.PlayAnimation(TutorialCharacterState.WaveHand, tutorialCharacterPosition);
+                //, () =>
+                //{
+                //    tc.TutorialSpeechBubble.Show(StringUtils.TUTORIAL_WELCOME_MESSAGE, speechBubblePosition);
+                //});
                 UIController.GetInstance.EndTransition();
             }
             else
@@ -145,7 +146,7 @@ namespace BeachHero
                 tc.HideBlockerOverlay();
                 tc.TutorialHand.Hide();
                 tc.TutorialCharacter.SkipAnimation();
-                tc.TutorialSpeechBubble.Hide();
+              //  tc.TutorialSpeechBubble.Hide();
             }
             MapController.GetInstance.SyncCharacterToLevel();
             UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);

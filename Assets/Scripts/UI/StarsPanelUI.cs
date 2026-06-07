@@ -36,6 +36,12 @@ namespace BeachHero
 
         public void Open()
         {
+            starsCollected = 0;
+            for (int i = 0; i < starImages.Length; i++)
+            {
+                starImages[i].sprite = emptyStarSprite;
+                starImages[i].transform.localScale = Vector3.one;
+            }
             GameController.GetInstance.LevelController.OnMedalCountUpdated += UpdateStarFill;
             GameController.GetInstance.LevelController.OnCoinCollectAnimation += HandleCoinCollection;
         }
@@ -44,13 +50,6 @@ namespace BeachHero
         {
             GameController.GetInstance.LevelController.OnMedalCountUpdated -= UpdateStarFill;
             GameController.GetInstance.LevelController.OnCoinCollectAnimation -= HandleCoinCollection;
-
-            starsCollected = 0;
-            for (int i = 0; i < starImages.Length; i++)
-            {
-                starImages[i].sprite = emptyStarSprite;
-                starImages[i].transform.localScale = Vector3.one;
-            }
         }
 
         private void HandleCoinCollection()

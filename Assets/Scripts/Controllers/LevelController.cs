@@ -109,6 +109,10 @@ namespace BeachHero
         #region Mouse Methods
         private void OnMouseClickDown(Vector2 position)
         {
+            if(GameController.GetInstance.GameState != GameState.Playing)
+            {
+                return;
+            }
             //Dont draw the path more than once
             if (!hasDrawnPath && levelPhase == LevelPhase.DrawingPath)
             {
@@ -126,6 +130,10 @@ namespace BeachHero
 
         private void OnMouseClickUp(Vector2 position)
         {
+            if (GameController.GetInstance.GameState != GameState.Playing)
+            {
+                return;
+            }
             if (levelPhase == LevelPhase.DrawingPath && !hasDrawnPath)
             {
                 hasDrawnPath = true;

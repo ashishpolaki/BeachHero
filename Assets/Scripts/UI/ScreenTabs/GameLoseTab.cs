@@ -21,7 +21,7 @@ namespace BeachHero
         {
             base.Open();
             SetGameCurrency();
-            SetMedals();
+            SetStars();
             retryButton.OnButtonReleased += (OnRetryClick);
             skipLevelButton.OnButtonPressed += (OnWatchRewardedAd);
             skipLevelButton.OnButtonReleased += OnSkipLevelClick;
@@ -41,7 +41,7 @@ namespace BeachHero
         {
             watchAdTween.Cancel();
         }
-        private void SetMedals()
+        private void SetStars()
         {
             foreach (var starImage in starImages)
             {
