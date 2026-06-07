@@ -1,6 +1,5 @@
 using LitMotion;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace BeachHero
 {
@@ -60,7 +59,12 @@ namespace BeachHero
             base.Open(screenTabType);
             SetPanelsToHiddenPosition();
             TryShowTutorialHint();
+
             starsPanelUI.Open();
+
+            //Powerups
+            //  magnetPowerupButton.Init(PowerupType.Magnet, SaveSystem.LoadInt(StringUtils.MAGNET_BALANCE 3);
+            speedBoostPowerupButton.Init(PowerupType.SpeedBoost);
 
             //buttons
             pauseButton.OnButtonReleased += OnPause;
@@ -68,19 +72,17 @@ namespace BeachHero
             boatCustomisationBtn.OnButtonReleased += OnBoatCustomize;
             shopBtn.OnButtonReleased += OnShop;
             noAdsBtn.OnButtonReleased += OnNoAds;
-            //Powerups
-            //  magnetPowerupButton.Init(PowerupType.Magnet, SaveSystem.LoadInt(StringUtils.MAGNET_BALANCE 3);
-            speedBoostPowerupButton.Init(PowerupType.SpeedBoost);
-
+            
             // Events
             GameController.GetInstance.LevelController.OnPlayerTouch += HandleHidePanels;
             GameController.GetInstance.LevelController.OnDrawPathError += HandleShowPanels;
-            GameController.GetInstance.LevelController.OnCompleteSpawnAnimation += HandleShowPanels;
+            GameController.GetInstance.LevelController.OnCompleteSpawnAnimation += HandleCompleteSPawnAnimation;
         }
         public override void Close()
         {
             base.Close();
             starsPanelUI.Close();
+            HandleShowPanels();
 
             //buttons
             pauseButton.OnButtonReleased -= OnPause;
@@ -96,7 +98,7 @@ namespace BeachHero
             //Events
             GameController.GetInstance.LevelController.OnPlayerTouch -= HandleHidePanels;
             GameController.GetInstance.LevelController.OnDrawPathError -= HandleShowPanels;
-            GameController.GetInstance.LevelController.OnCompleteSpawnAnimation -= HandleShowPanels;
+            GameController.GetInstance.LevelController.OnCompleteSpawnAnimation -= HandleCompleteSPawnAnimation;
         }
         #endregion
 
@@ -123,8 +125,22 @@ namespace BeachHero
         #endregion
 
         #region Containers Animation
+        private void HandleCompleteSPawnAnimation()
+        {
+            if (GameController.GetInstance.PowerupController.IsCurrentLevelUnlocksPowerup())
+            {
+                return;
+            }
+            HandleShowPanels();
+        }
         private void SetPanelsToHiddenPosition()
         {
+            // If the current level unlocks a powerup, we don't want to slide in the panels as it will reveal the new powerup.
+            if (GameController.GetInstance.PowerupController.IsCurrentLevelUnlocksPowerup())
+            {
+                AdController.GetInstance.HideBanner();
+                return;
+            }
             leftPanel.anchoredPosition = new Vector2(-panelSlideOffset, leftPanel.anchoredPosition.y);
             rightPanel.anchoredPosition = new Vector2(panelSlideOffset, rightPanel.anchoredPosition.y);
         }

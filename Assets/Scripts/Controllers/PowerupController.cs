@@ -129,6 +129,12 @@ namespace BeachHero
         #endregion
 
         #region Lock/Unlock
+        public bool IsCurrentLevelUnlocksPowerup()
+        {
+            int currentLevelNumber = GameController.GetInstance.CurrentLevelIndex + 1; // +1 because level index is 0-based
+            return IsUnlockLevelForPowerup(PowerupType.Magnet, currentLevelNumber) ||
+                   IsUnlockLevelForPowerup(PowerupType.SpeedBoost, currentLevelNumber);
+        }
         public bool IsUnlockLevelForPowerup(PowerupType powerupType, int levelNumber)
         {
             int unlockLevel = powerupType switch

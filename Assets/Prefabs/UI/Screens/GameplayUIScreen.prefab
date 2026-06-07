@@ -427,6 +427,18 @@ MonoBehaviour:
   counterText: {fileID: 7924941334593250588}
   selectedIndicator: {fileID: 5138712170663980760}
   lockObj: {fileID: 0}
+  buttonBgSprite: {fileID: 0}
+  buttonAnimationData:
+    scale: {x: 1, y: 1, z: 1}
+    rotationZ: 0
+    moveAxis: 1
+    startOffset: 0
+    moveOffset: 0
+    duration: 0.8
+    ease: 3
+    fadeDuration: 0.25
+  tutorialCharacterPosition: {x: 0, y: 0, z: 0}
+  speechBubblePosition: {x: 0, y: 0, z: 0}
 --- !u!1 &1021044496022307265
 GameObject:
   m_ObjectHideFlags: 0
@@ -444,7 +456,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &400532845681728149
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1036,6 +1048,18 @@ MonoBehaviour:
   counterText: {fileID: 7261536617323150784}
   selectedIndicator: {fileID: 1189133964383746430}
   lockObj: {fileID: 3899691007648179921}
+  buttonBgSprite: {fileID: -840349463, guid: c90fc324f424783418d99d2de4ea17f3, type: 3}
+  buttonAnimationData:
+    scale: {x: -0.7, y: 0.7, z: 0.7}
+    rotationZ: 270
+    moveAxis: 0
+    startOffset: 75
+    moveOffset: 90
+    duration: 0.7
+    ease: 3
+    fadeDuration: 0.25
+  tutorialCharacterPosition: {x: 355, y: -11, z: 0}
+  speechBubblePosition: {x: 167, y: 514.498, z: 0}
 --- !u!1 &2575575786741455977
 GameObject:
   m_ObjectHideFlags: 0
@@ -3300,7 +3324,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4931666386676049000
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3943,7 +3967,7 @@ MonoBehaviour:
   panelSlideOffset: 200
   panelSlideEase: 26
   tutorialCharacterPosition: {x: 355, y: -11, z: 0}
-  speechBubblePosition: {x: 167, y: 514, z: 0}
+  speechBubblePosition: {x: 167, y: 514.498, z: 0}
 --- !u!114 &2230607765178972565
 MonoBehaviour:
   m_ObjectHideFlags: 0

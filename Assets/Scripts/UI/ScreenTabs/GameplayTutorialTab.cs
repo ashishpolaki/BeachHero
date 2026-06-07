@@ -37,7 +37,7 @@ namespace BeachHero
         private void InitializeTutorial()
         {
             DisplayInstructionText();
-            PositionAndAnimateHand();
+            HandAnimation();
         }
 
         private void DisplayInstructionText()
@@ -62,7 +62,7 @@ namespace BeachHero
             Close();
         }
 
-        private void PositionAndAnimateHand()
+        private void HandAnimation()
         {
             var canvas = UIController.GetInstance.Canvas;
             var level = GameController.GetInstance.LevelController;

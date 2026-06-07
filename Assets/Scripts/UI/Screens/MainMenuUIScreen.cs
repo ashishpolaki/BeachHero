@@ -9,6 +9,7 @@ namespace BeachHero
         [Header("References")]
         [SerializeField] private Sprite playButtonSprite;
         [SerializeField] private ShineEffect[] buttonsShineEffect;
+        [SerializeField] private HandPointAnimation playButtonTutorialHandAnimation;
 
         [Header("UI References")]
         [SerializeField] private UIButton boatCustomisationButton;
@@ -58,11 +59,11 @@ namespace BeachHero
 
                 // Highlight the play button and show tutorial.
                 var tc = TutorialController.GetInstance;
+                tc.TutorialHand.PlayAnimation(playButtonTutorialHandAnimation, playButton.transform);
                 tc.HighlightButton(playButton.transform, playButton.GetComponent<RectTransform>().sizeDelta, playButtonSprite, true,
                 () =>
                 {
                     tc.EnsureTutorialCanvas(playButton.gameObject, StringUtils.SPRITES_ABOVE_UI_LAYER, IntUtils.TUTORIAL_CANVAS_LAYER);
-                    tc.TutorialHand.ShowHandPointing(playButton.transform);
                 });
 
                 // Move the tutorial character and show welcome message.
@@ -146,7 +147,7 @@ namespace BeachHero
                 tc.HideBlockerOverlay();
                 tc.TutorialHand.Hide();
                 tc.TutorialCharacter.SkipAnimation();
-              //  tc.TutorialSpeechBubble.Hide();
+                //  tc.TutorialSpeechBubble.Hide();
             }
             MapController.GetInstance.SyncCharacterToLevel();
             UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);
