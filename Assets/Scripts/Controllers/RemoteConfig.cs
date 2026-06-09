@@ -20,7 +20,6 @@ namespace BeachHero
 
         //Powerups
         private const string SpeedBoostUnlockLevelKey = "SpeedBoost_Unlock_Level";
-        private const string MagnetUnlockLevelKey = "Magnet_Unlock_Level";
         private const string ShieldUnlockLevelKey = "Shield_Unlock_Level";
         private const string FreezeUnlockLevelKey = "Freeze_Unlock_Level";
         private const string StarFishMultiplierUnlockLevelKey = "StarFish_Multiplier_Unlock_Level";
@@ -39,7 +38,6 @@ namespace BeachHero
 
         // Powerups - Unlock
         public int SpeedBoostUnlockLevel { get; private set; }
-        public int MagnetUnlockLevel { get; private set; }
         public int ShieldUnlockLevel { get; private set; }
         public int FreezeUnlockLevel { get; private set; }
         public int StarFishMultiplierUnlockLevel { get; private set; }
@@ -84,7 +82,6 @@ namespace BeachHero
 
             // Unlock Powerup levels
             defaults.Add(SpeedBoostUnlockLevelKey, IntUtils.SPEEDBOOST_UNLOCK_LEVEL);
-            defaults.Add(MagnetUnlockLevelKey, IntUtils.MAGNET_UNLOCK_LEVEL);
             defaults.Add(ShieldUnlockLevelKey, IntUtils.SHIELD_UNLOCK_LEVEL);
             defaults.Add(FreezeUnlockLevelKey, IntUtils.FREEZE_UNLOCK_LEVEL);
             defaults.Add(StarFishMultiplierUnlockLevelKey, IntUtils.STARFISH_MULTIPLIER_UNLOCK_LEVEL);
@@ -123,7 +120,6 @@ namespace BeachHero
             else if (fetchTask.IsCompleted)
             {
                 DebugUtils.Log("Remote Config - Fetch completed successfully!");
-
             }
 
             var info = FirebaseRemoteConfig.DefaultInstance.Info;
@@ -169,7 +165,6 @@ namespace BeachHero
 
             // Unlock levels
             SpeedBoostUnlockLevel = (int)FirebaseRemoteConfig.DefaultInstance.GetValue(SpeedBoostUnlockLevelKey).LongValue;
-            MagnetUnlockLevel = (int)FirebaseRemoteConfig.DefaultInstance.GetValue(MagnetUnlockLevelKey).LongValue;
             ShieldUnlockLevel = (int)FirebaseRemoteConfig.DefaultInstance.GetValue(ShieldUnlockLevelKey).LongValue;
             FreezeUnlockLevel = (int)FirebaseRemoteConfig.DefaultInstance.GetValue(FreezeUnlockLevelKey).LongValue;
             StarFishMultiplierUnlockLevel = (int)FirebaseRemoteConfig.DefaultInstance.GetValue(StarFishMultiplierUnlockLevelKey).LongValue;

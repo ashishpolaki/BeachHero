@@ -45,7 +45,7 @@ namespace BeachHero
             return distance;
         }
 
-        public Quaternion GetForwardRotation(float percent, bool isForward = true)
+        public Quaternion GetForwardRotation(float percent, bool forward = true)
         {
             float safePercent = Mathf.Clamp01(percent);
             safePercent = Mathf.Min(safePercent, 0.98f);
@@ -55,8 +55,10 @@ namespace BeachHero
             if (dir == Vector3.zero)
                 return Quaternion.identity;
 
-            if (!isForward)
+            if (!forward)
+            {
                 dir = -dir;
+            }
 
             return Quaternion.LookRotation(dir, Vector3.back);
         }

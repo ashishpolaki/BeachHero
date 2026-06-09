@@ -81,7 +81,7 @@ public class CheatCodes : MonoBehaviour
     [Command("unlock-powerups")]
     public static void UnlockPowerups()
     {
-        GameController.GetInstance.PowerupController.UnlockPowerup(PowerupType.Magnet);
+        GameController.GetInstance.PowerupController.UnlockPowerup(PowerupType.Shield);
         GameController.GetInstance.PowerupController.UnlockPowerup(PowerupType.SpeedBoost);
     }
 
@@ -102,12 +102,12 @@ public class CheatCodes : MonoBehaviour
     public static void SetLevel(int levelNumber)
     {
         SaveSystem.SaveInt(StringUtils.LEVELNUMBER, levelNumber);
-        SaveSystem.SaveBool(StringUtils.MAGNET_UNLOCKED, false);
+        SaveSystem.SaveBool(StringUtils.SHIELD_UNLOCKED, false);
         SaveSystem.SaveBool(StringUtils.SPEEDBOOST_UNLOCKED, false);
-        SaveSystem.SaveInt(StringUtils.MAGNET_BALANCE, IntUtils.DEFAULT_MAGNET_BALANCE);
+        SaveSystem.SaveInt(StringUtils.SHIELD_BALANCE, IntUtils.DEFAULT_SHIELD_BALANCE);
         SaveSystem.SaveInt(StringUtils.SPEEDBOOST_BALANCE, IntUtils.DEFAULT_SPEEDBOOST_BALANCE);
-        GameController.GetInstance.PowerupController.UpdateMagnetBalance(IntUtils.DEFAULT_MAGNET_BALANCE);
-        GameController.GetInstance.PowerupController.UpdateSpeedBoostBalance(IntUtils.DEFAULT_SPEEDBOOST_BALANCE);
+        GameController.GetInstance.PowerupController.UpdatePowerupBalance(PowerupType.SpeedBoost, IntUtils.DEFAULT_SPEEDBOOST_BALANCE);
+        GameController.GetInstance.PowerupController.UpdatePowerupBalance(PowerupType.Shield, IntUtils.DEFAULT_SHIELD_BALANCE);
 #if UNITY_EDITOR
         var levelDatabase = AssetDatabase.LoadAssetAtPath<LevelDatabaseSO>("Assets/ScriptableObjects/Levels/LevelsDatabase.asset");
         if (levelDatabase != null)
@@ -125,16 +125,16 @@ public class CheatCodes : MonoBehaviour
         MapController.GetInstance.SetupLevels();
     }
 
-    [Command("add-star-fish")]
+    [Command("add-coins")]
     public static void AddStarFish(int amount)
     {
         GameController.GetInstance.StoreController.IncrementGameCurrencyBalance(amount);
     }
 
-    [Command("add-magnets")]
-    public static void AddMagnets(int amount)
+    [Command("add-shields")]
+    public static void AddShields(int amount)
     {
-        GameController.GetInstance.PowerupController.OnPowerupCollected(PowerupType.Magnet, amount);
+        GameController.GetInstance.PowerupController.OnPowerupCollected(PowerupType.Shield, amount);
     }
     [Command("add-speed-boosts")]
     public static void AddSpeedBoosts(int amount)

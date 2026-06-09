@@ -299,32 +299,26 @@ namespace BeachHero
         #endregion
 
         #region Movement
-        public void UpdateCharacterTransform(float percent, bool isForward = true)
+        public void UpdateCharacterTransform(float percent,bool forward = true)
         {
             target.position = splineSystem.GetPoint(percent);
-            target.rotation = splineSystem.GetForwardRotation(percent, isForward);
+            target.rotation = splineSystem.GetForwardRotation(percent, forward);
             visualChild.localRotation = splineSystem.GetTwistRotation(percent);
         }
 
-        private async UniTask MoveAlongSplineAsync(float start, float end, float duration)
+        private async UniTask MoveAlongSplineAsync(float start, float end)
         {
             moveCTS?.Cancel();
             moveCTS = new CancellationTokenSource();
             var token = moveCTS.Token;
 
-            float totalDistance = Mathf.Abs(end - start);
+            float totalDistance = splineSystem.CalculateDistance(start, end);
             float coveredDistance = 0f;
-            float currentSpeed = 0f;
-            float minSpeed = 0.05f; // IMPORTANT (prevents stopping early)
-            float maxSpeed = 0.05f;
-            float acceleration = 0.3f;
-            float deceleration = 0.3f;
-            float slowDownDistance = 0.08f;
-            float idleTriggerDistance = 0.01f;
-            bool isForward = end > start;
+
+            float maxSpeed = 3f; // tune this only
             bool isIdle = false;
 
-            characterAnimator.CrossFade("Run", 0.1f);
+            characterAnimator.CrossFade("Run", 0.01f);
             try
             {
                 while (coveredDistance < totalDistance)
@@ -333,71 +327,48 @@ namespace BeachHero
 
                     float remainingDistance = totalDistance - coveredDistance;
 
-                    // Movement
-                    if (remainingDistance < slowDownDistance)
-                    {
-                        if (remainingDistance < idleTriggerDistance)
-                        {
-                            currentSpeed = Mathf.MoveTowards(currentSpeed, 0.1f, deceleration * Time.deltaTime);
-                        }
-                        else
-                        {
-                            currentSpeed = Mathf.MoveTowards(currentSpeed, minSpeed, deceleration * Time.deltaTime);
-                        }
-
-                    }
-                    else
-                    {
-                        currentSpeed = Mathf.MoveTowards(currentSpeed, maxSpeed, acceleration * Time.deltaTime);
-                    }
-
-                    // Animation
-                    if (remainingDistance < idleTriggerDistance)
-                    {
-                        if (!isIdle)
-                        {
-                            characterAnimator.CrossFade("Idle", 0.2f);
-                            isIdle = true;
-                        }
-                    }
-
-                    float delta = currentSpeed * Time.deltaTime;
-
-                    // Prevent overshoot
-                    if (coveredDistance + delta > totalDistance)
-                    {
-                        delta = totalDistance - coveredDistance;
-                    }
-
-                    coveredDistance += delta;
-
                     float t = coveredDistance / totalDistance;
-                    currentSplinePercent = Mathf.Lerp(start, end, t);
 
-                    UpdateCharacterTransform(currentSplinePercent, isForward);
+                    float speedFactor = Mathf.Sin(t * Mathf.PI);
+
+                    float minSpeed = 0.5f; // important
+                    float currentSpeed = Mathf.Lerp(minSpeed, maxSpeed, speedFactor);
+
+                    float deltaDistance = currentSpeed * Time.deltaTime;
+
+                    if (coveredDistance + deltaDistance > totalDistance)
+                        deltaDistance = totalDistance - coveredDistance;
+
+                    coveredDistance += deltaDistance;
+
+                    float percent = coveredDistance / totalDistance;
+                    currentSplinePercent = Mathf.Lerp(start, end, percent);
+
+                    UpdateCharacterTransform(currentSplinePercent);
+
+                    float idleTriggerDistance = totalDistance * 0.05f;
+                    if (remainingDistance <= idleTriggerDistance && !isIdle)
+                    {
+                        characterAnimator.CrossFade("Idle", 0.2f);
+                        isIdle = true;
+                    }
 
                     await UniTask.Yield(PlayerLoopTiming.Update, token);
                 }
+
                 currentSplinePercent = end;
-                UpdateCharacterTransform(end, isForward);
+                UpdateCharacterTransform(end);
                 StartGame();
             }
             catch (OperationCanceledException)
             {
-                // movement cancelled (safe)
+                // safe cancel
             }
         }
 
         public async void MoveToLevelAsync(float start, float end)
         {
-            float distance = splineSystem.CalculateDistance(start, end);
-            float baseSpeed = 1f;     // normal speed
-            float maxSpeed = 5f;
-
-            float speed = Mathf.Lerp(baseSpeed, maxSpeed, distance / 10f);
-            speed = Mathf.Clamp(speed, baseSpeed, maxSpeed);
-            float duration = distance / speed;
-            await MoveAlongSplineAsync(start, end, duration);
+           await MoveAlongSplineAsync(start, end);
         }
         #endregion
         #region Reset

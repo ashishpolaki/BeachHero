@@ -17,7 +17,7 @@ namespace BeachHero
         [SerializeField] private UIButton noAdsBtn;
 
         [Header("Powerup Buttons")]
-        [SerializeField] private PowerupUIButton magnetPowerupButton;
+        [SerializeField] private PowerupUIButton shieldPowerupButton;
         [SerializeField] private PowerupUIButton speedBoostPowerupButton;
 
         [Header("UI Panels")]
@@ -65,6 +65,7 @@ namespace BeachHero
             //Powerups
             //  magnetPowerupButton.Init(PowerupType.Magnet, SaveSystem.LoadInt(StringUtils.MAGNET_BALANCE 3);
             speedBoostPowerupButton.Init(PowerupType.SpeedBoost);
+            shieldPowerupButton.Init(PowerupType.Shield);
 
             //buttons
             pauseButton.OnButtonReleased += OnPause;
@@ -94,6 +95,7 @@ namespace BeachHero
             //Powerups
             // magnetPowerupButton.DeInitialize();
             speedBoostPowerupButton.DeInitialize();
+            shieldPowerupButton.DeInitialize();
 
             //Events
             GameController.GetInstance.LevelController.OnPlayerTouch -= HandleHidePanels;

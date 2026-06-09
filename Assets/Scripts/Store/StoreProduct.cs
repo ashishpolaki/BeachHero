@@ -31,7 +31,7 @@ namespace BeachHero
 
     public enum StoreItemType
     {
-        Magnet,
+        Shield,
         SpeedBoost,
         NoAds,
         GameCurrency

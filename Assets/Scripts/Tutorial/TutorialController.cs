@@ -8,8 +8,6 @@ namespace BeachHero
     public enum TutorialType
     {
         None,
-        MagnetPowerup,
-        SpeedBoostPowerup,
         TapAndDrag,      // Tap + drag to save. Used in Level 1
         RescueAll,       // Save all drowning characters in a level. Used in Level 2
     }

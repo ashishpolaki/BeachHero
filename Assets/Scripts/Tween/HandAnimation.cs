@@ -1,5 +1,4 @@
 using LitMotion;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -49,9 +48,7 @@ namespace BeachHero
         public override void Play()
         {
             handRect.position = target.position;
-            DebugUtils.Log($"handrect pos {handRect.anchoredPosition}");
             handRect.anchoredPosition = handRect.anchoredPosition + startOffset;
-            DebugUtils.Log($"handrect pos 2 {handRect.anchoredPosition + startOffset}");
 
             fadeTweenHandle = TweenManager.Fade(handImage, 0, 1, fadeDuration, onComplete: () =>
             {

@@ -30,7 +30,6 @@ namespace BeachHero
         [SerializeField] private LayerMask touchLayer;
         [SerializeField] private float minTrailPointsDistance = 0.3f;
         [SerializeField] private float spacing = 0.5f;
-        [SerializeField] private float magnetRadius = 5f;
         [SerializeField] private float spawnAnimationDuration = 1;
         [SerializeField] private Ease spawnAnimationEase = Ease.OutElastic;
         [SerializeField] private int levelFailToShowHint = 2;
@@ -57,7 +56,6 @@ namespace BeachHero
         private MedalCurrencyRequirements medalCurrencyRequirements = new MedalCurrencyRequirements();
         private bool hasDrawnPath = false;
         private bool isPathDrawingAllowed = false;
-        private bool isMagnetActive = false;
         private bool isPlayerInitialRotationSet = false;
 
         private int gameCurrencyCount;
@@ -140,7 +138,7 @@ namespace BeachHero
                 if (drawnPoints.Count >= 4)
                 {
                     smoothedDrawnPoints = CatmullSplineUtils.GetEvenlySpacedPoints(drawnPoints, spacing);
-                    ActivatePowerups();
+                    GameController.GetInstance.PowerupController.ActivateSelectedPowerups();
                     StartSimulation();
                 }
                 else
@@ -324,9 +322,9 @@ namespace BeachHero
                     {
                         poolManager.GameCurrencyPool.ReturnObject(collectable.gameObject);
                     }
-                    else if (collectable.CollectableType == CollectableType.Magnet)
+                    else if (collectable.CollectableType == CollectableType.Shield)
                     {
-                        poolManager.MagnetPowerupPool.ReturnObject(collectable.gameObject);
+                        poolManager.SheildPowerupPool.ReturnObject(collectable.gameObject);
                     }
                     else if (collectable.CollectableType == CollectableType.SpeedBoost)
                     {
@@ -431,8 +429,8 @@ namespace BeachHero
                 CollectableType.GameCurrency =>
                     poolManager.GameCurrencyPool.GetObject().GetComponent<Collectable>(),
 
-                CollectableType.Magnet =>
-                    poolManager.MagnetPowerupPool.GetObject().GetComponent<Collectable>(),
+                CollectableType.Shield =>
+                    poolManager.SheildPowerupPool.GetObject().GetComponent<Collectable>(),
 
                 CollectableType.SpeedBoost =>
                     poolManager.SpeedPowerupPool.GetObject().GetComponent<Collectable>(),
@@ -450,61 +448,22 @@ namespace BeachHero
                     collectable.UpdateState();
                 }
             }
-            if (isMagnetActive)
-            {
-                if (collectableDictionary != null && collectableDictionary.ContainsKey(CollectableType.GameCurrency))
-                    foreach (var gameCurrency in collectableDictionary[CollectableType.GameCurrency])
-                    {
-                        float distance = Vector3.Distance(player.transform.position, gameCurrency.transform.position);
-                        GameCurrencyCollectable gcCollectable = (GameCurrencyCollectable)gameCurrency;
-                        if (!gcCollectable.CanMoveToTarget)
-                        {
-                            if (distance <= magnetRadius)
-                            {
-                                gcCollectable.SetTarget(player.transform);
-                            }
-                        }
-                    }
-            }
-        }
-        #endregion
-
-        #region Powerups
-        private void ActivatePowerups()
-        {
-            var powerupController = GameController.GetInstance.PowerupController;
-            if (powerupController.CurrentActivePowerupList.Count <= 0)
-            {
-                return;
-            }
-            foreach (PowerupType powerupType in powerupController.CurrentActivePowerupList)
-            {
-                OnActivatePowerup(powerupType);
-            }
-            powerupController.ActivateSelectedPowerups();
-        }
-
-        public void OnActivatePowerup(PowerupType powerUpType)
-        {
-            if (powerUpType == PowerupType.Magnet)
-            {
-                ActivateMagnetPowerup();
-            }
-            else if (powerUpType == PowerupType.SpeedBoost)
-            {
-                ActivateSpeedPowerup();
-            }
-        }
-
-        public void ActivateMagnetPowerup()
-        {
-            isMagnetActive = true;
-            player.ActivateMagnetPowerup();
-        }
-
-        public void ActivateSpeedPowerup()
-        {
-            player.ActivateSpeedPowerup();
+            //if (isMagnetActive)
+            //{
+            //    if (collectableDictionary != null && collectableDictionary.ContainsKey(CollectableType.GameCurrency))
+            //        foreach (var gameCurrency in collectableDictionary[CollectableType.GameCurrency])
+            //        {
+            //            float distance = Vector3.Distance(player.transform.position, gameCurrency.transform.position);
+            //            GameCurrencyCollectable gcCollectable = (GameCurrencyCollectable)gameCurrency;
+            //            if (!gcCollectable.CanMoveToTarget)
+            //            {
+            //                if (distance <= magnetRadius)
+            //                {
+            //                    gcCollectable.SetTarget(player.transform);
+            //                }
+            //            }
+            //        }
+            //}
         }
         #endregion
 
@@ -559,7 +518,6 @@ namespace BeachHero
             gameCurrencyCount = 0;
             drownCharactersCounter = 0;
             ReturnToPoolEverything();
-            isMagnetActive = false;
             hasDrawnPath = false;
             isPathDrawingAllowed = false;
             levelPhase = LevelPhase.None;

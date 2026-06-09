@@ -182,13 +182,13 @@ namespace BeachHero
                 {
                     GameController.GetInstance.StoreController.IncrementGameCurrencyBalance(rewardAdItems[index].quantity);
                 }
-                else if (rewardAdItems[index].itemType == StoreItemType.Magnet)
+                else if (rewardAdItems[index].itemType == StoreItemType.Shield)
                 {
-                    GameController.GetInstance.PowerupController.UpdateMagnetBalance(rewardAdItems[index].quantity);
+                    GameController.GetInstance.PowerupController.UpdatePowerupBalance(PowerupType.Shield, rewardAdItems[index].quantity);
                 }
                 else if (rewardAdItems[index].itemType == StoreItemType.SpeedBoost)
                 {
-                    GameController.GetInstance.PowerupController.UpdateSpeedBoostBalance(rewardAdItems[index].quantity);
+                    GameController.GetInstance.PowerupController.UpdatePowerupBalance(PowerupType.SpeedBoost, rewardAdItems[index].quantity);
                 }
             });
         }

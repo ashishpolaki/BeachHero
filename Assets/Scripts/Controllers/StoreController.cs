@@ -154,12 +154,12 @@ namespace BeachHero
 
                     switch (reward.itemType)
                     {
-                        case StoreItemType.Magnet:
-                            GameController.GetInstance.PowerupController.UpdateMagnetBalance(reward.quantity);
+                        case StoreItemType.Shield:
+                            GameController.GetInstance.PowerupController.UpdatePowerupBalance(PowerupType.Shield, reward.quantity);
                             break;
 
                         case StoreItemType.SpeedBoost:
-                            GameController.GetInstance.PowerupController.UpdateSpeedBoostBalance(reward.quantity);
+                            GameController.GetInstance.PowerupController.UpdatePowerupBalance(PowerupType.SpeedBoost, reward.quantity);
                             break;
 
                         case StoreItemType.GameCurrency:

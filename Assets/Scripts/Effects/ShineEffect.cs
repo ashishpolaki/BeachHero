@@ -18,7 +18,6 @@ namespace BeachHero
         [SerializeField] private Ease ease = Ease.Linear;
         [SerializeField] private float duration = 1.5f;
         [SerializeField] private bool loop = true;
-        [SerializeField] private float loopDelay = 1f;
 
         private Material _mat;
         private TweenHandle shineTween;

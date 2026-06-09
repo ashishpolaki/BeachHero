@@ -16,9 +16,8 @@ public class EditorSceneController : MonoBehaviour
     private static string startPointPath = "Assets/Prefabs/StartPoint.prefab";
 
     private static string gameCurrencyPath = "Assets/Prefabs/Collectables/GameCurrency.prefab";
-    private static string magnetPath = "Assets/Prefabs/Collectables/Magnet.prefab";
+    private static string shieldPath = "Assets/Prefabs/Collectables/Shield.prefab";
     private static string speedBoostPath = "Assets/Prefabs/Collectables/SpeedBoost.prefab";
-
     private static string whirlpoolPath = "Assets/Prefabs/Obstacles/Whirlpool.prefab";
     private static string rockObstaclePath = "Assets/Prefabs/Obstacles/Rock.prefab";
     private static string barrelObstaclePath = "Assets/Prefabs/Obstacles/Barrel.prefab";
@@ -195,7 +194,7 @@ public class EditorSceneController : MonoBehaviour
             string path = item.type switch
             {
                 CollectableType.GameCurrency => gameCurrencyPath,
-                CollectableType.Magnet => magnetPath,
+                CollectableType.Shield => shieldPath,
                 CollectableType.SpeedBoost => speedBoostPath,
                 _ => null
             };

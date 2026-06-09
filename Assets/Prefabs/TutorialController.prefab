@@ -1422,19 +1422,6 @@ MonoBehaviour:
   handRect: {fileID: 6106630356200060276}
   handCanvas: {fileID: 2676560430880531785}
   handImage: {fileID: 2043515276897271739}
-  pointingStartYOffset: 150
-  pointingMoveYOffset: 200
-  pointingDuration: 0.7
-  pointingScale: 1
-  pointingEase: 3
-  moveYOffset: 100
-  moveDuration: 1.4
-  moveEase: 4
-  punchYOffset: 50
-  initialPunchScale: 0.7
-  punchStrength: 0.2
-  punchDuration: 0.5
-  punchFrequency: 1
 --- !u!114 &7377420811723297455
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1606,16 +1593,16 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9209890902004774740}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6106630356200060276}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -17.6, y: -11.2}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 20, y: -103.7}
   m_SizeDelta: {x: 150.3, y: 207.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3379663653802564272

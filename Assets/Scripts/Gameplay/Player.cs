@@ -6,8 +6,9 @@ namespace BeachHero
 {
     public class Player : MonoBehaviour
     {
+        #region inspector Variables
         [SerializeField] private Animator boatAnimator;
-        [SerializeField] private MagnetEffect magnetEffect;
+        [SerializeField] private ShieldEffect shieldEffect;
         [SerializeField] private Transform boatGraphicsHolder;
         [SerializeField] private GameObject normalBoostObj;
         [SerializeField] private GameObject speedBoostObj;
@@ -15,18 +16,24 @@ namespace BeachHero
         [SerializeField] private float rotationSpeed;
         [SerializeField] private float speedMultiplier;
         [SerializeField] private ParticleSystem explosionParticle;
+        #endregion
 
+        #region Private Variables
         private Boat currentBoat;
         private Vector3[] pointsList;
         private bool canStartMovement;
         private bool isSpeedBoostEnabled;
+        private bool isShieldEnabled;
         private float boatRotationSpeed;
         private int nextPointIndex;
         private int sinkingAnimHash = Animator.StringToHash(StringUtils.SINKING_ANIM);
         private int idleAnimHash = Animator.StringToHash(StringUtils.IDLE_ANIM);
         private Dictionary<int, GameObject> boatObjects = new Dictionary<int, GameObject>();
+        #endregion
 
+        #region Properties
         public float MovementSpeed => movementSpeed;
+        #endregion
 
 #if UNITY_EDITOR
         private void OnDrawGizmos()
@@ -42,6 +49,16 @@ namespace BeachHero
         }
 #endif
         #region Unity methods
+        private void OnEnable()
+        {
+            GameController.GetInstance.PowerupController.OnActivatePowerup += ActivePowerup;
+        }
+
+        private void OnDisable()
+        {
+            GameController.GetInstance.PowerupController.OnActivatePowerup -= ActivePowerup;
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             if (canStartMovement == false)
@@ -105,20 +122,35 @@ namespace BeachHero
         #endregion
 
         #region Powerups
+        private void ActivePowerup(PowerupType powerupType)
+        {
+            switch (powerupType)
+            {
+                case PowerupType.Shield:
+                    ActivateShieldPowerup();
+                    break;
+                case PowerupType.SpeedBoost:
+                    ActivateSpeedPowerup();
+                    break;
+                default:
+                    break;
+            }
+        }
+
         public void ActivateSpeedPowerup()
         {
             isSpeedBoostEnabled = true;
             movementSpeed *= speedMultiplier;
             boatRotationSpeed *= speedMultiplier;
         }
-        public void ActivateMagnetPowerup()
+        public void ActivateShieldPowerup()
         {
-            magnetEffect.gameObject.SetActive(true);
-            magnetEffect.PlayRippleEffect();
+            shieldEffect.gameObject.SetActive(true);
+            shieldEffect.PlaySpawnAnimation();
         }
-        private void DeactivateMagnetPowerup()
+        private void DeactivateShieldPowerup()
         {
-            magnetEffect.StopRippleEffect();
+            shieldEffect.Stop();
         }
         #endregion
 
@@ -203,7 +235,7 @@ namespace BeachHero
             normalBoostObj.SetActive(false);
             pointsList = new Vector3[0];
             nextPointIndex = 1;
-            DeactivateMagnetPowerup();
+            DeactivateShieldPowerup();
         }
         public void Init()
         {
@@ -231,6 +263,10 @@ namespace BeachHero
                     nextPoint,
                     movementSpeed * Time.deltaTime
                 );
+
+
+               // shieldEffect.UpdateScale(directionBetweenPoints);
+
                 // rigid.MovePosition(Vector3.MoveTowards(
                 //    transform.position,
                 //    nextPoint,

@@ -65,7 +65,8 @@ namespace BeachHero
             tc.TutorialCharacter.PlayAnimation(TutorialCharacterState.WaveHand, tutorialCharacterPosition
             , () =>
             {
-                tc.TutorialSpeechBubble.Show(StringUtils.SPEEDBOOST_POWERUP_TUTORIAL_MESSAGE, speechBubblePosition);
+                string message = powerUpType == PowerupType.SpeedBoost ? StringUtils.SPEEDBOOST_POWERUP_TUTORIAL_MESSAGE : StringUtils.SHIELD_POWERUP_TUTORIAL_MESSAGE;
+                tc.TutorialSpeechBubble.Show(message, speechBubblePosition);
             });
         }
 

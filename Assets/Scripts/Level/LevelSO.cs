@@ -50,7 +50,7 @@ namespace BeachHero
         None,
         GameCurrency,
         Gem,
-        Magnet,
+        Shield,
         SpeedBoost,
     }
 

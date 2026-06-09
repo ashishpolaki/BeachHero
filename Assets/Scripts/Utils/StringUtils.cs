@@ -48,10 +48,10 @@ namespace BeachHero
         public const string DROWN_ANIM = "Drown";
 
         //Powerups
-        public const string MAGNET_UNLOCKED = "MagnetUnlockLevel";
         public const string SPEEDBOOST_UNLOCKED = "SpeedBoostUnlockLevel";
-        public const string MAGNET_BALANCE = "MagnetBalance";
+        public const string SHIELD_UNLOCKED = "ShieldUnlockLevel";
         public const string SPEEDBOOST_BALANCE = "SpeedBoostBalance";
+        public const string SHIELD_BALANCE = "ShieldBalance";
 
         //Boat Skins
         public const string CURRENT_BOAT_INDEX = "BoatSelectionIndex";
@@ -83,23 +83,21 @@ namespace BeachHero
 
         //Tutorial Speech Messages
         public const string TUTORIAL_WELCOME_MESSAGE = "WELCOME, BRAVE HERO!\nBEACH IS IN TROUBLE,\nITS TIME TO DIVE IN\nAND SAVE THE DAY!";
-        public const string MAGNET_POWERUP_TUTORIAL_MESSAGE = "ACTIVATE THE MAGNET\n AND ATTRACT\n ALL THE STARFISH!";
         public const string SPEEDBOOST_POWERUP_TUTORIAL_MESSAGE = "HIT THE BOOST AND\nSPEED UP THE BOAT!";
+        public const string SHIELD_POWERUP_TUTORIAL_MESSAGE = "ACTIVATE THE SHIELD\nAND STAY PROTECTED\nFROM ALL DANGERS!";
 
         //Game Lose Message
-        public const string CONSECUTIVE_LOSE_HINT = "SAVE THE PEOPLE BEFORE\n THEY DROWN TO\n COMPLETE THIS LEVEL.";
+        public const string CONSECUTIVE_LOSE_HINT = "ACTIVATE THE SHIELD\nAND BLOCK ONE HIT!";
     }
 
     public class IntUtils
     {
         //Powerup
-        public const int MAGNET_UNLOCK_LEVEL = 2;
         public const int SPEEDBOOST_UNLOCK_LEVEL = 3;
         public const int SHIELD_UNLOCK_LEVEL = 4;
         public const int FREEZE_UNLOCK_LEVEL = 5;
         public const int STARFISH_MULTIPLIER_UNLOCK_LEVEL = 6;
         //Powerup Balances
-        public const int DEFAULT_MAGNET_BALANCE = 2;
         public const int DEFAULT_SPEEDBOOST_BALANCE = 2;
         public const int DEFAULT_SHIELD_BALANCE = 2;
         public const int DEFAULT_FREEZE_BALANCE = 2;
