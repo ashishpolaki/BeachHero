@@ -168,7 +168,7 @@ namespace BeachHero
         {
             Quaternion startRot = target.rotation;
             var motion = LMotion.Create(fromVal, toValue, duration).WithEase(ease);
-
+            var handle = default(TweenHandle);
             if (loops != 0)
             {
                 motion.WithLoops(loops, loopType);
@@ -179,8 +179,17 @@ namespace BeachHero
                 motion = motion.WithOnComplete(onComplete);
             }
 
-            var handle = motion.BindToEulerAngles(target);
-            return new TweenHandle(handle);
+            switch (spaceType)
+            {
+                case TransformSpace.World:
+                    handle = new TweenHandle(motion.BindToEulerAngles(target));
+                    break;
+                case TransformSpace.Local:
+                    handle = new TweenHandle(motion.BindToLocalEulerAngles(target));
+                    break;
+            }
+
+            return handle;
         }
         #endregion
 
@@ -200,7 +209,7 @@ namespace BeachHero
         }
         public static TweenHandle MoveAnchorOnAxis(RectTransform target, float from, float to, float duration,
             Ease ease = Ease.Linear, TransformAxis transformAxis = TransformAxis.XY,
-            int loops = 0, LoopType loopType = LoopType.Restart, System.Action onComplete = null)
+            int loops = 0, LoopType loopType = LoopType.Restart, Action onComplete = null)
         {
             var motion = LMotion.Create(from, to, duration).WithEase(ease);
             var handle = default(TweenHandle);
@@ -225,13 +234,18 @@ namespace BeachHero
             return handle;
         }
         public static TweenHandle MoveAnchor(RectTransform target, Vector2 from, Vector2 to, float duration,
-            Ease ease = Ease.Linear, TransformAxis transformAxis = TransformAxis.XY, System.Action onComplete = null)
+            Ease ease = Ease.Linear, TransformAxis transformAxis = TransformAxis.XY,
+            int loops = 0, LoopType loopType = LoopType.Restart, Action onComplete = null)
         {
             var motion = LMotion.Create(from, to, duration).WithEase(ease);
             var handle = default(TweenHandle);
             if (onComplete != null)
             {
                 motion = motion.WithOnComplete(onComplete);
+            }
+            if (loops != 0)
+            {
+                motion = motion.WithLoops(loops, loopType);
             }
             switch (transformAxis)
             {
@@ -362,9 +376,9 @@ namespace BeachHero
             return new TweenHandle(handle);
         }
 
-        public static TweenHandle RunCallback(System.Action onComplete = null)
+        public static TweenHandle RunCallback(System.Action onComplete = null, float duration = 0)
         {
-            var motion = LMotion.Create(0, 0, 0f);
+            var motion = LMotion.Create(0, 0, duration);
             if (onComplete != null)
             {
                 motion = motion.WithOnComplete(onComplete);
@@ -530,7 +544,7 @@ namespace BeachHero
 
         public void OnComplete(MotionHandle motionHandle)
         {
-            sequenceBuilder.Insert(sequenceBuilder.CurrentDuration, motionHandle);
+            sequenceBuilder.OnComplete(sequenceBuilder.CurrentDuration, motionHandle);
         }
         public void Cancel()
         {

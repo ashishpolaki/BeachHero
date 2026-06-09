@@ -316,9 +316,9 @@ namespace BeachHero
             float coveredDistance = 0f;
             float currentSpeed = 0f;
             float minSpeed = 0.05f; // IMPORTANT (prevents stopping early)
-            float maxSpeed = 0.08f;
+            float maxSpeed = 0.05f;
             float acceleration = 0.3f;
-            float deceleration = 0.5f;
+            float deceleration = 0.3f;
             float slowDownDistance = 0.08f;
             float idleTriggerDistance = 0.01f;
             bool isForward = end > start;

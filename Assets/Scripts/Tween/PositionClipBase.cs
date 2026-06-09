@@ -98,7 +98,7 @@ namespace BeachHero
     {
         public RectTransform target;
         public Vector2 toAnchoredPosition;
-        public TransformAxis rectAxis = TransformAxis.XYZ;
+        public TransformAxis rectAxis = TransformAxis.XY;
 
         public AnchorPositionClip() : base()
         {
@@ -120,7 +120,6 @@ namespace BeachHero
                     return TweenManager.MoveAnchorOnAxis(target, target.anchoredPosition.y, toAnchoredPosition.y, duration, ease, rectAxis).Handle;
                 case TransformAxis.XY:
                    return TweenManager.MoveAnchor(target, target.anchoredPosition, toAnchoredPosition, duration, ease, rectAxis).Handle;
-                   
             }
             return default;
         }

@@ -55,7 +55,8 @@ namespace BeachHero
         public void TryShowPowerupTutorials()
         {
             var tc = TutorialController.GetInstance;
-            tc.TutorialHand.PlayAnimation(buttonAnimationData, this.transform);
+            buttonAnimationData.SetTarget(this.transform);
+            tc.TutorialHand.PlayAnimation(buttonAnimationData);
             tc.HighlightButton(this.transform, this.GetComponent<RectTransform>().sizeDelta, buttonBgSprite, false,
                () =>
                {

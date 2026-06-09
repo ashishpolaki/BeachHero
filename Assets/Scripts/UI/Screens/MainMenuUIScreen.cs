@@ -59,7 +59,8 @@ namespace BeachHero
 
                 // Highlight the play button and show tutorial.
                 var tc = TutorialController.GetInstance;
-                tc.TutorialHand.PlayAnimation(playButtonTutorialHandAnimation, playButton.transform);
+                playButtonTutorialHandAnimation.SetTarget(playButton.transform);
+                tc.TutorialHand.PlayAnimation(playButtonTutorialHandAnimation);
                 tc.HighlightButton(playButton.transform, playButton.GetComponent<RectTransform>().sizeDelta, playButtonSprite, true,
                 () =>
                 {

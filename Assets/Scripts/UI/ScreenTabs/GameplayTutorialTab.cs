@@ -7,6 +7,7 @@ namespace BeachHero
     public class GameplayTutorialTab : BaseScreenTab
     {
         [SerializeField] private TextAnimatorPlayer instructionText;
+        [SerializeField] private HandDrawPathAnimation handDrawPathAnimaton;
 
         private Camera cam;
         private TutorialType currentTutorialType;
@@ -71,7 +72,10 @@ namespace BeachHero
 
             Vector3 characterLocalPos = WorldToCanvasLocalPosition(
                 cam, canvas, level.GetDrowningCharacter(charIndex).position);
-            TutorialController.GetInstance.TutorialHand.PlayPunchThenMoveLoop(playerLocalPos, characterLocalPos);
+
+            handDrawPathAnimaton.SetTargets(playerLocalPos, characterLocalPos);
+            TutorialController.GetInstance.TutorialHand.PlayAnimation(handDrawPathAnimaton);
+            //  PlayPunchThenMoveLoop(playerLocalPos, characterLocalPos);
             TutorialController.GetInstance.TutorialHand.SetHandSortingLayer(StringUtils.SPRITES_BELOW_UI_LAYER, 5);
         }
 
@@ -95,6 +99,22 @@ namespace BeachHero
             localPos.z = 0f; // Keep flat on 2D plane
 
             return localPos;
+        }
+
+        private Vector3 WorldToCanvasWorldPosition(Camera camera, Canvas canvas, Vector3 worldPosition)
+        {
+            Vector3 screenPos = camera.WorldToScreenPoint(worldPosition);
+
+            RectTransform canvasRect = canvas.transform as RectTransform;
+
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                canvasRect,
+                screenPos,
+                canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : camera,
+                out Vector2 localPoint
+            );
+
+            return canvasRect.TransformPoint(localPoint);
         }
     }
 }

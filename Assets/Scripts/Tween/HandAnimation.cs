@@ -1,4 +1,5 @@
 using LitMotion;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,14 +10,18 @@ namespace BeachHero
         [Header("Transform Settings")]
         public Vector3 scale = Vector3.one;
         public float rotationZ = 0f;
+        protected RectTransform handRect;
+        protected Image handImage;
 
-        public virtual void Setup(RectTransform hand)
+        public virtual void Setup(RectTransform _hand, Image image)
         {
-            hand.localScale = scale;
-            hand.localRotation = Quaternion.Euler(0, 0, rotationZ);
+            handRect = _hand;
+            handImage = image;
+            handRect.localScale = scale;
+            handRect.localRotation = Quaternion.Euler(0, 0, rotationZ);
         }
 
-        public abstract void Play(RectTransform hand, Image handCanvas, Transform target);
+        public abstract void Play();
         public abstract void Kill();
     }
 
@@ -24,9 +29,8 @@ namespace BeachHero
     public class HandPointAnimation : HandAnimation
     {
         [Header("Pointing Settings")]
-        public TransformAxis moveAxis = TransformAxis.Y;
-        public float startOffset = 0f;
-        public float moveOffset = 0f;
+        public Vector2 startOffset = new Vector2(0f, 0);
+        public Vector2 moveOffset = new Vector2(0f, 0);
         public float duration = 0.8f;
         public Ease ease = Ease.InOutSine;
 
@@ -35,27 +39,29 @@ namespace BeachHero
 
         private TweenHandle moveTweenHandle;
         private TweenHandle fadeTweenHandle;
+        private Transform target;
 
-        public override void Play(RectTransform hand, Image handImage, Transform target)
+        public void SetTarget(Transform _target)
         {
-            Setup(hand);
+            target = _target;
+        }
 
-            hand.position = target.position;
+        public override void Play()
+        {
+            handRect.position = target.position;
+            DebugUtils.Log($"handrect pos {handRect.anchoredPosition}");
+            handRect.anchoredPosition = handRect.anchoredPosition + startOffset;
+            DebugUtils.Log($"handrect pos 2 {handRect.anchoredPosition + startOffset}");
 
-            hand.anchoredPosition = moveAxis == TransformAxis.X
-                ? new Vector2(hand.anchoredPosition.x + startOffset, hand.anchoredPosition.y)
-                : new Vector2(hand.anchoredPosition.x, hand.anchoredPosition.y + startOffset);
-
-            float from = moveAxis == TransformAxis.X ? hand.anchoredPosition.x : hand.anchoredPosition.y;
-            fadeTweenHandle = TweenManager.Fade(handImage, 0, 1, fadeDuration,onComplete : ()=>
+            fadeTweenHandle = TweenManager.Fade(handImage, 0, 1, fadeDuration, onComplete: () =>
             {
-                moveTweenHandle = TweenManager.MoveAnchorOnAxis(
-                               hand,
-                               from,
-                               from + moveOffset,
+                moveTweenHandle = TweenManager.MoveAnchor(
+                               handRect,
+                               handRect.anchoredPosition,
+                               handRect.anchoredPosition + moveOffset,
                                duration,
                                ease,
-                               moveAxis,
+                               TransformAxis.XY,
                                -1,
                                LoopType.Yoyo);
             });
@@ -76,14 +82,18 @@ namespace BeachHero
         public float punchDuration = 0.5f;
         public int punchFrequency = 1;
 
-        public override void Play(RectTransform hand, Image handImage, Transform target)
+        private Transform target;
+        private TweenHandle tween;
+
+        public void SetTarget(Transform _target)
+        { this.target = _target; }
+
+        public override void Play()
         {
-            Setup(hand);
+            handRect.position = target.position;
 
-            hand.position = target.position;
-
-            TweenManager.PunchScale(
-                hand.transform,
+            tween = TweenManager.PunchScale(
+                handRect.transform,
                 scale,
                 Vector3.one * punchStrength,
                 punchFrequency,
@@ -93,28 +103,75 @@ namespace BeachHero
 
         public override void Kill()
         {
-            // Punch tweens are one-shot, so no need to kill them
+            tween.Cancel();
         }
     }
-
     [System.Serializable]
-    public class HandDragAnimation : HandAnimation
+    public class HandDrawPathAnimation : HandAnimation
     {
-        [Header("Drag Settings")]
-        public float duration = 1f;
-        public Ease ease = Ease.InOutSine;
+        #region Inspector Variables
+        [Header("Offset")]
+        [SerializeField] private Vector2 startOffset = new Vector2(-111.66f, 71.2f);
+        [SerializeField] private Vector2 touchOffset = Vector2.zero; //Finger Tip Alignment
 
-        public override void Play(RectTransform hand, Image handImage, Transform target)
+        [Header("Fade Settings")]
+        [SerializeField] private float fadeDuration = 0.2f;
+
+        [Header("Scale Settings")]
+        [SerializeField] private Vector3 pressScale = new Vector3(0.8f, 0.8f, 0.8f);
+        [SerializeField] private float pressDuration = 0.4f;
+
+        [Header("Movement Settings")]
+        [SerializeField] private float moveToFirstDuration = 0.4f;
+        [SerializeField] private float moveToSecondDuration = 0.4f;
+        [SerializeField] private Ease moveEase = Ease.InOutQuint;
+
+        [Header("Rotation Settings")]
+        [SerializeField] private float zRotation = 220f;
+        [SerializeField] private float rotationDuration = 0.4f;
+
+        [Header("Loop Settings")]
+        [SerializeField] private float loopDelay = 0.4f;
+        #endregion
+
+        private TweenSequence sequence;
+        private Vector2 target1;
+        private Vector2 target2;
+
+        public void SetTargets(Vector2 _target1, Vector2 _target2)
         {
-            Setup(hand);
-
-            // You will expand this later with path
-            hand.position = target.position;
+            target1 = _target1;
+            target2 = _target2;
         }
+
+        public override void Play()
+        {
+            handRect.anchoredPosition = target1 + startOffset + touchOffset;
+
+            sequence = new TweenSequence(LSequence.Create());
+            sequence.Insert(0, TweenManager.Scale(Vector3.zero, Vector3.one, handRect.transform, fadeDuration).Handle);
+            sequence.Insert(0, TweenManager.Fade(handImage, 0, 1, fadeDuration).Handle);
+
+            sequence.Insert(fadeDuration, TweenManager.Scale(Vector3.one, pressScale, handRect.transform, pressDuration).Handle);
+            sequence.Insert(fadeDuration, TweenManager.MoveAnchor(handRect, handRect.anchoredPosition, target1 + touchOffset, moveToFirstDuration).Handle);
+            sequence.Insert(fadeDuration, TweenManager.RotateEulerAngles(handRect.transform, handRect.transform.localEulerAngles,
+                new Vector3(0, 0, zRotation), rotationDuration, Ease.InOutQuint, spaceType: TransformSpace.Local).Handle);
+
+            sequence.Insert(fadeDuration + moveToFirstDuration, TweenManager.MoveAnchorOnAxis(handRect, target1.y + touchOffset.y, target2.y + touchOffset.y, moveToSecondDuration, Ease.OutQuad, TransformAxis.Y).Handle);
+            var loopHandle = TweenManager.RunCallback(() =>
+            {
+                sequence.SetTime(0);
+            }, loopDelay).Handle;
+
+            sequence.OnComplete(loopHandle);
+            sequence.InitializeHandle();
+            sequence.Preserve();
+            sequence.SetPlaybackSpeed(1);
+        }
+
         public override void Kill()
         {
-            // Punch tweens are one-shot, so no need to kill them
+            sequence.Cancel();
         }
     }
-
 }

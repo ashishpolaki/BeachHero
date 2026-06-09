@@ -431,9 +431,8 @@ MonoBehaviour:
   buttonAnimationData:
     scale: {x: 1, y: 1, z: 1}
     rotationZ: 0
-    moveAxis: 1
-    startOffset: 0
-    moveOffset: 0
+    startOffset: {x: 0, y: 0}
+    moveOffset: {x: 0, y: 0}
     duration: 0.8
     ease: 3
     fadeDuration: 0.25
@@ -1052,9 +1051,8 @@ MonoBehaviour:
   buttonAnimationData:
     scale: {x: -0.7, y: 0.7, z: 0.7}
     rotationZ: 270
-    moveAxis: 0
-    startOffset: 75
-    moveOffset: 90
+    startOffset: {x: 175, y: -27}
+    moveOffset: {x: 90, y: 0}
     duration: 0.7
     ease: 3
     fadeDuration: 0.25
@@ -4478,8 +4476,48 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1165937436443334627, guid: 069808b5a34d2ad40b40daa40056d349,
         type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 7.355011
+      objectReference: {fileID: 0}
+    - target: {fileID: 1165937436443334627, guid: 069808b5a34d2ad40b40daa40056d349,
+        type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 16.754639
+      objectReference: {fileID: 0}
+    - target: {fileID: 2731937287634023448, guid: 069808b5a34d2ad40b40daa40056d349,
+        type: 3}
+      propertyPath: handDrawPathAnimaton.rotationZ
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 2731937287634023448, guid: 069808b5a34d2ad40b40daa40056d349,
+        type: 3}
+      propertyPath: handDrawPathAnimaton.fadeDuration
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2731937287634023448, guid: 069808b5a34d2ad40b40daa40056d349,
+        type: 3}
+      propertyPath: handDrawPathAnimaton.startOffset.x
+      value: 111.66
+      objectReference: {fileID: 0}
+    - target: {fileID: 2731937287634023448, guid: 069808b5a34d2ad40b40daa40056d349,
+        type: 3}
+      propertyPath: handDrawPathAnimaton.startOffset.y
+      value: -71.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2731937287634023448, guid: 069808b5a34d2ad40b40daa40056d349,
+        type: 3}
+      propertyPath: handDrawPathAnimaton.touchOffset.x
+      value: 126
+      objectReference: {fileID: 0}
+    - target: {fileID: 2731937287634023448, guid: 069808b5a34d2ad40b40daa40056d349,
+        type: 3}
+      propertyPath: handDrawPathAnimaton.touchOffset.y
+      value: -81
+      objectReference: {fileID: 0}
+    - target: {fileID: 2731937287634023448, guid: 069808b5a34d2ad40b40daa40056d349,
+        type: 3}
+      propertyPath: handDrawPathAnimaton.moveToSecondDuration
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 3103028678054336266, guid: 069808b5a34d2ad40b40daa40056d349,
         type: 3}
