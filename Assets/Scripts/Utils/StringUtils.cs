@@ -84,10 +84,10 @@ namespace BeachHero
         //Tutorial Speech Messages
         public const string TUTORIAL_WELCOME_MESSAGE = "WELCOME, BRAVE HERO!\nBEACH IS IN TROUBLE,\nITS TIME TO DIVE IN\nAND SAVE THE DAY!";
         public const string SPEEDBOOST_POWERUP_TUTORIAL_MESSAGE = "HIT THE BOOST AND\nSPEED UP THE BOAT!";
-        public const string SHIELD_POWERUP_TUTORIAL_MESSAGE = "ACTIVATE THE SHIELD\nAND STAY PROTECTED\nFROM ALL DANGERS!";
+        public const string SHIELD_POWERUP_TUTORIAL_MESSAGE = "ACTIVATE THE SHIELD\nAND BLOCK ONE HIT!";
 
         //Game Lose Message
-        public const string CONSECUTIVE_LOSE_HINT = "ACTIVATE THE SHIELD\nAND BLOCK ONE HIT!";
+        public const string CONSECUTIVE_LOSE_HINT = "SAVE THE PEOPLE BEFORE\nTHEY DROWN TO\nCOMPLETE THIS LEVEL.";
     }
 
     public class IntUtils

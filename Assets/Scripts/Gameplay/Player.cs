@@ -56,7 +56,10 @@ namespace BeachHero
 
         private void OnDisable()
         {
-            GameController.GetInstance.PowerupController.OnActivatePowerup -= ActivePowerup;
+            if (GameController.GetInstance != null && GameController.GetInstance.PowerupController != null)
+            {
+                GameController.GetInstance.PowerupController.OnActivatePowerup -= ActivePowerup;
+            }
         }
 
         private void OnTriggerEnter(Collider other)
@@ -145,11 +148,15 @@ namespace BeachHero
         }
         public void ActivateShieldPowerup()
         {
-            shieldEffect.gameObject.SetActive(true);
+            isShieldEnabled = true;
             shieldEffect.PlaySpawnAnimation();
         }
         private void DeactivateShieldPowerup()
         {
+            if (isShieldEnabled)
+            {
+                isShieldEnabled = false;
+            }
             shieldEffect.Stop();
         }
         #endregion
@@ -232,10 +239,10 @@ namespace BeachHero
                 speedBoostObj.SetActive(false);
                 isSpeedBoostEnabled = false;
             }
+            DeactivateShieldPowerup();
             normalBoostObj.SetActive(false);
             pointsList = new Vector3[0];
             nextPointIndex = 1;
-            DeactivateShieldPowerup();
         }
         public void Init()
         {
@@ -265,7 +272,7 @@ namespace BeachHero
                 );
 
 
-               // shieldEffect.UpdateScale(directionBetweenPoints);
+                // shieldEffect.UpdateScale(directionBetweenPoints);
 
                 // rigid.MovePosition(Vector3.MoveTowards(
                 //    transform.position,

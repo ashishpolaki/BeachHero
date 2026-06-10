@@ -233,7 +233,7 @@ namespace BeachHero
             levelPhase = passed ? LevelPhase.CompletedSuccess : LevelPhase.CompletedFail;
             if (!passed)
             {
-                player.StopMovement();
+              //  player.StopMovement();
             }
             // If the player failed, increment the fail counter. If they passed, reset it.
             levelFailCounter = passed ? 0 : levelFailCounter + 1;

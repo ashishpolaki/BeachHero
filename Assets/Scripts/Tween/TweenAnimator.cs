@@ -18,8 +18,8 @@ namespace BeachHero
         [SerializeReference] private TweenClipBase[] clips;
         [SerializeField] private List<TriggerEvent> triggerEvents = new();
 
-        // public int loopCount = 0;              // 0 = no loop, -1 = infinite loop
-        // public LoopType loopType = LoopType.Restart;
+        //public int loopCount = 0;              // 0 = no loop, -1 = infinite loop
+        //public LoopType loopType = LoopType.Restart;
         public float delayFrames = 0;           // delay in seconds before starting the sequence
         public float timelineDuration = 1f;
         public TweenClipBase[] Clips => clips;
@@ -40,14 +40,14 @@ namespace BeachHero
             _sequence.SetDelay(delayFrames);
 
 #if UNITY_EDITOR
-            //   if (!Application.isPlaying && loopCount < 0)
-            //   {
-            //      loopCount = 10; //  use a finite preview count in Edit Mode
-            //  }
+            //if (!Application.isPlaying && loopCount < 0)
+            //{
+            //    loopCount = 10; //  use a finite preview count in Edit Mode
+            //}
+            //// apply loop settings
+            //_sequence.SetLoops(loopCount, loopType);
 #endif
 
-            // apply loop settings
-            //_sequence.SetLoops(loopCount, loopType);
 
             if (clips == null)
             {
@@ -88,6 +88,10 @@ namespace BeachHero
                if (Application.isPlaying)
                {
                    Kill();
+               }
+               else
+               {
+                   _sequence.SetTime(0);
                }
 #else
                    Kill();
