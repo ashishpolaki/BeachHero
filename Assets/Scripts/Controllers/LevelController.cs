@@ -1,5 +1,4 @@
 using LitMotion;
-using LitMotion.Extensions;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

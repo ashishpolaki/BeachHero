@@ -19457,7 +19457,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.028, y: 0.544, z: -0.486}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8995052309315393795}
@@ -19538,9 +19538,21 @@ MonoBehaviour:
   scaleReturnDuration: 0.2
   scaleEase: 26
   scaleReturnEase: 25
+  baseColor: {r: 0, g: 2.3713782, b: 3.441591, a: 0.36862746}
+  baseTextureColor: {r: 0, g: 0.66959107, b: 4.867144, a: 1}
   basePower: 2
   closingPower: 10
   shieldOffsetDuration: 30
+  explodeColor: {r: 3.441591, g: 1.913542, b: 0, a: 0.36862746}
+  explodeTextureColor: {r: 0.7490196, g: 0.628395, b: 0, a: 1}
+  explodeScale: 0
+  explodeExpandMultiplier: 1.15
+  explodeExpandDuration: 0.25
+  explodeCollapseDuration: 0.4
+  explodeEndScale: {x: 0, y: 0, z: 0}
+  explodeDuration: 0.35
+  explodeExpandEase: 5
+  explodeCollapseEase: 4
 --- !u!1 &3242017819174478492
 GameObject:
   m_ObjectHideFlags: 0

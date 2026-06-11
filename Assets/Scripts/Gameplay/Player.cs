@@ -99,6 +99,8 @@ namespace BeachHero
                     {
                         var dir = other.transform.position - other.ClosestPoint(transform.position);
                         obstacle.HitByDash(dir);
+                        shieldEffect.Explode();
+                        isShieldEnabled = false;
                         return;
                     }
                     StopMovement();

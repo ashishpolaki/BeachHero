@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using LitMotion;
 using System;
+using UnityEngine.Serialization;
 
 namespace BeachHero
 {
@@ -26,8 +27,10 @@ namespace BeachHero
         [SerializeField] private LevelIconState[] levelIconStates;
         [SerializeField] private SpriteRenderer levelIcon;
         [SerializeField] private SpriteRenderer[] medalsList;
-        [SerializeField] private Sprite medalEarnedSprite;
-        [SerializeField] private Sprite medalUnearnedSprite;
+        [FormerlySerializedAs("medalEarnedSprite")]
+        [SerializeField] private Sprite enableStarSprite;
+        [FormerlySerializedAs("medalUnearnedSprite")]
+        [SerializeField] private Sprite disableStarSprite;
         [SerializeField] private GameObject lockIcon;
         [SerializeField] private TextMeshPro levelText;
         [SerializeField] private BoxCollider boxCollider;
@@ -52,10 +55,7 @@ namespace BeachHero
         public LevelVisualState State => levelData.State;
         #endregion
 
-        public void SetRotation(Vector3 _rot)
-        {
-            levelIcon.transform.localRotation = Quaternion.Euler(_rot);
-        }
+#if UNITY_EDITOR
         public void Setup(int levelnumber, float scale)
         {
             levelData.LevelNumber = levelnumber;
@@ -69,11 +69,18 @@ namespace BeachHero
                 medal.gameObject.SetActive(false);
             }
         }
+#endif
+
+        public void SetIconRotation(Vector3 _rot)
+        {
+            levelIcon.transform.localRotation = Quaternion.Euler(_rot);
+        }
+       
         public void Setup(LevelData _levelData)
         {
             levelData = _levelData;
             _originalScale = levelIcon.transform.localScale;
-            UpdateVisual();
+            RefreshVisual();
         }
         private void SetLevelIcon()
         {
@@ -87,51 +94,50 @@ namespace BeachHero
                 }
             }
         }
-        private void SetMedals()
+        private void UpdateStars()
         {
             //If level visual is lower than current level number 
             if (levelData.MedalsEarned > 0)
                 for (int i = 0; i < medalsList.Length; i++)
                 {
                     medalsList[i].gameObject.SetActive(true);
-                    medalsList[i].sprite = i < levelData.MedalsEarned ? medalEarnedSprite : medalUnearnedSprite;
+                    medalsList[i].sprite = i < levelData.MedalsEarned ? enableStarSprite : disableStarSprite;
                 }
         }
-        private void UpdateVisual()
+        private void RefreshVisual()
         {
             SetLevelIcon();
             lockIcon.SetActive(levelData.State == LevelVisualState.Locked);
             levelText.gameObject.SetActive(levelData.State != LevelVisualState.Locked);
             boxCollider.enabled = levelData.State != LevelVisualState.Locked;
-            SetMedals();
+            UpdateStars();
         }
         public void OnLevelComplete(int medals)
         {
             levelData.State = LevelVisualState.Completed;
             levelData.MedalsEarned = medals;
-            UpdateVisual();
+            RefreshVisual();
         }
         public void SetAsCurrentLevel()
         {
             levelData.State = LevelVisualState.Current;
-            UpdateVisual();
+            RefreshVisual();
         }
 
         #region Animation
         public void PressAnimation(Action action = null)
         {
-            AnimateScale(_originalScale * pressedScale, pressEase, action);
+            TweenScale(_originalScale * pressedScale, pressEase, action);
         }
         public void ReleaseAnimation(Action action = null)
         {
-            AnimateScale(_originalScale, releaseEase, action);
+            TweenScale(_originalScale, releaseEase, action);
         }
-        private void AnimateScale(Vector3 target, Ease ease, System.Action onComplete = null)
+        private void TweenScale(Vector3 target, Ease ease, Action onComplete = null)
         {
             scaleTween.Cancel();
             scaleTween = TweenManager.Scale(levelIcon.transform.localScale, target, levelIcon.transform, tweenDuration, ease, onComplete);
         }
-
         #endregion
     }
 }

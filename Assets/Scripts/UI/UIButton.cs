@@ -15,7 +15,7 @@ namespace BeachHero
         [Header("Scale Animation")]
         [SerializeField] private Vector3 _originalScale = new Vector3(1, 1, 1);
         [SerializeField] private float pressedScale = 0.9f;
-        [SerializeField] private float hoverScale = 1.05f;
+     //   [SerializeField] private float hoverScale = 1.05f;
         [SerializeField] private float tweenDuration = 0.15f;
         [SerializeField] private Ease pressEase = Ease.OutBack;
         [SerializeField] private Ease releaseEase = Ease.OutBack;

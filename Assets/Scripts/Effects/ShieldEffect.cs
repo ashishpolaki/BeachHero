@@ -14,7 +14,7 @@ namespace BeachHero
         [SerializeField] private Ease stretchEase = Ease.InOutSine;
         [SerializeField] private int stretchLoops = -1;
         [SerializeField] private LoopType stretchLoopType = LoopType.Yoyo;
-    
+
         [Header("Scale Settings")]
         [SerializeField] private float scaleDuration = 0.25f;
         [SerializeField] private float scaleReturnDuration = 0.1f;
@@ -22,18 +22,37 @@ namespace BeachHero
         [SerializeField] private Ease scaleReturnEase = Ease.InBack;
 
         [Header("Fresnel Settings")]
+        [SerializeField] private Color baseColor;
+        [SerializeField] private Color baseTextureColor;
         [SerializeField] private float basePower = 2f;
         [SerializeField] private float closingPower = 10f;
         [SerializeField] private float shieldOffsetDuration = 30;
 
+        [Header("Explode Settings")]
+        [SerializeField] private Color explodeColor;
+        [SerializeField] private Color explodeTextureColor;
+        [SerializeField] private float explodeScale = 5f;
+        [SerializeField] private float explodeExpandMultiplier = 1.15f;
+        [SerializeField] private float explodeExpandDuration = 0.2f;
+        [SerializeField] private float explodeCollapseDuration = 0.3f;
+        [SerializeField] private Vector3 explodeEndScale = Vector3.zero;
+        [SerializeField] private float explodeDuration = 0.25f;
+        [SerializeField] private Ease explodeExpandEase = Ease.OutQuad;
+        [SerializeField] private Ease explodeCollapseEase = Ease.InQuad;
+
         private TweenHandle scaleTween;
         private TweenHandle powerTween;
         private TweenHandle textureOffsetTween;
+        private TweenHandle colorTween;
+        private TweenHandle colorTextureTween;
+
         private Material material;
 
         // Shader property IDs
         private static readonly int FresnelPowerId = Shader.PropertyToID("_Power");
         private static readonly int OffsetId = Shader.PropertyToID("_Offset");
+        private static readonly int ColorId = Shader.PropertyToID("_Color_A");
+        private static readonly int TextureColorId = Shader.PropertyToID("_Texture_1_Color");
 
         private void Awake()
         {
@@ -43,6 +62,8 @@ namespace BeachHero
 
         public void PlaySpawnAnimation()
         {
+            material.SetColor(ColorId, baseColor);
+            material.SetColor(TextureColorId, baseTextureColor);
             scaleTween = TweenManager.Scale(Vector3.zero, baseScale, transform, scaleDuration,
                 scaleEase, onComplete: () => StartStretchLoop());
             powerTween = TweenManager.SetFloat(closingPower, basePower, scaleDuration, (power) => material.SetFloat(FresnelPowerId, power));
@@ -54,9 +75,13 @@ namespace BeachHero
             scaleTween.Cancel();
             powerTween.Cancel();
             textureOffsetTween.Cancel();
+            colorTween.Cancel();
+            colorTextureTween.Cancel();
             transform.localScale = Vector3.zero;
-           // scaleTween = TweenManager.Scale(transform.localScale, Vector3.zero, transform, scaleReturnDuration,
-           //     scaleReturnEase);
+            material.SetColor(ColorId, baseColor);
+            material.SetColor(TextureColorId, baseTextureColor);
+            // scaleTween = TweenManager.Scale(transform.localScale, Vector3.zero, transform, scaleReturnDuration,
+            //     scaleReturnEase);
         }
 
         private void StartStretchLoop()
@@ -69,19 +94,22 @@ namespace BeachHero
             textureOffsetTween = TweenManager.SetFloat(0, 100, shieldOffsetDuration, (x) => material.SetVector(OffsetId, new Vector2(x, x)));
         }
 
-        public void UpdateScale(Vector3 direction)
+        public void Explode()
         {
-            //Vector3 targetScale = new Vector3(
-            //    baseScale.x + Mathf.Abs(direction.x) * stretchAmount,
-            //    baseScale.y,
-            //    baseScale.z);
+            scaleTween.Cancel();
+            powerTween.Cancel();
+            Vector3 currentScale = transform.localScale;
+            Vector3 expandScale = currentScale * explodeExpandMultiplier;
+            Vector3 endScale =  explodeEndScale;
 
-            //// Smooth (example - scaleSpeed not defined here) 
-            //transform.localScale = Vector3.Lerp(
-            //    transform.localScale,
-            //    targetScale,
-            //    Time.deltaTime * scaleSpeed
-            //);
+            scaleTween = TweenManager.Scale(currentScale, expandScale, transform, explodeExpandDuration, explodeExpandEase, onComplete: () =>
+                {
+                    TweenManager.Scale(expandScale, endScale, transform, explodeCollapseDuration, explodeCollapseEase);
+                });
+            float colorTweenDuration = explodeExpandDuration + explodeCollapseDuration;
+            colorTween = TweenManager.SetMaterialColor(material, ColorId, baseColor, explodeColor, colorTweenDuration);
+            colorTextureTween = TweenManager.SetMaterialColor(material, TextureColorId, baseTextureColor, explodeTextureColor, colorTweenDuration);
+            powerTween = TweenManager.SetFloat(basePower, closingPower, explodeDuration, (power) => material.SetFloat(FresnelPowerId, power));
         }
     }
 }

@@ -66,6 +66,7 @@ namespace BeachHero
                 }
                 else if (i == currentLevelIndex)
                 {
+                    if(levelDatas[i].State != LevelVisualState.Completed)
                     levelDatas[i].SetState(LevelVisualState.Current);
                 }
                 else

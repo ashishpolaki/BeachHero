@@ -388,9 +388,23 @@ namespace BeachHero
         }
         #endregion
 
+        #region Material 
+        public static TweenHandle SetMaterialColor(Material target,int id, Color from, Color to, float duration,
+           Ease ease = Ease.Linear, Action onComplete = null)
+        {
+            var motion = LMotion.Create(from, to, duration).WithEase(ease);
+            if (onComplete != null)
+            {
+                motion = motion.WithOnComplete(onComplete);
+            }
+            var handle = motion.BindToMaterialColor(target, id);
+            return new TweenHandle(handle);
+        }
+        #endregion
+
         #region Image
         public static TweenHandle FillAmount(Image target, float from, float to, float duration,
-            Ease ease = Ease.Linear, System.Action onComplete = null)
+            Ease ease = Ease.Linear, Action onComplete = null)
         {
             var motion = LMotion.Create(from, to, duration).WithEase(ease);
             if (onComplete != null)
