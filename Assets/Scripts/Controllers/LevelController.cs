@@ -351,6 +351,7 @@ namespace BeachHero
             {
                 foreach (var obstacle in obstacleList)
                 {
+                    obstacle.ResetObstacle();
                     switch (obstacle.ObstacleType)
                     {
                         case ObstacleType.Shark:

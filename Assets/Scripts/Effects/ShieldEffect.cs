@@ -10,7 +10,6 @@ namespace BeachHero
 
         [Header("Stretch Settings")]
         [SerializeField] private Vector3 stretchedScale = new Vector3(2.1f, 2.38f, 2.78f);
-        [SerializeField] private float stretchAmount = 0.25f; // kept for backward-compat / potential use
         [SerializeField] private float stretchDuration = 0.4f;
         [SerializeField] private Ease stretchEase = Ease.InOutSine;
         [SerializeField] private int stretchLoops = -1;
@@ -55,14 +54,14 @@ namespace BeachHero
             scaleTween.Cancel();
             powerTween.Cancel();
             textureOffsetTween.Cancel();
-            scaleTween = TweenManager.Scale(transform.localScale, Vector3.zero, transform, scaleReturnDuration,
-                scaleReturnEase);
+            transform.localScale = Vector3.zero;
+           // scaleTween = TweenManager.Scale(transform.localScale, Vector3.zero, transform, scaleReturnDuration,
+           //     scaleReturnEase);
         }
 
         private void StartStretchLoop()
         {
             // Cancel any existing scale tween before starting the stretch loop
-            // 
             scaleTween.Cancel();
             scaleTween = TweenManager.Scale(baseScale, stretchedScale, transform, stretchDuration,
                 stretchEase, loops: stretchLoops, loopType: stretchLoopType);

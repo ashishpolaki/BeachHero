@@ -93,8 +93,14 @@ namespace BeachHero
                 {
                     obstacle = other.GetComponentInParent<IObstacle>();
                 }
-                if (obstacle != null)
+                if (obstacle != null && !obstacle.IsHit)
                 {
+                    if (isShieldEnabled)
+                    {
+                        var dir = other.transform.position - other.ClosestPoint(transform.position);
+                        obstacle.HitByDash(dir);
+                        return;
+                    }
                     StopMovement();
                     if (obstacle.ObstacleType == ObstacleType.Whirlpool)
                     {
@@ -299,6 +305,7 @@ namespace BeachHero
                     GameController.GetInstance.LevelController.TrimTrailFromStart();
                     if (nextPointIndex >= pointsList.Length)
                     {
+                        StopMovement();
                         if (GameController.GetInstance.LevelController.IsLevelPassed)
                         {
                             PlayVictoryAnimation();
@@ -307,7 +314,6 @@ namespace BeachHero
                         {
                             GameController.GetInstance.OnLevelFailed(LevelFailDelayType.None);
                         }
-                        StopMovement();
                         GameController.GetInstance.LevelController.TrimTrailFromStart();
                     }
                 }

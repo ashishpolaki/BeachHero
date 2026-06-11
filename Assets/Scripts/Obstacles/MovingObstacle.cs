@@ -1,3 +1,4 @@
+using LitMotion;
 using UnityEngine;
 
 namespace BeachHero
@@ -5,10 +6,25 @@ namespace BeachHero
     public class MovingObstacle : Obstacle
     {
         #region Inspector Variables
-      //  [SerializeField] private LineRenderer pathRenderer;
+        //  [SerializeField] private LineRenderer pathRenderer;
         [SerializeField] private float rotationSpeedMultiplier = 0.3f;
         [SerializeField] private int samples = 20;
         [SerializeField] private float movementSpeed = 5f;
+
+        [Header("DashByHit Settings")]
+        [SerializeField] private float dashByHitDistance = 3f;
+        [SerializeField] private float dashByHitUpOffset = 1f;
+        [SerializeField] private float dashByHitExtraForward = 2f; // added to forward distance for down position
+        [SerializeField] private float dashByHitDownOffset = 2f;
+        [SerializeField] private float dashByHitSpinStrength = 120f;
+        [SerializeField] private float dashByHitMainSpinDegrees = 270f;
+        [SerializeField] private float dashByHitMoveUpDuration = 0.35f;
+        [SerializeField] private float dashByHitRotateDuration = 0.7f;
+        [SerializeField] private float dashByHitMoveDownDuration = 0.35f;
+        [SerializeField] private Ease dashByHitEaseUp = Ease.OutQuad;
+        [SerializeField] private Ease dashByHitEaseRotate = Ease.Linear;
+        [SerializeField] private Ease dashByHitEaseDown = Ease.InQuad;
+        [SerializeField] private float dashByHitScaleMultiplier = 1.5f;
         #endregion
 
         #region Private Variables
@@ -166,6 +182,35 @@ namespace BeachHero
         {
             base.Hit();
             isMovementActive = false;
+        }
+
+        public override void HitByDash(Vector3 hitDirection = default)
+        {
+            base.HitByDash();
+            isMovementActive = false;
+            Vector3 dir = hitDirection.normalized;
+            Vector3 startPos = transform.position;
+            Vector3 midPos = startPos + (dir * dashByHitDistance) + (Vector3.up * dashByHitUpOffset);   // up + forward
+            Vector3 downPos = startPos + (dir * (dashByHitDistance + dashByHitExtraForward)) + (Vector3.down * dashByHitDownOffset);
+
+            Vector3 targetRotation = new Vector3(
+               -dir.z * dashByHitSpinStrength,   // forward/back flip
+               dir.x * dashByHitSpinStrength,    // side twist
+               transform.rotation.z + dashByHitMainSpinDegrees);                   // main spin
+
+            TweenSequence sequence = new TweenSequence(LSequence.Create());
+            // Cache scales into variables so they're consistent and configurable
+            Vector3 startScale = transform.localScale;
+            Vector3 midScale = startScale * dashByHitScaleMultiplier;
+            Vector3 endScale = Vector3.zero;
+
+            sequence.Insert(0, TweenManager.Move(transform, startPos, midPos, dashByHitMoveUpDuration, ease: dashByHitEaseUp).Handle);
+            sequence.Insert(0, TweenManager.Scale(startScale, midScale, transform, dashByHitMoveUpDuration, ease: dashByHitEaseUp).Handle);
+            sequence.Insert(0f, TweenManager.RotateEulerAngles(transform, transform.eulerAngles,
+                targetRotation, dashByHitRotateDuration, ease: dashByHitEaseRotate).Handle);
+            sequence.Insert(dashByHitMoveUpDuration, TweenManager.Move(transform, midPos, downPos, dashByHitMoveDownDuration, ease: dashByHitEaseDown).Handle);
+            sequence.Insert(dashByHitMoveUpDuration, TweenManager.Scale(midScale, endScale, transform, dashByHitMoveDownDuration, ease: dashByHitEaseDown).Handle);
+            sequence.InitializeHandle();
         }
         #endregion
 

@@ -17,6 +17,7 @@ namespace BeachHero
     public class Obstacle : MonoBehaviour, IObstacle
     {
         [SerializeField] private ObstacleType obstacleType;
+        private bool isHit = false;
 
         public ObstacleType ObstacleType
         {
@@ -29,9 +30,18 @@ namespace BeachHero
                 obstacleType = value;
             }
         }
+        public bool IsHit
+        {
+            get { return isHit; }
+            set
+            {
+                isHit = value;
+            }
+        }
 
         public virtual void Hit()
         {
+            isHit = true;
             GameController.GetInstance.OnLevelFailed(LevelFailDelayType.Medium);
         }
 
@@ -40,13 +50,20 @@ namespace BeachHero
         }
         public virtual void ResetObstacle()
         {
+            isHit = false;
+        }
+        public virtual void HitByDash(Vector3 hitDirection = default)
+        {
+            isHit = true;
         }
     }
     public interface IObstacle
     {
         public ObstacleType ObstacleType { get; set; }
+        public bool IsHit { get; set; }
         public abstract void Hit();
         public abstract void UpdateState();
         public abstract void ResetObstacle();
+        public abstract void HitByDash(Vector3 hitDirection);
     }
 }

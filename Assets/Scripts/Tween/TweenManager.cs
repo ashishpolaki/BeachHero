@@ -295,11 +295,11 @@ namespace BeachHero
         #endregion
 
         #region Shake
-        public static TweenHandle ShakePosition(Transform transform, Vector3 startValue, Vector3 strength,
+        public static TweenHandle ShakePosition(Transform transform, Vector3 position, Vector3 strength,
             int frequency, float duration, float dampingRatio = 0, uint randomSeed = 123,
-            Ease ease = Ease.Linear, System.Action onComplete = null)
+            Ease ease = Ease.Linear, Action onComplete = null)
         {
-            var motion = LMotion.Shake.Create(startValue, strength, duration).WithFrequency(frequency)
+            var motion = LMotion.Shake.Create(position, strength, duration).WithFrequency(frequency)
              .WithDampingRatio(dampingRatio).WithRandomSeed(randomSeed).WithEase(ease);
 
             if (onComplete != null)

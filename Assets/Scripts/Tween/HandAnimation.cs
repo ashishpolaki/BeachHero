@@ -121,7 +121,7 @@ namespace BeachHero
         [Header("Movement Settings")]
         [SerializeField] private float moveToFirstDuration = 0.4f;
         [SerializeField] private float moveToSecondDuration = 0.4f;
-        [SerializeField] private Ease moveEase = Ease.InOutQuint;
+        [SerializeField] private Ease moveEase = Ease.OutQuad;
 
         [Header("Rotation Settings")]
         [SerializeField] private float zRotation = 220f;
@@ -154,7 +154,8 @@ namespace BeachHero
             sequence.Insert(fadeDuration, TweenManager.RotateEulerAngles(handRect.transform, handRect.transform.localEulerAngles,
                 new Vector3(0, 0, zRotation), rotationDuration, Ease.InOutQuint, spaceType: TransformSpace.Local).Handle);
 
-            sequence.Insert(fadeDuration + moveToFirstDuration, TweenManager.MoveAnchorOnAxis(handRect, target1.y + touchOffset.y, target2.y + touchOffset.y, moveToSecondDuration, Ease.OutQuad, TransformAxis.Y).Handle);
+            sequence.Insert(fadeDuration + moveToFirstDuration, TweenManager.MoveAnchorOnAxis(handRect, target1.y + touchOffset.y,
+                target2.y + touchOffset.y, moveToSecondDuration, moveEase, TransformAxis.Y).Handle);
             var loopHandle = TweenManager.RunCallback(() =>
             {
                 sequence.SetTime(0);

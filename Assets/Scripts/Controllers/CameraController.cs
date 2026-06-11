@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using Unity.Cinemachine;
 using System.Threading.Tasks;
 using System.Collections.Generic;

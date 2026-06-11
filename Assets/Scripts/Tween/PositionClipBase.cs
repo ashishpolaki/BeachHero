@@ -49,11 +49,11 @@ namespace BeachHero
             {
                 switch (transformAxis)
                 {
-                    case TransformAxis.X: return TweenManager.Move(target, target.localPosition, new Vector3(dest.x, target.localPosition.y, target.localPosition.z), duration, spaceType: positionSpace, ease: ease, onComplete: null).Handle;
-                    case TransformAxis.Y: return TweenManager.Move(target, target.localPosition, new Vector3(target.localPosition.x, dest.y, target.localPosition.z), duration, spaceType: positionSpace, ease: ease, onComplete: null).Handle;
-                    case TransformAxis.Z: return TweenManager.Move(target, target.localPosition, new Vector3(target.localPosition.x, target.localPosition.y, dest.z), duration, spaceType: positionSpace, ease: ease, onComplete: null).Handle;
+                    case TransformAxis.X: return TweenManager.Move(target, fromPosition, new Vector3(dest.x, fromPosition.y, fromPosition.z), duration, spaceType: positionSpace, ease: ease, onComplete: null).Handle;
+                    case TransformAxis.Y: return TweenManager.Move(target, fromPosition, new Vector3(fromPosition.x, dest.y, fromPosition.z), duration, spaceType: positionSpace, ease: ease, onComplete: null).Handle;
+                    case TransformAxis.Z: return TweenManager.Move(target, fromPosition, new Vector3(fromPosition.x, fromPosition.y, dest.z), duration, spaceType: positionSpace, ease: ease, onComplete: null).Handle;
                     case TransformAxis.XYZ:
-                    default: return TweenManager.Move(target, target.localPosition, dest, duration, spaceType: positionSpace, ease: ease, onComplete: null).Handle;
+                    default: return TweenManager.Move(target, fromPosition, dest, duration, spaceType: positionSpace, ease: ease, onComplete: null).Handle;
                 }
             }
             //World
@@ -61,11 +61,11 @@ namespace BeachHero
             {
                 switch (transformAxis)
                 {
-                    case TransformAxis.X: return TweenManager.Move(target, target.position, new Vector3(dest.x, target.position.y, target.position.z), duration, spaceType: positionSpace, ease: ease, onComplete: null).Handle;
-                    case TransformAxis.Y: return TweenManager.Move(target, target.position, new Vector3(target.position.x, dest.y, target.position.z), duration, spaceType: positionSpace, ease: ease, onComplete: null).Handle;
-                    case TransformAxis.Z: return TweenManager.Move(target, target.position, new Vector3(target.position.x, target.position.y, dest.z), duration, spaceType: positionSpace, ease: ease, onComplete: null).Handle;
+                    case TransformAxis.X: return TweenManager.Move(target, fromPosition, new Vector3(dest.x, fromPosition.y, fromPosition.z), duration, spaceType: positionSpace, ease: ease, onComplete: null).Handle;
+                    case TransformAxis.Y: return TweenManager.Move(target, fromPosition, new Vector3(fromPosition.x, dest.y, fromPosition.z), duration, spaceType: positionSpace, ease: ease, onComplete: null).Handle;
+                    case TransformAxis.Z: return TweenManager.Move(target, fromPosition, new Vector3(fromPosition.x, fromPosition.y, dest.z), duration, spaceType: positionSpace, ease: ease, onComplete: null).Handle;
                     case TransformAxis.XYZ:
-                    default: return TweenManager.Move(target, target.position, dest, duration, spaceType: positionSpace, ease: ease, onComplete: null).Handle;
+                    default: return TweenManager.Move(target, fromPosition, dest, duration, spaceType: positionSpace, ease: ease, onComplete: null).Handle;
                 }
             }
         }
@@ -119,7 +119,7 @@ namespace BeachHero
                 case TransformAxis.Y:
                     return TweenManager.MoveAnchorOnAxis(target, target.anchoredPosition.y, toAnchoredPosition.y, duration, ease, rectAxis).Handle;
                 case TransformAxis.XY:
-                   return TweenManager.MoveAnchor(target, target.anchoredPosition, toAnchoredPosition, duration, ease, rectAxis).Handle;
+                    return TweenManager.MoveAnchor(target, target.anchoredPosition, toAnchoredPosition, duration, ease, rectAxis).Handle;
             }
             return default;
         }
