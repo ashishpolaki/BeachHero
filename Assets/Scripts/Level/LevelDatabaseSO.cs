@@ -66,8 +66,15 @@ namespace BeachHero
                 }
                 else if (i == currentLevelIndex)
                 {
-                    if(levelDatas[i].State != LevelVisualState.Completed)
-                    levelDatas[i].SetState(LevelVisualState.Current);
+                    //If that is a last level, check more
+                    if (levelDatas[i].MedalsEarned <= 0)
+                    {
+                        levelDatas[i].SetState(LevelVisualState.Current);
+                    }
+                    else if (levelDatas[i].MedalsEarned > 0)
+                    {
+                        levelDatas[i].SetState(LevelVisualState.Completed);
+                    }
                 }
                 else
                 {
