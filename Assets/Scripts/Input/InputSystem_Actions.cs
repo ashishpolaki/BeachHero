@@ -1312,6 +1312,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""8670bf3c-2719-4a6c-b448-d4fc52dafcf7"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""TouchPosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""eef449ff-a77a-44e8-a2f8-668343111dbb"",
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",

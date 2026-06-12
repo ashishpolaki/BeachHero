@@ -31,13 +31,14 @@ namespace BeachHero
         {
             powerUpType = _powerupType;
             powerupController = GameController.GetInstance.PowerupController;
-            if (powerupController.IsUnlockLevelForPowerup(powerUpType, GameController.GetInstance.CurrentLevelIndex + 1))
+            isUnlocked = powerupController.IsPowerupUnlocked(powerUpType);
+            if (powerupController.IsUnlockLevelForPowerup(powerUpType, GameController.GetInstance.CurrentLevelIndex + 1) &&
+                !isUnlocked)
             {
                 powerupController.UnlockPowerup(powerUpType);
                 isTutorialActive = true;
                 TryShowPowerupTutorials();
             }
-            isUnlocked = powerupController.IsPowerupUnlocked(powerUpType);
             if (isUnlocked)
             {
                 iconImg.gameObject.SetActive(true);

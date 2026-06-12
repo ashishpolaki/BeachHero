@@ -346,7 +346,7 @@ namespace BeachHero
 
                     UpdateCharacterTransform(currentSplinePercent);
 
-                    float idleTriggerDistance = totalDistance * 0.05f;
+                    float idleTriggerDistance = 0.05f;
                     if (remainingDistance <= idleTriggerDistance && !isIdle)
                     {
                         characterAnimator.CrossFade("Idle", 0.2f);

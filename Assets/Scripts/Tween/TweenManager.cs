@@ -262,6 +262,7 @@ namespace BeachHero
             int frequency, float dampingRatio, float duration, Ease ease = Ease.Linear,
             TransformSpace transformSpace = TransformSpace.World, System.Action onComplete = null)
         {
+            //amplite = position.
             var motion = LMotion.Punch.Create(amplitude, strength, duration).WithFrequency(frequency).WithDampingRatio(dampingRatio).WithEase(ease);
             TweenHandle handle = default;
             if (onComplete != null)

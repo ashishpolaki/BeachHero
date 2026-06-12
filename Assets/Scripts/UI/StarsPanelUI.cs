@@ -7,7 +7,6 @@ namespace BeachHero
     public class StarsPanelUI : MonoBehaviour
     {
         #region Inspector Variables
-
         [Header("References")]
         [SerializeField] private Image[] starImages;
         [SerializeField] private Sprite emptyStarSprite;
@@ -27,6 +26,10 @@ namespace BeachHero
         [SerializeField] private int starPunchFrequency = 3;
         [SerializeField] private float starPunchDamper = 0.55f;
         [SerializeField] private float starPunchDuration = 0.55f;
+
+        [SerializeField] private Vector3 starPunchPositionStrength = new Vector3(0, 6f, 0);
+        [SerializeField] private int starPunchPositionFrequency = 5;
+        [SerializeField] private float starPunchPositionDamper = 0.5f;
         #endregion
 
         #region Private Variables
@@ -78,10 +81,13 @@ namespace BeachHero
             for (int i = starsCollected; i < starsEarned; i++)
             {
                 int index = i;
-                TweenManager.PunchScale(starImages[index].transform, Vector3.one, starPunchScale, starPunchFrequency, starPunchDamper, starPunchDuration, onComplete: () =>
+                TweenManager.PunchScale(starImages[index].transform, Vector3.one, starPunchScale, starPunchFrequency, starPunchDamper, starPunchDuration
+                    /*,Ease.OutBack*/, onComplete: () =>
                  {
                      starImages[index].sprite = filledStarSprite;
                  });
+                TweenManager.PunchPosition(starImages[index].transform, starImages[index].transform.localPosition,
+                    starPunchPositionStrength, starPunchPositionFrequency, starPunchPositionDamper, starPunchDuration, transformSpace: TransformSpace.Local);
             }
             starsCollected = starsEarned;
         }
