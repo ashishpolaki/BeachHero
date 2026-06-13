@@ -58,6 +58,7 @@ namespace BeachHero
             TutorialController.GetInstance.Init();
             RemoteConfig.GetInstance.Init();
             HapticsManager.GetInstance.Init();
+            ParticleController.GetInstance.Initialize();
             ES3.Init();
             Febucci.UI.Core.TAnimBuilder.InitializeGlobalDatabase();
 

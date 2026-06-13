@@ -15,7 +15,6 @@ namespace BeachHero
         [SerializeField] private float movementSpeed;
         [SerializeField] private float rotationSpeed;
         [SerializeField] private float speedMultiplier;
-        [SerializeField] private ParticleSystem explosionParticle;
         #endregion
 
         #region Private Variables
@@ -97,6 +96,13 @@ namespace BeachHero
                 {
                     if (isShieldEnabled)
                     {
+                        //Particle
+                        Vector3 hitPos = other.ClosestPoint(other.transform.position);
+                        hitPos.y = 2f;
+                        ParticleController.GetInstance.Spawn(ParticleType.DashHit, hitPos);
+                        //Sound
+                        AudioController.GetInstance.PlaySound(AudioType.DashHit);
+                        //movement effect
                         var dir = other.transform.position - other.ClosestPoint(transform.position);
                         obstacle.HitByDash(dir);
                         shieldEffect.Explode();
@@ -111,10 +117,7 @@ namespace BeachHero
                     else
                     {
                         OnBoatCollided();
-                        explosionParticle.gameObject.SetActive(true);
-                        //   explosionParticle.transform.position = other.ClosestPoint(transform.position);
-                        explosionParticle.transform.position = transform.position;
-                        explosionParticle.Play();
+                        ParticleController.GetInstance.Spawn(ParticleType.BoomExplosion, transform.position);
                         AudioController.GetInstance.PlaySound(AudioType.BoomExplosion);
                         CameraController.GetInstance.ShakeActiveCamera();
                     }
@@ -255,8 +258,6 @@ namespace BeachHero
         public void Init()
         {
             boatAnimator.SetTrigger(idleAnimHash);
-            explosionParticle.gameObject.SetActive(false);
-            explosionParticle.Stop();
             ResetState();
         }
         public void UpdateState()

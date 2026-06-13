@@ -16,7 +16,6 @@ namespace BeachHero
         [SerializeField] private ScriptableObjectPool icebergPool;
         [SerializeField] private ScriptableObjectPool shipWreckPool;
         [SerializeField] private ScriptableObjectPool gameCurrencyPool;
-        [SerializeField] private ScriptableObjectPool gameCurrencyParticlePool;
         [SerializeField] private ScriptableObjectPool shieldPowerupPool;
         [SerializeField] private ScriptableObjectPool speedPowerupPool;
         [SerializeField] private ScriptableObjectPool pathTrailPool;
@@ -33,7 +32,6 @@ namespace BeachHero
         public ScriptableObjectPool ShipWreckPool => shipWreckPool;
         public ScriptableObjectPool IcebergPool => icebergPool;
         public ScriptableObjectPool GameCurrencyPool => gameCurrencyPool;
-        public ScriptableObjectPool GameCurrencyParticlePool => gameCurrencyParticlePool;
         public ScriptableObjectPool SheildPowerupPool => shieldPowerupPool;
         public ScriptableObjectPool SpeedPowerupPool => speedPowerupPool;
         public ScriptableObjectPool PathTrailPool => pathTrailPool;
@@ -52,7 +50,6 @@ namespace BeachHero
             icebergPool.ResetState();
             shipWreckPool.ResetState();
             gameCurrencyPool.ResetState();
-            gameCurrencyParticlePool.ResetState();
             shieldPowerupPool.ResetState();
             speedPowerupPool.ResetState();
             pathTrailPool.ResetState();

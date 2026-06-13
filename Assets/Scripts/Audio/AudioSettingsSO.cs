@@ -19,6 +19,8 @@ namespace BeachHero
         PathDraw,
         MapUnlock,
         BoomExplosion,
+        DashHit,
+        Spawn,
         None
     }
     public enum AudioVolumeType

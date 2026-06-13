@@ -720,6 +720,7 @@ namespace BeachHero
             }
 
             OnCompleteSpawnAnimation?.Invoke();
+            AudioController.GetInstance.PlaySound(AudioType.Spawn);
             AdController.GetInstance.ShowBanner();
         }
 

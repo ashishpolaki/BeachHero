@@ -25,7 +25,6 @@ namespace BeachHero
             if (particle != null)
             {
                 particle.Stop();
-                GameController.GetInstance.PoolManager.GameCurrencyParticlePool.ReturnObject(particle.gameObject);
             }
         }
 
