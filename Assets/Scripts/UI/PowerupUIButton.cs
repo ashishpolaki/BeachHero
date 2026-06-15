@@ -42,7 +42,6 @@ namespace BeachHero
             if (isUnlocked)
             {
                 iconImg.gameObject.SetActive(true);
-                counterText.gameObject.SetActive(true);
                 balance = powerupController.GetPowerupBalance(powerUpType);
                 SetCountText(balance);
                 OnButtonReleased += OnPowerupButtonClicked;
@@ -85,12 +84,22 @@ namespace BeachHero
         }
         private void SetCountText(int count)
         {
-            counterText.text = count.ToString();
+            counterText.text = $"x{count}";
+            counterText.gameObject.SetActive(count > 0);
+            addMoreButton.gameObject.SetActive(count <= 0);
         }
         private void OnPowerupButtonClicked()
         {
+            //if balance is less than zero, open the store 
+            if(balance <= 0)
+            {
+                GameController.GetInstance.SetGameState(GameState.Paused);
+                UIController.GetInstance.ScreenEvent(ScreenType.Store, UIScreenEvent.Push);
+                return;
+            }
             isSelected = !isSelected;
             selectedIndicator.SetActive(isSelected);
+            counterText.gameObject.SetActive(!isSelected);
             if (isTutorialActive)
             {
                 isTutorialActive = false;
