@@ -47,7 +47,6 @@ namespace BeachHero
             // Aply Underlay
             if (style.useUnderlay)
             {
-                mat.EnableKeyword("UNDERLAY_ON");
                 mat.SetColor("_UnderlayColor", style.underlayColor);
                 mat.SetFloat("_UnderlayOffsetX", style.underlayOffsetX);
                 mat.SetFloat("_UnderlayOffsetY", style.underlayOffsetY);

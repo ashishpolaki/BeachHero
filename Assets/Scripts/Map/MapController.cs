@@ -425,7 +425,6 @@ namespace BeachHero
                 return;
 
             Material sharedMat = new Material(levelNumbersTexts[0].fontMaterial);
-            sharedMat.EnableKeyword("UNDERLAY_ON");
             sharedMat.SetColor("_UnderlayColor", underlayColor);
             sharedMat.SetFloat("_UnderlayOffsetX", underlayOffsetX);
             sharedMat.SetFloat("_UnderlayOffsetY", underlayOffsetY);

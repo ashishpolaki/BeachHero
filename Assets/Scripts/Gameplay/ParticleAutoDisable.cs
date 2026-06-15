@@ -27,6 +27,5 @@ namespace BeachHero
                 particle.Stop();
             }
         }
-
     }
 }
