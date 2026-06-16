@@ -46,8 +46,25 @@ namespace BeachHero
         #endregion
 
         #region Leaderboard
-        public void SubmitScore(long score)
+        public void SubmitScore()
         {
+            if (string.IsNullOrEmpty(leaderboardID))
+            {
+                DebugUtils.LogError("Leaderboard ID not set");
+                return;
+            }
+
+            if (!IsAuthenticated())
+            {
+                DebugUtils.LogWarning("User not authenticated. Retrying sign-in.");
+                SignIn();
+                return;
+            }
+
+            int totalStars = SaveSystem.LoadInt(StringUtils.TOTAL_STARS, 0);
+            int totalLevels = GameController.GetInstance.LoadCurrentLevelNumber();
+            int score = (totalStars * 100) + (totalLevels * 5);
+
             PlayGamesPlatform.Instance.ReportScore(score, leaderboardID, success =>
             {
                 if (success)
@@ -75,9 +92,6 @@ namespace BeachHero
                 SignIn();
                 return;
             }
-
-            int totalMedals = SaveSystem.LoadInt(StringUtils.TOTAL_MEDALS, 0);
-            SubmitScore(totalMedals);
 
             PlayGamesPlatform.Instance.ShowLeaderboardUI(leaderboardID);
         }

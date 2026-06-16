@@ -35,8 +35,8 @@ namespace BeachHero
         public const string SOUND_VOLUME = "SoundVolume";
         public const string MUSIC_VOLUME = "MusicVolume";
 
-        //Medals
-        public const string TOTAL_MEDALS = "TotalMedals";
+        //Stars
+        public const string TOTAL_STARS = "TotalStars";
 
         //Haptics
         public const string HAPTICS_ON = "Haptics";
@@ -71,8 +71,8 @@ namespace BeachHero
         //Game Currency
         public const string GAME_CURRENCY_BALANCE = "GameCurrencyBalance";
 
-        //Medals
-        public const string MEDAL_EARNED_PREFIX = "MedalEarned_Level_";
+        //Stars
+        public const string STARS_EARNED_PREFIX = "StarsEarned_Level_";
 
         //ADS
         public const string NO_ADS_PURCHASED = "NoAdsPurchased";

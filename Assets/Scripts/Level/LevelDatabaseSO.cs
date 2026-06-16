@@ -39,7 +39,7 @@ namespace BeachHero
                 levelDatas[i].LevelNumber = i + 1;
                 levelDatas[i].SetState(LevelVisualState.Locked);
                 levelDatas[i].MedalsEarned = 0;
-                SaveSystem.SaveInt($"{StringUtils.MEDAL_EARNED_PREFIX}{i}", 0);
+                SaveSystem.SaveInt($"{StringUtils.STARS_EARNED_PREFIX}{i}", 0);
             }
         }
         private void OnValidate()
@@ -80,7 +80,7 @@ namespace BeachHero
                 {
                     levelDatas[i].SetState(LevelVisualState.Locked);
                 }
-                levelDatas[i].MedalsEarned = SaveSystem.LoadInt($"{StringUtils.MEDAL_EARNED_PREFIX}{i}", 0);
+                levelDatas[i].MedalsEarned = SaveSystem.LoadInt($"{StringUtils.STARS_EARNED_PREFIX}{i}", 0);
             }
         }
 
@@ -96,7 +96,7 @@ namespace BeachHero
                 if (medals > levelDatas[levelIndex].MedalsEarned)
                 {
                     levelDatas[levelIndex].MedalsEarned = medals;
-                    SaveSystem.SaveInt($"{StringUtils.MEDAL_EARNED_PREFIX}{levelIndex}", medals);
+                    SaveSystem.SaveInt($"{StringUtils.STARS_EARNED_PREFIX}{levelIndex}", medals);
                 }
             }
 
@@ -106,7 +106,7 @@ namespace BeachHero
             {
                 medals += levelDatas[i].MedalsEarned;
             }
-            SaveSystem.SaveInt(StringUtils.TOTAL_MEDALS, totalmedals);
+            SaveSystem.SaveInt(StringUtils.TOTAL_STARS, totalmedals);
         }
         #endregion
     }
