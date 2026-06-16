@@ -242,7 +242,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _GradientTex:
-        m_Texture: {fileID: 1948165172}
+        m_Texture: {fileID: 1871607868}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -834,7 +834,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!28 &1948165172
+--- !u!28 &1871607868
 Texture2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -903,6 +903,12 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2043515276897271739, guid: f839c5c05a3e58c47b8f5ea49808c69c,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -417402775, guid: 473b1cde6afdb3d40a022a50ba420bfa,
+        type: 3}
     - target: {fileID: 2180180204365169815, guid: f839c5c05a3e58c47b8f5ea49808c69c,
         type: 3}
       propertyPath: m_IsActive
@@ -921,22 +927,22 @@ PrefabInstance:
     - target: {fileID: 2186887904962917720, guid: f839c5c05a3e58c47b8f5ea49808c69c,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 176
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2186887904962917720, guid: f839c5c05a3e58c47b8f5ea49808c69c,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 71
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2186887904962917720, guid: f839c5c05a3e58c47b8f5ea49808c69c,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 120
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2186887904962917720, guid: f839c5c05a3e58c47b8f5ea49808c69c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -69.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2368615354200752141, guid: f839c5c05a3e58c47b8f5ea49808c69c,
         type: 3}
@@ -965,9 +971,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3637299295364342308, guid: f839c5c05a3e58c47b8f5ea49808c69c,
         type: 3}
+      propertyPath: m_Type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3637299295364342308, guid: f839c5c05a3e58c47b8f5ea49808c69c,
+        type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 1133323180, guid: 421cd54b295911041a6f106e99e5ca2a,
+      objectReference: {fileID: -449907624, guid: 473b1cde6afdb3d40a022a50ba420bfa,
         type: 3}
     - target: {fileID: 3637299295364342308, guid: f839c5c05a3e58c47b8f5ea49808c69c,
         type: 3}
@@ -992,22 +1003,22 @@ PrefabInstance:
     - target: {fileID: 6231071276669433246, guid: f839c5c05a3e58c47b8f5ea49808c69c,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 240
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6231071276669433246, guid: f839c5c05a3e58c47b8f5ea49808c69c,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 165
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6231071276669433246, guid: f839c5c05a3e58c47b8f5ea49808c69c,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 240
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6231071276669433246, guid: f839c5c05a3e58c47b8f5ea49808c69c,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -165
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6880726573010865678, guid: f839c5c05a3e58c47b8f5ea49808c69c,
         type: 3}
@@ -1067,12 +1078,12 @@ PrefabInstance:
     - target: {fileID: 7798559500529019484, guid: f839c5c05a3e58c47b8f5ea49808c69c,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 240
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7798559500529019484, guid: f839c5c05a3e58c47b8f5ea49808c69c,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 165
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7943620978409907202, guid: f839c5c05a3e58c47b8f5ea49808c69c,
         type: 3}
@@ -1082,6 +1093,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 2206644904525666750, guid: f839c5c05a3e58c47b8f5ea49808c69c, type: 3}
+    - {fileID: 8163482545398858845, guid: f839c5c05a3e58c47b8f5ea49808c69c, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f839c5c05a3e58c47b8f5ea49808c69c, type: 3}
