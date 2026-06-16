@@ -108,6 +108,10 @@ namespace BeachHero
         }
         public void OnPickUp()
         {
+            if(isPickedUp)
+            {
+                return;
+            }
             AudioController.GetInstance.PlaySound(AudioType.Collect2);
             pickUpParticle.gameObject.SetActive(true);
             pickUpParticle.Play();

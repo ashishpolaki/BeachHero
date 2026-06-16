@@ -76,12 +76,12 @@ SpriteRenderer:
   m_SortingLayerID: -1453750307
   m_SortingLayer: 1
   m_SortingOrder: 2
-  m_Sprite: {fileID: -252209203, guid: 1d13c6e8e1d6e8b45b2df0eb663f0ff0, type: 3}
+  m_Sprite: {fileID: 1070527882, guid: 421cd54b295911041a6f106e99e5ca2a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 10.24, y: 10.24}
+  m_Size: {x: 1.38, y: 1.34}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -156,15 +156,13 @@ MonoBehaviour:
   - {fileID: 3730381800461989215}
   - {fileID: 3648894608740775679}
   - {fileID: 5358143117937879752}
-  medalEarnedSprite: {fileID: -252209203, guid: 1d13c6e8e1d6e8b45b2df0eb663f0ff0,
-    type: 3}
-  medalUnearnedSprite: {fileID: 1923478682, guid: 1d13c6e8e1d6e8b45b2df0eb663f0ff0,
+  enableStarSprite: {fileID: 1449665012, guid: 421cd54b295911041a6f106e99e5ca2a, type: 3}
+  disableStarSprite: {fileID: 1070527882, guid: 421cd54b295911041a6f106e99e5ca2a,
     type: 3}
   lockIcon: {fileID: 6357307412066825776}
   levelText: {fileID: 8804353568797048240}
   boxCollider: {fileID: 6536325409873297837}
   pressedScale: 0.7
-  hoverScale: 1.05
   tweenDuration: 0.15
   pressEase: 26
   releaseEase: 26
@@ -353,12 +351,12 @@ SpriteRenderer:
   m_SortingLayerID: -1453750307
   m_SortingLayer: 1
   m_SortingOrder: 2
-  m_Sprite: {fileID: -252209203, guid: 1d13c6e8e1d6e8b45b2df0eb663f0ff0, type: 3}
+  m_Sprite: {fileID: 1070527882, guid: 421cd54b295911041a6f106e99e5ca2a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 10.24, y: 10.24}
+  m_Size: {x: 1.38, y: 1.34}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -440,12 +438,12 @@ SpriteRenderer:
   m_SortingLayerID: -1453750307
   m_SortingLayer: 1
   m_SortingOrder: 2
-  m_Sprite: {fileID: -252209203, guid: 1d13c6e8e1d6e8b45b2df0eb663f0ff0, type: 3}
+  m_Sprite: {fileID: 1070527882, guid: 421cd54b295911041a6f106e99e5ca2a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 10.24, y: 10.24}
+  m_Size: {x: 1.38, y: 1.34}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -572,7 +570,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0.11086956}
+  m_AnchoredPosition: {x: -0.1, y: 0.11086956}
   m_SizeDelta: {x: 1.4841, y: 1.434}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &7007731867970329107
@@ -640,7 +638,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: 12
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a1f88a85ca911344db1847b7c4c92a87, type: 2}
   m_sharedMaterial: {fileID: -9219548683257091789, guid: a1f88a85ca911344db1847b7c4c92a87,
@@ -678,7 +676,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: -8
   m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0

@@ -36,6 +36,7 @@ namespace BeachHero
                 !isUnlocked)
             {
                 powerupController.UnlockPowerup(powerUpType);
+                isUnlocked = true;
                 isTutorialActive = true;
                 TryShowPowerupTutorials();
             }
@@ -80,7 +81,11 @@ namespace BeachHero
             lockObj.SetActive(false);
             iconImg.gameObject.SetActive(false);
             counterText.gameObject.SetActive(false);
-            isSelected = false;
+            if (isSelected)
+            {
+                powerupController.RemovePowerupFromList(powerUpType);
+                isSelected = false;
+            }
         }
         private void SetCountText(int count)
         {
@@ -91,7 +96,7 @@ namespace BeachHero
         private void OnPowerupButtonClicked()
         {
             //if balance is less than zero, open the store 
-            if(balance <= 0)
+            if (balance <= 0)
             {
                 GameController.GetInstance.SetGameState(GameState.Paused);
                 UIController.GetInstance.ScreenEvent(ScreenType.Store, UIScreenEvent.Push);
@@ -113,11 +118,11 @@ namespace BeachHero
             }
             if (isSelected)
             {
-                GameController.GetInstance.PowerupController.AddPowerupInList(powerUpType);
+                powerupController.AddPowerupInList(powerUpType);
             }
             else
             {
-                GameController.GetInstance.PowerupController.RemovePowerupFromList(powerUpType);
+                powerupController.RemovePowerupFromList(powerUpType);
             }
         }
     }

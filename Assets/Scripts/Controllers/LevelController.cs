@@ -106,7 +106,8 @@ namespace BeachHero
         #region Mouse Methods
         private void OnMouseClickDown(Vector2 position)
         {
-            if(GameController.GetInstance.GameState != GameState.Playing)
+            if (GameController.GetInstance.GameState != GameState.Playing ||
+                TutorialController.GetInstance.IsActive)
             {
                 return;
             }
@@ -127,7 +128,8 @@ namespace BeachHero
 
         private void OnMouseClickUp(Vector2 position)
         {
-            if (GameController.GetInstance.GameState != GameState.Playing)
+            if (GameController.GetInstance.GameState != GameState.Playing
+                 || TutorialController.GetInstance.IsActive)
             {
                 return;
             }
@@ -232,7 +234,7 @@ namespace BeachHero
             levelPhase = passed ? LevelPhase.CompletedSuccess : LevelPhase.CompletedFail;
             if (!passed)
             {
-              //  player.StopMovement();
+                //  player.StopMovement();
             }
             // If the player failed, increment the fail counter. If they passed, reset it.
             levelFailCounter = passed ? 0 : levelFailCounter + 1;
@@ -692,6 +694,8 @@ namespace BeachHero
 
         public void PlaySpawnAnimations()
         {
+            AudioController.GetInstance.PlaySound(AudioType.Spawn);
+
             //Player
             TweenManager.Scale(Vector3.zero, Vector3.one, player.transform, spawnAnimationDuration, spawnAnimationEase);
 
@@ -720,7 +724,6 @@ namespace BeachHero
             }
 
             OnCompleteSpawnAnimation?.Invoke();
-            AudioController.GetInstance.PlaySound(AudioType.Spawn);
             AdController.GetInstance.ShowBanner();
         }
 

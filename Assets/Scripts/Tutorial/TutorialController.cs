@@ -26,7 +26,11 @@ namespace BeachHero
         [Space(2), Header("Button Highlight Animation")]
         [SerializeField] private float buttonScaleDuration = 0.5f;
         [SerializeField] private Ease buttonScaleEase = Ease.OutBack;
+        #endregion
+
+        #region Private Variables
         private TweenHandle buttonTweenHandle;
+        private bool isActive;
         #endregion
 
         #region Events
@@ -35,6 +39,7 @@ namespace BeachHero
         #endregion
 
         #region Properties
+        public bool IsActive => isActive;
         public TutorialType TutorialType { private set; get; }
         public TutorialCharacter TutorialCharacter => tutorialCharacter;
         public TutorialHand TutorialHand => tutorialHand;
@@ -54,7 +59,7 @@ namespace BeachHero
         public void HighlightButton(Transform button, Vector2 size, Sprite sprite, bool sliced = false, Action onComplete = null)
         {
             blockerOverlay.SetActive(true);
-
+            isActive = true;
             highlightRect.sizeDelta = Vector2.zero;
             highlightRect.position = button.position;
             highlightRect.gameObject.SetActive(true);
@@ -69,6 +74,7 @@ namespace BeachHero
 
         public void ClearButtonHighlight()
         {
+            isActive = false;
             highlightRect.sizeDelta = Vector2.zero;
             highlightRect.gameObject.SetActive(false);
             buttonTweenHandle.Cancel();
