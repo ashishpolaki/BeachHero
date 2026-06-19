@@ -81,6 +81,7 @@ namespace BeachHero
         public event Action OnCompleteSpawnAnimation;
         public event Action<int> OnMedalCountUpdated;
         public event Action OnCoinCollectAnimation;
+        public event Action OnDrownCharactersCollected;
         #endregion
 
         #region Unity Methods
@@ -281,6 +282,7 @@ namespace BeachHero
             if (drownCharactersCounter >= targetDrownCharacters)
             {
                 GameController.GetInstance.OnLevelWin();
+                OnDrownCharactersCollected?.Invoke();
             }
         }
         public Transform GetDrowningCharacter(int index)

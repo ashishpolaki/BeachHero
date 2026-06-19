@@ -29,6 +29,9 @@ namespace BeachHero
             {
                 while (!token.IsCancellationRequested)
                 {
+                    if (animator == null)
+                        return;
+
                     if (animationClips.Count == 0)
                         return;
 
@@ -39,39 +42,51 @@ namespace BeachHero
                     await UniTask.Yield(PlayerLoopTiming.Update, token);
 
                     // Wait until we reach the threshold
-                    while (!token.IsCancellationRequested &&
-                           animator.GetCurrentAnimatorStateInfo(0).normalizedTime < thresholdNormalizedTime)
+                    while (!token.IsCancellationRequested)
                     {
+                        if (animator == null)
+                            return;
+
+                        var state = animator.GetCurrentAnimatorStateInfo(0);
+
+                        if (state.normalizedTime >= thresholdNormalizedTime)
+                            break;
+
                         await UniTask.Yield(PlayerLoopTiming.Update, token);
                     }
-
-                    // Wait interval (cancellable)
                     await UniTask.Delay(TimeSpan.FromSeconds(animationInterval), cancellationToken: token);
                 }
             }
             catch (OperationCanceledException)
             {
                 // expected on cancel
+                StopAnimation();
             }
         }
-
+        private void OnDestroy()
+        {
+            StopAnimation();
+        }
         public void PlayRandomAnimation()
         {
-            if (playAnimationCTS != null)
-                return;
+            // always reset before starting
+            StopAnimation();
 
             playAnimationCTS = new CancellationTokenSource();
             PlayAnimationsLoopAsync(playAnimationCTS.Token).Forget();
         }
         public void StopAnimation()
         {
-            animator.Rebind();
-            animator.StopPlayback();
             if (playAnimationCTS != null)
             {
                 playAnimationCTS.Cancel();
                 playAnimationCTS.Dispose();
                 playAnimationCTS = null;
+            }
+            if (animator != null)
+            {
+                // optional: reset animator to default state
+                animator.Play(0, 0, 0f);
             }
         }
     }

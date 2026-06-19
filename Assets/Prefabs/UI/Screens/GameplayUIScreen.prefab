@@ -1129,7 +1129,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3518498362592981050}
-  - component: {fileID: 2634056157229559282}
   m_Layer: 5
   m_Name: LeftPanel
   m_TagString: Untagged
@@ -1157,14 +1156,6 @@ RectTransform:
   m_AnchoredPosition: {x: -20, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &2634056157229559282
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2575575786741455977}
-  m_CullTransparentMesh: 1
 --- !u!1 &2769726982894503292
 GameObject:
   m_ObjectHideFlags: 0
@@ -2096,7 +2087,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -2902,7 +2893,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -4471,6 +4462,11 @@ MonoBehaviour:
   panelSlideDuration: 0.5
   panelSlideOffset: 200
   panelSlideEase: 26
+  pauseButtonRect: {fileID: 6233940968190498966}
+  retryButtonRect: {fileID: 5770373801940523370}
+  topButtonsMoveOffset: 200
+  topButtonsMoveDuration: 0.5
+  topButtonsMoveEase: 25
   tutorialCharacterPosition: {x: 355, y: -11, z: 0}
   speechBubblePosition: {x: 167, y: 514.498, z: 0}
 --- !u!114 &2230607765178972565

@@ -8,7 +8,9 @@ namespace BeachHero
         #region Inspector Variables
         [Header("References")]
         [SerializeField] private StarsPanelUI starsPanelUI;
+        [SerializeField] private RectTransform pauseButtonRect;
 
+        [SerializeField] private RectTransform retryButtonRect;
         [Header("Buttons")]
         [SerializeField] private UIButton pauseButton;
         [SerializeField] private UIButton retryButton;
@@ -29,14 +31,24 @@ namespace BeachHero
         [SerializeField] private float panelSlideOffset = 200f;
         [SerializeField] private Ease panelSlideEase = Ease.OutBack;
 
+        [Header("Top Buttons Animation Settings")]
+        [SerializeField] private float topButtonsMoveOffset = 200f;
+        [SerializeField] private float topButtonsMoveDuration = 0.3f;
+        [SerializeField] private Ease topButtonsMoveEase = Ease.OutQuad;
+
         [Header("Tutorial Positions")]
         [SerializeField] private Vector3 tutorialCharacterPosition;
         [SerializeField] private Vector3 speechBubblePosition;
         #endregion
-
-        #region Properties
+        #region Private Variables
+        private float pauseInitialY;
+        private float retryInitialY;
+        private bool isTopButtonsCached;
         private bool isStarPanelPosCached = false;
         private Vector3 cachedStarPanelPos;
+        #endregion
+
+        #region Properties
         public Vector3 StarsPanelWorldPosition
         {
             get
@@ -53,7 +65,16 @@ namespace BeachHero
         }
         #endregion
 
-        #region INterface Methods
+        #region Interface Methods
+        private void Awake()
+        {
+            if (!isTopButtonsCached)
+            {
+                isTopButtonsCached = true;
+                pauseInitialY = pauseButtonRect.anchoredPosition.y;
+                retryInitialY = retryButtonRect.anchoredPosition.y;
+            }
+        }
         public override void Open(ScreenTabType screenTabType)
         {
             base.Open(screenTabType);
@@ -61,6 +82,7 @@ namespace BeachHero
             TryShowTutorialHint();
             EnvironmentController.GetInstance.Initialize();
             starsPanelUI.Open();
+            ResetTopButtons();
 
             //Powerups
             //  magnetPowerupButton.Init(PowerupType.Magnet, SaveSystem.LoadInt(StringUtils.MAGNET_BALANCE 3);
@@ -73,11 +95,12 @@ namespace BeachHero
             boatCustomisationBtn.OnButtonReleased += OnBoatCustomize;
             shopBtn.OnButtonReleased += OnShop;
             noAdsBtn.OnButtonReleased += OnNoAds;
-            
+
             // Events
             GameController.GetInstance.LevelController.OnPlayerTouch += HandleHidePanels;
             GameController.GetInstance.LevelController.OnDrawPathError += HandleShowPanels;
             GameController.GetInstance.LevelController.OnCompleteSpawnAnimation += HandleCompleteSPawnAnimation;
+            GameController.GetInstance.LevelController.OnDrownCharactersCollected += AnimateTopButtons;
         }
         public override void Close()
         {
@@ -102,6 +125,7 @@ namespace BeachHero
             GameController.GetInstance.LevelController.OnPlayerTouch -= HandleHidePanels;
             GameController.GetInstance.LevelController.OnDrawPathError -= HandleShowPanels;
             GameController.GetInstance.LevelController.OnCompleteSpawnAnimation -= HandleCompleteSPawnAnimation;
+            GameController.GetInstance.LevelController.OnDrownCharactersCollected -= AnimateTopButtons;
         }
         #endregion
 
@@ -166,6 +190,27 @@ namespace BeachHero
         private void HandleHidePanels()
         {
             AnimatePanels(false);
+        }
+        #endregion
+
+        #region Top Button Animation
+        private void ResetTopButtons()
+        {
+            pauseButton.enabled = true;
+            retryButton.enabled = true;
+            pauseButtonRect.anchoredPosition = new Vector2(pauseButtonRect.anchoredPosition.x, pauseInitialY);
+            retryButtonRect.anchoredPosition = new Vector2(retryButtonRect.anchoredPosition.x, retryInitialY);
+        }
+        private void AnimateTopButtons()
+        {
+            pauseButton.enabled = false;
+            retryButton.enabled = false;
+            TweenManager.MoveAnchorOnAxis(pauseButtonRect, pauseButtonRect.anchoredPosition.y,
+                pauseButtonRect.anchoredPosition.y + topButtonsMoveOffset,
+           topButtonsMoveDuration, topButtonsMoveEase, TransformAxis.Y);
+            TweenManager.MoveAnchorOnAxis(retryButtonRect, retryButtonRect.anchoredPosition.y,
+               retryButtonRect.anchoredPosition.y + topButtonsMoveOffset,
+          topButtonsMoveDuration, topButtonsMoveEase, TransformAxis.Y);
         }
         #endregion
 
