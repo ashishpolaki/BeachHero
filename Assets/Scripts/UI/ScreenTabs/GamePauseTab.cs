@@ -30,7 +30,7 @@ namespace BeachHero
         private void OnSettings()
         {
             // Open settings tab.
-            // UIController.GetInstance.ScreenEvent(ScreenType.Settings, UIScreenEvent.Open);
+             UIController.GetInstance.ScreenEvent(ScreenType.Settings, UIScreenEvent.Push);
         }
         private void OnPanelCloseClick()
         {

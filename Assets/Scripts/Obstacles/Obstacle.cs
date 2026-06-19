@@ -43,8 +43,8 @@ namespace BeachHero
         {
             isHit = true;
             GameController.GetInstance.OnLevelFailed(LevelFailDelayType.Medium);
+            HapticsManager.GetInstance.WarningHaptic();
         }
-
         public virtual void UpdateState()
         {
         }

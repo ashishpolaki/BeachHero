@@ -94,6 +94,7 @@ namespace BeachHero
                 }
                 if (obstacle != null && !obstacle.IsHit)
                 {
+                    // Shield Enabled
                     if (isShieldEnabled)
                     {
                         //Particle
@@ -109,6 +110,8 @@ namespace BeachHero
                         isShieldEnabled = false;
                         return;
                     }
+
+                    // Game Over
                     StopMovement();
                     if (obstacle.ObstacleType == ObstacleType.Whirlpool)
                     {

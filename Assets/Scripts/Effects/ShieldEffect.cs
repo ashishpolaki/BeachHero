@@ -31,7 +31,6 @@ namespace BeachHero
         [Header("Explode Settings")]
         [SerializeField] private Color explodeColor;
         [SerializeField] private Color explodeTextureColor;
-        [SerializeField] private float explodeScale = 5f;
         [SerializeField] private float explodeExpandMultiplier = 1.15f;
         [SerializeField] private float explodeExpandDuration = 0.2f;
         [SerializeField] private float explodeCollapseDuration = 0.3f;

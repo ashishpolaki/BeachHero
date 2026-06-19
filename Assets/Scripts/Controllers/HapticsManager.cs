@@ -1,11 +1,15 @@
 using Haptics;
+using System.Threading.Tasks;
+using UnityEngine;
 
 namespace BeachHero
 {
     public class HapticsManager : SingleTon<HapticsManager>
     {
-        public Most_HapticFeedback.CustomHapticPattern CustomHapticPatternA;
-        public Most_HapticFeedback.CustomHapticPattern CustomHapticPatternB;
+        [SerializeField] private Most_HapticFeedback.CustomHapticPattern CustomHapticPatternA;
+        [SerializeField] private Most_HapticFeedback.CustomHapticPattern CustomHapticPatternB;
+        [SerializeField] private float failureHapticDuration = 0.5f;
+        [SerializeField] private float failureHapticCooldown = 0.3f;
 
         public void Init()
         {
@@ -101,6 +105,16 @@ namespace BeachHero
         public void FailureHapticWithCooldown(float cooldown)
         {
             Most_HapticFeedback.GenerateWithCooldown(Most_HapticFeedback.HapticTypes.Failure, cooldown);
+        }
+
+        public async void PlayVibration()
+        {
+            float startCooldownTime = Time.time;
+            while (Time.time - startCooldownTime < failureHapticDuration)
+            {
+                FailureHapticWithCooldown(failureHapticCooldown);
+                await Task.Yield();
+            }
         }
 
         public void LightImpactHapticWithCooldown(float cooldown)
