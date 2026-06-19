@@ -59,7 +59,7 @@ namespace BeachHero
             base.Open(screenTabType);
             SetPanelsToHiddenPosition();
             TryShowTutorialHint();
-
+            EnvironmentController.GetInstance.Initialize();
             starsPanelUI.Open();
 
             //Powerups
@@ -84,6 +84,7 @@ namespace BeachHero
             base.Close();
             starsPanelUI.Close();
             HandleShowPanels();
+            EnvironmentController.GetInstance.DeInitialize();
 
             //buttons
             pauseButton.OnButtonReleased -= OnPause;

@@ -1,5 +1,7 @@
-using System.Collections;
+using Cysharp.Threading.Tasks;
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 namespace BeachHero
@@ -10,7 +12,7 @@ namespace BeachHero
         [SerializeField] private float animationInterval = 3f;
         [SerializeField] private float thresholdNormalizedTime = 0.99f;
 
-        private Coroutine playAnimationCoroutine;
+        private CancellationTokenSource playAnimationCTS;
         private List<int> animationClips = new List<int>();
 
         private void Awake()
@@ -21,41 +23,55 @@ namespace BeachHero
                 animationClips.Add(hash);
             }
         }
-        private IEnumerator PlayAnimationsLoop()
+        private async UniTaskVoid PlayAnimationsLoopAsync(CancellationToken token)
         {
-            while (true)
+            try
             {
-                int randomAnimationHash = animationClips[Random.Range(0, animationClips.Count)];
-                animator.Play(randomAnimationHash, 0, 0);
-                yield return null;
-
-                // Wait until we reach the threshold 
-                while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < thresholdNormalizedTime)
+                while (!token.IsCancellationRequested)
                 {
-                    yield return null;
+                    if (animationClips.Count == 0)
+                        return;
+
+                    int randomAnimationHash = animationClips[UnityEngine.Random.Range(0, animationClips.Count)];
+                    animator.Play(randomAnimationHash, 0, 0f);
+
+                    // allow one frame so animator state updates
+                    await UniTask.Yield(PlayerLoopTiming.Update, token);
+
+                    // Wait until we reach the threshold
+                    while (!token.IsCancellationRequested &&
+                           animator.GetCurrentAnimatorStateInfo(0).normalizedTime < thresholdNormalizedTime)
+                    {
+                        await UniTask.Yield(PlayerLoopTiming.Update, token);
+                    }
+
+                    // Wait interval (cancellable)
+                    await UniTask.Delay(TimeSpan.FromSeconds(animationInterval), cancellationToken: token);
                 }
-                yield return new WaitForSeconds(animationInterval);
+            }
+            catch (OperationCanceledException)
+            {
+                // expected on cancel
             }
         }
-        public void Init()
-        {
-            PlayRandomAnimation();
-        }
+
         public void PlayRandomAnimation()
         {
-            if (playAnimationCoroutine == null && animationClips.Count > 0)
-            {
-                playAnimationCoroutine = StartCoroutine(PlayAnimationsLoop());
-            }
+            if (playAnimationCTS != null)
+                return;
+
+            playAnimationCTS = new CancellationTokenSource();
+            PlayAnimationsLoopAsync(playAnimationCTS.Token).Forget();
         }
         public void StopAnimation()
         {
             animator.Rebind();
             animator.StopPlayback();
-            if (playAnimationCoroutine != null)
+            if (playAnimationCTS != null)
             {
-                StopCoroutine(playAnimationCoroutine);
-                playAnimationCoroutine = null;
+                playAnimationCTS.Cancel();
+                playAnimationCTS.Dispose();
+                playAnimationCTS = null;
             }
         }
     }
