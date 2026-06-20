@@ -15,6 +15,7 @@ namespace BeachHero
     {
         public MoveTargetType moveTargetType = MoveTargetType.Transform;
         public Vector3 fromPosition;
+       
 
         public PositionClipBase()
         {
@@ -25,6 +26,8 @@ namespace BeachHero
     [Serializable]
     public class TransformPositionClip : PositionClipBase
     {
+        [SerializeField, HideInInspector]
+        private Transform _cachedTarget;
         public Transform target;
         public Vector3 toPosition;
         public TransformSpace positionSpace = TransformSpace.World;
@@ -96,6 +99,8 @@ namespace BeachHero
     [Serializable]
     public class AnchorPositionClip : PositionClipBase
     {
+        [SerializeField, HideInInspector]
+        private Transform _cachedTarget;
         public RectTransform target;
         public Vector2 toAnchoredPosition;
         public TransformAxis rectAxis = TransformAxis.XY;

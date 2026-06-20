@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ namespace BeachHero
     [CustomPropertyDrawer(typeof(RotateClipBase), true)]
     public class RotateClipBaseDrawer : TweenClipBaseDrawer
     {
+        static Dictionary<string, Object> targetCache = new Dictionary<string, Object>();
+
         protected override void DrawBaseFields(SerializedProperty property, ref float y, Rect position, GUIContent label)
         {
             base.DrawBaseFields(property, ref y, position, label);
@@ -24,6 +27,40 @@ namespace BeachHero
             extraLines += HasProperty(property, "target");
             float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;
             return baseHeight + extraLines * singleLineTotal;
+        }
+
+        protected void TryAutoFillFromTarget(SerializedProperty property, SerializedProperty positionSpace = null)
+        {
+            var targetProp = property.FindPropertyRelative("target");
+            var fromProp = property.FindPropertyRelative("fromRotation");
+            if (targetProp == null || fromProp == null)
+                return;
+
+            string key = property.propertyPath; // unique per property
+            Object currentTarget = targetProp.objectReferenceValue;
+
+            // check if changed
+            targetCache.TryGetValue(key, out Object previousTarget);
+            if (previousTarget == currentTarget)
+                return;
+
+            // update cache
+            targetCache[key] = currentTarget;
+            if (currentTarget == null)
+                return;
+
+            Vector3 finalPos;
+            if (currentTarget is Transform tr)
+            {
+                finalPos = tr.localEulerAngles;
+               // finalPos = useLocal ? tr.localEulerAngles : tr.eulerAngles;
+            }
+            else
+            {
+                return;
+            }
+            fromProp.vector3Value = finalPos;
+            property.serializedObject.ApplyModifiedProperties();
         }
     }
 
@@ -45,7 +82,7 @@ namespace BeachHero
 
             // draw RotateClip fields via inherited helper
             DrawIfExists(property, ref y, position, "spaceType");
-
+            TryAutoFillFromTarget(property);
             PropertyEndCheck(property);
         }
 

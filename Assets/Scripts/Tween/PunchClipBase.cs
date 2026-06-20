@@ -8,7 +8,7 @@ namespace BeachHero
     public abstract class PunchClipBase : TweenClipBase
     {
         public Transform target;
-        public Vector3 originalScale = Vector3.one;
+        public Vector3 originalValue = Vector3.one;
         public Vector3 startValue = Vector3.one;
         public Vector3 strength = Vector3.one;
         public float damper = 1f;
@@ -19,20 +19,19 @@ namespace BeachHero
         {
             clipType = TweenClipType.Punch;
         }
+    }
 
+    [Serializable]
+    public class PunchPositionClip : PunchClipBase
+    {
         public override void ApplyFromState()
         {
             if (target == null)
             {
                 return;
             }
-            target.localScale = originalScale;
+            target.localPosition = originalValue;
         }
-    }
-
-    [Serializable]
-    public class PunchPositionClip : PunchClipBase
-    {
         protected override MotionHandle CreateTweenCore()
         {
             if (target == null)
@@ -46,6 +45,14 @@ namespace BeachHero
     [Serializable]
     public class PunchScaleClip : PunchClipBase
     {
+        public override void ApplyFromState()
+        {
+            if (target == null)
+            {
+                return;
+            }
+            target.localScale = originalValue;
+        }
         protected override MotionHandle CreateTweenCore()
         {
             if (target == null)

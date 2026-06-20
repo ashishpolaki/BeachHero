@@ -8,7 +8,7 @@ namespace BeachHero
     public abstract class ShakeClipBase : TweenClipBase
     {
         public Transform target;
-        public Vector3 originalScale = Vector3.one;
+        public Vector3 originalValue = Vector3.one;
         public Vector3 startValue = Vector3.one;
         public Vector3 strength = Vector3.one;
         public int frequency = 10;
@@ -19,20 +19,19 @@ namespace BeachHero
         {
             clipType = TweenClipType.Shake;
         }
+    }
 
+    [Serializable]
+    public class ShakePositionClip : ShakeClipBase
+    {
         public override void ApplyFromState()
         {
             if (target == null)
             {
                 return;
             }
-            target.localScale = originalScale;
+            target.localPosition = originalValue;
         }
-    }
-
-    [Serializable]
-    public class ShakePositionClip : ShakeClipBase
-    {
         protected override MotionHandle CreateTweenCore()
         {
             if (target == null)
@@ -46,6 +45,14 @@ namespace BeachHero
     [Serializable]
     public class ShakeScaleClip : ShakeClipBase
     {
+        public override void ApplyFromState()
+        {
+            if (target == null)
+            {
+                return;
+            }
+            target.localScale = originalValue;
+        }
         protected override MotionHandle CreateTweenCore()
         {
             if (target == null)

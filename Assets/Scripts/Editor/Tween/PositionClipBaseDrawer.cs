@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -7,6 +8,8 @@ namespace BeachHero
     [CustomPropertyDrawer(typeof(PositionClipBase), true)]
     public class PositionClipBaseDrawer : TweenClipBaseDrawer
     {
+        static Dictionary<string, Object> targetCache = new Dictionary<string, Object>();
+
         protected override void DrawBaseFields(SerializedProperty property, ref float y, Rect position, GUIContent label)
         {
             base.DrawBaseFields(property, ref y, position, label);
@@ -20,6 +23,49 @@ namespace BeachHero
             extraLines += HasProperty(property, "fromPosition");
             float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;
             return baseHeight + extraLines * singleLineTotal;
+        }
+
+        protected void TryAutoFillFromTarget(SerializedProperty property, SerializedProperty positionSpace = null)
+        {
+            var targetProp = property.FindPropertyRelative("target");
+            var fromProp = property.FindPropertyRelative("fromPosition");
+            if (targetProp == null || fromProp == null)
+                return;
+
+            string key = property.propertyPath; // unique per property
+            Object currentTarget = targetProp.objectReferenceValue;
+
+            // check if changed
+            targetCache.TryGetValue(key, out Object previousTarget);
+            if (previousTarget == currentTarget)
+                return;
+
+            // update cache
+            targetCache[key] = currentTarget;
+            if (currentTarget == null)
+                return;
+
+            Vector3 finalPos;
+            //  Handle RectTransform
+            if (currentTarget is RectTransform rt)
+            {
+                Vector2 anchored = rt.anchoredPosition;
+                finalPos = new Vector3(anchored.x, anchored.y, 0f);
+            }
+            //  Handle Transform
+            else if (currentTarget is Transform tr)
+            {
+                bool useLocal = positionSpace != null &&
+                                positionSpace.enumValueIndex == (int)TransformSpace.Local;
+
+                finalPos = useLocal ? tr.localPosition : tr.position;
+            }
+            else
+            {
+                return;
+            }
+            fromProp.vector3Value = finalPos;
+            property.serializedObject.ApplyModifiedProperties();
         }
     }
 
@@ -68,9 +114,9 @@ namespace BeachHero
             }
 
             DrawIfExists(property, ref y, position, "target");
+            TryAutoFillFromTarget(property, positionSpace);
             PropertyEndCheck(property);
         }
-
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             float baseHeight = base.GetPropertyHeight(property, label);
@@ -118,9 +164,9 @@ namespace BeachHero
                 }
             }
             DrawIfExists(property, ref y, position, "target");
+            TryAutoFillFromTarget(property);
             PropertyEndCheck(property);
         }
-
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             float baseHeight = base.GetPropertyHeight(property, label);

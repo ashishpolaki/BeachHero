@@ -1,12 +1,15 @@
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace BeachHero
 {
     [CustomPropertyDrawer(typeof(ScaleClipBase), true)]
     public class ScaleClipBaseDrawer : TweenClipBaseDrawer
     {
+        static Dictionary<string, Object> targetCache = new Dictionary<string, Object>();
+
         protected override void DrawBaseFields(SerializedProperty property, ref float y, Rect position, GUIContent label)
         {
             base.DrawBaseFields(property, ref y, position, label);
@@ -22,6 +25,40 @@ namespace BeachHero
             extraLines += HasProperty(property, "target");
             float singleLineTotal = EditorGUIUtility.singleLineHeight + LINE_SPACING;
             return baseHeight + extraLines * singleLineTotal;
+        }
+
+        protected void TryAutoFillFromTarget(SerializedProperty property, SerializedProperty positionSpace = null)
+        {
+            var targetProp = property.FindPropertyRelative("target");
+            var fromProp = property.FindPropertyRelative("fromScale");
+            if (targetProp == null || fromProp == null)
+                return;
+
+            string key = property.propertyPath; // unique per property
+            Object currentTarget = targetProp.objectReferenceValue;
+
+            // check if changed
+            targetCache.TryGetValue(key, out Object previousTarget);
+            if (previousTarget == currentTarget)
+                return;
+
+            // update cache
+            targetCache[key] = currentTarget;
+            if (currentTarget == null)
+                return;
+
+            Vector3 finalPos;
+            if (currentTarget is Transform tr)
+            {
+                finalPos = tr.localScale;
+                // finalPos = useLocal ? tr.localEulerAngles : tr.eulerAngles;
+            }
+            else
+            {
+                return;
+            }
+            fromProp.vector3Value = finalPos;
+            property.serializedObject.ApplyModifiedProperties();
         }
     }
 
@@ -59,8 +96,8 @@ namespace BeachHero
                     DrawIfExists(property, ref y, position, "toScale");
                     break;
             }
-
-           PropertyEndCheck(property);
+            TryAutoFillFromTarget(property);
+            PropertyEndCheck(property);
         }
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
