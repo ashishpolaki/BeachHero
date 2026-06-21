@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using LitMotion;
-using Mono.CSharp;
 
 namespace BeachHero
 {
@@ -50,7 +49,6 @@ namespace BeachHero
             //_sequence.SetLoops(loopCount, loopType);
 #endif
 
-
             if (clips == null)
             {
                 return;
@@ -83,7 +81,7 @@ namespace BeachHero
             }
 
             // Add OnComplete callback
-            _sequence.OnComplete(TweenManager.SetFloat(0, 0, 0.1f, onComplete: () =>
+            _sequence.OnComplete(TweenManager.SetFloat(0, 0, 0.0001f, onComplete: () =>
            {
                OnCompleteAction?.Invoke();
 #if UNITY_EDITOR

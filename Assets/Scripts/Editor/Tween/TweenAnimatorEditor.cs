@@ -8,7 +8,6 @@ using UnityEngine.UI;
 
 namespace BeachHero
 {
-
     [CustomEditor(typeof(TweenAnimator))]
     public class TweenAnimatorEditor : Editor
     {
@@ -93,13 +92,13 @@ namespace BeachHero
             {
                 return;
             }
+            UpdatePlaybackState();
             serializedObject.Update();
             HandleKeyboardShortcuts();
 
             // top toolbar
             EditorGUILayout.Space(6);
             DrawTopToolbar();
-            UpdatePlaybackState();
             EditorGUILayout.Space(4);
 
             // Progress and Duration,Delay sliders
@@ -111,8 +110,11 @@ namespace BeachHero
             // EditorGUILayout.PropertyField(serializedObject.FindProperty("loopType"));
             if (EditorGUI.EndChangeCheck())
             {
-                ScrubToProgress(_progress);
                 serializedObject.ApplyModifiedProperties();
+                float newTimeline = _timelineDurationProp.floatValue;
+                AdjustClipsToTimeline(newTimeline);
+                ScrubToProgress(_progress);
+                OnClipOrSequencerDataChanged();
             }
 
             // Timeline label
@@ -129,19 +131,77 @@ namespace BeachHero
             {
                 DrawSelectedClipInspector();
             }
-
             serializedObject.ApplyModifiedProperties();
         }
         private void UpdatePlaybackState()
         {
-            if (!_isPlaying || _loopPreview || !_previewSequence.IsValid)
+            if (!_isPlaying || _loopPreview)
+            {
                 return;
+            }
 
-            if (_previewSequence.Duration >= _previewSequence.Duration)
+            if(!_previewSequence.IsValid)
             {
                 _isPlaying = false;
+
+                Repaint();
+                return;
+            }
+
+            float currentTime = (float)_previewSequence.Handle.Time;
+            float duration = _previewSequence.Duration;
+            if (currentTime >= duration)
+            {
+                _isPlaying = false;
+                // snap to end (optional but cleaner)
+                _previewSequence.SetTime(duration);
+                _previewSequence.SetPlaybackSpeed(0);
                 Repaint();
             }
+        }
+        private void AdjustClipsToTimeline(float newTimeline)
+        {
+            if (_clipsProp == null) return;
+
+            for (int i = 0; i < _clipsProp.arraySize; i++)
+            {
+                var clipProp = _clipsProp.GetArrayElementAtIndex(i);
+                if (clipProp == null) continue;
+
+                var startProp = clipProp.FindPropertyRelative("startTime");
+                var durationProp = clipProp.FindPropertyRelative("duration");
+
+                if (startProp == null || durationProp == null) continue;
+
+                float start = startProp.floatValue;
+                float duration = durationProp.floatValue;
+
+                float originalDuration = duration;
+                float end = start + duration;
+
+                if (end > newTimeline)
+                {
+                    float newEnd = newTimeline;
+
+                    // PRIORITY: preserve duration by shifting start
+                    float newStart = newEnd - originalDuration;
+
+                    if (newStart < 0f)
+                    {
+                        newStart = 0f;
+                        duration = newEnd - newStart; // shrink duration
+                    }
+                    else
+                    {
+                        duration = originalDuration;
+                    }
+
+                    startProp.floatValue = newStart;
+                    durationProp.floatValue = Mathf.Max(0.01f, duration);
+                }
+            }
+
+            serializedObject.ApplyModifiedProperties();
         }
         public void OnClipOrSequencerDataChanged()
         {
@@ -554,16 +614,16 @@ namespace BeachHero
                     // clicking the bar selects (and prepares for drag) DO NOT change progress on simple click
                     else if (Event.current.type == EventType.MouseDown && barRect.Contains(mouse))
                     {
-                            GUI.FocusControl(null);
-                          EditorGUIUtility.editingTextField = false;
-                          serializedObject.ApplyModifiedProperties();
-                         
-                          BeginDrag(i, DragMode.Move);
-                         
-                          _selectedClipIndex = i;
-                          _selectedTriggerIndex = -1;
-                         
-                          Event.current.Use();
+                        GUI.FocusControl(null);
+                        EditorGUIUtility.editingTextField = false;
+                        serializedObject.ApplyModifiedProperties();
+
+                        BeginDrag(i, DragMode.Move);
+
+                        _selectedClipIndex = i;
+                        _selectedTriggerIndex = -1;
+
+                        Event.current.Use();
                     }
 
                     // dragging updates
