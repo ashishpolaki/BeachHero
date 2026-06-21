@@ -15,6 +15,11 @@ namespace BeachHero
         {
             clipType = TweenClipType.Rotate;
         }
+
+        public override bool IsTargetNull()
+        {
+            return target == null;
+        }
     }
     [Serializable]
     public class RotateClip : RotateClipBase

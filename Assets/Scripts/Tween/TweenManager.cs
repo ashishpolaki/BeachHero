@@ -474,6 +474,7 @@ namespace BeachHero
         #endregion
     }
 
+    [System.Serializable]
     public struct TweenHandle
     {
         private MotionHandle _handle;
@@ -514,6 +515,7 @@ namespace BeachHero
         }
     }
 
+    [System.Serializable]
     public struct TweenSequence
     {
         private MotionSequenceBuilder sequenceBuilder;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using LitMotion;
+using Mono.CSharp;
 
 namespace BeachHero
 {
@@ -22,6 +23,7 @@ namespace BeachHero
         //public LoopType loopType = LoopType.Restart;
         public float delayFrames = 0;           // delay in seconds before starting the sequence
         public float timelineDuration = 1f;
+        public bool IsLoop = false; 
         public TweenClipBase[] Clips => clips;
 
         public TweenSequence _sequence;
@@ -55,9 +57,9 @@ namespace BeachHero
             }
 
             // Build Tweens
-            foreach (var clip in clips)
+            foreach (TweenClipBase clip in clips)
             {
-                if (clip == null)
+                if (clip == null || clip.IsTargetNull())
                 {
                     continue;
                 }
@@ -91,10 +93,17 @@ namespace BeachHero
                }
                else
                {
-                   _sequence.SetTime(0);
+                   if (IsLoop)
+                   {
+                       _sequence.SetTime(0);
+                   }
+                   else
+                   {
+                       Kill();
+                   }
                }
 #else
-                   Kill();
+               Kill();
 #endif
            }).Handle);
             _sequence.InitializeHandle();

@@ -19,6 +19,11 @@ namespace BeachHero
         {
             clipType = TweenClipType.Shake;
         }
+
+        public override bool IsTargetNull()
+        {
+            return target == null;
+        }
     }
 
     [Serializable]

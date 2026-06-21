@@ -55,10 +55,11 @@ namespace BeachHero
             //  Handle Transform
             else if (currentTarget is Transform tr)
             {
-                bool useLocal = positionSpace != null &&
-                                positionSpace.enumValueIndex == (int)TransformSpace.Local;
+                //bool useLocal = positionSpace != null &&
+                //                positionSpace.enumValueIndex == (int)TransformSpace.Local;
 
-                finalPos = useLocal ? tr.localPosition : tr.position;
+                //finalPos = useLocal ? tr.localPosition : tr.position;
+                finalPos = tr.localPosition;
             }
             else
             {

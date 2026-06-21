@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 namespace BeachHero
 {
+
     [CustomEditor(typeof(TweenAnimator))]
     public class TweenAnimatorEditor : Editor
     {
@@ -24,6 +25,7 @@ namespace BeachHero
         private TweenSequence _previewSequence;
         private float _progress = 0f;
         private bool _isPlaying = false;
+        private bool _loopPreview = false;
 
         // timeline visuals
         private const float TIMELINE_HEIGHT = 50f;
@@ -97,6 +99,7 @@ namespace BeachHero
             // top toolbar
             EditorGUILayout.Space(6);
             DrawTopToolbar();
+            UpdatePlaybackState();
             EditorGUILayout.Space(4);
 
             // Progress and Duration,Delay sliders
@@ -129,7 +132,17 @@ namespace BeachHero
 
             serializedObject.ApplyModifiedProperties();
         }
+        private void UpdatePlaybackState()
+        {
+            if (!_isPlaying || _loopPreview || !_previewSequence.IsValid)
+                return;
 
+            if (_previewSequence.Duration >= _previewSequence.Duration)
+            {
+                _isPlaying = false;
+                Repaint();
+            }
+        }
         public void OnClipOrSequencerDataChanged()
         {
             // Ensure serialized changes are applied (defensive)
@@ -374,6 +387,20 @@ namespace BeachHero
                 _progress = 0f;
             }
 
+            // Loop toggle button 
+            Color prevBg = GUI.backgroundColor;
+            if (_loopPreview)
+            {
+                GUI.backgroundColor = new Color(0.32f, 0.72f, 0.32f, 1f);  // soft green tint for active loop
+            }
+            bool newLoop = GUILayout.Toggle(_loopPreview, "Loop", "Button", GUILayout.Width(64));
+            GUI.backgroundColor = prevBg; // restore background color immediately so other UI unaffected
+            if (newLoop != _loopPreview)
+            {
+                _loopPreview = newLoop;
+            }
+            _animator.IsLoop = _loopPreview;
+
             GUILayout.FlexibleSpace();
             EditorGUILayout.EndHorizontal();
         }
@@ -527,12 +554,16 @@ namespace BeachHero
                     // clicking the bar selects (and prepares for drag) DO NOT change progress on simple click
                     else if (Event.current.type == EventType.MouseDown && barRect.Contains(mouse))
                     {
-                        BeginDrag(i, DragMode.Move);
-
-                        _selectedClipIndex = i;
-                        _selectedTriggerIndex = -1;
-
-                        Event.current.Use();
+                            GUI.FocusControl(null);
+                          EditorGUIUtility.editingTextField = false;
+                          serializedObject.ApplyModifiedProperties();
+                         
+                          BeginDrag(i, DragMode.Move);
+                         
+                          _selectedClipIndex = i;
+                          _selectedTriggerIndex = -1;
+                         
+                          Event.current.Use();
                     }
 
                     // dragging updates
@@ -658,6 +689,9 @@ namespace BeachHero
                         // on left mouse down over the marker: either start drag or select
                         if (Event.current.type == EventType.MouseDown && Event.current.button == 0)
                         {
+                            GUI.FocusControl(null);
+                            EditorGUIUtility.editingTextField = false;
+                            serializedObject.ApplyModifiedProperties();
                             if (_draggingTriggerIndex == -1)
                             {
                                 _draggingTriggerIndex = i;

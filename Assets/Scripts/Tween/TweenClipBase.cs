@@ -89,6 +89,8 @@ namespace BeachHero
             //    _tween.Cancel();
             //}
         }
+
+        public virtual bool IsTargetNull() { return false; }
     }
 }
 

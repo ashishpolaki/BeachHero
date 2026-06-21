@@ -38,6 +38,11 @@ namespace BeachHero
             moveTargetType = MoveTargetType.Transform;
         }
 
+        public override bool IsTargetNull()
+        {
+            return target == null;
+        }
+
         protected override MotionHandle CreateTweenCore()
         {
             if (target == null)
