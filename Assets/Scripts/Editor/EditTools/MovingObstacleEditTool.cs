@@ -13,8 +13,8 @@ namespace BeachHero
         public float resolution;
         public float movementSpeed;
         public float rotationSpeedMultiplier = 0.3f;
-        public Vector3 offsetPosition;
-        public Vector3 offsetRotation;
+        [HideInInspector] public Vector3 offsetPosition;
+        [HideInInspector] public Vector3 offsetRotation;
         public bool loopedMovement;
         public bool inverseDirection;
         private LineRenderer pathRenderer;

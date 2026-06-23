@@ -8,6 +8,7 @@ namespace BeachHero
     {
         private void Start()
         {
+            Application.targetFrameRate = 60;
             AsyncLazyInit();
         }
 
@@ -30,6 +31,7 @@ namespace BeachHero
             CameraController.GetInstance.SetActiveCamera(GameCameraType.GameView);
             GameController.GetInstance.SetGameState(GameState.Playing);
             GameController.GetInstance.LevelController.InitializePlayerData(false);
+            UIController.GetInstance.ScreenEvent(ScreenType.Gameplay, UIScreenEvent.Open);
         }
     }
 }
