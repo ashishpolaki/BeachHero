@@ -20099,7 +20099,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 4e8afed0d8ec8514e9cd61b0f80568ed, type: 2}
-  m_CullingMode: 0
+  m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
@@ -20277,10 +20277,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obstacleType: 1
-  pathRenderer: {fileID: 8251844715762858791}
   rotationSpeedMultiplier: 1
   samples: 10
   movementSpeed: 4
+  dashByHitDistance: 3
+  dashByHitUpOffset: 1
+  dashByHitExtraForward: 2
+  dashByHitDownOffset: 2
+  dashByHitSpinStrength: 120
+  dashByHitMainSpinDegrees: 270
+  dashByHitMoveUpDuration: 0.35
+  dashByHitRotateDuration: 0.7
+  dashByHitMoveDownDuration: 0.35
+  dashByHitEaseUp: 5
+  dashByHitEaseRotate: 0
+  dashByHitEaseDown: 4
+  dashByHitScaleMultiplier: 1.5
 --- !u!1 &5341699555780616076
 GameObject:
   m_ObjectHideFlags: 0
@@ -20777,12 +20789,6 @@ PrefabInstance:
 --- !u!4 &134823106657572250 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1460225102491713020, guid: 1ad334743ca3c35499c1e670d8302932,
-    type: 3}
-  m_PrefabInstance: {fileID: 1557469322395691110}
-  m_PrefabAsset: {fileID: 0}
---- !u!120 &8251844715762858791 stripped
-LineRenderer:
-  m_CorrespondingSourceObject: {fileID: 7429056008939115329, guid: 1ad334743ca3c35499c1e670d8302932,
     type: 3}
   m_PrefabInstance: {fileID: 1557469322395691110}
   m_PrefabAsset: {fileID: 0}
