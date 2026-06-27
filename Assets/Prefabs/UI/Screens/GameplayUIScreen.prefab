@@ -1581,7 +1581,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonAudioType: 1
+  buttonAudioType: 15
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: 0.9
@@ -4450,6 +4450,8 @@ MonoBehaviour:
   openAnimator: {fileID: 2230607765178972565}
   uiScreenTextStyler: {fileID: 5357275383692665519}
   starsPanelUI: {fileID: 1437150145958198651}
+  pauseButtonRect: {fileID: 6233940968190498966}
+  retryButtonRect: {fileID: 5770373801940523370}
   pauseButton: {fileID: 3056190225121232404}
   retryButton: {fileID: 8667778355259583564}
   boatCustomisationBtn: {fileID: 1071301676342551301}
@@ -4462,8 +4464,6 @@ MonoBehaviour:
   panelSlideDuration: 0.5
   panelSlideOffset: 200
   panelSlideEase: 26
-  pauseButtonRect: {fileID: 6233940968190498966}
-  retryButtonRect: {fileID: 5770373801940523370}
   topButtonsMoveOffset: 200
   topButtonsMoveDuration: 0.5
   topButtonsMoveEase: 25
@@ -4485,6 +4485,7 @@ MonoBehaviour:
   triggerEvents: []
   delayFrames: 0
   timelineDuration: 1
+  IsLoop: 0
   references:
     version: 2
     RefIds: []

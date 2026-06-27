@@ -26,7 +26,7 @@ namespace BeachHero
         {
             toggled = !toggled;
             SetToggle(toggled, true);
-            AudioController.GetInstance.PlaySound(AudioType.Swipe);
+            AudioController.GetInstance.PlaySound(AudioType.Toggle);
         }
 
         public void Init(bool value)

@@ -34,6 +34,7 @@ namespace BeachHero
         }
         private void OnPanelCloseClick()
         {
+            AudioController.GetInstance.PlaySound(AudioType.Swoosh);
             AdController.GetInstance.ShowBanner();
             GameController.GetInstance.SetGameState(GameState.Playing);
             Close();

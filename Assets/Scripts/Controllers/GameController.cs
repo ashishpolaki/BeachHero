@@ -177,13 +177,13 @@ namespace BeachHero
         }
         private void LevelFailFeedback()
         {
-            AudioController.GetInstance.PlaySound(AudioType.Gamelose);
+            AudioController.GetInstance.PlaySound(AudioType.LevelFailed);
             UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Open, ScreenTabType.LevelFail);
         }
         public void LevelWinFeedback()
         {
             UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Open, ScreenTabType.LevelWin);
-            AudioController.GetInstance.PlaySound(AudioType.Gamewin);
+            AudioController.GetInstance.PlaySound(AudioType.LevelWin);
         }
         public void SetMedalsForCurrentLevel()
         {

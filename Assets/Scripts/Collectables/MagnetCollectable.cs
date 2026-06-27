@@ -22,7 +22,7 @@ namespace BeachHero
             pickUpParticle.gameObject.SetActive(true);
             pickUpParticle.Play();
             GameController.GetInstance.PowerupController.OnPowerupCollected(powerupType,Count);
-            AudioController.GetInstance.PlaySound(AudioType.Collect3);
+            AudioController.GetInstance.PlaySound(AudioType.BoosterCollect);
         }
     }
 }

@@ -50,7 +50,7 @@ namespace BeachHero
             //  particle.PlayParticle(transform.position);
             //  particle.SetRotation(transform.eulerAngles);
             // graphics.SetActive(false);
-            AudioController.GetInstance.PlaySound(AudioType.Collect1);
+            AudioController.GetInstance.PlaySound(AudioType.CoinCollect);
             GameController.GetInstance.OnGameCurrencyPickup();
 
             Vector3 moveTarget = UIController.GetInstance.StarsPanelWorldPosition();

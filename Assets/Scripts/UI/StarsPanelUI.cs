@@ -76,13 +76,13 @@ namespace BeachHero
                 return;
 
             starPanelTween.Complete();
-
+                         AudioController.GetInstance.PlaySound(AudioType.StarEarned);
             // ONLY animate new stars
             for (int i = starsCollected; i < starsEarned; i++)
             {
                 int index = i;
                 TweenManager.PunchScale(starImages[index].transform, Vector3.one, starPunchScale, starPunchFrequency, starPunchDamper, starPunchDuration
-                    /*,Ease.OutBack*/, onComplete: () =>
+                 , onComplete: () =>
                  {
                      starImages[index].sprite = filledStarSprite;
                  });

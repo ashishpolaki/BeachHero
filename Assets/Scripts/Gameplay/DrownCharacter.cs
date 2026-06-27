@@ -102,7 +102,7 @@ namespace BeachHero
             lifeguardObj.SetActive(false);
             angryparticleSystem.gameObject.SetActive(true);
             angryparticleSystem.Play();
-            AudioController.GetInstance.PlaySound(AudioType.Die);
+            AudioController.GetInstance.PlaySound(AudioType.PlayerDeath);
             graphicsUI.SetActive(false);
             GameController.GetInstance.OnLevelFailed(LevelFailDelayType.Long);
         }
@@ -112,7 +112,7 @@ namespace BeachHero
             {
                 return;
             }
-            AudioController.GetInstance.PlaySound(AudioType.Collect2);
+            AudioController.GetInstance.PlaySound(AudioType.CharacterCollect);
             pickUpParticle.gameObject.SetActive(true);
             pickUpParticle.Play();
             lifeguardObj.SetActive(false);

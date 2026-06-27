@@ -22,10 +22,10 @@ namespace BeachHero
             musicSlider.onValueChanged.AddListener(OnMusicSliderChanged);
             //soundToggle.OnToggleChanged += OnSoundToggleChanged;
             //musicToggle.OnToggleChanged += OnMusicToggleChanged;
-            // hapticToggle.OnToggleChanged += OnHapticToggleChanged;
+            hapticToggle.OnToggleChanged += OnHapticToggleChanged;
             privacyPolicyButton.ButtonRegister(OnPrivacyPolicy);
             closePanelbutton.ButtonRegister(ClosePanel);
-            backButton.ButtonRegister(ClosePanel);
+            backButton.ButtonRegister(OnBack);
             LoadData();
         }
 
@@ -34,10 +34,12 @@ namespace BeachHero
             base.Close();
             // soundToggle.OnToggleChanged -= OnSoundToggleChanged;
             // musicToggle.OnToggleChanged -= OnMusicToggleChanged;
+            soundSlider.onValueChanged.RemoveAllListeners();
+            musicSlider.onValueChanged.RemoveAllListeners();
             hapticToggle.OnToggleChanged -= OnHapticToggleChanged;
             privacyPolicyButton.ButtonDeRegister(OnPrivacyPolicy);
             closePanelbutton.ButtonDeRegister(ClosePanel);
-            backButton.ButtonDeRegister(ClosePanel);
+            backButton.ButtonDeRegister(OnBack);
         }
 
         private void LoadData()
@@ -84,8 +86,14 @@ namespace BeachHero
             string privacyPolicyUrl = "https://docs.google.com/document/d/1_mwHvKDhOdo8nGuqsc6ngpCEDmX630t6OnWap1rGtJc/edit?usp=sharing";
             Application.OpenURL(privacyPolicyUrl);
         }
+        private void OnBack()
+        {
+            UIController.GetInstance.EndTransition();
+            Close();
+        }
         private void ClosePanel()
         {
+            AudioController.GetInstance.PlaySound(AudioType.Swoosh);
             UIController.GetInstance.EndTransition();
             Close();
         }

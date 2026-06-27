@@ -22,10 +22,12 @@ namespace BeachHero
         }
         private void OnClosePanelClick()
         {
+            AudioController.GetInstance.PlaySound(AudioType.Swoosh);
             UIController.GetInstance.ScreenEvent(ScreenType.NoInternet, UIScreenEvent.Close);
         }
         private void OnRetryClick()
         {
+            AudioController.GetInstance.PlaySound(AudioType.Swoosh);
             UIController.GetInstance.ScreenEvent(ScreenType.NoInternet, UIScreenEvent.Close);
             if (AdController.GetInstance.IsRewardedADLoaded())
             {

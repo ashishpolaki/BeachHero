@@ -4,23 +4,34 @@ namespace BeachHero
 {
     public enum AudioType
     {
+        // Music
         GameMusic,
+
+        // UI
         Button,
-        Gamelose,
-        Gamewin,
-        GameCurrency,
-        Die,
-        Swoosh,
-        Joy,
-        Swipe,
-        Collect1,
-        Collect2,
-        Collect3,
+        Toggle,
+
+        //Level
+        LevelFailed,
+        LevelWin,
+
+        // Player
+        PlayerDeath,
+        PlayerCelebrate,
+
+        //Pickups
+        CoinCollect,
+        CharacterCollect,
+        BoosterCollect,
+
+        //Gameplay
         PathDraw,
-        MapUnlock,
         BoomExplosion,
         DashHit,
         Spawn,
+        StarEarned,
+        Swoosh,
+
         None
     }
     public enum AudioVolumeType
