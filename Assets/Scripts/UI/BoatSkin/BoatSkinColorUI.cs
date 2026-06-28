@@ -8,7 +8,6 @@ namespace BeachHero
         [SerializeField] private Image backgroundImage;
         [SerializeField] private Image iconImage;
         [SerializeField] private Button selectButton;
-        [SerializeField] private float unSelectedFadeAlpha = 0.5f;
 
         private BoatCustomisationUIScreen boatCustomisationUIScreen;
         private int colorIndex;

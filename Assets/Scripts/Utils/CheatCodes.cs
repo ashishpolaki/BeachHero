@@ -128,7 +128,7 @@ public class CheatCodes : MonoBehaviour
     [Command("add-coins")]
     public static void AddStarFish(int amount)
     {
-        GameController.GetInstance.StoreController.IncrementGameCurrencyBalance(amount);
+        GameController.GetInstance.StoreController.IncrementCoinsBalance(amount);
     }
 
     [Command("add-shields")]

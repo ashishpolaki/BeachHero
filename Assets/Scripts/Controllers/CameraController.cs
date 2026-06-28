@@ -11,7 +11,6 @@ namespace BeachHero
         [SerializeField] private GameCameraConfig[] cameraConfigs;
         [SerializeField] private int activePriority = 1;
         [SerializeField] private int inactivePriority = 0;
-        [SerializeField] private float playerFarToNearBlendDelay = 0.1f;
 
         [Space(10), Header("Shake Settings")]
         [SerializeField] private float shakeDuration = 0.5f;

@@ -59,11 +59,11 @@ namespace BeachHero
         {
             if (selectionAction == BoatSelectionAction.PurchaseSkin)
             {
-                GameController.GetInstance.StoreController.BuyBoatWithGameCurrency(selectedBoatIndex);
+                GameController.GetInstance.StoreController.BuyBoatWithCoins(selectedBoatIndex);
             }
             else if (selectionAction == BoatSelectionAction.PurchaseSkinColor)
             {
-                GameController.GetInstance.StoreController.BuyBoatColorWithGameCurrency(selectedBoatIndex, selectedColorIndex);
+                GameController.GetInstance.StoreController.BuyBoatColorWithCoins(selectedBoatIndex, selectedColorIndex);
             }
         }
         private void OnAdPurchaseButtonClicked()

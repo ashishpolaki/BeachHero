@@ -17,9 +17,9 @@ namespace BeachHero
 
         [Header("Scale Settings")]
         [SerializeField] private float scaleDuration = 0.25f;
-        [SerializeField] private float scaleReturnDuration = 0.1f;
         [SerializeField] private Ease scaleEase = Ease.OutBack;
-        [SerializeField] private Ease scaleReturnEase = Ease.InBack;
+       // [SerializeField] private float scaleReturnDuration = 0.1f;
+      //  [SerializeField] private Ease scaleReturnEase = Ease.InBack;
 
         [Header("Fresnel Settings")]
         [SerializeField] private Color baseColor;

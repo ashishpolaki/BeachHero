@@ -16,7 +16,6 @@ namespace BeachHero
         private Action<Reward> pendingRewardCallback;
         private Action onInterstitialClosed;
         private bool isBannerActive = false;
-        private bool isInterstitialActive = false;
         private bool isRewardEarned = false;
         private bool skipNextInterstitial = false;
         private int interstitialCounter = 0;
@@ -34,11 +33,11 @@ namespace BeachHero
         private readonly string androidNativeOverlayAdId = "ca-app-pub-3940256099942544/2247696110";
         private readonly string androidBannerAdId = "ca-app-pub-3940256099942544/6300978111";
 
-        private readonly string iosAppId = "ca-app-pub-3940256099942544~1458002511";
-        private readonly string iosBannerAdId = "ca-app-pub-3940256099942544/2934735716";
-        private readonly string iosInterstitialAdID = "ca-app-pub-3940256099942544/4411468910";
-        private readonly string iosNativeOverlayAdId = "ca-app-pub-3940256099942544/3986624511";
-        private readonly string iosRewardedAdId = "ca-app-pub-3940256099942544/1712485313";
+        //private readonly string iosAppId = "ca-app-pub-3940256099942544~1458002511";
+        //private readonly string iosBannerAdId = "ca-app-pub-3940256099942544/2934735716";
+        //private readonly string iosInterstitialAdID = "ca-app-pub-3940256099942544/4411468910";
+        //private readonly string iosNativeOverlayAdId = "ca-app-pub-3940256099942544/3986624511";
+        //private readonly string iosRewardedAdId = "ca-app-pub-3940256099942544/1712485313";
 
         // orginal id's -------------------------------------
         // private string androidAppId = "";
@@ -529,7 +528,6 @@ namespace BeachHero
             // Raised when an ad opened full screen content.
             interstitialAd.OnAdFullScreenContentOpened += () =>
             {
-                isInterstitialActive = true;
                 DebugUtils.Log("Interstitial ad full screen content opened.");
             };
             // Raised when the ad closed full screen content.
@@ -537,7 +535,6 @@ namespace BeachHero
             {
                 RequestInterstitial();
                 //Fade Black Screen
-                isInterstitialActive = false;
                 onInterstitialClosed?.Invoke();
                 onInterstitialClosed = null;
                 DebugUtils.Log("Interstitial ad full screen content closed.");
@@ -545,7 +542,6 @@ namespace BeachHero
             // Raised when the ad failed to open full screen content.
             interstitialAd.OnAdFullScreenContentFailed += (AdError error) =>
             {
-                isInterstitialActive = false;
                 RequestInterstitial();
                 DebugUtils.LogError("Interstitial ad failed to open full screen content " +
                                "with error : " + error);

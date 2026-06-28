@@ -2806,11 +2806,51 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5107303570877616021, guid: a1cdaf26825d34144bb72e561315f746,
+        type: 3}
+      propertyPath: 'textStyles.Array.data[0].texts.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1930915210746788581}
+    - target: {fileID: 5107303570877616021, guid: a1cdaf26825d34144bb72e561315f746,
+        type: 3}
+      propertyPath: 'textStyles.Array.data[0].texts.Array.data[2]'
+      value: 
+      objectReference: {fileID: 5613665220710868307}
+    - target: {fileID: 5757406133016941762, guid: a1cdaf26825d34144bb72e561315f746,
+        type: 3}
+      propertyPath: addShieldButton
+      value: 
+      objectReference: {fileID: 349619853940591044}
+    - target: {fileID: 5757406133016941762, guid: a1cdaf26825d34144bb72e561315f746,
+        type: 3}
+      propertyPath: shieldBalanceText
+      value: 
+      objectReference: {fileID: 5613665220710868307}
     - target: {fileID: 5757406133016941762, guid: a1cdaf26825d34144bb72e561315f746,
         type: 3}
       propertyPath: uiScreenTextStyler
       value: 
       objectReference: {fileID: 7124449296478415011}
+    - target: {fileID: 5757406133016941762, guid: a1cdaf26825d34144bb72e561315f746,
+        type: 3}
+      propertyPath: addSpeedBoostButton
+      value: 
+      objectReference: {fileID: 8527179321194460973}
+    - target: {fileID: 5757406133016941762, guid: a1cdaf26825d34144bb72e561315f746,
+        type: 3}
+      propertyPath: shieldBalanceObject
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5757406133016941762, guid: a1cdaf26825d34144bb72e561315f746,
+        type: 3}
+      propertyPath: speedBoostBalanceText
+      value: 
+      objectReference: {fileID: 1930915210746788581}
+    - target: {fileID: 5757406133016941762, guid: a1cdaf26825d34144bb72e561315f746,
+        type: 3}
+      propertyPath: speedBoostBalanceObject
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7626942366383964773, guid: a1cdaf26825d34144bb72e561315f746,
         type: 3}
       propertyPath: m_fontAsset
@@ -2861,6 +2901,18 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 281173874636541468}
   m_SourcePrefab: {fileID: 100100000, guid: a1cdaf26825d34144bb72e561315f746, type: 3}
+--- !u!114 &349619853940591044 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2370564719625088754, guid: a1cdaf26825d34144bb72e561315f746,
+    type: 3}
+  m_PrefabInstance: {fileID: 2612062954113083190}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &720980668950839049 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3332269497399826495, guid: a1cdaf26825d34144bb72e561315f746,
@@ -2893,12 +2945,36 @@ MonoBehaviour:
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
+--- !u!114 &1930915210746788581 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4536273047848213971, guid: a1cdaf26825d34144bb72e561315f746,
+    type: 3}
+  m_PrefabInstance: {fileID: 2612062954113083190}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &4101281919612989922 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2077645177540679380, guid: a1cdaf26825d34144bb72e561315f746,
     type: 3}
   m_PrefabInstance: {fileID: 2612062954113083190}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5613665220710868307 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7626942366383964773, guid: a1cdaf26825d34144bb72e561315f746,
+    type: 3}
+  m_PrefabInstance: {fileID: 2612062954113083190}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7124449296478415011 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5107303570877616021, guid: a1cdaf26825d34144bb72e561315f746,
@@ -2909,5 +2985,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d2aeefe81fe0e1499d1db4359d8efa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8527179321194460973 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5938357861855006747, guid: a1cdaf26825d34144bb72e561315f746,
+    type: 3}
+  m_PrefabInstance: {fileID: 2612062954113083190}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

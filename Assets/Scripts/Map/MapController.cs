@@ -86,7 +86,6 @@ namespace BeachHero
         public SplineSystem SplineSystem => splineSystem;
         public List<MapLevelSpawnData> MapLevels => mapLevels;
         public Transform LevelsParent => levelsParent;
-        public event Action OnMapButtonsEnabled;
         #endregion
 
         #region Unity Methods
@@ -371,6 +370,7 @@ namespace BeachHero
            await MoveAlongSplineAsync(start, end);
         }
         #endregion
+
         #region Reset
 
         public void ResetData()

@@ -55,8 +55,8 @@ namespace BeachHero
         private void SetGameCurrency()
         {
             int collectedGameCurrency = GameController.GetInstance.LevelController.GameCurrencyCount;
-            GameController.GetInstance.StoreController.IncrementGameCurrencyBalance(collectedGameCurrency);
-            gameCurrencyBalanceText.text = GameController.GetInstance.StoreController.GameCurrencyBalance.ToString();
+            GameController.GetInstance.StoreController.IncrementCoinsBalance(collectedGameCurrency);
+            gameCurrencyBalanceText.text = GameController.GetInstance.StoreController.CoinsBalance.ToString();
         }
         private void OnSkipLevelClick()
         {

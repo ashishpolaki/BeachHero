@@ -65,7 +65,7 @@ namespace BeachHero
         }
         private void OnDestroy()
         {
-            StopAnimation();
+            StopAnimation();    
         }
         public void PlayRandomAnimation()
         {
@@ -86,7 +86,7 @@ namespace BeachHero
             if (animator != null)
             {
                 // optional: reset animator to default state
-                animator.Play(0, 0, 0f);
+                animator.StopPlayback();
             }
         }
     }

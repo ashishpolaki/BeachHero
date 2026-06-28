@@ -127,6 +127,7 @@ namespace BeachHero
         #region Animation
         public void PressAnimation(Action action = null)
         {
+            AudioController.GetInstance.PlaySound(AudioType.Toggle);
             TweenScale(_originalScale * pressedScale, pressEase, action);
         }
         public void ReleaseAnimation(Action action = null)

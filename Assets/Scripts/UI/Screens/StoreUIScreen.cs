@@ -75,7 +75,7 @@ namespace BeachHero
         {
             for (int i = 0; i < gameCurrencyProductsList.Length; i++)
             {
-                GameCurrencyProduct product = GameController.GetInstance.StoreController.GetGameCurrencyProduct(gameCurrencyProductsList[i].index);
+                GameCurrencyProduct product = GameController.GetInstance.StoreController.GetCoinsProduct(gameCurrencyProductsList[i].index);
                 if (product != null)
                 {
                     int productIndex = i;
@@ -178,9 +178,9 @@ namespace BeachHero
         {
             AdController.GetInstance.ShowRewardedAd((reward) =>
             {
-                if (rewardAdItems[index].itemType == StoreItemType.GameCurrency)
+                if (rewardAdItems[index].itemType == StoreItemType.Coins)
                 {
-                    GameController.GetInstance.StoreController.IncrementGameCurrencyBalance(rewardAdItems[index].quantity);
+                    GameController.GetInstance.StoreController.IncrementCoinsBalance(rewardAdItems[index].quantity);
                 }
                 else if (rewardAdItems[index].itemType == StoreItemType.Shield)
                 {
@@ -208,7 +208,7 @@ namespace BeachHero
         private void GameCurrencyPurchaseButton(int index)
         {
             currentPurchaseIndex = index;
-            GameController.GetInstance.StoreController.BuyStoreItemWithGameCurrency(currentPurchaseIndex);
+            GameController.GetInstance.StoreController.BuyStoreItemWithCoins(currentPurchaseIndex);
         }
 
         private void RealMoneyPurchaseButton(int index)

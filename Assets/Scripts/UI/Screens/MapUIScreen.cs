@@ -19,10 +19,6 @@ namespace BeachHero
 
             //RegisterEvents
             mapExitBtn.ButtonRegister(MapExitToHome);
-            if (MapController.GetInstance != null)
-            {
-                MapController.GetInstance.OnMapButtonsEnabled += () => SetMapButtonsVisibility(true);
-            }
         }
 
         public override void Close()
@@ -30,15 +26,6 @@ namespace BeachHero
             base.Close();
            // SetMapButtonsVisibility(false);
             mapExitBtn.ButtonDeRegister(MapExitToHome);
-            if (MapController.GetInstance != null)
-            {
-                MapController.GetInstance.OnMapButtonsEnabled -= () => SetMapButtonsVisibility(false);
-            }
-        }
-
-        private void SetMapButtonsVisibility(bool _val)
-        {
-            mapExitBtn.gameObject.SetActive(_val);
         }
 
         private void MapExitToHome()

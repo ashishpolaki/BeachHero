@@ -34,7 +34,7 @@ namespace BeachHero
         Shield,
         SpeedBoost,
         NoAds,
-        GameCurrency
+        Coins
     }
 
     //Ui

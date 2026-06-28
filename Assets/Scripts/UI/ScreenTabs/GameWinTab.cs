@@ -77,8 +77,8 @@ namespace BeachHero
         }
         private void SetGameCurrencyBalance(int gameCurrency)
         {
-            GameController.GetInstance.StoreController.IncrementGameCurrencyBalance(gameCurrency);
-            gameCurrencyBalanceText.text = GameController.GetInstance.StoreController.GameCurrencyBalance.ToString();
+            GameController.GetInstance.StoreController.IncrementCoinsBalance(gameCurrency);
+            gameCurrencyBalanceText.text = GameController.GetInstance.StoreController.CoinsBalance.ToString();
         }
         private async void OnHomeASync()
         {

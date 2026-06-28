@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Pool;
 
 namespace BeachHero
 {
@@ -33,7 +31,7 @@ namespace BeachHero
         [SerializeField] private LevelController levelController;
         [SerializeField] private PoolController poolManager;
         [SerializeField] private PowerupController powerupController;
-        [SerializeField] private StoreController storeController;
+        [SerializeField] private StoreManager storeController;
         [SerializeField] private SkinController skinController;
         [SerializeField] private LevelFailDelay[] levelFailDelays;
 
@@ -50,7 +48,7 @@ namespace BeachHero
         public PoolController PoolManager => poolManager;
         public LevelController LevelController => levelController;
         public PowerupController PowerupController => powerupController;
-        public StoreController StoreController => storeController;
+        public StoreManager StoreController => storeController;
         public SkinController SkinController => skinController;
         #endregion
 
