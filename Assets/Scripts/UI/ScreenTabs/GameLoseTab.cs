@@ -47,7 +47,7 @@ namespace BeachHero
             {
                 starImage.sprite = unEarnedStarSprite;
             }
-            for (int i = 0; i < GameController.GetInstance.LevelController.MedalsEarned; i++)
+            for (int i = 0; i < GameController.GetInstance.LevelController.StarsEarned; i++)
             {
                 starImages[i].sprite = earnedStarSprite;
             }

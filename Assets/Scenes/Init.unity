@@ -242,7 +242,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _GradientTex:
-        m_Texture: {fileID: 933036381}
+        m_Texture: {fileID: 923691043}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -458,6 +458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1ba04355e6901240a68dba54f4bb160, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  levelDatabaseSO: {fileID: 11400000, guid: ada4a019005cb594e8e48cbf998035ac, type: 2}
   poolManager: {fileID: 280235829}
   startPointLayer:
     serializedVersion: 2
@@ -693,7 +694,7 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 500959292}
   m_Enabled: 1
---- !u!28 &933036381
+--- !u!28 &923691043
 Texture2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

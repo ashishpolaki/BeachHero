@@ -97,11 +97,11 @@ namespace BeachHero
         private void UpdateStars()
         {
             //If level visual is lower than current level number 
-            if (levelData.MedalsEarned > 0)
+            if (levelData.StarsEarned > 0)
                 for (int i = 0; i < medalsList.Length; i++)
                 {
                     medalsList[i].gameObject.SetActive(true);
-                    medalsList[i].sprite = i < levelData.MedalsEarned ? enableStarSprite : disableStarSprite;
+                    medalsList[i].sprite = i < levelData.StarsEarned ? enableStarSprite : disableStarSprite;
                 }
         }
         private void RefreshVisual()
@@ -112,10 +112,10 @@ namespace BeachHero
             boxCollider.enabled = levelData.State != LevelVisualState.Locked;
             UpdateStars();
         }
-        public void OnLevelComplete(int medals)
+        public void OnLevelComplete(int stars)
         {
             levelData.State = LevelVisualState.Completed;
-            levelData.MedalsEarned = medals;
+            levelData.StarsEarned = stars;
             RefreshVisual();
         }
         public void SetAsCurrentLevel()

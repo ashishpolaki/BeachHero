@@ -22,7 +22,7 @@ namespace BeachHero
         public override void Open()
         {
             base.Open();
-            SetGameCurrency();
+            SetCoins();
             nextLevelButton.OnButtonReleased += (OnNextLevel);
             multiplyGameCurrencyButton.OnButtonReleased += (OnWatchAd);
             multiplyGameCurrencyButton.OnButtonPressed += OnWatchRewardedAd;
@@ -44,21 +44,21 @@ namespace BeachHero
         {
             watchAdTween.Cancel();
         }
-        private void SetGameCurrency()
+        private void SetCoins()
         {
             collectedGameCurrency = GameController.GetInstance.LevelController.GameCurrencyCount;
             collectedGameCurrencyText.text = $"You Earned {collectedGameCurrency}";
-            SetMedals();
+            SetStars();
             SetADGameCurrency();
             SetGameCurrencyBalance(collectedGameCurrency);
         }
-        private void SetMedals()
+        private void SetStars()
         {
             foreach (var starImage in starImages)
             {
                 starImage.sprite = unEarnedStarSprite;
             }
-            for (int i = 0; i < GameController.GetInstance.LevelController.MedalsEarned; i++)
+            for (int i = 0; i < GameController.GetInstance.LevelController.StarsEarned; i++)
             {
                 starImages[i].sprite = earnedStarSprite;
             }

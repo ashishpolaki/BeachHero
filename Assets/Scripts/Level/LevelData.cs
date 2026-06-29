@@ -1,3 +1,5 @@
+using UnityEngine.Serialization;
+
 namespace BeachHero
 {
     [System.Serializable]
@@ -5,7 +7,7 @@ namespace BeachHero
     {
         public int LevelNumber;
         public LevelVisualState State;
-        public int MedalsEarned;
+        public int StarsEarned;
         public void SetState(LevelVisualState newState)
         {
             State = newState;

@@ -38,7 +38,7 @@ namespace BeachHero
             {
                 levelDatas[i].LevelNumber = i + 1;
                 levelDatas[i].SetState(LevelVisualState.Locked);
-                levelDatas[i].MedalsEarned = 0;
+                levelDatas[i].StarsEarned = 0;
                 SaveSystem.SaveInt($"{StringUtils.STARS_EARNED_PREFIX}{i}", 0);
             }
         }
@@ -67,11 +67,11 @@ namespace BeachHero
                 else if (i == currentLevelIndex)
                 {
                     //If that is a last level, check more
-                    if (levelDatas[i].MedalsEarned <= 0)
+                    if (levelDatas[i].StarsEarned <= 0)
                     {
                         levelDatas[i].SetState(LevelVisualState.Current);
                     }
-                    else if (levelDatas[i].MedalsEarned > 0)
+                    else if (levelDatas[i].StarsEarned > 0)
                     {
                         levelDatas[i].SetState(LevelVisualState.Completed);
                     }
@@ -80,7 +80,7 @@ namespace BeachHero
                 {
                     levelDatas[i].SetState(LevelVisualState.Locked);
                 }
-                levelDatas[i].MedalsEarned = SaveSystem.LoadInt($"{StringUtils.STARS_EARNED_PREFIX}{i}", 0);
+                levelDatas[i].StarsEarned = SaveSystem.LoadInt($"{StringUtils.STARS_EARNED_PREFIX}{i}", 0);
             }
         }
 
@@ -88,14 +88,17 @@ namespace BeachHero
         {
             return levelsList[index % levelsList.Length];
         }
-
-        public void SetMedalsForLevel(int levelIndex, int medals)
+        public LevelData GetLevelDataByIndex(int index)
+        {
+            return levelDatas[index % levelDatas.Count];
+        }
+        public void SetStarsForLevel(int levelIndex, int medals)
         {
             if (levelIndex >= 0 && levelIndex < levelDatas.Count)
             {
-                if (medals > levelDatas[levelIndex].MedalsEarned)
+                if (medals > levelDatas[levelIndex].StarsEarned)
                 {
-                    levelDatas[levelIndex].MedalsEarned = medals;
+                    levelDatas[levelIndex].StarsEarned = medals;
                     SaveSystem.SaveInt($"{StringUtils.STARS_EARNED_PREFIX}{levelIndex}", medals);
                 }
             }
@@ -104,7 +107,7 @@ namespace BeachHero
             int totalmedals = 0;
             for (int i = 0; i < levelDatas.Count; i++)
             {
-                medals += levelDatas[i].MedalsEarned;
+                medals += levelDatas[i].StarsEarned;
             }
             SaveSystem.SaveInt(StringUtils.TOTAL_STARS, totalmedals);
         }

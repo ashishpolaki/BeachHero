@@ -150,7 +150,6 @@ namespace BeachHero
         }
         public void OnLevelWin()
         {
-            SetMedalsForCurrentLevel();
             IncrementLevel();
             SetGameState(GameState.LevelWin);
             levelController.SetLevelCompletionResult(true);
@@ -180,17 +179,9 @@ namespace BeachHero
         }
         public void LevelWinFeedback()
         {
+            levelController.SetStarsForCurrentLevel();
             UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Open, ScreenTabType.LevelWin);
             AudioController.GetInstance.PlaySound(AudioType.LevelWin);
-        }
-        public void SetMedalsForCurrentLevel()
-        {
-            if (levelController.MedalsEarned == 0)
-            {
-                levelController.UpdateStarsCount();
-            }
-            levelDatabaseSO.SetMedalsForLevel(currentLevelIndex, levelController.MedalsEarned);
-            MapController.GetInstance.OnLevelComplete(levelController.MedalsEarned);
         }
         private float GetLevelFailDelayInSeconds(LevelFailDelayType type)
         {

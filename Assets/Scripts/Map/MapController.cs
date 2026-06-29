@@ -451,16 +451,16 @@ namespace BeachHero
             GameController.GetInstance.LevelController.PlaySpawnAnimations();
         }
 
-        public void OnLevelComplete(int medals)
+        public void OnLevelComplete(int levelIndex)
         {
-            int currentLevelIndex = GameController.GetInstance.CurrentLevelIndex;
-            mapLevels[currentLevelIndex].levelVisual.OnLevelComplete(medals);
+            var levelData = levelDatabase.GetLevelDataByIndex(levelIndex);
+            mapLevels[levelIndex].levelVisual.OnLevelComplete(levelData.StarsEarned);
             //Next level should be unlocked
-            if (currentLevelIndex + 1 < mapLevels.Count)
+            if (GameController.GetInstance.CurrentLevelIndex + 1 < mapLevels.Count)
             {
-                if (mapLevels[currentLevelIndex + 1].levelVisual.State == LevelVisualState.Locked)
+                if (mapLevels[levelIndex + 1].levelVisual.State == LevelVisualState.Locked)
                 {
-                    mapLevels[currentLevelIndex + 1].levelVisual.SetAsCurrentLevel();
+                    mapLevels[levelIndex + 1].levelVisual.SetAsCurrentLevel();
                 }
             }
         }

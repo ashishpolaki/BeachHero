@@ -24,6 +24,7 @@ namespace BeachHero
         }
 
         #region Inspector Variables
+        [SerializeField] private LevelDatabaseSO levelDatabaseSO;
         [SerializeField] private PoolController poolManager;
         [SerializeField] private LayerMask startPointLayer;
         [SerializeField] private LayerMask touchLayer;
@@ -57,6 +58,7 @@ namespace BeachHero
         private bool isPathDrawingAllowed = false;
         private bool isPlayerInitialRotationSet = false;
 
+        private int currentLevelIndex;
         private int gameCurrencyCount;
         private int targetDrownCharacters;
         [Tooltip("Number of characters saved by the player in current level")]
@@ -68,7 +70,7 @@ namespace BeachHero
         public Transform PlayerTransform => player != null ? player.transform : null;
         public bool IsLevelPassed => levelPhase == LevelPhase.CompletedSuccess;
         public int GameCurrencyCount => gameCurrencyCount;
-        public int MedalsEarned
+        public int StarsEarned
         {
             get; private set;
         }
@@ -387,26 +389,35 @@ namespace BeachHero
         }
         #endregion
 
-        #region Medals
+        #region Stars
         public void CalculateStars()
         {
             UpdateStarsCount();
-            OnMedalCountUpdated?.Invoke(MedalsEarned);
+            OnMedalCountUpdated?.Invoke(StarsEarned);
         }
         public void UpdateStarsCount()
         {
-            if (gameCurrencyCount >= medalCurrencyRequirements.requiredCurrencyForThreeMedals && MedalsEarned < 3)
+            if (gameCurrencyCount >= medalCurrencyRequirements.requiredCurrencyForThreeMedals && StarsEarned < 3)
             {
-                MedalsEarned = 3;
+                StarsEarned = 3;
             }
-            else if (gameCurrencyCount >= medalCurrencyRequirements.requiredCurrencyForTwoMedals && MedalsEarned < 2)
+            else if (gameCurrencyCount >= medalCurrencyRequirements.requiredCurrencyForTwoMedals && StarsEarned < 2)
             {
-                MedalsEarned = 2;
+                StarsEarned = 2;
             }
-            else if (gameCurrencyCount >= medalCurrencyRequirements.requiredCurrencyForOneMedal && MedalsEarned < 1)
+            else if (gameCurrencyCount >= medalCurrencyRequirements.requiredCurrencyForOneMedal && StarsEarned < 1)
             {
-                MedalsEarned = 1;
+                StarsEarned = 1;
             }
+        }
+        public void SetStarsForCurrentLevel()
+        {
+            if (StarsEarned == 0)
+            {
+                UpdateStarsCount();
+            }
+            levelDatabaseSO.SetStarsForLevel(currentLevelIndex, StarsEarned);
+            MapController.GetInstance.OnLevelComplete(currentLevelIndex);
         }
         #endregion
 
@@ -475,6 +486,7 @@ namespace BeachHero
         public void StartState(LevelSO levelSO)
         {
             ResetState();
+            currentLevelIndex = GameController.GetInstance.CurrentLevelIndex;
             targetDrownCharacters = levelSO.DrownCharacters.Length;
             medalCurrencyRequirements = levelSO.MedalsRequirements;
 
@@ -517,7 +529,7 @@ namespace BeachHero
 
         private void ResetState()
         {
-            MedalsEarned = 0;
+            StarsEarned = 0;
             isPlayerInitialRotationSet = false;
             gameCurrencyCount = 0;
             drownCharactersCounter = 0;
