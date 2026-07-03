@@ -142,7 +142,7 @@ namespace BeachHero
                         RealMoneyProduct storeProduct = GetRealMoneyProduct(item.definition.id);
                         if (storeProduct != null)
                         {
-                            storeProduct.realMoneyCost = item.metadata.localizedPrice.ToString("N0");
+                            storeProduct.realMoneyCost = item.metadata.localizedPriceString;
                         }
                     }
                 }

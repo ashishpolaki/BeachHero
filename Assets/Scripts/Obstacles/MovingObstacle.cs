@@ -69,6 +69,29 @@ namespace BeachHero
                     samples
                 );
             }
+
+            //if (isInverseDirection)
+            //{
+            //    direction = -1;
+            //    currentIndex = keyframes.Length - 2;
+            //    distanceTravelled = segmentLengths[currentIndex];
+
+            //    transform.position = keyframes[keyframes.Length - 1].position;
+            //    transform.rotation = Quaternion.LookRotation(
+            //        (keyframes[keyframes.Length - 2].position -
+            //         keyframes[keyframes.Length - 1].position).normalized);
+            //}
+            //else
+            //{
+            //    direction = 1;
+            //    currentIndex = 0;
+            //    distanceTravelled = 0f;
+
+            //    transform.position = keyframes[0].position;
+            //    transform.rotation = Quaternion.LookRotation(
+            //        (keyframes[1].position -
+            //         keyframes[0].position).normalized);
+            //}
         }
         public override void UpdateState()
         {

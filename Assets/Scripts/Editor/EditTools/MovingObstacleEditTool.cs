@@ -11,7 +11,7 @@ namespace BeachHero
         public ObstacleType obstacleType;
         public BezierKeyframe[] Keyframes;
         public float resolution;
-        public float movementSpeed;
+        public float movementSpeed = 4;
         public float rotationSpeedMultiplier = 0.3f;
         [HideInInspector] public Vector3 offsetPosition;
         [HideInInspector] public Vector3 offsetRotation;

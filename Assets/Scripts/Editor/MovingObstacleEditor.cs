@@ -190,18 +190,52 @@ namespace BeachHero
         {
             if (GUILayout.Button("Add Keyframe"))
             {
-                var anchorPoint = movingObstacle.Keyframes.Length > 0 ? movingObstacle.Keyframes[movingObstacle.Keyframes.Length - 1].position : Vector3.zero;
-                var inTangent = movingObstacle.Keyframes.Length > 0 ? movingObstacle.Keyframes[movingObstacle.Keyframes.Length - 1].outTangentLocal : Vector3.left;
-                var outTangent = movingObstacle.Keyframes.Length > 0 ? movingObstacle.Keyframes[movingObstacle.Keyframes.Length - 1].outTangentLocal : Vector3.right;
-
                 Undo.RecordObject(movingObstacle, "Add Keyframe");
 
-                BezierKeyframe newKeyframe = new BezierKeyframe
+                BezierKeyframe newKeyframe;
+
+                int count = movingObstacle.Keyframes.Length;
+
+                // No points
+                if (count == 0)
                 {
-                    position = anchorPoint,
-                    inTangentLocal = inTangent,
-                    outTangentLocal = outTangent
-                };
+                    newKeyframe = new BezierKeyframe
+                    {
+                        position = Vector3.zero,
+                        inTangentLocal = Vector3.left * 0.5f,
+                        outTangentLocal = Vector3.right * 0.5f
+                    };
+                }
+                // Only one point
+                else if (count == 1)
+                {
+                    Vector3 p = movingObstacle.Keyframes[0].position;
+
+                    newKeyframe = new BezierKeyframe
+                    {
+                        position = p + Vector3.right,
+                        inTangentLocal = Vector3.left * 0.5f,
+                        outTangentLocal = Vector3.right * 0.5f
+                    };
+                }
+                // Two or more points
+                else
+                {
+                    var prev = movingObstacle.Keyframes[count - 2];
+                    var last = movingObstacle.Keyframes[count - 1];
+
+                    Vector3 dir = (last.position - prev.position).normalized;
+
+                    if (dir == Vector3.zero)
+                        dir = Vector3.right;
+
+                    newKeyframe = new BezierKeyframe
+                    {
+                        position = last.position + dir,
+                        inTangentLocal = -dir * 0.5f,
+                        outTangentLocal = dir * 0.5f
+                    };
+                }
                 movingObstacle.AddKeyFrame(newKeyframe);
             }
         }
@@ -232,16 +266,60 @@ namespace BeachHero
 
                 Undo.RecordObject(movingObstacle, "Add Keyframe At Index");
 
-                var anchorPoint = movingObstacle.Keyframes.Length > 0 ? movingObstacle.Keyframes[addKeyframeIndex].position : Vector3.zero;
-                var inTangent = movingObstacle.Keyframes.Length > 0 ? movingObstacle.Keyframes[addKeyframeIndex].inTangentLocal : Vector3.left;
-                var outTangent = movingObstacle.Keyframes.Length > 0 ? movingObstacle.Keyframes[addKeyframeIndex].outTangentLocal : Vector3.right;
+                BezierKeyframe newKeyframe;
 
-                BezierKeyframe newKeyframe = new BezierKeyframe
+                int count = movingObstacle.Keyframes.Length;
+
+                // Insert between two existing points
+                if (addKeyframeIndex < count - 1)
                 {
-                    position = anchorPoint,
-                    inTangentLocal = inTangent,
-                    outTangentLocal = outTangent
-                };
+                    var a = movingObstacle.Keyframes[addKeyframeIndex];
+                    var b = movingObstacle.Keyframes[addKeyframeIndex + 1];
+
+                    Vector3 dir = (b.position - a.position).normalized;
+
+                    if (dir == Vector3.zero)
+                        dir = Vector3.right;
+
+                    newKeyframe = new BezierKeyframe
+                    {
+                        position = (a.position + b.position) * 0.5f,
+                        inTangentLocal = -dir * 0.5f,
+                        outTangentLocal = dir * 0.5f
+                    };
+                }
+                // Insert after the last point
+                else
+                {
+                    if (count == 1)
+                    {
+                        Vector3 p = movingObstacle.Keyframes[0].position;
+
+                        newKeyframe = new BezierKeyframe
+                        {
+                            position = p + Vector3.right,
+                            inTangentLocal = Vector3.left * 0.5f,
+                            outTangentLocal = Vector3.right * 0.5f
+                        };
+                    }
+                    else
+                    {
+                        var prev = movingObstacle.Keyframes[count - 2];
+                        var last = movingObstacle.Keyframes[count - 1];
+
+                        Vector3 dir = (last.position - prev.position).normalized;
+
+                        if (dir == Vector3.zero)
+                            dir = Vector3.right;
+
+                        newKeyframe = new BezierKeyframe
+                        {
+                            position = last.position + dir,
+                            inTangentLocal = -dir * 0.5f,
+                            outTangentLocal = dir * 0.5f
+                        };
+                    }
+                }
                 movingObstacle.AddKeyframeAtIndex(addKeyframeIndex, newKeyframe);
             }
             GUILayout.Label("Index:", GUILayout.Width(50));

@@ -21,6 +21,8 @@ namespace BeachHero
             CameraController.GetInstance.Init();
             AdController.GetInstance.Init();
             HapticsManager.GetInstance.Init();
+            TutorialController.GetInstance.Init();
+            ParticleController.GetInstance.Initialize();
             Febucci.UI.Core.TAnimBuilder.InitializeGlobalDatabase();
 
             // wait a little to avoid freezing all at once

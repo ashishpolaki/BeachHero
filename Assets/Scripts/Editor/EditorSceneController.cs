@@ -56,7 +56,14 @@ public class EditorSceneController : MonoBehaviour
             MovingObstacle movingObstacleComponent = movingObstacleObject.GetComponent<MovingObstacle>();
             MovingObstacleEditTool movingObstacle = movingObstacleObject.AddComponent<MovingObstacleEditTool>();
             movingObstacleObject.transform.parent = container.transform;
-            movingObstacle.Init(new MovingObstacleData() { type = movingObstacleComponent.ObstacleType });
+            movingObstacle.Init(new MovingObstacleData()
+            {
+                type = movingObstacleComponent.ObstacleType,
+                movementSpeed = 4,
+                resolution = 1,
+                rotationSpeedMultiplier = 1,
+                loopedMovement = true
+            });
         }
         if (spawnItemType == SpawnItemType.StaticObstacle)
         {
