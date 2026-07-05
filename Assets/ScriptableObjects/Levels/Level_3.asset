@@ -21,12 +21,34 @@ MonoBehaviour:
     - type: 4
       position: {x: -2.74, y: 0, z: 10.54}
       rotation: {x: -0, y: 0, z: 0}
-      scale: {x: 1, y: 1, z: 1}
+      scale: {x: 0.73483, y: 0.73483, z: 0.73483}
     - type: 4
-      position: {x: 2.29, y: 0, z: 10.85}
+      position: {x: 3.14, y: -0.1, z: 11.39}
       rotation: {x: -0, y: 0, z: 0}
-      scale: {x: 1.1679, y: 1.1679, z: 1.1679}
-    movingObstacles: []
+      scale: {x: 0.97176284, y: 0.97176284, z: 0.97176284}
+    movingObstacles:
+    - type: 2
+      bezierKeyframes:
+      - position: {x: -7.799963, y: -0.0087890625, z: -0.48166257}
+        inTangentLocal: {x: -1, y: 0, z: 0}
+        outTangentLocal: {x: 1, y: 0, z: 0}
+      - position: {x: -1.8961139, y: -0.060546875, z: 4.2948112}
+        inTangentLocal: {x: -0.35029444, y: 0.00089087506, z: -0.3567815}
+        outTangentLocal: {x: 0.35029444, y: -0.00089087506, z: 0.3567815}
+      - position: {x: 5.135792, y: -0.048828125, z: 7.422874}
+        inTangentLocal: {x: -0.84092045, y: -0.005859375, z: 0.54341936}
+        outTangentLocal: {x: 0.94666433, y: -0.001953125, z: 0.62669945}
+      - position: {x: 7.91087, y: -0.064453125, z: 7.7120647}
+        inTangentLocal: {x: -0.4757719, y: -0.01171875, z: -0.61543083}
+        outTangentLocal: {x: 0.21471024, y: -0.009765625, z: 0.16966534}
+      - position: {x: 7.584924, y: -0.078125, z: 11.836586}
+        inTangentLocal: {x: 0.05698967, y: -0.01171875, z: 0.41447353}
+        outTangentLocal: {x: -0.7708478, y: -0.005859375, z: 0.42219734}
+      resolution: 3.78
+      movementSpeed: 5
+      rotationSpeedMultiplier: 1
+      loopedMovement: 1
+      inverseDirection: 1
     whirlpoolObstacles: []
   drownCharacters:
   - position: {x: -0.31, y: 0, z: 11.22}
@@ -57,4 +79,4 @@ MonoBehaviour:
   medalRequirements:
     requiredCurrencyForThreeMedals: 5
     requiredCurrencyForTwoMedals: 3
-    requiredCurrencyForOneMedal: 2
+    requiredCurrencyForOneMedal: 0
