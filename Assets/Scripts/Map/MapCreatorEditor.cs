@@ -431,6 +431,11 @@ namespace BeachHero
             }
             GUI.enabled = true;
             GUILayout.EndHorizontal();
+
+            // ===== INFO LABEL (after Prev/Next) =====
+            GUILayout.Space(4);
+            GUILayout.Label($"Level Offset Index: levelNumber - 12");
+            GUILayout.Label($"Position Offset Y: 9.279999");
         }
 
         void DrawSplineTools()
@@ -560,8 +565,8 @@ namespace BeachHero
 
                         if (levelT > 1f)
                         {
-                            levelSegmentIndex += 1;
-                            levelT = 0.5f;
+                            levelSegmentIndex += 2;
+                            levelT = 1f;
                         }
 
                         int maxSegment = Mathf.Max(0, splineSystem.Points.Count - 2);
@@ -738,12 +743,20 @@ namespace BeachHero
             GUILayout.Space(5);
 
             // ===== SEGMENT =====
+            bool levelSegmentSnapEnabled = false;
+            int levelSegmentSnapSize = 1;
             GUILayout.Label("Segment Index");
-            levelSegmentIndex = EditorGUILayout.IntSlider(
-                levelSegmentIndex,
-                0,
-                Mathf.Max(0, pts.Count - 2)
-            );
+            int maxSegment = Mathf.Max(0, pts.Count - 2);
+            levelSegmentIndex = EditorGUILayout.IntSlider(levelSegmentIndex, 0, maxSegment);
+            // apply snapping when enabled (snap only if step > 1 to avoid no-op)
+            if (levelSegmentSnapEnabled && levelSegmentSnapSize > 1)
+            {
+                levelSegmentIndex = Mathf.Clamp(
+                    Mathf.RoundToInt(levelSegmentIndex / (float)levelSegmentSnapSize) * levelSegmentSnapSize,
+                    0,
+                    maxSegment
+                );
+            }
 
             // ===== PERCENT =====
             GUILayout.Label("Percentage");
@@ -778,7 +791,7 @@ namespace BeachHero
 
             GUILayout.EndHorizontal();
         }
-
+        
         #region Preview Level
         void CreatePreviewLevel()
         {
