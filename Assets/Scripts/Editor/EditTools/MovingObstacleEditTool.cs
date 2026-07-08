@@ -54,7 +54,7 @@ namespace BeachHero
                 return;
 
             // Use ArrayUtility.Insert with the backing field
-            ArrayUtility.Insert(ref Keyframes, index, newKeyframe);
+            ArrayUtility.Insert(ref Keyframes, index + 1, newKeyframe);
         }
         public void RemoveKeyframeAtIndex(int index)
         {

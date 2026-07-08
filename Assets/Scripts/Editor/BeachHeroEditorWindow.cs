@@ -207,7 +207,6 @@ public class BeachHeroEditorWindow : EditorWindow
             DrawOpenEditorScene();
             return;
         }
-
         DrawTabs();
     }
 
