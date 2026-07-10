@@ -21,64 +21,64 @@ MonoBehaviour:
     movingObstacles:
     - type: 6
       bezierKeyframes:
-      - position: {x: -6.4604278, y: -0.015625, z: 2.554121}
-        inTangentLocal: {x: -1, y: 0, z: 0}
-        outTangentLocal: {x: 1, y: 0, z: 0}
-      - position: {x: 6.5468016, y: -0.0390625, z: 21.726301}
-        inTangentLocal: {x: 1, y: 0, z: 0}
-        outTangentLocal: {x: 1, y: 0, z: 0}
+      - position: {x: -5.9384995, y: -0.01171875, z: 20.03575}
+        inTangentLocal: {x: -0.5, y: 0, z: 0}
+        outTangentLocal: {x: 0.5, y: 0, z: 0}
+      - position: {x: 7.0090017, y: -0.015625, z: 2.086457}
+        inTangentLocal: {x: -0.5, y: 0, z: 0}
+        outTangentLocal: {x: 0.5, y: 0, z: 0}
       resolution: 2
-      movementSpeed: 5
+      movementSpeed: 3
       rotationSpeedMultiplier: 2
       loopedMovement: 1
       inverseDirection: 1
     - type: 6
       bezierKeyframes:
-      - position: {x: 6.7065487, y: -0.015625, z: 9.241001}
-        inTangentLocal: {x: -1, y: 0, z: 0}
-        outTangentLocal: {x: 1, y: 0, z: 0}
-      - position: {x: -6.550583, y: -0.015625, z: 21.484354}
-        inTangentLocal: {x: 1, y: 0, z: 0}
-        outTangentLocal: {x: 1, y: 0, z: 0}
+      - position: {x: -7.260876, y: -0.0078125, z: 6.426289}
+        inTangentLocal: {x: -0.5, y: 0, z: 0}
+        outTangentLocal: {x: 0.5, y: 0, z: 0}
+      - position: {x: 7.760128, y: -0.015625, z: 15.481519}
+        inTangentLocal: {x: -0.5, y: 0, z: 0}
+        outTangentLocal: {x: 0.5, y: 0, z: 0}
       resolution: 2
-      movementSpeed: 5
+      movementSpeed: 3
       rotationSpeedMultiplier: 2
       loopedMovement: 1
       inverseDirection: 1
     whirlpoolObstacles: []
   drownCharacters:
-  - position: {x: -0.01, y: 0, z: 16.92}
-    waitTimePercentage: 0.88
-  - position: {x: 0, y: 0, z: 21.58}
+  - position: {x: -2.7, y: 0, z: 4.28}
+    waitTimePercentage: 0.3
+  - position: {x: 0.54, y: 0, z: 10.87}
+    waitTimePercentage: 0.55
+  - position: {x: 3.01, y: 0, z: 16.88}
+    waitTimePercentage: 0.9
+  - position: {x: -2.34, y: 0, z: 20.18}
     waitTimePercentage: 1
   collectables:
   - type: 1
-    position: {x: -0.04, y: 0, z: 7.23}
+    position: {x: 0.41, y: 0, z: 8.3}
     rotation: {x: -0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -0.23, y: 0, z: 9.27}
+    position: {x: 1.2, y: 0, z: 20.19}
+    rotation: {x: -0, y: 330.66086, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -4.69, y: 0, z: 18.25}
+    rotation: {x: -0, y: 330.66086, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 2.07, y: 0, z: 14.36}
     rotation: {x: -0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -0.36, y: 0, z: 14.36}
-    rotation: {x: -0, y: 0, z: 0}
-    count: 0
-  - type: 1
-    position: {x: 0, y: 0, z: 3.13}
-    rotation: {x: -0, y: 0, z: 0}
-    count: 0
-  - type: 1
-    position: {x: -0.03, y: 0, z: 5.12}
-    rotation: {x: -0, y: 0, z: 0}
+    position: {x: -1.12, y: 0, z: 2.51}
+    rotation: {x: 0, y: 323.3371, z: 0}
     count: 1
-  - type: 3
-    position: {x: 1.32, y: 0, z: 11.69}
-    rotation: {x: -0, y: 0, z: 0}
-    count: 1
-  - type: 4
-    position: {x: -0.04, y: 0, z: 19.65}
-    rotation: {x: -0, y: 0, z: 0}
+  - type: 1
+    position: {x: 0.15, y: 0, z: 5.36}
+    rotation: {x: -0, y: 32.68169, z: -0}
     count: 1
   medalRequirements:
     requiredCurrencyForThreeMedals: 5
