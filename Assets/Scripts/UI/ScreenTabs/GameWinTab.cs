@@ -6,6 +6,7 @@ namespace BeachHero
 {
     public class GameWinTab : BaseScreenTab
     {
+        [SerializeField] private TweenAnimator openAnimator;
         [SerializeField] private UIButton nextLevelButton;
         [SerializeField] private UIButton multiplyGameCurrencyButton;
         [SerializeField] private UIButton homeButton;
@@ -30,9 +31,13 @@ namespace BeachHero
             watchAdTween = TweenManager.Scale(Vector3.one, Vector3.one * 1.1f, multiplyGameCurrencyButton.transform, 0.8f, LitMotion.Ease.InOutSine,
                  loops: -1, loopType: LitMotion.LoopType.Yoyo);
             LeaderboardController.GetInstance.SubmitScore();
+            openAnimator.BuildSequence();
+            openAnimator.OnComplete(() => UIController.GetInstance.EndTransition());
+            openAnimator.Play();
         }
         public override void Close()
         {
+            openAnimator.Kill();
             base.Close();
             nextLevelButton.OnButtonReleased -= (OnNextLevel);
             multiplyGameCurrencyButton.OnButtonReleased -= (OnWatchAd);

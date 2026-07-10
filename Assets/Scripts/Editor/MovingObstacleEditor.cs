@@ -365,7 +365,7 @@ namespace BeachHero
 
             if (movingObstacle.Keyframes.Length == 1)
             {
-                Handles.Label(movingObstacle.Keyframes[0].position + Vector3.up * 0.5f, $"Point {0}",
+                Handles.Label(movingObstacle.Keyframes[0].position, $"Point {0}",
                    new GUIStyle
                    {
                        fontSize = 15,
@@ -381,7 +381,7 @@ namespace BeachHero
                 {
                     Undo.RecordObject(movingObstacle, "Move Keyframe");
                     movingObstacle.Keyframes[0].position = newKeyFramePos;
-
+                    movingObstacle.Keyframes[0].position.y = 0f;
                     // Force the Scene view to repaint
                     SceneView.RepaintAll();
                 }
@@ -393,7 +393,7 @@ namespace BeachHero
             for (int i = 0; i < movingObstacle.Keyframes.Length; i++)
             {
                 // Display the index of the keyframe as a label in the scene
-                Handles.Label(movingObstacle.Keyframes[i].position + Vector3.up * 0.5f, $"Point {i}",
+                Handles.Label(movingObstacle.Keyframes[i].position, $"Point {i}",
                     new GUIStyle
                     {
                         fontSize = 15,
@@ -409,7 +409,7 @@ namespace BeachHero
                 {
                     Undo.RecordObject(movingObstacle, "Move Keyframe");
                     movingObstacle.Keyframes[i].position = newKeyFramePos;
-
+                    movingObstacle.Keyframes[i].position.y = 0f;
                     // Force the Scene view to repaint
                     SceneView.RepaintAll();
                 }

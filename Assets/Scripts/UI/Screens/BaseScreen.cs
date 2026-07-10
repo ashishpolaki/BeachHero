@@ -80,7 +80,7 @@ namespace BeachHero
         }
         public virtual void Close()
         {
-            OpenAnimator.Kill();
+            openAnimator.Kill();
             CloseAllTabs();
             gameObject.SetActive(false);
         }
