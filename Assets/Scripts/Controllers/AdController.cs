@@ -480,7 +480,7 @@ namespace BeachHero
                 return false;
             }
             interstitialCounter++;
-            if (GameController.GetInstance.CurrentLevelIndex + 1 < RemoteConfig.GetInstance.AdsStartLevel)
+            if (GameController.GetInstance.HighestCompletedLevelIndex + 1 < RemoteConfig.GetInstance.AdsStartLevel)
             {
                 return false;
             }
@@ -612,7 +612,7 @@ namespace BeachHero
             {
                 return;
             }
-            if (GameController.GetInstance.CurrentLevelIndex + 1 < RemoteConfig.GetInstance.AdsStartLevel)
+            if (GameController.GetInstance.HighestCompletedLevelIndex + 1 < RemoteConfig.GetInstance.AdsStartLevel)
             {
                 return;
             }

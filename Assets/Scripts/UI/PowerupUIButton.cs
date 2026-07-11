@@ -32,7 +32,7 @@ namespace BeachHero
             powerUpType = _powerupType;
             powerupController = GameController.GetInstance.PowerupController;
             isUnlocked = powerupController.IsPowerupUnlocked(powerUpType);
-            if (powerupController.IsUnlockLevelForPowerup(powerUpType, GameController.GetInstance.CurrentLevelIndex + 1) &&
+            if (powerupController.IsUnlockLevelForPowerup(powerUpType, GameController.GetInstance.HighestCompletedLevelIndex + 1) &&
                 !isUnlocked)
             {
                 powerupController.UnlockPowerup(powerUpType);

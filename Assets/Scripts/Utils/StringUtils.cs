@@ -2,7 +2,7 @@ namespace BeachHero
 {
     public class StringUtils
     {
-        public const string LEVELNUMBER = "LevelNumber";
+        public const string HIGHEST_COMPLETED_LEVEL = "HighestCompletedLevel";
 
         //Tutorial
         public const string SHOW_WELCOME_MESSAGE = "IsWelcomeMessageShown";

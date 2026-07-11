@@ -62,7 +62,7 @@ namespace BeachHero
             }
 
             int totalStars = SaveSystem.LoadInt(StringUtils.TOTAL_STARS, 0);
-            int totalLevels = GameController.GetInstance.LoadCurrentLevelNumber();
+            int totalLevels = GameController.GetInstance.HighestCompletedLevelIndex + 1;
             int score = (totalStars * 100) + (totalLevels * 5);
 
             PlayGamesPlatform.Instance.ReportScore(score, leaderboardID, success =>

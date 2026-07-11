@@ -232,7 +232,7 @@ namespace BeachHero
 
         void CenterCameraToCurrentLevel()
         {
-            int index = GameController.GetInstance.CurrentLevelIndex;
+            int index = GameController.GetInstance.HighestCompletedLevelIndex;
 
             if (index < 0 || index >= mapLevels.Count)
                 return;
@@ -277,11 +277,7 @@ namespace BeachHero
                             {
                                 isInLevelTransition = true;
                                 selectedLevelIndex = levelVisual.LevelNumber - 1;
-                                // if the selected level is not the current level, set it as current.
-                                if (selectedLevelIndex != GameController.GetInstance.CurrentLevelIndex)
-                                {
-                                    GameController.GetInstance.SetLevel(selectedLevelIndex);
-                                }
+                                GameController.GetInstance.SetLevel(selectedLevelIndex);
                                 StartGame();
                             }
                         };
@@ -298,7 +294,7 @@ namespace BeachHero
         #endregion
 
         #region Movement
-        public void UpdateCharacterTransform(float percent,bool forward = true)
+        public void UpdateCharacterTransform(float percent, bool forward = true)
         {
             target.position = splineSystem.GetPoint(percent);
             target.rotation = splineSystem.GetForwardRotation(percent, forward);
@@ -367,7 +363,7 @@ namespace BeachHero
 
         public async void MoveToLevelAsync(float start, float end)
         {
-           await MoveAlongSplineAsync(start, end);
+            await MoveAlongSplineAsync(start, end);
         }
         #endregion
 
@@ -456,9 +452,10 @@ namespace BeachHero
             var levelData = levelDatabase.GetLevelDataByIndex(levelIndex);
             mapLevels[levelIndex].levelVisual.OnLevelComplete(levelData.StarsEarned);
             //Next level should be unlocked
-            if (GameController.GetInstance.CurrentLevelIndex + 1 < mapLevels.Count)
+            DebugUtils.Log($"levelIndex: {levelIndex}, mapLevels: {mapLevels.Count}");
+            if (GameController.GetInstance.HighestCompletedLevelIndex + 1 <= mapLevels.Count)
             {
-                if (mapLevels[levelIndex + 1].levelVisual.State == LevelVisualState.Locked)
+                if (levelIndex + 1 < mapLevels.Count && mapLevels[levelIndex + 1].levelVisual.State == LevelVisualState.Locked)
                 {
                     mapLevels[levelIndex + 1].levelVisual.SetAsCurrentLevel();
                 }
@@ -467,10 +464,10 @@ namespace BeachHero
 
         public void SyncCharacterToLevel()
         {
-            int currentLevelIndex = GameController.GetInstance.CurrentLevelIndex;
+            int currentLevelIndex = GameController.GetInstance.HighestCompletedLevelIndex;
             if (currentLevelIndex >= 0 && currentLevelIndex < mapLevels.Count)
             {
-                selectedLevelIndex = GameController.GetInstance.LoadCurrentLevelNumber() - 1;
+                selectedLevelIndex = currentLevelIndex;
                 currentSplinePercent = mapLevels[selectedLevelIndex].splinePercent;
                 UpdateCharacterTransform(currentSplinePercent);
             }
@@ -478,14 +475,16 @@ namespace BeachHero
 
         public void AnimateToLevel()
         {
-            if (selectedLevelIndex + 1 != GameController.GetInstance.CurrentLevelIndex)
+            int upcomingLevelIndex = selectedLevelIndex + 1;
+
+            if (upcomingLevelIndex != GameController.GetInstance.HighestCompletedLevelIndex)
             {
                 SyncCharacterToLevel();
             }
             else
             {
                 isInLevelTransition = true;
-                selectedLevelIndex = GameController.GetInstance.CurrentLevelIndex;
+                selectedLevelIndex = GameController.GetInstance.HighestCompletedLevelIndex;
                 MoveToLevelAsync(currentSplinePercent, mapLevels[selectedLevelIndex].splinePercent);
             }
         }
