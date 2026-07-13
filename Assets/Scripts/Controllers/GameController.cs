@@ -36,7 +36,7 @@ namespace BeachHero
         [SerializeField] private LevelFailDelay[] levelFailDelays;
 
         [Tooltip("The Index Starts from 0")]
-        private int currentLevelIndex;
+        private int highestCompletedLevelIndex;
 
         private GameState gameState = GameState.NotStarted;
         private GameState previousGameState = GameState.NotStarted;
@@ -44,7 +44,7 @@ namespace BeachHero
         #region Properties
         public GameState GameState => gameState;
         public GameState PreviousGameState => previousGameState;
-        public int CurrentLevelIndex => currentLevelIndex;
+        public int HighestCompletedLevelIndex => highestCompletedLevelIndex;
         public PoolController PoolManager => poolManager;
         public LevelController LevelController => levelController;
         public PowerupController PowerupController => powerupController;
@@ -80,21 +80,21 @@ namespace BeachHero
         #region Initialization
         public void Init()
         {
-            currentLevelIndex = LoadCurrentLevelNumber() - 1;
+            highestCompletedLevelIndex = LoadHighestCompletedLevelNumber() - 1;
             powerupController.Init();
             storeController.Init();
         }
         public void SpawnLevel()
         {
-            currentLevelIndex = LoadCurrentLevelNumber() - 1;
-            InitializeLevel();
+            highestCompletedLevelIndex = LoadHighestCompletedLevelNumber() - 1;
+            InitializeLevel(highestCompletedLevelIndex);
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Open);
         }
-        private void InitializeLevel()
+        private void InitializeLevel(int levelIndex)
         {
             SetGameState(GameState.NotStarted);
             CameraController.GetInstance.SetActiveCamera(GameCameraType.GameView);
-            levelController.StartState(levelDatabaseSO.GetLevelByIndex(currentLevelIndex));
+            levelController.StartState(levelDatabaseSO.GetLevelByIndex(levelIndex),levelIndex );
             levelDatabaseSO.Init();
         }
         #endregion
@@ -104,7 +104,7 @@ namespace BeachHero
         {
             SetGameState(GameState.Playing);
             CameraController.GetInstance.SetActiveCamera(GameCameraType.GameView);
-            bool isFTUE = TutorialController.GetInstance.IsTutorial(currentLevelIndex + 1);
+            bool isFTUE = TutorialController.GetInstance.IsTutorial(levelController.CurrentLevelIndex + 1);
             ScreenTabType screenTabType = isFTUE ? ScreenTabType.LevelTutorial : ScreenTabType.None;
             levelController.InitializePlayerData(isFTUE);
             levelController.ResetAllSpawnedObjectsScale();
@@ -112,40 +112,32 @@ namespace BeachHero
         }
         public void BackToMainMenu()
         {
-            if (LoadCurrentLevelNumber() - 1 != currentLevelIndex)
-            {
-                currentLevelIndex = LoadCurrentLevelNumber() - 1;
-            }
-            InitializeLevel();
+            InitializeLevel(HighestCompletedLevelIndex);
         }
         public void RetryLevel()
         {
-            InitializeLevel();
+            InitializeLevel(LevelController.CurrentLevelIndex);
         }
         public void NextLevel()
         {
-            InitializeLevel();
+            InitializeLevel(HighestCompletedLevelIndex);
         }
         public void SkipLevel()
         {
             IncrementLevel();
-            InitializeLevel();
+            InitializeLevel(HighestCompletedLevelIndex);
         }
         private void IncrementLevel()
         {
-            if (currentLevelIndex + 1 >= levelDatabaseSO.TotalLevelsCount)
+            if (HighestCompletedLevelIndex + 1 >= levelDatabaseSO.TotalLevelsCount)
             {
                 // If there are no more levels, stay on the current level.
                 return;
             }
-            if (LoadCurrentLevelNumber() == currentLevelIndex + 1)
+            if (LevelController.CurrentLevelIndex == HighestCompletedLevelIndex)
             {
-                currentLevelIndex++;
-                SaveSystem.SaveInt(StringUtils.LEVELNUMBER, currentLevelIndex + 1);
-            }
-            else
-            {
-                currentLevelIndex = LoadCurrentLevelNumber() - 1;
+                highestCompletedLevelIndex++;
+                SaveSystem.SaveInt(StringUtils.HIGHEST_COMPLETED_LEVEL, highestCompletedLevelIndex + 1);
             }
         }
         public void OnLevelWin()
@@ -196,12 +188,11 @@ namespace BeachHero
         }
         public void SetLevel(int levelIndex)
         {
-            currentLevelIndex = levelIndex;
-            levelController.StartState(levelDatabaseSO.GetLevelByIndex(levelIndex));
+            levelController.StartState(levelDatabaseSO.GetLevelByIndex(levelIndex), levelIndex);
         }
-        public int LoadCurrentLevelNumber()
+        private int LoadHighestCompletedLevelNumber()
         {
-            return SaveSystem.LoadInt(StringUtils.LEVELNUMBER, IntUtils.DEFAULT_LEVEL);
+            return SaveSystem.LoadInt(StringUtils.HIGHEST_COMPLETED_LEVEL, IntUtils.DEFAULT_LEVEL);
         }
         #endregion
 

@@ -75,6 +75,7 @@ namespace BeachHero
             get; private set;
         }
         public Camera Cam => cam ??= Camera.main;
+        public int CurrentLevelIndex => currentLevelIndex;
         #endregion
 
         #region Actions
@@ -483,10 +484,10 @@ namespace BeachHero
         #endregion
 
         #region States
-        public void StartState(LevelSO levelSO)
+        public void StartState(LevelSO levelSO,int _currentLevelIndex)
         {
             ResetState();
-            currentLevelIndex = GameController.GetInstance.CurrentLevelIndex;
+            currentLevelIndex = _currentLevelIndex;
             targetDrownCharacters = levelSO.DrownCharacters.Length;
             medalCurrencyRequirements = levelSO.MedalsRequirements;
 

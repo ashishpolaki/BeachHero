@@ -57,7 +57,7 @@ namespace BeachHero
         #region Methods
         public void Init()
         {
-            int currentLevelIndex = GameController.GetInstance.CurrentLevelIndex;
+            int currentLevelIndex = GameController.GetInstance.HighestCompletedLevelIndex;
             for (int i = 0; i < levelDatas.Count; i++)
             {
                 if (i < currentLevelIndex)

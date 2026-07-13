@@ -101,7 +101,7 @@ public class CheatCodes : MonoBehaviour
     [Command("force-set-level")]
     public static void SetLevel(int levelNumber)
     {
-        SaveSystem.SaveInt(StringUtils.LEVELNUMBER, levelNumber);
+        SaveSystem.SaveInt(StringUtils.HIGHEST_COMPLETED_LEVEL, levelNumber);
         SaveSystem.SaveBool(StringUtils.SHIELD_UNLOCKED, false);
         SaveSystem.SaveBool(StringUtils.SPEEDBOOST_UNLOCKED, false);
         SaveSystem.SaveInt(StringUtils.SHIELD_BALANCE, IntUtils.DEFAULT_SHIELD_BALANCE);
