@@ -19,12 +19,16 @@ MonoBehaviour:
   obstacles:
     staticObstacles:
     - type: 7
-      position: {x: 0.22, y: 0.053401, z: 17.43}
+      position: {x: -1.49, y: 0.053401, z: 18.45}
+      rotation: {x: -0, y: 0, z: 0}
+      scale: {x: 1.6666801, y: 1.3889, z: 1.3889}
+    - type: 7
+      position: {x: -3.48, y: 0.053401, z: 25.2}
       rotation: {x: -0, y: 0, z: 0}
       scale: {x: 1.6666801, y: 1.3889, z: 1.3889}
     - type: 7
       position: {x: 4.52, y: 0.08, z: 9.29}
-      rotation: {x: 0.000006521827, y: 54.5386, z: -0.0000007693542}
+      rotation: {x: 0.000006521828, y: 54.5386, z: -0.0000007693542}
       scale: {x: 1.9023486, y: 1.5852904, z: 1.5852904}
     - type: 7
       position: {x: -2.49, y: 0.08, z: 4.41}
@@ -32,50 +36,114 @@ MonoBehaviour:
       scale: {x: 1.9023486, y: 1.5852904, z: 1.5852904}
     - type: 7
       position: {x: -1.27, y: 0.08, z: 12.12}
-      rotation: {x: 0.000006521827, y: 54.5386, z: -0.0000007693542}
+      rotation: {x: 0.000006521828, y: 54.5386, z: -0.0000007693542}
       scale: {x: 1.9023486, y: 1.5852904, z: 1.5852904}
     movingObstacles: []
     whirlpoolObstacles: []
   drownCharacters:
-  - position: {x: 2.11, y: 0, z: 3.23}
+  - position: {x: 3.26, y: 0, z: 3.78}
     waitTimePercentage: 0.25
   - position: {x: -2.18, y: 0, z: 7.7}
     waitTimePercentage: 0.5
-  - position: {x: 2.05, y: 0, z: 11.46}
+  - position: {x: 2.21, y: 0, z: 12.28}
     waitTimePercentage: 0.7
-  - position: {x: 3.33, y: 0, z: 16.82}
+  - position: {x: 3.72, y: 0, z: 17.97}
     waitTimePercentage: 1
   collectables:
   - type: 1
-    position: {x: 1.09, y: 0, z: 21.1}
+    position: {x: 1.38, y: 0, z: 20.45}
     rotation: {x: -0, y: 335.8804, z: 0}
     count: 0
   - type: 1
-    position: {x: 3.4280884, y: -0.18919586, z: 14.0727625}
-    rotation: {x: 19.790026, y: 54.52937, z: 8.40806}
+    position: {x: 0.72, y: 0, z: 21.92}
+    rotation: {x: 0, y: 335.8804, z: 0}
     count: 0
   - type: 1
-    position: {x: 1.03, y: 0, z: 4.5}
-    rotation: {x: -0, y: 325.57388, z: 0}
+    position: {x: 0.37, y: 0, z: 23.47}
+    rotation: {x: 0, y: 358.85632, z: 0}
     count: 0
   - type: 1
-    position: {x: -0.27, y: 0, z: 5.98}
-    rotation: {x: -0, y: 334.12122, z: 0}
+    position: {x: -0.4, y: 0, z: 25.02}
+    rotation: {x: -0, y: 10.795258, z: 0}
     count: 0
   - type: 1
-    position: {x: -1.35, y: 0, z: 9.44}
+    position: {x: -1.46, y: 0, z: 23.52}
+    rotation: {x: -0, y: 44.923363, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -2.58, y: 0, z: 22.24}
+    rotation: {x: -0, y: 1.8200928, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -3.8, y: 0, z: 21}
+    rotation: {x: -0, y: 1.8200928, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -4.78, y: 0, z: 19.13}
+    rotation: {x: -0, y: 1.8200928, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -5.64, y: 0, z: 17.14}
+    rotation: {x: -0, y: 1.8200928, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -5.682166, y: 0, z: 15.2986965}
+    rotation: {x: -0, y: 17.031553, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -3.7083948, y: 0, z: 15.239078}
+    rotation: {x: 0, y: 345.63727, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -1.7692178, y: 0, z: 15.177627}
+    rotation: {x: -0, y: 23.027311, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 2.14, y: 0.38, z: 16.67}
+    rotation: {x: 19.790026, y: 54.529366, z: 8.408059}
+    count: 0
+  - type: 1
+    position: {x: 1.77, y: 0, z: 5.01}
+    rotation: {x: 0, y: 325.57388, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 1.71, y: 0, z: 2.75}
+    rotation: {x: 0, y: 325.57388, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 0.41, y: 0, z: 5.91}
+    rotation: {x: 0, y: 334.12122, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -1, y: 0, z: 6.72}
+    rotation: {x: 0, y: 334.12122, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -0.98, y: 0, z: 8.97}
     rotation: {x: -0, y: 39.928585, z: -0}
     count: 0
   - type: 1
-    position: {x: 1.2, y: 0, z: 9.72}
+    position: {x: 0.47, y: 0, z: 9.6}
     rotation: {x: -0, y: 66.22276, z: -0}
     count: 0
   - type: 1
-    position: {x: 1.16, y: 0, z: 14.85}
-    rotation: {x: 0, y: 320.56784, z: 0}
+    position: {x: 1.86, y: 0, z: 10.21}
+    rotation: {x: -0, y: 66.22276, z: -0}
     count: 0
   - type: 1
-    position: {x: 2.37, y: 0, z: 19.77}
+    position: {x: 1.3342006, y: 0, z: 13.763632}
+    rotation: {x: 0, y: 304.0583, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 0.3823844, y: 0, z: 14.9560795}
+    rotation: {x: 0, y: 347.15216, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 0.4725582, y: 0, z: 16.690895}
+    rotation: {x: 0, y: 297.9644, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 2.59, y: 0, z: 19.37}
     rotation: {x: -0, y: 330.45267, z: 0}
     count: 0
   medalRequirements:

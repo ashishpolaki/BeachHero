@@ -17,69 +17,149 @@ MonoBehaviour:
     Position: {x: 0.02, y: 0, z: -0.26}
     Rotation: {x: 0, y: 0, z: 0}
   obstacles:
-    staticObstacles: []
+    staticObstacles:
+    - type: 4
+      position: {x: 3.62, y: 1.58, z: 4.27}
+      rotation: {x: 0, y: 0, z: 0}
+      scale: {x: 1, y: 1, z: 1}
+    - type: 4
+      position: {x: -3.17, y: 0, z: 7.99}
+      rotation: {x: 0, y: 0, z: 0}
+      scale: {x: 1, y: 1, z: 1}
+    - type: 4
+      position: {x: 0.3, y: 3.5, z: 13.41}
+      rotation: {x: 0, y: 0, z: 0}
+      scale: {x: 1, y: 1, z: 1}
+    - type: 4
+      position: {x: 4.02, y: 0, z: 18.48}
+      rotation: {x: 0, y: 0, z: 0}
+      scale: {x: 1, y: 1, z: 1}
+    - type: 4
+      position: {x: -3.68, y: 1.72, z: 23.21}
+      rotation: {x: 0, y: 0, z: 0}
+      scale: {x: 1, y: 1, z: 1}
     movingObstacles:
-    - type: 6
+    - type: 1
       bezierKeyframes:
-      - position: {x: -6.4604278, y: -0.015625, z: 2.554121}
-        inTangentLocal: {x: -1, y: 0, z: 0}
-        outTangentLocal: {x: 1, y: 0, z: 0}
-      - position: {x: 6.5468016, y: -0.0390625, z: 21.726301}
-        inTangentLocal: {x: 1, y: 0, z: 0}
-        outTangentLocal: {x: 1, y: 0, z: 0}
-      resolution: 2
+      - position: {x: 0.20094538, y: 0, z: 2.704484}
+        inTangentLocal: {x: -0.5, y: 0, z: 0}
+        outTangentLocal: {x: 0.5, y: 0, z: 0}
+      - position: {x: 5.924857, y: 0, z: 14.6694765}
+        inTangentLocal: {x: -0.5, y: 0, z: 0}
+        outTangentLocal: {x: 0.5, y: 0, z: 0}
+      - position: {x: 0.9180391, y: 0, z: 18.06167}
+        inTangentLocal: {x: -0.18993714, y: 0.013913651, z: -0.46230972}
+        outTangentLocal: {x: 0.18993714, y: -0.013913651, z: 0.46230972}
+      - position: {x: 2.0338306, y: 0, z: 24.16021}
+        inTangentLocal: {x: 0.39168337, y: 0.009213993, z: -0.31064326}
+        outTangentLocal: {x: -0.39168337, y: -0.009213993, z: 0.31064326}
+      - position: {x: -4.3963995, y: 0, z: 18.063616}
+        inTangentLocal: {x: -0.48656607, y: 0.014820099, z: -0.4895153}
+        outTangentLocal: {x: -0.04262829, y: -0.016685486, z: 0.5564003}
+      - position: {x: -2.5070465, y: 0, z: 10.512111}
+        inTangentLocal: {x: -0.22790487, y: -0.013286966, z: 0.44484022}
+        outTangentLocal: {x: 0.22790487, y: 0.013286966, z: -0.44484022}
+      - position: {x: 0.26802874, y: 0, z: 3.0989847}
+        inTangentLocal: {x: 0.36759192, y: -0.010265308, z: 0.33877838}
+        outTangentLocal: {x: -0.36759192, y: 0.010265308, z: -0.33877838}
+      resolution: 10
       movementSpeed: 5
-      rotationSpeedMultiplier: 2
+      rotationSpeedMultiplier: 1
       loopedMovement: 1
-      inverseDirection: 1
-    - type: 6
-      bezierKeyframes:
-      - position: {x: 6.7065487, y: -0.015625, z: 9.241001}
-        inTangentLocal: {x: -1, y: 0, z: 0}
-        outTangentLocal: {x: 1, y: 0, z: 0}
-      - position: {x: -6.550583, y: -0.015625, z: 21.484354}
-        inTangentLocal: {x: 1, y: 0, z: 0}
-        outTangentLocal: {x: 1, y: 0, z: 0}
-      resolution: 2
-      movementSpeed: 5
-      rotationSpeedMultiplier: 2
-      loopedMovement: 1
-      inverseDirection: 1
+      inverseDirection: 0
     whirlpoolObstacles: []
   drownCharacters:
-  - position: {x: -0.01, y: 0, z: 16.92}
+  - position: {x: -4.1959357, y: 0, z: 14.900922}
     waitTimePercentage: 0.88
-  - position: {x: 0, y: 0, z: 21.58}
+  - position: {x: 0.55, y: 0, z: 9.05}
+    waitTimePercentage: 0.5
+  - position: {x: 0.9350896, y: 0, z: 20.544735}
     waitTimePercentage: 1
   collectables:
   - type: 1
-    position: {x: -0.04, y: 0, z: 7.23}
-    rotation: {x: -0, y: 0, z: -0}
+    position: {x: -1.02, y: 0, z: 9.31}
+    rotation: {x: 0, y: 315.69653, z: 0}
     count: 0
   - type: 1
-    position: {x: -0.23, y: 0, z: 9.27}
-    rotation: {x: -0, y: 0, z: 0}
+    position: {x: -2.29, y: 0, z: 10.12}
+    rotation: {x: 0, y: 315.69653, z: 0}
     count: 0
   - type: 1
-    position: {x: -0.36, y: 0, z: 14.36}
-    rotation: {x: -0, y: 0, z: -0}
+    position: {x: 0.59, y: 0.1, z: 2.94}
+    rotation: {x: 3.677807, y: 358.8663, z: 0.7868157}
     count: 0
   - type: 1
-    position: {x: 0, y: 0, z: 3.13}
-    rotation: {x: 0, y: 0, z: 0}
+    position: {x: 0.56, y: -0.01, z: 4.69}
+    rotation: {x: 3.677807, y: 358.8663, z: 0.7868157}
     count: 0
   - type: 1
-    position: {x: -0.03, y: 0, z: 5.12}
-    rotation: {x: 0, y: 0, z: 0}
-    count: 1
-  - type: 3
-    position: {x: 1.32, y: 0, z: 11.69}
-    rotation: {x: -0, y: 0, z: 0}
-    count: 1
-  - type: 4
-    position: {x: -0.04, y: 0, z: 19.65}
-    rotation: {x: -0, y: 0, z: 0}
-    count: 1
+    position: {x: 0.53, y: -0.1, z: 6.2}
+    rotation: {x: 3.677807, y: 358.8663, z: 0.7868157}
+    count: 0
+  - type: 1
+    position: {x: 0.51, y: -0.18, z: 7.39}
+    rotation: {x: 3.677807, y: 358.8663, z: 0.7868157}
+    count: 0
+  - type: 1
+    position: {x: -2.9, y: 0, z: 11.53}
+    rotation: {x: 0, y: 338.72073, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -3.46, y: 0, z: 13.2}
+    rotation: {x: 0, y: 338.72073, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -3.08, y: 0, z: 15.98}
+    rotation: {x: -0, y: 23.960642, z: -0}
+    count: 0
+  - type: 1
+    position: {x: -2.37, y: 0, z: 17.57}
+    rotation: {x: -0, y: 23.960642, z: -0}
+    count: 0
+  - type: 1
+    position: {x: -1.2, y: 0, z: 18.59}
+    rotation: {x: -0, y: 37.325462, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -0.42, y: 0, z: 19.61}
+    rotation: {x: -0, y: 37.325462, z: -0}
+    count: 0
+  - type: 1
+    position: {x: -0.0045411494, y: 0, z: 22.22809}
+    rotation: {x: 0, y: 332.48804, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -0.58, y: 0, z: 23.53}
+    rotation: {x: -0, y: 341.90707, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -0.78, y: 0, z: 25.14}
+    rotation: {x: 0, y: 341.90707, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 0.95, y: 0, z: 25.84}
+    rotation: {x: -0, y: 39.270523, z: -0}
+    count: 0
+  - type: 1
+    position: {x: 2.59, y: 0, z: 26.47}
+    rotation: {x: -0, y: 39.270523, z: -0}
+    count: 0
+  - type: 1
+    position: {x: 3.7479043, y: -7.1193407e-10, z: 25.265974}
+    rotation: {x: 0.0000013596989, y: 13.285301, z: -0.0000027538126}
+    count: 0
+  - type: 1
+    position: {x: 5.23, y: 0, z: 24.13}
+    rotation: {x: -0, y: 10.5383835, z: -0}
+    count: 0
+  - type: 1
+    position: {x: 4.94, y: 0, z: 22.57}
+    rotation: {x: -0, y: 10.5383835, z: -0}
+    count: 0
+  - type: 1
+    position: {x: 4.65, y: 0, z: 21.01}
+    rotation: {x: -0, y: 10.5383835, z: -0}
+    count: 0
   medalRequirements:
     requiredCurrencyForThreeMedals: 5
     requiredCurrencyForTwoMedals: 3
