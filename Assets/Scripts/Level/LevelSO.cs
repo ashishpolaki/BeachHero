@@ -12,6 +12,7 @@ namespace BeachHero
         [SerializeField] private CollectableData[] collectables;
         [SerializeField] private MedalCurrencyRequirements medalRequirements;
 
+        public float BoatSpeed = 5;
         #region Properties
 
         public float LevelTime => levelTime;

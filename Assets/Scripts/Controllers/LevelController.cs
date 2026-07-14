@@ -266,6 +266,7 @@ namespace BeachHero
             int boatColorIndex = GameController.GetInstance.SkinController.GetSavedBoatColorIndex(boatIndex);
             float speed = GameController.GetInstance.SkinController.GetSelectedBoatSpeed();
             GameObject boatPRefab = GameController.GetInstance.SkinController.GetSelectedBoatPrefab();
+            speed = levelDatabaseSO.GetLevelByIndex(currentLevelIndex).BoatSpeed;
             player.UpdateBoat(boatIndex, boatColorIndex, speed, boatPRefab);
         }
         public void UpdateBoat(int index, int boatColorIndex)
@@ -484,7 +485,7 @@ namespace BeachHero
         #endregion
 
         #region States
-        public void StartState(LevelSO levelSO,int _currentLevelIndex)
+        public void StartState(LevelSO levelSO, int _currentLevelIndex)
         {
             ResetState();
             currentLevelIndex = _currentLevelIndex;

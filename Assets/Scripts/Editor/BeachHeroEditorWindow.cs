@@ -33,6 +33,7 @@ public class BeachHeroEditorWindow : EditorWindow
     {
         public SerializedObject serializedLevelObject;
         public SerializedProperty levelTimeProperty;
+        public SerializedProperty boatSpeedProperty;
         public SerializedProperty startPointProperty;
         public SerializedProperty moveObstaclesProperty;
         public SerializedProperty staticObstaclesProperty;
@@ -55,6 +56,7 @@ public class BeachHeroEditorWindow : EditorWindow
         private void ReadFields()
         {
             levelTimeProperty = serializedLevelObject.FindProperty("levelTime");
+            boatSpeedProperty = serializedLevelObject.FindProperty("BoatSpeed");
             startPointProperty = serializedLevelObject.FindProperty("startPoint");
             moveObstaclesProperty = serializedLevelObject.FindProperty("obstacles").FindPropertyRelative("movingObstacles");
             staticObstaclesProperty = serializedLevelObject.FindProperty("obstacles").FindPropertyRelative("staticObstacles");
@@ -400,6 +402,7 @@ public class BeachHeroEditorWindow : EditorWindow
 
         EditorGUILayout.PropertyField(levelDatabaseRepresentation.levelsListProperty.GetArrayElementAtIndex(selectedLevelIndex), new GUIContent(FILE_STRING));
         EditorGUILayout.PropertyField(levelRepresentation.levelTimeProperty);
+        EditorGUILayout.PropertyField(levelRepresentation.boatSpeedProperty);
         DrawMedalRequirements(levelRepresentation.medalRequirementsProperty);
 
         //SpawnItems Header
