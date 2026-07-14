@@ -14,91 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelTime: 6
   startPoint:
-    Position: {x: 0.05, y: 0, z: 0.12}
+    Position: {x: 0.02, y: 0, z: -0.26}
     Rotation: {x: 0, y: 0, z: 0}
   obstacles:
-    staticObstacles:
-    - type: 4
-      position: {x: -0.44, y: 0, z: 7.92}
-      rotation: {x: -0, y: 272.6864, z: 0}
-      scale: {x: 1, y: 1, z: 1}
-    - type: 4
-      position: {x: 4.6, y: 0, z: 12.88}
-      rotation: {x: -0.0000038086357, y: 239.97307, z: 0.0000009054906}
-      scale: {x: 1, y: 1, z: 1}
+    staticObstacles: []
     movingObstacles: []
     whirlpoolObstacles: []
-  drownCharacters:
-  - position: {x: 0.03, y: 0, z: 12.3}
-    waitTimePercentage: 0.9
-  - position: {x: -4.44, y: 0, z: 14.63}
-    waitTimePercentage: 1
-  - position: {x: 5.2161245, y: 0, z: 8.416441}
-    waitTimePercentage: 0.6
-  - position: {x: -0.66, y: 0, z: 4.24}
-    waitTimePercentage: 0.3
-  collectables:
-  - type: 1
-    position: {x: 0.08, y: 0.01, z: 18.03}
-    rotation: {x: 359.1326, y: 36.691895, z: 0}
-    count: 0
-  - type: 1
-    position: {x: 0.03, y: 0.03, z: 20.5}
-    rotation: {x: 359.1326, y: 36.691895, z: 0}
-    count: 0
-  - type: 1
-    position: {x: 0.16129628, y: 0.059906743, z: 22.7588}
-    rotation: {x: 359.4772, y: 343.75317, z: 0.69217217}
-    count: 0
-  - type: 1
-    position: {x: -2.186798, y: 0.049564403, z: 22.88409}
-    rotation: {x: 0.13109402, y: 297.9999, z: 0.85744226}
-    count: 0
-  - type: 1
-    position: {x: -0.119475275, y: 0, z: 15.664729}
-    rotation: {x: -0, y: 16.35965, z: -0}
-    count: 0
-  - type: 1
-    position: {x: -4.57, y: 0, z: 17.98}
-    rotation: {x: -0, y: 36.691895, z: -0}
-    count: 0
-  - type: 1
-    position: {x: -4.65, y: 0, z: 20.46}
-    rotation: {x: -0, y: 36.691895, z: -0}
-    count: 0
-  - type: 1
-    position: {x: -4.69, y: 0, z: 22.72}
-    rotation: {x: -0, y: 36.691895, z: -0}
-    count: 0
-  - type: 1
-    position: {x: 1.63, y: -0.01, z: 10.45}
-    rotation: {x: 5.443419, y: 339.95605, z: 358.58264}
-    count: 0
-  - type: 1
-    position: {x: 3, y: 0.15, z: 8.96}
-    rotation: {x: 5.443419, y: 339.95605, z: 358.58264}
-    count: 0
-  - type: 1
-    position: {x: 1.42, y: 0, z: 3.98}
-    rotation: {x: -0, y: 42.428104, z: -0}
-    count: 0
-  - type: 1
-    position: {x: 2.8037262, y: 0, z: 5.504408}
-    rotation: {x: -0, y: 27.744518, z: -0}
-    count: 0
-  - type: 1
-    position: {x: -2.408881, y: 0, z: 12.22824}
-    rotation: {x: 0, y: 244.52808, z: 0}
-    count: 0
-  - type: 1
-    position: {x: -4.301737, y: 0, z: 12.09363}
-    rotation: {x: -0, y: 21.032001, z: 0}
-    count: 0
-  - type: 1
-    position: {x: 4.33, y: 0, z: 6.31}
-    rotation: {x: 0, y: 234.71796, z: 0}
-    count: 0
+  drownCharacters: []
+  collectables: []
   medalRequirements:
     requiredCurrencyForThreeMedals: 5
     requiredCurrencyForTwoMedals: 3
-    requiredCurrencyForOneMedal: 1
+    requiredCurrencyForOneMedal: 0

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace BeachHero
@@ -32,6 +33,70 @@ namespace BeachHero
         #endregion
 
 #if UNITY_EDITOR
+        [ContextMenu("Rename Levels")]
+        public void ResetLevelsDataContext()
+        {
+            if (levelsList == null || levelsList.Length == 0)
+                return;
+
+            // Store temporary names for each asset.
+            Dictionary<Object, string> tempNames = new();
+
+            // ---------- PASS 1 : Rename to unique temporary names ----------
+            foreach (var level in levelsList)
+            {
+                if (level == null)
+                    continue;
+
+                string path = AssetDatabase.GetAssetPath(level);
+
+                if (string.IsNullOrEmpty(path))
+                    continue;
+
+                string tempName = "__TMP_" + System.Guid.NewGuid().ToString("N");
+
+                string error = AssetDatabase.RenameAsset(path, tempName);
+
+                if (!string.IsNullOrEmpty(error))
+                {
+                    Debug.LogError($"Failed to rename '{path}' to temp name.\n{error}");
+                    continue;
+                }
+
+                tempNames[level] = tempName;
+            }
+
+            AssetDatabase.SaveAssets();
+
+            // ---------- PASS 2 : Rename to final names ----------
+            for (int i = 0; i < levelsList.Length; i++)
+            {
+                var level = levelsList[i];
+
+                if (level == null)
+                    continue;
+
+                string path = AssetDatabase.GetAssetPath(level);
+
+                if (string.IsNullOrEmpty(path))
+                    continue;
+
+                string finalName = $"Level_{i + 1}";
+
+                level.name = finalName;
+                EditorUtility.SetDirty(level);
+
+                string error = AssetDatabase.RenameAsset(path, finalName);
+
+                if (!string.IsNullOrEmpty(error))
+                {
+                    Debug.LogError($"Failed to rename '{path}' to '{finalName}'.\n{error}");
+                }
+            }
+
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+        }
         public void ClearLevelsData()
         {
             for (int i = 0; i < levelDatas.Count; i++)
