@@ -3,6 +3,7 @@
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
 .utmp/
+.DS_Store
 /[Ll]ibrary/
 /[Tt]emp/
 /[Oo]bj/
@@ -73,3 +74,8 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 *.idea
+
+# Local/generated Unity editor metadata
+/[Aa]ssets/DoTweenSystem.meta
+/[Aa]ssets/DoTweenSystem/
+/ProjectSettings/Packages/com.unity.probuilder/
