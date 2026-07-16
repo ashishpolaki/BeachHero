@@ -88,6 +88,7 @@ namespace BeachHero
 
         //Game Lose Message
         public const string CONSECUTIVE_LOSE_HINT = "SAVE THE PEOPLE BEFORE\nTHEY DROWN TO\nCOMPLETE THIS LEVEL.";
+        //tell to the player to use powerups if they have them. second consecutive lose message.
     }
 
     public class IntUtils

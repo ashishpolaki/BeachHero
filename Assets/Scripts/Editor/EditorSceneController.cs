@@ -9,6 +9,8 @@ public class EditorSceneController : MonoBehaviour
     public static EditorSceneController Instance { get => instance; }
 
     [SerializeField] private GameObject container;
+    [SerializeField] private GameObject playerPreviewPrefab;
+    [SerializeField] private GameObject[] disableScenePickingObjects;
     private LevelSO currentLevel;
 
     //Spawn Item Paths 
@@ -30,6 +32,7 @@ public class EditorSceneController : MonoBehaviour
     public EditorSceneController()
     {
         instance = this;
+        DisableScenePicking();
     }
     public void Clear()
     {
@@ -38,6 +41,13 @@ public class EditorSceneController : MonoBehaviour
             {
                 DestroyImmediate(container.transform.GetChild(i).gameObject);
             }
+    }
+    private void DisableScenePicking()
+    {
+        foreach (var item in disableScenePickingObjects)
+        {
+            SceneVisibilityManager.instance.DisablePicking(item, true);
+        }
     }
 
     #region Spawn
@@ -93,6 +103,7 @@ public class EditorSceneController : MonoBehaviour
     public void SpawnLevelData(LevelSO _levelSO)
     {
         currentLevel = _levelSO;
+        DisableScenePicking();
         SpawnStartPoint();
         SpawnMovingObstacles();
         SpawnStaticObstacles();
@@ -100,6 +111,7 @@ public class EditorSceneController : MonoBehaviour
         SpawnCharacter();
         SpawnCollectable();
     }
+
 
     private void SpawnWhirlpoolObstacle()
     {
@@ -116,6 +128,7 @@ public class EditorSceneController : MonoBehaviour
             WhirlpoolEditTool whirlpoolEditComponent = whirlpoolGameobject.AddComponent<WhirlpoolEditTool>();
             whirlpoolGameobject.transform.parent = container.transform;
             whirlpoolEditComponent.Init(item, cycloneIndex);
+            SetChildrenNotEditable(whirlpoolGameobject.transform);
         }
     }
 
@@ -132,6 +145,7 @@ public class EditorSceneController : MonoBehaviour
             DrownCharacterEditTool drownCharacter = drownCharacterobject.AddComponent<DrownCharacterEditTool>();
             drownCharacterobject.transform.parent = container.transform;
             drownCharacter.Init(characterItem.Position, characterItem.WaitTimePercentage, currentLevel.LevelTime);
+            SetChildrenNotEditable(drownCharacterobject.transform);
         }
     }
 
@@ -153,6 +167,7 @@ public class EditorSceneController : MonoBehaviour
             instance.transform.SetParent(container.transform);
             instance.transform.SetPositionAndRotation(item.position, Quaternion.Euler(item.rotation));
             instance.transform.localScale = item.scale;
+            SetChildrenNotEditable(instance.transform);
         }
     }
 
@@ -163,6 +178,13 @@ public class EditorSceneController : MonoBehaviour
         startPoint.transform.parent = container.transform;
         startPoint.transform.position = currentLevel.StartPointData.Position;
         startPoint.transform.rotation = Quaternion.Euler(currentLevel.StartPointData.Rotation);
+        startPoint.gameObject.AddComponent<PlayerPreviewEditTool>();
+
+        //Add Player preview Tool
+        GameObject playerPreviewObject = (GameObject)PrefabUtility.InstantiatePrefab(playerPreviewPrefab);
+        playerPreviewObject.transform.parent = startPoint.transform;
+        playerPreviewObject.transform.localPosition = Vector3.zero;
+        SceneVisibilityManager.instance.DisablePicking(playerPreviewObject, false);
     }
 
     private void SpawnMovingObstacles()
@@ -187,6 +209,7 @@ public class EditorSceneController : MonoBehaviour
             MovingObstacleEditTool movingObstacle = sharkGameObject.AddComponent<MovingObstacleEditTool>();
             movingObstacle.transform.parent = container.transform;
             movingObstacle.Init(item);
+            SetChildrenNotEditable(movingObstacle.transform);
         }
     }
 
@@ -210,8 +233,19 @@ public class EditorSceneController : MonoBehaviour
             Collectable collectable = go.GetComponent<Collectable>();
             collectable.transform.parent = container.transform;
             collectable.Init(item);
+            SetChildrenNotEditable(collectable.transform);
         }
     }
+    private void SetChildrenNotEditable(Transform parentTransform)
+    {
+        for (int i = 0; i < parentTransform.childCount; i++)
+        {
+            Transform child = parentTransform.GetChild(i);
+            child.hideFlags |= HideFlags.HideInHierarchy;
+            child.hideFlags |= HideFlags.NotEditable;
+        }
+    }
+
     #endregion
 
     #region Get Edited Data
