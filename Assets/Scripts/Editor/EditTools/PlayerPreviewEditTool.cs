@@ -3,39 +3,49 @@ using UnityEngine;
 
 namespace BeachHero
 {
-    [RequireComponent(typeof(Player))]
     public class PlayerPreviewEditTool : MonoBehaviour
     {
         // local-space control points relative to this transform
         public List<Vector3> pathPoints = new List<Vector3>()
         {
-            new Vector3(0,0,0),
-            new Vector3(5,0,0),
-            new Vector3(10,0,5)
         };
-
+        public float previewSpeed = 5f;
+        public const float FixedDeltaTime = 1f / 60f;
         [HideInInspector] public float previewPercent = 0f;
 
         [Header("Freehand / Sampling")]
         public bool enforceYZero = true;
         public bool freehandEnabled = true;
-        [SerializeField] private float freehandSpacing = 0.25f; // now private (not editable in UI)
-
+        [SerializeField] private float freehandSpacing = 0.3f; // now private (not editable in UI)
+        public float evenlySpacing = 0.5f;
         [SerializeField] private float previewDuration = 10f; // private duration used to compute time (not editable in scene UI)
 
-        private Player player;
+        public float GetPreviewDuration() => previewDuration;
+        public float GetFreehandSpacing() => freehandSpacing;
 
-        private void Awake()
+        private Transform player;
+
+        public void SetPlayerTransform(Transform player)
         {
-            player = GetComponent<Player>();
+            this.player = player;
+        }
+
+        private void ResetPlayerPosition()
+        {
+            player.transform.localPosition = Vector3.zero;
+            player.transform.localRotation = Quaternion.identity;
         }
 
         // Move the player along the path (percent 0..1)
         public void UpdatePreview(float percent)
         {
+            if (player == null) return;
             previewPercent = Mathf.Clamp01(percent);
-            if (pathPoints == null || pathPoints.Count < 2 || player == null) return;
-
+            if (pathPoints == null || pathPoints.Count < 2 || player == null)
+            {
+                ResetPlayerPosition();
+                return;
+            }
             // linear mapping across segments
             int segmentCount = pathPoints.Count - 1;
             float total = previewPercent * segmentCount;
@@ -59,24 +69,6 @@ namespace BeachHero
             }
         }
 
-        // Editor helpers (world-space)
-        public void AddPointWorld(Vector3 worldPoint)
-        {
-            Vector3 local = transform.InverseTransformPoint(worldPoint);
-            if (enforceYZero) local.y = 0f;
-            if (pathPoints == null) pathPoints = new List<Vector3>();
-            pathPoints.Add(local);
-        }
-
-        public void InsertPointWorld(int index, Vector3 worldPoint)
-        {
-            Vector3 local = transform.InverseTransformPoint(worldPoint);
-            if (enforceYZero) local.y = 0f;
-            if (pathPoints == null) pathPoints = new List<Vector3>();
-            index = Mathf.Clamp(index, 0, pathPoints.Count);
-            pathPoints.Insert(index, local);
-        }
-
         // Simple helper: total linear length (world-space)
         public float CalculateTotalLength()
         {
@@ -90,11 +82,21 @@ namespace BeachHero
             }
             return len;
         }
+        public float GetTotalDuration()
+        {
+            float len = CalculateTotalLength();
+            if (len <= 0f || previewSpeed <= 0f) return 0f;
+            return len / previewSpeed;
+        }
+        public void AdvancePreviewByFixedStep(bool forward)
+        {
+            float len = CalculateTotalLength();
+            if (len <= 0f) return;
 
-        // expose helpers for editor read-only values
-        public float GetPreviewDuration() => previewDuration;
-        public float GetFreehandSpacing() => freehandSpacing;
-
+            float deltaPercent = (previewSpeed * FixedDeltaTime) / len;
+            previewPercent = Mathf.Clamp01(previewPercent + (forward ? deltaPercent : -deltaPercent));
+            UpdatePreview(previewPercent);
+        }
         public void ClearPoints()
         {
             pathPoints?.Clear();

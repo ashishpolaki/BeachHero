@@ -32,7 +32,6 @@ public class EditorSceneController : MonoBehaviour
     public EditorSceneController()
     {
         instance = this;
-        DisableScenePicking();
     }
     public void Clear()
     {
@@ -178,12 +177,13 @@ public class EditorSceneController : MonoBehaviour
         startPoint.transform.parent = container.transform;
         startPoint.transform.position = currentLevel.StartPointData.Position;
         startPoint.transform.rotation = Quaternion.Euler(currentLevel.StartPointData.Rotation);
-        startPoint.gameObject.AddComponent<PlayerPreviewEditTool>();
+        var tool = startPoint.gameObject.AddComponent<PlayerPreviewEditTool>();
 
         //Add Player preview Tool
         GameObject playerPreviewObject = (GameObject)PrefabUtility.InstantiatePrefab(playerPreviewPrefab);
         playerPreviewObject.transform.parent = startPoint.transform;
         playerPreviewObject.transform.localPosition = Vector3.zero;
+        tool.SetPlayerTransform(playerPreviewObject.transform);
         SceneVisibilityManager.instance.DisablePicking(playerPreviewObject, false);
     }
 

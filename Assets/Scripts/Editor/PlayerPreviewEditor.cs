@@ -2,23 +2,26 @@
 using UnityEditor;
 using UnityEngine;
 using BeachHero;
+using System.Collections.Generic;
 
 [CustomEditor(typeof(PlayerPreviewEditTool))]
 public class PlayerPreviewEditor : Editor
 {
     private PlayerPreviewEditTool tool;
 
+    // raw sampling + curve buffers for spline smoothing 
+    private List<Vector3> rawDrawnPoints = new List<Vector3>();
+    private List<Vector3> curvePoints = new List<Vector3>();
+    private float editorSplineStep = 0.05f;
+
     // freehand drawing state
     private bool isDragging = false;
     private Vector3 lastAddedPointWorld = Vector3.zero;
-
-    // drawing mode controlled by overlay buttons
     private bool isDrawingMode = false;
-    // indicates whether drawing was started by clicking the player/startpoint
     private bool hasStartedFromPlayer = false;
 
     // Overlay drag state
-    private static Rect overlayRect = new Rect(10, 10, 300, 140);
+    private static Rect overlayRect = new Rect(10, 10, 300, 160);
     private Color overlayColor = new Color(0.18f, 0.18f, 0.18f, 0.95f);
     private bool isOverlayDragging = false;
     private Vector2 overlayDragOffset;
@@ -47,21 +50,13 @@ public class PlayerPreviewEditor : Editor
         Transform t = tool.transform;
         Handles.color = Color.cyan;
 
-        // Draw and move control points
+        // Draw non-interactive red sphere gizmos for each control point
+        Handles.color = Color.red;
         for (int i = 0; i < tool.pathPoints.Count; i++)
         {
             Vector3 world = t.TransformPoint(tool.pathPoints[i]);
-            EditorGUI.BeginChangeCheck();
-            Vector3 newWorld = Handles.PositionHandle(world, Quaternion.identity);
-            if (EditorGUI.EndChangeCheck())
-            {
-                Undo.RecordObject(tool, "Move Path Point");
-                Vector3 newLocal = t.InverseTransformPoint(newWorld);
-                if (tool.enforceYZero) newLocal.y = 0f;
-                tool.pathPoints[i] = newLocal;
-                EditorUtility.SetDirty(tool);
-            }
-            Handles.Label(world + Vector3.up * 0.25f, $"P{i}");
+            float sphereSize = HandleUtility.GetHandleSize(world) * 0.08f;
+            Handles.SphereHandleCap(0, world, Quaternion.identity, sphereSize, EventType.Repaint);
         }
 
         // Draw lines
@@ -71,7 +66,6 @@ public class PlayerPreviewEditor : Editor
             Vector3 b = t.TransformPoint(tool.pathPoints[i + 1]);
             Handles.DrawLine(a, b);
         }
-
 
         // Scene GUI overlay
         Handles.BeginGUI();
@@ -130,7 +124,6 @@ public class PlayerPreviewEditor : Editor
             // reset preview to start
             tool.previewPercent = 0f;
             tool.UpdatePreview(0f);
-
             EditorUtility.SetDirty(tool);
         }
 
@@ -142,7 +135,7 @@ public class PlayerPreviewEditor : Editor
 
         GUILayout.Space(6);
 
-        // 2) Preview Slider (scrub)
+        // 2) Preview Slider (label + slider on single row)
         GUILayout.BeginHorizontal();
         GUILayout.Label("Percent", GUILayout.Width(60));
         EditorGUI.BeginChangeCheck();
@@ -150,16 +143,34 @@ public class PlayerPreviewEditor : Editor
         if (EditorGUI.EndChangeCheck())
         {
             Undo.RecordObject(tool, "Preview Scrub");
-            tool.UpdatePreview(newPercent);
+            tool.previewPercent = Mathf.Clamp01(newPercent);
+            tool.UpdatePreview(tool.previewPercent);
             EditorUtility.SetDirty(tool);
         }
         GUILayout.EndHorizontal();
         GUILayout.Space(6);
 
-        // 5) Unchangeable field: Time (computed from preview duration in tool)
-        float previewDuration = tool.GetPreviewDuration();
-        float currentTime = previewDuration * tool.previewPercent;
-        EditorGUILayout.LabelField("Time (s)", currentTime.ToString("F2"));
+        // 3) Step buttons advance/rewind by a fixed editor step
+        GUILayout.BeginHorizontal();
+        if (GUILayout.Button("<< Step", GUILayout.Height(20)))
+        {
+            Undo.RecordObject(tool, "Preview Step Back");
+            tool.AdvancePreviewByFixedStep(false);
+            EditorUtility.SetDirty(tool);
+        }
+        if (GUILayout.Button("Step >>", GUILayout.Height(20)))
+        {
+            Undo.RecordObject(tool, "Preview Step Forward");
+            tool.AdvancePreviewByFixedStep(true);
+            EditorUtility.SetDirty(tool);
+        }
+        GUILayout.EndHorizontal();
+        GUILayout.Space(6);
+
+        // 5) Unchangeable field: Time (computed from previewSpeed and path length)
+        float totalDuration = tool.GetTotalDuration(); // seconds
+        float currentTime = totalDuration * tool.previewPercent;
+        EditorGUILayout.LabelField("Time (s)", totalDuration > 0f ? currentTime.ToString("F2") : "0.00");
 
         // 6) Unchangeable field: Distance travelled (computed)
         float totalLen = tool.CalculateTotalLength();
@@ -199,7 +210,7 @@ public class PlayerPreviewEditor : Editor
                 if (!hasStartedFromPlayer)
                 {
                     Ray guiRay = HandleUtility.GUIPointToWorldRay(e.mousePosition);
-                    if (Physics.Raycast(guiRay, out RaycastHit hitInfo, 1000f,LayerMask.GetMask("StartPoint")))
+                    if (Physics.Raycast(guiRay, out RaycastHit hitInfo, 1000f, LayerMask.GetMask("StartPoint")))
                     {
                         bool hitStart = hitInfo.collider.GetComponent<StartPointBehaviour>() != null;
 
@@ -228,11 +239,14 @@ public class PlayerPreviewEditor : Editor
 
                 if (TryGetMouseWorldPoint(e.mousePosition, ground, out Vector3 worldPt))
                 {
+                    rawDrawnPoints.Clear();
+                    curvePoints.Clear();
+                    rawDrawnPoints.Add(worldPt);
                     lastAddedPointWorld = worldPt;
-                    Undo.RecordObject(tool, "Freehand Add Point");
-                    tool.AddPointWorld(worldPt);
-                    EditorUtility.SetDirty(tool);
-                    tool.UpdatePreview(tool.previewPercent);
+                    UpdateSmoothedPathFromRaw();
+                    // Undo.RecordObject(tool, "Freehand Add Point");
+                    // tool.AddPointWorld(worldPt);
+                    // EditorUtility.SetDirty(tool);
                 }
             }
             else if (e.type == EventType.MouseDrag && isDragging && leftBtn && !e.alt)
@@ -240,13 +254,17 @@ public class PlayerPreviewEditor : Editor
                 if (TryGetMouseWorldPoint(e.mousePosition, ground, out Vector3 worldPt))
                 {
                     float dist = Vector3.Distance(lastAddedPointWorld, worldPt);
-                    if (dist >= tool.GetFreehandSpacing())
+                    if (dist > tool.GetFreehandSpacing())
                     {
-                        Undo.RecordObject(tool, "Freehand Add Point");
-                        tool.AddPointWorld(worldPt);
+                        //Undo.RecordObject(tool, "Freehand Add Point");
+                        //tool.AddPointWorld(worldPt);
+                        //lastAddedPointWorld = worldPt;
+                        //EditorUtility.SetDirty(tool);
+                        //tool.UpdatePreview(tool.previewPercent);
+
+                        rawDrawnPoints.Add(worldPt);
                         lastAddedPointWorld = worldPt;
-                        EditorUtility.SetDirty(tool);
-                        tool.UpdatePreview(tool.previewPercent);
+                        UpdateSmoothedPathFromRaw();
                     }
                 }
                 e.Use();
@@ -255,25 +273,65 @@ public class PlayerPreviewEditor : Editor
             {
                 isDragging = false;
                 GUIUtility.hotControl = 0;
-                e.Use();
-            }
-        }
-        else
-        {
-            // single-click add mode
-            if (e.type == EventType.MouseDown && leftBtn && !e.alt)
-            {
-                if (TryGetMouseWorldPoint(e.mousePosition, ground, out Vector3 worldPt))
-                {
-                    Undo.RecordObject(tool, "Add Point");
-                    tool.AddPointWorld(worldPt);
-                    EditorUtility.SetDirty(tool);
-                    tool.UpdatePreview(tool.previewPercent);
-                }
-                e.Use();
+                Event.current.Use();
+                // finalize smoothing one last time
+                UpdateSmoothedPathFromRaw();
+                isDrawingMode = false;
+                hasStartedFromPlayer = false;
+                SceneView.RepaintAll();
             }
         }
     }
+
+    private void UpdateSmoothedPathFromRaw()
+    {
+        curvePoints.Clear();
+
+        if (rawDrawnPoints.Count < 4)
+        {
+            // fallback: use raw points directly (convert to local)
+            tool.pathPoints = new List<Vector3>();
+            foreach (var wp in rawDrawnPoints)
+                tool.pathPoints.Add(tool.transform.InverseTransformPoint(wp));
+        }
+        else
+        {
+            // Build Catmull-Rom sampled points for every consecutive 4 points
+            for (int i = 0; i <= rawDrawnPoints.Count - 4; i++)
+            {
+                Vector3 p0 = rawDrawnPoints[i];
+                Vector3 p1 = rawDrawnPoints[i + 1];
+                Vector3 p2 = rawDrawnPoints[i + 2];
+                Vector3 p3 = rawDrawnPoints[i + 3];
+
+                // sample along segment using editorSplineStep
+                for (float t = 0f; t <= 1f; t += editorSplineStep)
+                {
+                    Vector3 pt = CatmullSplineUtils.GetPoint(
+                        p0, p1, p2, p3, t
+                    );
+                    curvePoints.Add(pt);
+                }
+            }
+
+            // Now create evenly spaced points using same spacing used at runtime
+            var smoothed = CatmullSplineUtils.GetEvenlySpacedPoints(curvePoints, tool.evenlySpacing);
+
+            // Convert world smoothed points to tool local-space and assign
+            tool.pathPoints = new List<Vector3>();
+            for (int i = 0; i < smoothed.Count; i++)
+            {
+                Vector3 local = tool.transform.InverseTransformPoint(smoothed[i]);
+                if (tool.enforceYZero) local.y = 0f;
+                tool.pathPoints.Add(local);
+            }
+        }
+
+        // update preview display
+        tool.UpdatePreview(tool.previewPercent);
+        EditorUtility.SetDirty(tool);
+    }
+
     private void HandleOverlayDragging()
     {
         Event e = Event.current;
