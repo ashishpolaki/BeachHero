@@ -40,6 +40,7 @@ namespace BeachHero
         [SerializeField] private Vector3 tutorialCharacterPosition;
         [SerializeField] private Vector3 speechBubblePosition;
         #endregion
+
         #region Private Variables
         private float pauseInitialY;
         private float retryInitialY;
@@ -138,7 +139,14 @@ namespace BeachHero
                 GameController.GetInstance.LevelController.ResetLevelFailCounter();
                 TutorialController.GetInstance.TutorialCharacter.PlayAnimation(TutorialCharacterState.Cry, tutorialCharacterPosition, () =>
                 {
-                    TutorialController.GetInstance.TutorialSpeechBubble.Show(StringUtils.CONSECUTIVE_LOSE_HINT, speechBubblePosition);
+                    // choose hint based on whether powerups are unlocked
+                    string hint = StringUtils.CONSECUTIVE_LOSE_HINT;
+                    var pc = GameController.GetInstance.PowerupController;
+                    if (pc != null && (pc.IsPowerupUnlocked(PowerupType.SpeedBoost) || pc.IsPowerupUnlocked(PowerupType.Shield)))
+                    {
+                        hint = StringUtils.CONSECUTIVE_LOSE_HINT_POWERUPS;
+                    }
+                    TutorialController.GetInstance.TutorialSpeechBubble.Show(hint, speechBubblePosition);
                 });
 
                 //Add a skip button.
