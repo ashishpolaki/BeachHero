@@ -52,11 +52,6 @@ namespace BeachHero
             direction = 1;
             transform.position = keyframes[0].position;
             transform.rotation = Quaternion.LookRotation((keyframes[1].position - keyframes[0].position).normalized);
-            //var pointsList = BezierCurveUtils.GeneratePath(keyframes, movingObstacleData.resolution);
-            //pathRenderer.positionCount = pointsList.Length;
-            //pointsList[0].y = 0.5f;
-            //pathRenderer.SetPositions(pointsList);
-
             // Precompute segment lengths
             segmentLengths = new float[keyframes.Length - 1];
             for (int i = 0; i < keyframes.Length - 1; i++)
@@ -69,29 +64,6 @@ namespace BeachHero
                     samples
                 );
             }
-
-            //if (isInverseDirection)
-            //{
-            //    direction = -1;
-            //    currentIndex = keyframes.Length - 2;
-            //    distanceTravelled = segmentLengths[currentIndex];
-
-            //    transform.position = keyframes[keyframes.Length - 1].position;
-            //    transform.rotation = Quaternion.LookRotation(
-            //        (keyframes[keyframes.Length - 2].position -
-            //         keyframes[keyframes.Length - 1].position).normalized);
-            //}
-            //else
-            //{
-            //    direction = 1;
-            //    currentIndex = 0;
-            //    distanceTravelled = 0f;
-
-            //    transform.position = keyframes[0].position;
-            //    transform.rotation = Quaternion.LookRotation(
-            //        (keyframes[1].position -
-            //         keyframes[0].position).normalized);
-            //}
         }
         public override void UpdateState()
         {

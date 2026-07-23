@@ -16,6 +16,7 @@ namespace BeachHero
         private float radius;
         private bool showGenerateShapeSettings = false;
         private bool showOffsetSettings = false;
+        private bool isKeyframesInitialized = false;
         public static float KeyFramePositionSize = 0.2f;
         public static float KeyFramePositionPickUpSize = 1f;
         public static float keyFrameTangetHandleSize = 0.5f;
@@ -36,8 +37,8 @@ namespace BeachHero
             EditorGUILayout.PropertyField(serializedObject.FindProperty("obstacleType"), new GUIContent("Obstacle Type"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("movementSpeed"), new GUIContent("Movement Speed"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("rotationSpeedMultiplier"), new GUIContent("Rotation Speed Multiplier"));
-         //   EditorGUILayout.PropertyField(serializedObject.FindProperty("offsetPosition"), new GUIContent("Offset Position"));
-         //   EditorGUILayout.PropertyField(serializedObject.FindProperty("offsetRotation"), new GUIContent("Offset Rotation"));
+            //   EditorGUILayout.PropertyField(serializedObject.FindProperty("offsetPosition"), new GUIContent("Offset Position"));
+            //   EditorGUILayout.PropertyField(serializedObject.FindProperty("offsetRotation"), new GUIContent("Offset Rotation"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("resolution"), new GUIContent("Resolution"));
 
             EditorGUILayout.PropertyField(serializedObject.FindProperty("loopedMovement"), new GUIContent("Looped Movement"));
@@ -61,6 +62,8 @@ namespace BeachHero
             }
             serializedObject.ApplyModifiedProperties();
         }
+        #endregion
+
         #region Keyframe Management
         private void DrawOffsetToggle()
         {
@@ -355,14 +358,11 @@ namespace BeachHero
 
         #endregion
 
-        #endregion
-
         #region Scene Window
         private void OnSceneGUI()
         {
             if (!movingObstacle.canEditKeyFramesInScene)
                 return;
-
             if (movingObstacle.Keyframes.Length == 1)
             {
                 Handles.Label(movingObstacle.Keyframes[0].position, $"Point {0}",
