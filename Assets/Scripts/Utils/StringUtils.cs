@@ -94,8 +94,8 @@ namespace BeachHero
     public class IntUtils
     {
         //Powerup
-        public const int SPEEDBOOST_UNLOCK_LEVEL = 3;
-        public const int SHIELD_UNLOCK_LEVEL = 4;
+        public const int SPEEDBOOST_UNLOCK_LEVEL = 5;
+        public const int SHIELD_UNLOCK_LEVEL = 8;
         public const int FREEZE_UNLOCK_LEVEL = 5;
         public const int STARFISH_MULTIPLIER_UNLOCK_LEVEL = 6;
         //Powerup Balances

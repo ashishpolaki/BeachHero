@@ -13,6 +13,8 @@ public class PlayerPreviewEditor : Editor
     private List<Vector3> rawDrawnPoints = new List<Vector3>();
     private List<Vector3> curvePoints = new List<Vector3>();
     private float editorSplineStep = 0.05f;
+    private float currentTime = 0;
+    private float movingObstaclesTimeOffset = 0f;
 
     // freehand drawing state
     private bool isDragging = false;
@@ -21,7 +23,7 @@ public class PlayerPreviewEditor : Editor
     private bool hasStartedFromPlayer = false;
 
     // Overlay drag state
-    private static Rect overlayRect = new Rect(10, 10, 300, 160);
+    private static Rect overlayRect = new Rect(10, 10, 300, 200);
     private Color overlayColor = new Color(0.18f, 0.18f, 0.18f, 0.95f);
     private bool isOverlayDragging = false;
     private Vector2 overlayDragOffset;
@@ -69,6 +71,8 @@ public class PlayerPreviewEditor : Editor
 
         // Scene GUI overlay
         Handles.BeginGUI();
+        var moversForLayout = Object.FindObjectsByType<MovingObstacleEditTool>(FindObjectsSortMode.None);
+        int moverCount = moversForLayout != null ? moversForLayout.Length : 0;
 
         // background
         EditorGUI.DrawRect(overlayRect, overlayColor);
@@ -136,6 +140,8 @@ public class PlayerPreviewEditor : Editor
         GUILayout.Space(6);
 
         // 2) Preview Slider (label + slider on single row)
+        float totalDuration = 0;
+
         GUILayout.BeginHorizontal();
         GUILayout.Label("Percent", GUILayout.Width(60));
         EditorGUI.BeginChangeCheck();
@@ -145,6 +151,9 @@ public class PlayerPreviewEditor : Editor
             Undo.RecordObject(tool, "Preview Scrub");
             tool.previewPercent = Mathf.Clamp01(newPercent);
             tool.UpdatePreview(tool.previewPercent);
+            totalDuration = tool.GetTotalDuration();
+            currentTime = totalDuration * tool.previewPercent;
+            UpdateMovingObstacles(currentTime);
             EditorUtility.SetDirty(tool);
         }
         GUILayout.EndHorizontal();
@@ -156,33 +165,72 @@ public class PlayerPreviewEditor : Editor
         {
             Undo.RecordObject(tool, "Preview Step Back");
             tool.AdvancePreviewByFixedStep(false);
+            totalDuration = tool.GetTotalDuration();
+            currentTime = totalDuration * tool.previewPercent;
+            UpdateMovingObstacles(currentTime);
             EditorUtility.SetDirty(tool);
         }
         if (GUILayout.Button("Step >>", GUILayout.Height(20)))
         {
             Undo.RecordObject(tool, "Preview Step Forward");
             tool.AdvancePreviewByFixedStep(true);
+            totalDuration = tool.GetTotalDuration();
+            currentTime = totalDuration * tool.previewPercent;
+            UpdateMovingObstacles(currentTime);
             EditorUtility.SetDirty(tool);
         }
         GUILayout.EndHorizontal();
         GUILayout.Space(6);
 
         // 5) Unchangeable field: Time (computed from previewSpeed and path length)
-        float totalDuration = tool.GetTotalDuration(); // seconds
-        float currentTime = totalDuration * tool.previewPercent;
-        EditorGUILayout.LabelField("Time (s)", totalDuration > 0f ? currentTime.ToString("F2") : "0.00");
+        EditorGUILayout.LabelField("Time (s)", currentTime.ToString("F2"));
 
         // 6) Unchangeable field: Distance travelled (computed)
         float totalLen = tool.CalculateTotalLength();
         float distanceTravelled = totalLen * tool.previewPercent;
         EditorGUILayout.LabelField("Distance", distanceTravelled.ToString("F2") + " units");
+        GUILayout.Space(6);
 
+        // 7) Moving Obstacles startDistanceOffset sliders
+        // Replace the existing "7) Moving Obstacles startDistanceOffset sliders" block with this single shared time-offset slider.
+        // Place this inside the overlay UI where the previous movers UI existed.
+
+        GUILayout.Label($"Moving Obstacles ({moverCount})", EditorStyles.boldLabel);
+
+        // single shared time offset (0 - 15 seconds) applied to all movers
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("Movers Time Offset (s)", GUILayout.Width(160));
+        EditorGUI.BeginChangeCheck();
+        // use EditorGUILayout.Slider for reliable rendering
+        float newTimeOffset = EditorGUILayout.Slider(movingObstaclesTimeOffset, 0f, 10f, GUILayout.Width(180));
+        GUILayout.Label(newTimeOffset.ToString("F2"), GUILayout.Width(40));
+        if (EditorGUI.EndChangeCheck())
+        {
+            Undo.RecordObject(tool, "Modify Movers Time Offset");
+            movingObstaclesTimeOffset = newTimeOffset;
+            // update preview immediately using the new offset
+            UpdateMovingObstacles(currentTime);
+        }
+        EditorGUILayout.EndHorizontal();
+
+        GUILayout.Space(4);
+
+        // keep a note if no movers present
+        if (moverCount == 0)
+        {
+            GUILayout.Label("No moving obstacles in scene.");
+        }
+        else
+        {
+            GUILayout.Label($"Found {moverCount} mover(s). Time offset applied to all.", EditorStyles.miniLabel);
+        }
         GUILayout.EndArea();
         Handles.EndGUI();
 
         // Handle drawing input only when in drawing mode
         HandleDrawingInput();
     }
+
     // Replace the existing HandleDrawingInput method with this
     private void HandleDrawingInput()
     {
@@ -276,6 +324,7 @@ public class PlayerPreviewEditor : Editor
                 Event.current.Use();
                 // finalize smoothing one last time
                 UpdateSmoothedPathFromRaw();
+                InitializeMovingObstacles();
                 isDrawingMode = false;
                 hasStartedFromPlayer = false;
                 SceneView.RepaintAll();
@@ -376,5 +425,49 @@ public class PlayerPreviewEditor : Editor
         }
         return false;
     }
+
+
+    #region Moving Obstacles
+    // Initialize all runtime MovingObstacle instances from their corresponding edit tools
+    private void InitializeMovingObstacles()
+    {
+        var movers = Object.FindObjectsByType<MovingObstacleEditTool>(FindObjectsSortMode.None);
+        foreach (var mover in movers)
+        {
+            if (mover == null) continue;
+
+            MovingObstacleData data = new MovingObstacleData()
+            {
+                type = mover.obstacleType,
+                bezierKeyframes = mover.Keyframes,
+                resolution = mover.resolution,
+                movementSpeed = mover.movementSpeed,
+                rotationSpeedMultiplier = mover.rotationSpeedMultiplier,
+                loopedMovement = mover.loopedMovement,
+                inverseDirection = mover.inverseDirection
+            };
+
+            mover.Init(data);
+            EditorUtility.SetDirty(mover);
+        }
+        SceneView.RepaintAll();
+    }
+    private void UpdateMovingObstacles(float currentTime)
+    {
+        // find all MovingObstacleEditTool instances in scene
+        var movers = Object.FindObjectsByType<MovingObstacleEditTool>(FindObjectsSortMode.None);
+        foreach (var mover in movers)
+        {
+            if (mover == null) continue;
+
+            float adjustedTime = currentTime + movingObstaclesTimeOffset;
+            mover.UpdateStateEditor(adjustedTime);
+            EditorUtility.SetDirty(mover);
+        }
+
+        // repaint views
+        SceneView.RepaintAll();
+    }
+    #endregion
 }
 #endif
