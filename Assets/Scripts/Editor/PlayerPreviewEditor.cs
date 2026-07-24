@@ -13,6 +13,8 @@ public class PlayerPreviewEditor : Editor
     private List<Vector3> rawDrawnPoints = new List<Vector3>();
     private List<Vector3> curvePoints = new List<Vector3>();
     private float editorSplineStep = 0.05f;
+    private float currentTime = 0;
+    private float movingObstaclesTimeOffset = 0f;
 
     // freehand drawing state
     private bool isDragging = false;
@@ -21,8 +23,7 @@ public class PlayerPreviewEditor : Editor
     private bool hasStartedFromPlayer = false;
 
     // Overlay drag state
-    private static Rect overlayRect = new Rect(10, 10, 300, 160);
-    private static float movingObstaclesSectionHeight = 35f;
+    private static Rect overlayRect = new Rect(10, 10, 300, 200);
     private Color overlayColor = new Color(0.18f, 0.18f, 0.18f, 0.95f);
     private bool isOverlayDragging = false;
     private Vector2 overlayDragOffset;
@@ -72,12 +73,11 @@ public class PlayerPreviewEditor : Editor
         Handles.BeginGUI();
         var moversForLayout = Object.FindObjectsByType<MovingObstacleEditTool>(FindObjectsSortMode.None);
         int moverCount = moversForLayout != null ? moversForLayout.Length : 0;
-        Rect drawrect = new Rect(overlayRect.x, overlayRect.y, overlayRect.width, overlayRect.height + (movingObstaclesSectionHeight * moverCount));
 
         // background
-        EditorGUI.DrawRect(drawrect, overlayColor);
+        EditorGUI.DrawRect(overlayRect, overlayColor);
 
-        GUILayout.BeginArea(drawrect, GUIStyle.none);
+        GUILayout.BeginArea(overlayRect, GUIStyle.none);
 
         // Header (drag handle)
         Rect header = GUILayoutUtility.GetRect(overlayRect.width - 8, 20);
@@ -141,7 +141,6 @@ public class PlayerPreviewEditor : Editor
 
         // 2) Preview Slider (label + slider on single row)
         float totalDuration = 0;
-        float currentTime = 0;
 
         GUILayout.BeginHorizontal();
         GUILayout.Label("Percent", GUILayout.Width(60));
@@ -184,7 +183,7 @@ public class PlayerPreviewEditor : Editor
         GUILayout.Space(6);
 
         // 5) Unchangeable field: Time (computed from previewSpeed and path length)
-        EditorGUILayout.LabelField("Time (s)", totalDuration > 0f ? currentTime.ToString("F2") : "0.00");
+        EditorGUILayout.LabelField("Time (s)", currentTime.ToString("F2"));
 
         // 6) Unchangeable field: Distance travelled (computed)
         float totalLen = tool.CalculateTotalLength();
@@ -193,57 +192,37 @@ public class PlayerPreviewEditor : Editor
         GUILayout.Space(6);
 
         // 7) Moving Obstacles startDistanceOffset sliders
-        GUILayout.Label("Moving Obstacles", EditorStyles.boldLabel);
+        // Replace the existing "7) Moving Obstacles startDistanceOffset sliders" block with this single shared time-offset slider.
+        // Place this inside the overlay UI where the previous movers UI existed.
+
+        GUILayout.Label($"Moving Obstacles ({moverCount})", EditorStyles.boldLabel);
+
+        // single shared time offset (0 - 15 seconds) applied to all movers
+        EditorGUILayout.BeginHorizontal();
+        GUILayout.Label("Movers Time Offset (s)", GUILayout.Width(160));
+        EditorGUI.BeginChangeCheck();
+        // use EditorGUILayout.Slider for reliable rendering
+        float newTimeOffset = EditorGUILayout.Slider(movingObstaclesTimeOffset, 0f, 10f, GUILayout.Width(180));
+        GUILayout.Label(newTimeOffset.ToString("F2"), GUILayout.Width(40));
+        if (EditorGUI.EndChangeCheck())
+        {
+            Undo.RecordObject(tool, "Modify Movers Time Offset");
+            movingObstaclesTimeOffset = newTimeOffset;
+            // update preview immediately using the new offset
+            UpdateMovingObstacles(currentTime);
+        }
+        EditorGUILayout.EndHorizontal();
+
+        GUILayout.Space(4);
+
+        // keep a note if no movers present
         if (moverCount == 0)
         {
             GUILayout.Label("No moving obstacles in scene.");
         }
         else
         {
-            for (int i = 0; i < moverCount; i++)
-            {
-                var mover = moversForLayout[i];
-                if (mover == null) continue;
-
-                // compute this mover's total path length (use the same path generation/resolution as the edit tool)
-                float moverTotalLen = 0f;
-                if (mover.Keyframes != null && mover.Keyframes.Length > 1)
-                {
-                    var pts = BezierCurveUtils.GeneratePath(mover.Keyframes, mover.resolution);
-                    for (int p = 0; p < pts.Length - 1; p++)
-                    {
-                        moverTotalLen += Vector3.Distance(pts[p], pts[p + 1]);
-                    }
-                }
-                // slider max is the mover's total length
-                float sliderMax = Mathf.Max(0f, moverTotalLen);
-
-                GUILayout.BeginHorizontal();
-                GUILayout.Label(mover.gameObject.name, GUILayout.Width(140));
-                EditorGUI.BeginChangeCheck();
-
-                float currentOffset = mover.startDistanceOffset;
-
-                // disable slider when mover path length is zero so UI still shows
-                bool disabled = sliderMax <= 0f;
-                EditorGUI.BeginDisabledGroup(disabled);
-                // Use EditorGUILayout.Slider (more reliable in editor overlays than GUILayout.HorizontalSlider)
-                float newOffset = EditorGUILayout.Slider(currentOffset, 0f, sliderMax, GUILayout.Width(140));
-                EditorGUI.EndDisabledGroup();
-
-                if (EditorGUI.EndChangeCheck())
-                {
-                    totalDuration = tool.GetTotalDuration();
-                    currentTime = totalDuration * tool.previewPercent;
-                    Undo.RecordObject(mover, "Modify Start Distance Offset");
-                    mover.startDistanceOffset = Mathf.Clamp(newOffset, 0f, sliderMax);
-                   // EditorUtility.SetDirty(mover);
-                    // update preview immediately
-                    UpdateMovingObstacles(currentTime);
-                }
-                GUILayout.EndHorizontal();
-                GUILayout.Space(4);
-            }
+            GUILayout.Label($"Found {moverCount} mover(s). Time offset applied to all.", EditorStyles.miniLabel);
         }
         GUILayout.EndArea();
         Handles.EndGUI();
@@ -481,7 +460,8 @@ public class PlayerPreviewEditor : Editor
         {
             if (mover == null) continue;
 
-            mover.UpdateStateEditor(currentTime);
+            float adjustedTime = currentTime + movingObstaclesTimeOffset;
+            mover.UpdateStateEditor(adjustedTime);
             EditorUtility.SetDirty(mover);
         }
 

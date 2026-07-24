@@ -39,8 +39,8 @@ namespace BeachHero
         // Powerups - Unlock
         public int SpeedBoostUnlockLevel { get; private set; }
         public int ShieldUnlockLevel { get; private set; }
-        public int FreezeUnlockLevel { get; private set; }
-        public int StarFishMultiplierUnlockLevel { get; private set; }
+        //   public int FreezeUnlockLevel { get; private set; }
+        //  public int StarFishMultiplierUnlockLevel { get; private set; }
 
         // UI
         public int RateUsShowLevel { get; private set; }
@@ -81,10 +81,10 @@ namespace BeachHero
             defaults.Add(AdsStartLevelKey, IntUtils.ADS_START_LEVEL);
 
             // Unlock Powerup levels
-            defaults.Add(SpeedBoostUnlockLevelKey, IntUtils.SPEEDBOOST_UNLOCK_LEVEL);
-            defaults.Add(ShieldUnlockLevelKey, IntUtils.SHIELD_UNLOCK_LEVEL);
-            defaults.Add(FreezeUnlockLevelKey, IntUtils.FREEZE_UNLOCK_LEVEL);
-            defaults.Add(StarFishMultiplierUnlockLevelKey, IntUtils.STARFISH_MULTIPLIER_UNLOCK_LEVEL);
+            defaults.Add(SpeedBoostUnlockLevelKey, SaveSystem.LoadInt(SpeedBoostUnlockLevelKey, IntUtils.SPEEDBOOST_UNLOCK_LEVEL));
+            defaults.Add(ShieldUnlockLevelKey, SaveSystem.LoadInt(ShieldUnlockLevelKey, IntUtils.SHIELD_UNLOCK_LEVEL));
+            //  defaults.Add(FreezeUnlockLevelKey, IntUtils.FREEZE_UNLOCK_LEVEL);
+            // defaults.Add(StarFishMultiplierUnlockLevelKey, IntUtils.STARFISH_MULTIPLIER_UNLOCK_LEVEL);
 
             // UI
             defaults.Add(RateUsShowLevelKey, IntUtils.RATE_US_TRIGGER_LEVEL);
@@ -96,8 +96,6 @@ namespace BeachHero
                  DebugUtils.Log("Remote Config - RemoteConfig configured and ready! ");
                  FetchDataAsync();
              });
-
-            //AdsManager.Instance.LoadStartAd();
         }
 
         private Task FetchDataAsync()
@@ -166,8 +164,10 @@ namespace BeachHero
             // Unlock levels
             SpeedBoostUnlockLevel = (int)FirebaseRemoteConfig.DefaultInstance.GetValue(SpeedBoostUnlockLevelKey).LongValue;
             ShieldUnlockLevel = (int)FirebaseRemoteConfig.DefaultInstance.GetValue(ShieldUnlockLevelKey).LongValue;
-            FreezeUnlockLevel = (int)FirebaseRemoteConfig.DefaultInstance.GetValue(FreezeUnlockLevelKey).LongValue;
-            StarFishMultiplierUnlockLevel = (int)FirebaseRemoteConfig.DefaultInstance.GetValue(StarFishMultiplierUnlockLevelKey).LongValue;
+            SaveSystem.SaveInt(SpeedBoostUnlockLevelKey, (int)FirebaseRemoteConfig.DefaultInstance.GetValue(SpeedBoostUnlockLevelKey).LongValue);
+            SaveSystem.SaveInt(ShieldUnlockLevelKey, (int)FirebaseRemoteConfig.DefaultInstance.GetValue(ShieldUnlockLevelKey).LongValue);
+            //  FreezeUnlockLevel = (int)FirebaseRemoteConfig.DefaultInstance.GetValue(FreezeUnlockLevelKey).LongValue;
+            //  StarFishMultiplierUnlockLevel = (int)FirebaseRemoteConfig.DefaultInstance.GetValue(StarFishMultiplierUnlockLevelKey).LongValue;
 
             // UI
             RateUsShowLevel = (int)FirebaseRemoteConfig.DefaultInstance.GetValue(RateUsShowLevelKey).LongValue;

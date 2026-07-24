@@ -25,7 +25,6 @@ namespace BeachHero
         private int samples = 10;
         private float[] segmentLengths;
         private int direction = 1;
-        public float startDistanceOffset = 0f;
 
         #region Keyframe Management
         public void AddKeyFrame(BezierKeyframe newKeyframe)
@@ -158,7 +157,7 @@ namespace BeachHero
             if (totalLen <= 0f) return;
 
             // compute distance travelled along path for absolute time
-            float rawDist = movementSpeed * currentTime + startDistanceOffset;
+            float rawDist = movementSpeed * currentTime;
 
             float dist = rawDist;
 
