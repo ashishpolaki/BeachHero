@@ -12,6 +12,8 @@ namespace BeachHero
         [SerializeField] bool conformX = true;
         [SerializeField] bool conformY = true;
 
+        [SerializeField] private Vector2 heightOffset = new Vector2(0, 20f);
+
         private List<RectTransform> registeredTransforms = new List<RectTransform>();
 
         private Rect lastSafeArea = new Rect(0, 0, 0, 0);
@@ -42,13 +44,15 @@ namespace BeachHero
         {
             Rect safeArea = Screen.safeArea;
 
+            DebugUtils.Log($"NotchSafeArea: Refresh called. Safe Area: {safeArea}," +
+                $" Screen Size: {Screen.width}x{Screen.height}, Orientation: {Screen.orientation}");
             if (safeArea != lastSafeArea || Screen.width != lastScreenSize.x || Screen.height != lastScreenSize.y || Screen.orientation != lastOrientation || forceRefresh)
             {
                 lastScreenSize.x = Screen.width;
                 lastScreenSize.y = Screen.height;
                 lastOrientation = Screen.orientation;
 
-                 ApplySafeArea(safeArea);
+                ApplySafeArea(safeArea);
             }
         }
         private void ApplySafeArea(RectTransform rectTransform)
@@ -107,7 +111,7 @@ namespace BeachHero
             {
                 // Convert safe area rectangle from absolute pixels to normalised anchor coordinates
                 Vector2 anchorMin = rect.position;
-                Vector2 anchorMax = rect.position + rect.size;
+                Vector2 anchorMax = rect.position + rect.size + heightOffset;
 
                 anchorMin.x /= Screen.width;
                 anchorMin.y /= Screen.height;
