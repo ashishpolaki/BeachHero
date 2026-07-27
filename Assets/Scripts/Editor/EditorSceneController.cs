@@ -176,13 +176,14 @@ public class EditorSceneController : MonoBehaviour
         GameObject startPoint = PrefabUtility.InstantiatePrefab(startPointPrefab.gameObject) as GameObject;
         startPoint.transform.parent = container.transform;
         startPoint.transform.position = currentLevel.StartPointData.Position;
-        startPoint.transform.rotation = Quaternion.Euler(currentLevel.StartPointData.Rotation);
+        startPoint.transform.eulerAngles = currentLevel.StartPointData.Rotation;
         var tool = startPoint.gameObject.AddComponent<PlayerPreviewEditTool>();
 
         //Add Player preview Tool
         GameObject playerPreviewObject = (GameObject)PrefabUtility.InstantiatePrefab(playerPreviewPrefab);
         playerPreviewObject.transform.parent = startPoint.transform;
         playerPreviewObject.transform.localPosition = Vector3.zero;
+        playerPreviewObject.transform.localEulerAngles = Vector3.zero;
         tool.SetPlayerTransform(playerPreviewObject.transform);
         SceneVisibilityManager.instance.DisablePicking(playerPreviewObject, false);
     }
