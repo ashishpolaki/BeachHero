@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41ec7b45cdb520b4fb3b55ccaac3e1fc, type: 3}
   m_Name: Level_42
   m_EditorClassIdentifier: 
-  levelTime: 6
+  levelTime: 9
   startPoint:
-    Position: {x: 0.02, y: 0, z: -0.26}
+    Position: {x: 0.02, y: 0, z: -1.17}
     Rotation: {x: 0, y: 0, z: 0}
   obstacles:
     staticObstacles: []
@@ -30,8 +30,8 @@ MonoBehaviour:
       - position: {x: 5.3800116, y: 0, z: 13.721308}
         inTangentLocal: {x: -0.19995499, y: 0, z: -0.010082245}
         outTangentLocal: {x: -0.044952393, y: 0, z: -0.6090002}
-      - position: {x: -0.5700531, y: 0, z: 11.007169}
-        inTangentLocal: {x: 0.52277184, y: 0, z: 0.23703575}
+      - position: {x: -1.8791256, y: 0, z: 10.560895}
+        inTangentLocal: {x: 0.6882639, y: -0.01171875, z: 0.67029095}
         outTangentLocal: {x: 0.3963766, y: 0, z: 0.15566254}
       - position: {x: -4.6939588, y: 0, z: 9.27906}
         inTangentLocal: {x: 0.12981033, y: 0, z: 0.20173168}
@@ -64,102 +64,79 @@ MonoBehaviour:
       inverseDirection: 0
     whirlpoolObstacles: []
   drownCharacters:
-  - position: {x: 0.26, y: 0, z: 17.99}
+  - position: {x: 0.1, y: 0, z: 21.22}
+    waitTimePercentage: 0.9
+  - position: {x: -4.16, y: 0, z: 11.19}
+    waitTimePercentage: 0.45
+  - position: {x: 4.89, y: 0, z: 10.75}
     waitTimePercentage: 1
-  - position: {x: -3.85, y: 0, z: 11.28}
-    waitTimePercentage: 0.8
-  - position: {x: 4.42, y: 0, z: 11.28}
-    waitTimePercentage: 0.7
   collectables:
   - type: 1
-    position: {x: 0, y: 0, z: 2.08}
+    position: {x: 0, y: 0, z: 1.7699999}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: 0, y: 0, z: 3.84}
+    position: {x: 0, y: 0, z: 3.5299997}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: 0, y: 0, z: 5.7}
+    position: {x: 0, y: 0, z: 5.39}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: 1.41, y: 0, z: 6.94}
+    position: {x: 1.54, y: 0, z: 6.6}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -1.18, y: 0, z: 7.03}
+    position: {x: -1.5699998, y: 0, z: 6.69}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: 2.73, y: 0, z: 8.27}
+    position: {x: 2.8600001, y: 0, z: 7.9300003}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -2.2, y: 0, z: 8.46}
+    position: {x: -2.59, y: 0, z: 8.12}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: 3.85, y: 0, z: 9.7}
+    position: {x: 3.98, y: 0, z: 9.36}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -3.42, y: 0, z: 9.7}
+    position: {x: -3.49, y: 0, z: 9.54}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -2.7, y: 0, z: 13.54}
+    position: {x: -2.77, y: 0, z: 12.36}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: 2.99, y: 0, z: 13.54}
+    position: {x: 2.99, y: 0, z: 12.26}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -1.53, y: 0, z: 14.82}
+    position: {x: -1.5999999, y: 0, z: 14}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: 1.75, y: 0, z: 14.82}
+    position: {x: 1.75, y: 0, z: 13.84}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: 0.02, y: 0, z: 16.1}
+    position: {x: 0.120000005, y: 0, z: 15.7}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: 0.15, y: 0, z: 22.19}
+    position: {x: 0.09, y: 0, z: 17.25}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: 0.15, y: 0, z: 23.94}
-    rotation: {x: 0, y: 0, z: 0}
-    count: 0
-  - type: 1
-    position: {x: 0.15, y: 0, z: 25.59}
-    rotation: {x: 0, y: 0, z: 0}
-    count: 0
-  - type: 1
-    position: {x: 0.22, y: 0.68, z: 11.03}
-    rotation: {x: 0, y: 0, z: 0}
-    count: 0
-  - type: 1
-    position: {x: 2.47, y: 0.68, z: 10.99}
-    rotation: {x: 0, y: 0, z: 0}
-    count: 0
-  - type: 1
-    position: {x: -2.15, y: 0.68, z: 11.03}
-    rotation: {x: 0, y: 0, z: 0}
-    count: 0
-  - type: 1
-    position: {x: -5.76, y: 0.68, z: 11.03}
-    rotation: {x: 0, y: 0, z: 0}
-    count: 0
-  - type: 1
-    position: {x: 6.08, y: 0.68, z: 11.03}
+    position: {x: 0.03, y: 0, z: 18.960001}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   medalRequirements:
     requiredCurrencyForThreeMedals: 5
     requiredCurrencyForTwoMedals: 3
     requiredCurrencyForOneMedal: 0
+  BoatSpeed: 5
