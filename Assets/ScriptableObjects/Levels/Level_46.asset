@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41ec7b45cdb520b4fb3b55ccaac3e1fc, type: 3}
   m_Name: Level_46
   m_EditorClassIdentifier: 
-  levelTime: 6
+  levelTime: 9
   startPoint:
     Position: {x: 0.02, y: 0, z: -0.26}
     Rotation: {x: 0, y: 0, z: 0}
@@ -45,15 +45,15 @@ MonoBehaviour:
       inverseDirection: 1
     whirlpoolObstacles: []
   drownCharacters:
-  - position: {x: -4.54, y: 0, z: 1.85}
+  - position: {x: -4.66, y: 0, z: 11.12}
     waitTimePercentage: 1
-  - position: {x: -4.380535, y: 0, z: 16.61877}
-    waitTimePercentage: 0.95
-  - position: {x: 4.442475, y: 0, z: 16.577608}
-    waitTimePercentage: 0.75
+  - position: {x: -4.54, y: 0, z: 21.88}
+    waitTimePercentage: 0.9
+  - position: {x: 4.442475, y: 0, z: 21.838837}
+    waitTimePercentage: 0.65
   collectables:
   - type: 1
-    position: {x: -4.74, y: 0, z: 4.96}
+    position: {x: -4.69, y: 0, z: 1.4699998}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
@@ -61,7 +61,7 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -4.74, y: 0, z: 7.36}
+    position: {x: -4.74, y: 0, z: 3.87}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
@@ -69,7 +69,7 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -4.74, y: 0, z: 9.7}
+    position: {x: -4.74, y: 0, z: 6.11}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
@@ -77,7 +77,11 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -4.74, y: 0, z: 12.08}
+    position: {x: -4.74, y: 0, z: 8.49}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -4.69, y: 0, z: 17.03}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
@@ -85,7 +89,15 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
+    position: {x: 4.51, y: 0, z: 17.03}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
     position: {x: -4.74, y: 0, z: 14.49}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -4.6899996, y: 0, z: 19.44}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
@@ -93,18 +105,23 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -2.18, y: 0, z: 16.5}
+    position: {x: 4.51, y: 0, z: 19.44}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: 2.3, y: 0, z: 16.5}
+    position: {x: -2.18, y: 0, z: 21.76}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -0.07, y: 0, z: 16.5}
+    position: {x: 2.3, y: 0, z: 21.76}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -0.07, y: 0, z: 21.76}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   medalRequirements:
     requiredCurrencyForThreeMedals: 5
     requiredCurrencyForTwoMedals: 3
     requiredCurrencyForOneMedal: 0
+  BoatSpeed: 5
