@@ -12,17 +12,210 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41ec7b45cdb520b4fb3b55ccaac3e1fc, type: 3}
   m_Name: Level_54
   m_EditorClassIdentifier: 
-  levelTime: 6
+  levelTime: 7
   startPoint:
-    Position: {x: 0.02, y: 0, z: -0.26}
+    Position: {x: -0.07, y: 0, z: -1.08}
     Rotation: {x: 0, y: 0, z: 0}
   obstacles:
     staticObstacles: []
-    movingObstacles: []
+    movingObstacles:
+    - type: 1
+      bezierKeyframes:
+      - position: {x: 6.9229865, y: -0.0000076293945, z: 11.308687}
+        inTangentLocal: {x: 0, y: -0, z: -0.7}
+        outTangentLocal: {x: -0, y: 0, z: 0.7}
+      - position: {x: 5.5861053, y: -0.0000076293945, z: 15.423183}
+        inTangentLocal: {x: 0.41144967, y: -0, z: -0.5663119}
+        outTangentLocal: {x: -0.41144967, y: 0, z: 0.5663119}
+      - position: {x: 2.0861049, y: -0.0000076293945, z: 17.966095}
+        inTangentLocal: {x: 0.6657396, y: -0, z: -0.21631187}
+        outTangentLocal: {x: -0.6657396, y: 0, z: 0.21631187}
+      - position: {x: -2.2401323, y: -0.0000076293945, z: 17.966095}
+        inTangentLocal: {x: 0.6657396, y: -0, z: 0.21631186}
+        outTangentLocal: {x: -0.6657396, y: 0, z: -0.21631186}
+      - position: {x: -5.740133, y: -0.0000076293945, z: 15.423183}
+        inTangentLocal: {x: 0.4114496, y: -0, z: 0.56631196}
+        outTangentLocal: {x: -0.4114496, y: 0, z: -0.56631196}
+      - position: {x: -7.0770135, y: -0.0000076293945, z: 11.308687}
+        inTangentLocal: {x: -0.00000006119594, y: -0, z: 0.7}
+        outTangentLocal: {x: 0.00000006119594, y: 0, z: -0.7}
+      - position: {x: -5.740133, y: -0.0000076293945, z: 7.194192}
+        inTangentLocal: {x: -0.41144958, y: -0, z: 0.56631196}
+        outTangentLocal: {x: 0.41144958, y: 0, z: -0.56631196}
+      - position: {x: -2.2401333, y: -0.0000076293945, z: 4.651293}
+        inTangentLocal: {x: -0.66573954, y: -0, z: 0.21631196}
+        outTangentLocal: {x: 0.66573954, y: 0, z: -0.21631196}
+      - position: {x: 2.0861058, y: -0.0000076293945, z: 4.651293}
+        inTangentLocal: {x: -0.66573954, y: -0, z: -0.21631198}
+        outTangentLocal: {x: 0.66573954, y: 0, z: 0.21631198}
+      - position: {x: 5.586105, y: -0.0000076293945, z: 7.1941905}
+        inTangentLocal: {x: -0.4114497, y: -0, z: -0.56631184}
+        outTangentLocal: {x: 0.4114497, y: 0, z: 0.56631184}
+      - position: {x: 6.9229865, y: -0.0000076293945, z: 11.308687}
+        inTangentLocal: {x: 0, y: -0, z: -0.7}
+        outTangentLocal: {x: -0, y: 0, z: 0.7}
+      resolution: 7
+      movementSpeed: 4
+      rotationSpeedMultiplier: 1
+      loopedMovement: 1
+      inverseDirection: 0
+    - type: 1
+      bezierKeyframes:
+      - position: {x: 3.846043, y: -0.0000038146973, z: 11.154881}
+        inTangentLocal: {x: 0, y: -0, z: -0.4}
+        outTangentLocal: {x: -0, y: 0, z: 0.4}
+      - position: {x: 3.0821114, y: -0.0000038146973, z: 13.5060215}
+        inTangentLocal: {x: 0.2351141, y: -0, z: -0.32360682}
+        outTangentLocal: {x: -0.2351141, y: 0, z: 0.32360682}
+      - position: {x: 1.0821114, y: -0.0000038146973, z: 14.959106}
+        inTangentLocal: {x: 0.38042262, y: -0, z: -0.12360679}
+        outTangentLocal: {x: -0.38042262, y: 0, z: 0.12360679}
+      - position: {x: -1.3900244, y: -0.0000038146973, z: 14.959106}
+        inTangentLocal: {x: 0.38042262, y: -0, z: 0.12360678}
+        outTangentLocal: {x: -0.38042262, y: 0, z: -0.12360678}
+      - position: {x: -3.390025, y: -0.0000038146973, z: 13.5060215}
+        inTangentLocal: {x: 0.23511408, y: -0, z: 0.32360682}
+        outTangentLocal: {x: -0.23511408, y: 0, z: -0.32360682}
+      - position: {x: -4.153957, y: -0.0000038146973, z: 11.154881}
+        inTangentLocal: {x: -0.000000034969112, y: -0, z: 0.4}
+        outTangentLocal: {x: 0.000000034969112, y: 0, z: -0.4}
+      - position: {x: -3.390025, y: -0.0000038146973, z: 8.8037405}
+        inTangentLocal: {x: -0.23511405, y: -0, z: 0.32360682}
+        outTangentLocal: {x: 0.23511405, y: 0, z: -0.32360682}
+      - position: {x: -1.3900249, y: -0.0000038146973, z: 7.3506546}
+        inTangentLocal: {x: -0.3804226, y: -0, z: 0.12360684}
+        outTangentLocal: {x: 0.3804226, y: 0, z: -0.12360684}
+      - position: {x: 1.0821118, y: -0.0000038146973, z: 7.3506546}
+        inTangentLocal: {x: -0.3804226, y: -0, z: -0.12360685}
+        outTangentLocal: {x: 0.3804226, y: 0, z: 0.12360685}
+      - position: {x: 3.0821111, y: -0.0000038146973, z: 8.80374}
+        inTangentLocal: {x: -0.23511413, y: -0, z: -0.3236068}
+        outTangentLocal: {x: 0.23511413, y: 0, z: 0.3236068}
+      - position: {x: 3.846043, y: -0.0000038146973, z: 11.154881}
+        inTangentLocal: {x: 0, y: -0, z: -0.4}
+        outTangentLocal: {x: -0, y: 0, z: 0.4}
+      resolution: 6
+      movementSpeed: 4
+      rotationSpeedMultiplier: 1
+      loopedMovement: 1
+      inverseDirection: 0
     whirlpoolObstacles: []
-  drownCharacters: []
-  collectables: []
+  drownCharacters:
+  - position: {x: 0, y: 0, z: 10.12}
+    waitTimePercentage: 0.6
+  - position: {x: 0, y: 0, z: 3.59}
+    waitTimePercentage: 0.35
+  - position: {x: 0, y: 0, z: 16.25}
+    waitTimePercentage: 0.8
+  - position: {x: 0, y: 0, z: 21.27}
+    waitTimePercentage: 1
+  collectables:
+  - type: 1
+    position: {x: 0, y: 0, z: 2}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 0, y: 0, z: 12.86}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 0, y: 0, z: 14.49}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -2.59, y: 0, z: 21.29}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 2.4, y: 0, z: 21.29}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -5.07, y: 0, z: 21.23}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 4.9099994, y: 0, z: 21.23}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -5.07, y: 0, z: 19.14}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 4.9099994, y: 0, z: 19.14}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -5.07, y: 0, z: 11.49}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 4.9099994, y: 0, z: 11.49}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -5.07, y: 0, z: 16.62}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 4.91, y: 0, z: 16.62}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -5.07, y: 0, z: 8.970001}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 4.9099994, y: 0, z: 8.970001}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -5.07, y: 0, z: 4.2500014}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 4.9099994, y: 0, z: 4.2500014}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -5.07, y: 0, z: 13.98}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 4.9099994, y: 0, z: 13.98}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -5.07, y: 0, z: 6.33}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 4.9099994, y: 0, z: 6.33}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -2.6, y: 0, z: 4.01}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 2.3899999, y: 0, z: 4.01}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 0, y: 0, z: 19.28}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 0, y: 0, z: 8.24}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 0, y: 0, z: 6.4}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
   medalRequirements:
     requiredCurrencyForThreeMedals: 5
     requiredCurrencyForTwoMedals: 3
     requiredCurrencyForOneMedal: 0
+  BoatSpeed: 5
