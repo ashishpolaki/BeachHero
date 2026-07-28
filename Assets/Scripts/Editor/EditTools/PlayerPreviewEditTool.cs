@@ -33,7 +33,7 @@ namespace BeachHero
         private void ResetPlayerPosition()
         {
             player.transform.localPosition = Vector3.zero;
-            player.transform.localRotation = Quaternion.identity;
+            player.transform.localEulerAngles = Vector3.zero;
         }
 
         // Move the player along the path (percent 0..1)

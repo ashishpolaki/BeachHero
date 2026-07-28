@@ -18,7 +18,7 @@ namespace BeachHero
     {
         [SerializeField] private ObstacleType obstacleType;
         private bool isHit = false;
-
+        public Vector3 DesireScale { get; private set; } = Vector3.one;
         public ObstacleType ObstacleType
         {
             get
@@ -37,6 +37,12 @@ namespace BeachHero
             {
                 isHit = value;
             }
+        }
+
+        public void SetScale(Vector3 scale)
+        {
+            DesireScale = scale;
+            transform.localScale = scale;
         }
 
         public virtual void Hit()

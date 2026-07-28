@@ -646,7 +646,7 @@ namespace BeachHero
                             break;
                     }
                     staticObstacle.transform.SetPositionAndRotation(staticObstacleData.position, Quaternion.Euler(staticObstacleData.rotation));
-                    staticObstacle.transform.localScale = staticObstacleData.scale;
+                    staticObstacle.SetScale(staticObstacleData.scale);
                     obstaclesDictionary[staticObstacleData.type].Add(staticObstacle);
                 }
             }
@@ -674,6 +674,7 @@ namespace BeachHero
             }
         }
         #endregion
+
         #endregion
 
         #region Spawn
@@ -726,7 +727,7 @@ namespace BeachHero
             {
                 foreach (var obstacle in obstacleList)
                 {
-                    TweenManager.Scale(Vector3.zero, Vector3.one, obstacle.transform, spawnAnimationDuration, spawnAnimationEase);
+                    TweenManager.Scale(Vector3.zero, obstacle.DesireScale, obstacle.transform, spawnAnimationDuration, spawnAnimationEase);
                 }
             }
 

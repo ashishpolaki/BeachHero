@@ -68,7 +68,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obstacleType: 4
-  isShakeEffectEnabled: 1
+  explodeScale: {x: 1.2, y: 1.2, z: 1.2}
+  explodeScaleUpDuration: 0.1
+  shakeMagnitude: {x: 0.1, y: 0.1, z: 0.1}
+  shakeFrequency: 7
+  shakeDuration: 0.15
+  explodeScaleDownDuration: 0.2
 --- !u!1 &6574260444971154548
 GameObject:
   m_ObjectHideFlags: 0
