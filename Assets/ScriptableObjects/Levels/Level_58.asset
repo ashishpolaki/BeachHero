@@ -14,15 +14,139 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelTime: 6
   startPoint:
-    Position: {x: 0.02, y: 0, z: -0.26}
+    Position: {x: 0.35, y: 0, z: -0.26}
     Rotation: {x: 0, y: 0, z: 0}
   obstacles:
     staticObstacles: []
-    movingObstacles: []
+    movingObstacles:
+    - type: 2
+      bezierKeyframes:
+      - position: {x: 6.375618, y: 0, z: 20.882141}
+        inTangentLocal: {x: -0.5, y: 0, z: 0}
+        outTangentLocal: {x: 0.5, y: 0, z: 0}
+      - position: {x: -6.9553347, y: 0, z: 20.940727}
+        inTangentLocal: {x: -0.5, y: 0, z: 0}
+        outTangentLocal: {x: 0.5, y: 0, z: 0}
+      resolution: 1
+      movementSpeed: 4
+      rotationSpeedMultiplier: 1
+      loopedMovement: 1
+      inverseDirection: 1
+    - type: 2
+      bezierKeyframes:
+      - position: {x: -6.1448145, y: 0, z: 13.506048}
+        inTangentLocal: {x: -0.5, y: 0, z: 0}
+        outTangentLocal: {x: -0.41265488, y: 0, z: 0.12156582}
+      - position: {x: 6.2924957, y: 0, z: 13.627443}
+        inTangentLocal: {x: -0.5, y: 0, z: 0}
+        outTangentLocal: {x: 0.5, y: 0, z: 0}
+      resolution: 1
+      movementSpeed: 4
+      rotationSpeedMultiplier: 1
+      loopedMovement: 1
+      inverseDirection: 1
+    - type: 2
+      bezierKeyframes:
+      - position: {x: 5.8401566, y: 0, z: 5.47569}
+        inTangentLocal: {x: -0.5, y: 0, z: 0}
+        outTangentLocal: {x: 0.5, y: 0, z: 0}
+      - position: {x: -6.848364, y: 0, z: 5.5972266}
+        inTangentLocal: {x: -0.5, y: 0, z: 0}
+        outTangentLocal: {x: 0.5, y: 0, z: 0}
+      resolution: 1
+      movementSpeed: 4
+      rotationSpeedMultiplier: 1
+      loopedMovement: 1
+      inverseDirection: 1
     whirlpoolObstacles: []
-  drownCharacters: []
-  collectables: []
+  drownCharacters:
+  - position: {x: 0.36, y: 0, z: 6.81}
+    waitTimePercentage: 0.35
+  - position: {x: 0.36, y: 0, z: 16.18}
+    waitTimePercentage: 1
+  collectables:
+  - type: 1
+    position: {x: -3.31, y: 0, z: 23.07}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 3.68, y: 0, z: 23.07}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 0.1900003, y: 0, z: 23.07}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -3.31, y: 0, z: 20.99}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 3.6799998, y: 0, z: 20.99}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -3.31, y: 0, z: 18.63}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 3.6799998, y: 0, z: 18.63}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -3.31, y: 0, z: 16.38}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 3.6799998, y: 0, z: 16.38}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -3.31, y: 0, z: 14.02}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 3.6799998, y: 0, z: 14.02}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -3.31, y: 0, z: 11.3}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 3.6799998, y: 0, z: 11.3}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -3.31, y: 0, z: 8.43}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 3.6799998, y: 0, z: 8.43}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -3.31, y: 0, z: 5.78}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 3.6799998, y: 0, z: 5.78}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -3.31, y: 0, z: 3.04}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 3.6799998, y: 0, z: 3.04}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 0.19000006, y: 0, z: 3.04}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
   medalRequirements:
     requiredCurrencyForThreeMedals: 5
     requiredCurrencyForTwoMedals: 3
     requiredCurrencyForOneMedal: 0
+  BoatSpeed: 5
