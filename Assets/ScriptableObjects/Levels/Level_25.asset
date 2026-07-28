@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelTime: 7
   startPoint:
-    Position: {x: 5.05, y: 0, z: -2.72}
-    Rotation: {x: -0, y: 270, z: -0}
+    Position: {x: 4.83, y: 0, z: -2.65}
+    Rotation: {x: -0, y: 310.29, z: -0}
   obstacles:
     staticObstacles:
     - type: 5
@@ -98,10 +98,10 @@ MonoBehaviour:
       inverseDirection: 1
     - type: 6
       bezierKeyframes:
-      - position: {x: 6.7161655, y: 0, z: 9.829101}
+      - position: {x: 6.750684, y: -0.00390625, z: 8.931631}
         inTangentLocal: {x: -0.5, y: 0, z: 0}
         outTangentLocal: {x: 0.4999981, y: -0.0078125, z: -1.0412941}
-      - position: {x: -7.424337, y: 0, z: 9.746216}
+      - position: {x: -7.3898187, y: -0.00390625, z: 8.848746}
         inTangentLocal: {x: -0.5, y: 0, z: 0}
         outTangentLocal: {x: 0.5, y: 0, z: 0}
       resolution: 1
@@ -219,7 +219,7 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   medalRequirements:
-    requiredCurrencyForThreeMedals: 5
-    requiredCurrencyForTwoMedals: 3
+    requiredCurrencyForThreeMedals: 25
+    requiredCurrencyForTwoMedals: 15
     requiredCurrencyForOneMedal: 0
   BoatSpeed: 5
