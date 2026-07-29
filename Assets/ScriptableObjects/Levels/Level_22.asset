@@ -12,24 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41ec7b45cdb520b4fb3b55ccaac3e1fc, type: 3}
   m_Name: Level_22
   m_EditorClassIdentifier: 
-  levelTime: 6
+  levelTime: 9
   startPoint:
     Position: {x: -0.22, y: 0, z: -1.88}
     Rotation: {x: 0, y: 0, z: 0}
   obstacles:
     staticObstacles:
     - type: 4
-      position: {x: -2.94, y: 3.85, z: 12.57}
-      rotation: {x: -0, y: 0, z: 0}
-      scale: {x: 1.0322747, y: 0.9727829, z: 0.9727829}
+      position: {x: -3.09, y: 0, z: 12.24}
+      rotation: {x: -0, y: 56.319687, z: -0}
+      scale: {x: 2.15, y: 2.15, z: 2.15}
     - type: 4
-      position: {x: 7.79, y: 3.85, z: 14.21}
-      rotation: {x: -0, y: 0, z: 0}
-      scale: {x: 1.0322747, y: 0.9727829, z: 0.9727829}
+      position: {x: 6.51, y: 0, z: 12.13}
+      rotation: {x: -0, y: 343.66455, z: 0}
+      scale: {x: 2.15, y: 2.15, z: 2.15}
     - type: 4
-      position: {x: 6.61, y: 3.85, z: 11.999001}
-      rotation: {x: -0, y: 0, z: 0}
-      scale: {x: 1.0322747, y: 0.9727829, z: 0.9727829}
+      position: {x: 7.97, y: 0, z: 14.71}
+      rotation: {x: -0, y: 343.66455, z: 0}
+      scale: {x: 2.15, y: 2.15, z: 2.15}
     movingObstacles:
     - type: 6
       bezierKeyframes:
@@ -39,12 +39,18 @@ MonoBehaviour:
       - position: {x: 2.2855911, y: 0, z: 11.147095}
         inTangentLocal: {x: -4.292808, y: 0.0000076293945, z: -4.1157465}
         outTangentLocal: {x: 2.7510772, y: 0.0000076293945, z: 2.7438269}
-      - position: {x: 4.298353, y: 0, z: 19.904272}
-        inTangentLocal: {x: -0.10726929, y: 0.0000038146973, z: -0.3928299}
-        outTangentLocal: {x: -0.08038139, y: 0.0000009536743, z: 0.20104599}
-      - position: {x: -3.4823246, y: 0, z: 21.668991}
-        inTangentLocal: {x: -0.102749825, y: -0.0000038146973, z: -0.013477325}
-        outTangentLocal: {x: -0.085617065, y: -0.015625, z: -1.6467934}
+      - position: {x: 4.224759, y: 0, z: 18.794481}
+        inTangentLocal: {x: 0.57709503, y: -0.009765625, z: -0.676384}
+        outTangentLocal: {x: -0.7241664, y: -0.013671875, z: 0.6175995}
+      - position: {x: 2.3904934, y: 0, z: 20.000763}
+        inTangentLocal: {x: 0.3759637, y: -0.0078125, z: -0.119693756}
+        outTangentLocal: {x: -0.6842449, y: -0.009765625, z: 0.20409775}
+      - position: {x: -1.0973217, y: 0, z: 20.093533}
+        inTangentLocal: {x: 0.5131657, y: -0.013671875, z: 0.099718094}
+        outTangentLocal: {x: -0.42868602, y: -0.037109375, z: -0.1932354}
+      - position: {x: -2.9818735, y: 0, z: 18.871637}
+        inTangentLocal: {x: 0.5385306, y: -0.017578125, z: 0.59669876}
+        outTangentLocal: {x: -0.44758248, y: -0.005859375, z: -0.66835403}
       - position: {x: -3.4829578, y: 0, z: 16.072811}
         inTangentLocal: {x: -0.09238243, y: 0, z: 0.042835236}
         outTangentLocal: {x: -0.19862938, y: 0, z: -0.15930748}
@@ -55,12 +61,12 @@ MonoBehaviour:
       inverseDirection: 1
     whirlpoolObstacles: []
   drownCharacters:
-  - position: {x: 5.68, y: 0, z: 20.88}
-    waitTimePercentage: 0.7
   - position: {x: -0.65, y: 0, z: 8.74}
     waitTimePercentage: 0.3
+  - position: {x: 5.68, y: 0, z: 20.88}
+    waitTimePercentage: 0.7
   - position: {x: -5.03, y: 0, z: 15.87}
-    waitTimePercentage: 0.9
+    waitTimePercentage: 1
   collectables:
   - type: 1
     position: {x: -4.75, y: 0, z: 20.949999}
@@ -123,7 +129,7 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   medalRequirements:
-    requiredCurrencyForThreeMedals: 9
-    requiredCurrencyForTwoMedals: 5
+    requiredCurrencyForThreeMedals: 15
+    requiredCurrencyForTwoMedals: 10
     requiredCurrencyForOneMedal: 0
   BoatSpeed: 5

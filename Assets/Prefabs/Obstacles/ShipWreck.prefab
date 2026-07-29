@@ -48,7 +48,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   obstacleType: 8
-  isShakeEffectEnabled: 0
+  explodeScale: {x: 1.2, y: 1.2, z: 1.2}
+  explodeScaleUpDuration: 0.1
+  shakeMagnitude: {x: 0.1, y: 0.1, z: 0.1}
+  shakeFrequency: 7
+  shakeDuration: 0.15
+  explodeScaleDownDuration: 0.2
 --- !u!65 &1273084473349438806
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -210,6 +215,6 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.28
-  m_Height: 4.43
+  m_Height: 2.851794
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: -0.0000030199208, z: -0.7891031}
