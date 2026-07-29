@@ -14,14 +14,146 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelTime: 6
   startPoint:
-    Position: {x: 0.02, y: 0, z: -0.26}
+    Position: {x: 4.96, y: 0, z: 8.33}
     Rotation: {x: 0, y: 0, z: 0}
   obstacles:
-    staticObstacles: []
+    staticObstacles:
+    - type: 7
+      position: {x: 1.21, y: 0.71, z: 7.96}
+      rotation: {x: 0, y: 0, z: 0}
+      scale: {x: 1, y: 1, z: 1}
+    - type: 7
+      position: {x: 5.13, y: 0.71, z: 1.2}
+      rotation: {x: -0.00001086038, y: 126.16096, z: 0.000005514439}
+      scale: {x: 1, y: 1, z: 1}
+    - type: 7
+      position: {x: -4.45, y: 0.71, z: 14.93}
+      rotation: {x: -0, y: 0, z: 0}
+      scale: {x: 1, y: 1, z: 1}
+    - type: 7
+      position: {x: -4.43, y: 0.71, z: 22.04}
+      rotation: {x: -0.0000010394617, y: 32.025345, z: 0.0000036220101}
+      scale: {x: 1, y: 1, z: 1}
     movingObstacles: []
     whirlpoolObstacles: []
-  drownCharacters: []
-  collectables: []
+  drownCharacters:
+  - position: {x: -1.31, y: 0, z: 7.71}
+    waitTimePercentage: 1
+  - position: {x: -2.49, y: 0, z: 15.779999}
+    waitTimePercentage: 1
+  - position: {x: 4.95, y: 0, z: 21.24}
+    waitTimePercentage: 1
+  - position: {x: -5.57, y: 0, z: 0.5}
+    waitTimePercentage: 1
+  collectables:
+  - type: 1
+    position: {x: -1.3199999, y: 0, z: 5.84}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 4.96, y: 0, z: 15.77}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 4.96, y: 0, z: 19.39}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -2.51, y: 0, z: 18.45}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -2.51, y: 0, z: 19.8}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -2.51, y: 0, z: 21.13}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -0.56, y: 0, z: 21.13}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 1.41, y: 0, z: 21.13}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 3, y: 0, z: 21.13}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 3.3, y: 0, z: 15.809999}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 1.37, y: 0, z: 15.809999}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -0.65999997, y: 0, z: 15.809999}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -1.3199999, y: 0, z: 4.25}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -5.61, y: 0, z: 13.02}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 4.9599996, y: 0, z: 14.18}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 4.9599996, y: 0, z: 17.8}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -1.3199999, y: 0, z: 2.41}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -5.61, y: 0, z: 11.18}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 4.9599996, y: 0, z: 12.52}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -1.3199999, y: 0, z: 0.45}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 2.74, y: 0, z: 0.45}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -5.61, y: 0, z: 9.22}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 4.9599996, y: 0, z: 11.06}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -3.39, y: 0, z: 0.45}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 0.66999984, y: 0, z: 0.45}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -3.68, y: 0, z: 7.5}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -5.58, y: 0, z: 7.5}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
   medalRequirements:
     requiredCurrencyForThreeMedals: 5
     requiredCurrencyForTwoMedals: 3
