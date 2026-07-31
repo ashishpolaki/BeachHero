@@ -12,39 +12,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41ec7b45cdb520b4fb3b55ccaac3e1fc, type: 3}
   m_Name: Level_39
   m_EditorClassIdentifier: 
-  levelTime: 7
+  levelTime: 10
   startPoint:
     Position: {x: -1.76, y: 0, z: -1.67}
     Rotation: {x: 0, y: 0, z: 0}
   obstacles:
     staticObstacles:
     - type: 4
-      position: {x: 4.92, y: 3.82, z: 9.37}
-      rotation: {x: 0, y: 0, z: 0}
-      scale: {x: 1, y: 1, z: 1}
+      position: {x: 5.04, y: 0, z: 9.13}
+      rotation: {x: -0, y: 349.44067, z: 0}
+      scale: {x: 2.083334, y: 2.083334, z: 2.083334}
     - type: 4
-      position: {x: -3.84, y: 3.43, z: 3.49}
-      rotation: {x: 0, y: 0, z: 0}
-      scale: {x: 1, y: 1, z: 1}
+      position: {x: -5.69, y: 0, z: 2.59}
+      rotation: {x: -0, y: 21.611574, z: -0}
+      scale: {x: 2.5, y: 2.5, z: 2.5}
     - type: 4
-      position: {x: -5.38, y: 3.43, z: 15.73}
-      rotation: {x: 0, y: 0, z: 0}
-      scale: {x: 1, y: 1, z: 1}
+      position: {x: -5.38, y: 0, z: 15.31}
+      rotation: {x: -0, y: 84.69, z: -0}
+      scale: {x: 2.2, y: 2.2, z: 2.2}
     - type: 4
-      position: {x: 4.39, y: 3.12, z: 21.42}
+      position: {x: 4.39, y: 0, z: 21.42}
       rotation: {x: 0, y: 0, z: 0}
-      scale: {x: 1, y: 1, z: 1}
+      scale: {x: 2.05, y: 2.05, z: 2.05}
     movingObstacles: []
     whirlpoolObstacles: []
   drownCharacters:
   - position: {x: -2.5800004, y: 0, z: 20.839998}
-    waitTimePercentage: 1
+    waitTimePercentage: 0.87
   - position: {x: 5.0199995, y: 0, z: 14.789999}
-    waitTimePercentage: 1
+    waitTimePercentage: 0.62
   - position: {x: -3.8600004, y: 0, z: 9.16}
-    waitTimePercentage: 1
+    waitTimePercentage: 0.38
   - position: {x: 4.6800003, y: 0, z: 2.83}
-    waitTimePercentage: 1
+    waitTimePercentage: 0.2
   collectables:
   - type: 1
     position: {x: -3.3800006, y: 0, z: 18.589998}
@@ -175,7 +175,7 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   medalRequirements:
-    requiredCurrencyForThreeMedals: 5
-    requiredCurrencyForTwoMedals: 3
+    requiredCurrencyForThreeMedals: 32
+    requiredCurrencyForTwoMedals: 20
     requiredCurrencyForOneMedal: 0
-  BoatSpeed: 5
+  BoatIndex: 0

@@ -157,7 +157,7 @@ namespace BeachHero
         public void ActivateSpeedPowerup()
         {
             isSpeedBoostEnabled = true;
-            movementSpeed *= speedMultiplier;
+            movementSpeed = GameController.GetInstance.SkinController.GetSelectedBoatBoostSpeed();
             boatRotationSpeed *= speedMultiplier;
         }
         public void ActivateShieldPowerup()

@@ -19,15 +19,22 @@ namespace BeachHero
         [SerializeField] private float freehandSpacing = 0.3f; // now private (not editable in UI)
         public float evenlySpacing = 0.5f;
         [SerializeField] private float previewDuration = 10f; // private duration used to compute time (not editable in scene UI)
+        [SerializeField] private Boat[] boats;
 
         public float GetPreviewDuration() => previewDuration;
         public float GetFreehandSpacing() => freehandSpacing;
 
         private Transform player;
 
-        public void SetPlayerTransform(Transform player)
+        public void SetPlayerTransform(Transform player, int boatIndex, float previewSpeed)
         {
             this.player = player;
+            this.previewSpeed = previewSpeed;
+            boats = GetComponentsInChildren<Boat>(true);
+            for (int i = 0; i < boats.Length; i++)
+            {
+                boats[i].gameObject.SetActive(i == boatIndex);
+            }
         }
 
         private void ResetPlayerPosition()

@@ -12,28 +12,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41ec7b45cdb520b4fb3b55ccaac3e1fc, type: 3}
   m_Name: Level_36
   m_EditorClassIdentifier: 
-  levelTime: 9
+  levelTime: 7
   startPoint:
     Position: {x: 0.02, y: 0, z: -1.99}
     Rotation: {x: 0, y: 0, z: 0}
   obstacles:
     staticObstacles:
     - type: 7
-      position: {x: -0.73, y: 2.61, z: 8.93}
+      position: {x: -0.17, y: 0, z: 9.98}
       rotation: {x: -0, y: 180, z: -0}
-      scale: {x: 1.7375, y: 2.7838295, z: 1.45}
+      scale: {x: 2.72, y: 4.357995, z: 2.2699282}
     - type: 7
-      position: {x: -8.12, y: 2.61, z: 19.87}
+      position: {x: -7.77, y: 0, z: 19.87}
       rotation: {x: -0, y: 180, z: -0}
-      scale: {x: 1.7375, y: 2.7838295, z: 1.45}
+      scale: {x: 2.1, y: 3.3646283, z: 1.752518}
     - type: 7
-      position: {x: 6.3, y: 2.61, z: 3.85}
+      position: {x: 6.3, y: 0, z: 3.85}
       rotation: {x: -0, y: 180, z: -0}
       scale: {x: 1.7375, y: 2.7838295, z: 1.45}
     - type: 7
       position: {x: 3.35, y: 0, z: 21.43}
       rotation: {x: 0, y: 0, z: 0}
-      scale: {x: 1, y: 1, z: 1}
+      scale: {x: 1.06, y: 1.06, z: 1.06}
     movingObstacles:
     - type: 2
       bezierKeyframes:
@@ -81,12 +81,12 @@ MonoBehaviour:
       inverseDirection: 1
     whirlpoolObstacles: []
   drownCharacters:
-  - position: {x: 1.23, y: 0, z: 20.59}
-    waitTimePercentage: 1
-  - position: {x: -3.61, y: 0, z: 9.620001}
-    waitTimePercentage: 0.78
   - position: {x: 3.81, y: 0, z: 5.54}
-    waitTimePercentage: 0.4
+    waitTimePercentage: 0.24285714
+  - position: {x: -3.61, y: 0, z: 9.620001}
+    waitTimePercentage: 0.55857146
+  - position: {x: 1.23, y: 0, z: 20.59}
+    waitTimePercentage: 0.9485714
   collectables:
   - type: 1
     position: {x: -0.04, y: 0, z: 0.53}
@@ -189,7 +189,7 @@ MonoBehaviour:
     rotation: {x: -0, y: 0, z: 0}
     count: 0
   medalRequirements:
-    requiredCurrencyForThreeMedals: 5
-    requiredCurrencyForTwoMedals: 3
+    requiredCurrencyForThreeMedals: 25
+    requiredCurrencyForTwoMedals: 11
     requiredCurrencyForOneMedal: 0
-  BoatSpeed: 5
+  BoatIndex: 1

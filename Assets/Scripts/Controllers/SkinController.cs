@@ -8,7 +8,7 @@ namespace BeachHero
         [SerializeField] private BoatSkinDatabaseSO boatSkinsDatabase;
 
         public event Action<int> OnSkinPurchased;
-        public event Action<int,int> OnSkinColorPurchased;
+        public event Action<int, int> OnSkinColorPurchased;
 
         public BoatSkinDatabaseSO BoatSkinsDatabase
         {
@@ -66,14 +66,17 @@ namespace BeachHero
             DebugUtils.LogError($"BoatSkin with ID {id} not found in the database.");
             return null;
         }
-        public float GetSelectedBoatSpeed()
+        public float GetSelectedBoatSpeed(int currentBoatIndex)
         {
-            int currentBoatIndex = GetSavedBoatIndex();
             return GetBoatSkinByIndex(currentBoatIndex).Speed;
         }
-        public GameObject GetSelectedBoatPrefab()
+        public float GetSelectedBoatBoostSpeed()
         {
             int currentBoatIndex = GetSavedBoatIndex();
+            return GetBoatSkinByIndex(currentBoatIndex).BoostSpeed;
+        }
+        public GameObject GetSelectedBoatPrefab(int currentBoatIndex)
+        {
             return GetBoatSkinByIndex(currentBoatIndex).BoatPrefab;
         }
         public int GetSavedBoatIndex()
@@ -84,9 +87,9 @@ namespace BeachHero
         {
             return SaveSystem.LoadInt(StringUtils.CURRENT_BOAT_COLOR_INDEX + boatIndex, IntUtils.DEFAULT_BOAT_COLOR_INDEX);
         }
-        public Color[] GetBoatPartColors(int currentBoatIndex,int currentColorIndex)
+        public Color[] GetBoatPartColors(int currentBoatIndex, int currentColorIndex)
         {
-           BoatSkinSO boatSkin = GetBoatSkinByIndex(currentBoatIndex);
+            BoatSkinSO boatSkin = GetBoatSkinByIndex(currentBoatIndex);
             if (boatSkin != null && boatSkin.SkinColors.Length > currentColorIndex)
             {
                 return boatSkin.SkinColors[currentColorIndex].ShaderColors;
@@ -108,7 +111,7 @@ namespace BeachHero
             SetSavedBoatIndex(index, 0); // Default color index is 0
             OnSkinPurchased?.Invoke(index);
         }
-        public void UnlockBoatSkinColor(int boatindex,int colorIndex)
+        public void UnlockBoatSkinColor(int boatindex, int colorIndex)
         {
             SaveSystem.SaveBool($"{StringUtils.BOAT_SKIN_COLOR_UNLOCK}{boatindex}_{colorIndex}", true);
             SetSavedBoatIndex(boatindex, colorIndex);
