@@ -12,26 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41ec7b45cdb520b4fb3b55ccaac3e1fc, type: 3}
   m_Name: Level_43
   m_EditorClassIdentifier: 
-  levelTime: 8
+  levelTime: 7.3
   startPoint:
-    Position: {x: 0.02, y: 0, z: -1.7}
+    Position: {x: 0.02, y: 0, z: -2.87}
     Rotation: {x: 0, y: 0, z: 0}
   obstacles:
     staticObstacles:
     - type: 7
-      position: {x: -4.26, y: 0.23811, z: 15.99}
+      position: {x: -4.26, y: 0, z: 15.99}
       rotation: {x: 0, y: 0, z: 0}
       scale: {x: 2.01, y: 2.7340229, z: 1.3}
     - type: 7
-      position: {x: -4.26, y: 0.23811, z: 3.13}
+      position: {x: -4.26, y: 0, z: 3.13}
       rotation: {x: 0, y: 0, z: 0}
       scale: {x: 2.01, y: 2.7340229, z: 1.3}
     - type: 7
-      position: {x: 4.89, y: 0.23811, z: 15.58}
+      position: {x: 4.89, y: 0, z: 15.58}
       rotation: {x: -0, y: 117.89457, z: -0}
       scale: {x: 2.01, y: 2.7340229, z: 1.6087499}
     - type: 7
-      position: {x: 5.5600004, y: 0.23811, z: 3.1299987}
+      position: {x: 5.5600004, y: 0, z: 3.1299987}
       rotation: {x: -0, y: 338.0081, z: 0}
       scale: {x: 2.01, y: 2.7340229, z: 1.6685499}
     movingObstacles:
@@ -60,11 +60,11 @@ MonoBehaviour:
     whirlpoolObstacles: []
   drownCharacters:
   - position: {x: -5.39, y: 0, z: 9.51}
-    waitTimePercentage: 1
+    waitTimePercentage: 0.64285713
   - position: {x: 0.03, y: 0, z: 17.54}
-    waitTimePercentage: 0.85
+    waitTimePercentage: 0.9285714
   - position: {x: 5.48, y: 0, z: 9.440001}
-    waitTimePercentage: 0.55
+    waitTimePercentage: 0.34
   collectables:
   - type: 1
     position: {x: 0, y: 0, z: 1.26}
@@ -123,11 +123,11 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: 0, y: 0, z: -1.44}
+    position: {x: 0, y: 0, z: -0.51}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   medalRequirements:
-    requiredCurrencyForThreeMedals: 5
-    requiredCurrencyForTwoMedals: 3
+    requiredCurrencyForThreeMedals: 15
+    requiredCurrencyForTwoMedals: 7
     requiredCurrencyForOneMedal: 0
-  BoatSpeed: 5
+  BoatIndex: 0
