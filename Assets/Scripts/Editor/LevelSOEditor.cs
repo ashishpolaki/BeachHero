@@ -19,6 +19,7 @@ namespace BeachHero
         {
             serializedObject.Update();
             EditorGUILayout.PropertyField(serializedObject.FindProperty("levelTime"), new GUIContent("Level Time"));
+            EditorGUILayout.PropertyField(serializedObject.FindProperty("BoatIndex"), new GUIContent("Boat Index"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("startPoint"), new GUIContent("Start Point"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("drownCharacters"), new GUIContent("Drown Characters"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("collectables"), new GUIContent("Collectables"));

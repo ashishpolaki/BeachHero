@@ -11,6 +11,7 @@ public class EditorSceneController : MonoBehaviour
     [SerializeField] private GameObject container;
     [SerializeField] private GameObject playerPreviewPrefab;
     [SerializeField] private GameObject[] disableScenePickingObjects;
+    [SerializeField] private BoatSkinDatabaseSO boatSkinDatabase;
     private LevelSO currentLevel;
 
     //Spawn Item Paths 
@@ -103,7 +104,7 @@ public class EditorSceneController : MonoBehaviour
     {
         currentLevel = _levelSO;
         DisableScenePicking();
-        SpawnStartPoint();
+        SpawnStartPoint(_levelSO.BoatIndex, boatSkinDatabase.GetBoatSkinByIndex(_levelSO.BoatIndex).Speed);
         SpawnMovingObstacles();
         SpawnStaticObstacles();
         SpawnWhirlpoolObstacle();
@@ -170,7 +171,7 @@ public class EditorSceneController : MonoBehaviour
         }
     }
 
-    private void SpawnStartPoint()
+    private void SpawnStartPoint(int boatIndex, float previewSpeed)
     {
         StartPointBehaviour startPointPrefab = AssetDatabase.LoadAssetAtPath<StartPointBehaviour>(startPointPath);
         GameObject startPoint = PrefabUtility.InstantiatePrefab(startPointPrefab.gameObject) as GameObject;
@@ -184,7 +185,7 @@ public class EditorSceneController : MonoBehaviour
         playerPreviewObject.transform.parent = startPoint.transform;
         playerPreviewObject.transform.localPosition = Vector3.zero;
         playerPreviewObject.transform.localEulerAngles = Vector3.zero;
-        tool.SetPlayerTransform(playerPreviewObject.transform);
+        tool.SetPlayerTransform(playerPreviewObject.transform, boatIndex, previewSpeed);
         SceneVisibilityManager.instance.DisablePicking(playerPreviewObject, false);
     }
 

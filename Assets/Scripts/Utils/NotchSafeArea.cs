@@ -111,7 +111,12 @@ namespace BeachHero
             {
                 // Convert safe area rectangle from absolute pixels to normalised anchor coordinates
                 Vector2 anchorMin = rect.position;
-                Vector2 anchorMax = rect.position + rect.size + heightOffset;
+                Vector2 extraHeight = new Vector2(0, 0);
+                if (rect.height != Screen.height)
+                {
+                    extraHeight.y = heightOffset.y;
+                }
+                Vector2 anchorMax = rect.position + rect.size + extraHeight;
 
                 anchorMin.x /= Screen.width;
                 anchorMin.y /= Screen.height;

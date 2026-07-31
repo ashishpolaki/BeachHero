@@ -12,6 +12,7 @@ namespace BeachHero
         [SerializeField] private int index;
         [SerializeField] private string boatName;
         [SerializeField] private float speed;
+        [SerializeField] private float boostSpeed;
         [Range(0f, 1f), SerializeField] private float speedMeter;
         [SerializeField] private bool isUnlocked;
         [Hide("isDefault"), SerializeField] private bool isGameCurrency;
@@ -29,6 +30,7 @@ namespace BeachHero
         public string Name => boatName;
         public float Speed => speed;
         public float SpeedMeter => speedMeter;
+        public float BoostSpeed => boostSpeed;
         public BoatSkinColorData[] SkinColors => skinColors;
         public bool IsDefaultBoat => isUnlocked;
         public bool IsGameCurrency => isGameCurrency;
