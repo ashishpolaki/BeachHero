@@ -14,21 +14,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelTime: 6
   startPoint:
-    Position: {x: 0.02, y: 0, z: -0.04}
+    Position: {x: 0.02, y: 0, z: -1.7}
     Rotation: {x: 0, y: 0, z: 0}
   obstacles:
     staticObstacles:
     - type: 8
       position: {x: 4.4800005, y: 0, z: 18.57}
-      rotation: {x: -0.0000060239527, y: 228.739, z: 0.0000015246803}
+      rotation: {x: -0.000006023952, y: 228.739, z: 0.0000015246806}
       scale: {x: 1, y: 1, z: 1}
     - type: 8
       position: {x: -4.8500004, y: 0, z: 10.900001}
-      rotation: {x: -0.000003411896, y: 59.969013, z: 0.0000059132685}
+      rotation: {x: -0.0000034118957, y: 59.969013, z: 0.000005913268}
       scale: {x: 1, y: 1, z: 1}
     - type: 8
       position: {x: 4.04, y: 0, z: 6.9700003}
-      rotation: {x: -0.000011241373, y: 229.77158, z: -0.0000052146843}
+      rotation: {x: -0.000011241374, y: 229.77158, z: -0.0000052146843}
       scale: {x: 1, y: 1, z: 1}
     movingObstacles: []
     whirlpoolObstacles: []
@@ -36,7 +36,7 @@ MonoBehaviour:
   - position: {x: -0.09, y: 0, z: 9.68}
     waitTimePercentage: 0.35
   - position: {x: -5.3599997, y: 0, z: 19}
-    waitTimePercentage: 1
+    waitTimePercentage: 0.8333333
   collectables:
   - type: 1
     position: {x: -0.089999974, y: 0, z: 2.9000003}
@@ -135,7 +135,7 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   medalRequirements:
-    requiredCurrencyForThreeMedals: 5
-    requiredCurrencyForTwoMedals: 3
+    requiredCurrencyForThreeMedals: 24
+    requiredCurrencyForTwoMedals: 17
     requiredCurrencyForOneMedal: 0
-  BoatSpeed: 5
+  BoatIndex: 0

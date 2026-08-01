@@ -12,39 +12,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41ec7b45cdb520b4fb3b55ccaac3e1fc, type: 3}
   m_Name: Level_57
   m_EditorClassIdentifier: 
-  levelTime: 6
+  levelTime: 12
   startPoint:
-    Position: {x: 4.96, y: 0, z: 8.33}
+    Position: {x: 4.03, y: 0, z: 8.33}
     Rotation: {x: 0, y: 0, z: 0}
   obstacles:
     staticObstacles:
     - type: 7
-      position: {x: 1.21, y: 0.71, z: 7.96}
+      position: {x: 1.71, y: 0, z: 7.96}
       rotation: {x: 0, y: 0, z: 0}
-      scale: {x: 1, y: 1, z: 1}
+      scale: {x: 1.4331, y: 1.4331, z: 1.4331}
     - type: 7
-      position: {x: 5.13, y: 0.71, z: 1.2}
-      rotation: {x: -0.00001086038, y: 126.16096, z: 0.000005514439}
-      scale: {x: 1, y: 1, z: 1}
+      position: {x: 5.13, y: 0, z: 1.2}
+      rotation: {x: -0.000010860383, y: 126.16096, z: 0.0000055144415}
+      scale: {x: 1.3005, y: 1.3005, z: 1.3005}
     - type: 7
-      position: {x: -4.45, y: 0.71, z: 14.93}
-      rotation: {x: -0, y: 0, z: 0}
-      scale: {x: 1, y: 1, z: 1}
+      position: {x: -5.64, y: 0, z: 15.72}
+      rotation: {x: -0, y: 318.8534, z: 0}
+      scale: {x: 1.5834, y: 1.5834, z: 1.5834}
     - type: 7
-      position: {x: -4.43, y: 0.71, z: 22.04}
-      rotation: {x: -0.0000010394617, y: 32.025345, z: 0.0000036220101}
-      scale: {x: 1, y: 1, z: 1}
+      position: {x: -4.93, y: 0, z: 22.54}
+      rotation: {x: -0.0000010394623, y: 32.025345, z: 0.0000036220101}
+      scale: {x: 1.7071, y: 1.7071, z: 1.7071}
     movingObstacles: []
     whirlpoolObstacles: []
   drownCharacters:
   - position: {x: -1.31, y: 0, z: 7.71}
-    waitTimePercentage: 1
+    waitTimePercentage: 0.29999998
   - position: {x: -2.49, y: 0, z: 15.779999}
-    waitTimePercentage: 1
+    waitTimePercentage: 0.14583333
   - position: {x: 4.95, y: 0, z: 21.24}
-    waitTimePercentage: 1
+    waitTimePercentage: 0.545
   - position: {x: -5.57, y: 0, z: 0.5}
-    waitTimePercentage: 1
+    waitTimePercentage: 0.93083334
   collectables:
   - type: 1
     position: {x: -1.3199999, y: 0, z: 5.84}
@@ -155,7 +155,7 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   medalRequirements:
-    requiredCurrencyForThreeMedals: 5
-    requiredCurrencyForTwoMedals: 3
+    requiredCurrencyForThreeMedals: 27
+    requiredCurrencyForTwoMedals: 23
     requiredCurrencyForOneMedal: 0
-  BoatSpeed: 5
+  BoatIndex: 0

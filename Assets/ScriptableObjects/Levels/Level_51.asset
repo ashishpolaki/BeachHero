@@ -12,33 +12,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41ec7b45cdb520b4fb3b55ccaac3e1fc, type: 3}
   m_Name: Level_51
   m_EditorClassIdentifier: 
-  levelTime: 9
+  levelTime: 8
   startPoint:
     Position: {x: 0.4, y: 0, z: 0.68}
     Rotation: {x: 0, y: 0, z: 0}
   obstacles:
     staticObstacles:
     - type: 4
-      position: {x: 0, y: 3.68, z: 8.91}
-      rotation: {x: 0, y: 0, z: 0}
-      scale: {x: 1, y: 1, z: 1}
+      position: {x: 0, y: 0, z: 8.91}
+      rotation: {x: -0, y: 325.62, z: -0}
+      scale: {x: 2.2, y: 2.2, z: 2.2}
     - type: 4
-      position: {x: 0, y: 3.68, z: 14.86}
+      position: {x: 0, y: 0, z: 14.86}
       rotation: {x: 0, y: 0, z: 0}
-      scale: {x: 1, y: 1, z: 1}
+      scale: {x: 2.21, y: 2.21, z: 2.21}
     movingObstacles: []
     whirlpoolObstacles: []
   drownCharacters:
   - position: {x: -5.39, y: 0, z: 7.01}
-    waitTimePercentage: 0.25
+    waitTimePercentage: 0.21625
   - position: {x: -5.6, y: 0, z: 12.52}
-    waitTimePercentage: 0.45
+    waitTimePercentage: 0.3625
   - position: {x: -2.56, y: 0, z: 19.21}
-    waitTimePercentage: 0.68
+    waitTimePercentage: 0.54625
   - position: {x: 6.15, y: 0, z: 16.16}
-    waitTimePercentage: 0.92
+    waitTimePercentage: 0.81
   - position: {x: 6.29, y: 0, z: 10.1}
-    waitTimePercentage: 1
+    waitTimePercentage: 0.9725
   collectables:
   - type: 1
     position: {x: -0.87, y: 0, z: 4.02}
@@ -89,7 +89,7 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   medalRequirements:
-    requiredCurrencyForThreeMedals: 5
-    requiredCurrencyForTwoMedals: 3
+    requiredCurrencyForThreeMedals: 12
+    requiredCurrencyForTwoMedals: 10
     requiredCurrencyForOneMedal: 0
-  BoatSpeed: 5
+  BoatIndex: 0

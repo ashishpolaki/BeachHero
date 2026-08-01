@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41ec7b45cdb520b4fb3b55ccaac3e1fc, type: 3}
   m_Name: Level_60
   m_EditorClassIdentifier: 
-  levelTime: 6
+  levelTime: 7.5
   startPoint:
     Position: {x: 0.17, y: 0, z: -0.93}
     Rotation: {x: 0, y: 0, z: 0}
@@ -21,7 +21,7 @@ MonoBehaviour:
     movingObstacles:
     - type: 1
       bezierKeyframes:
-      - position: {x: 4.0374947, y: 0, z: 19.836267}
+      - position: {x: 3.552347, y: 0, z: 19.836267}
         inTangentLocal: {x: -0.5, y: 0, z: 0}
         outTangentLocal: {x: 0.5, y: 0, z: 0}
       - position: {x: -3.4984274, y: 0, z: 19.6707}
@@ -33,7 +33,7 @@ MonoBehaviour:
       - position: {x: 3.5523472, y: 0, z: 5.7151246}
         inTangentLocal: {x: -0.004984197, y: -0, z: 0.49997517}
         outTangentLocal: {x: 0.004984197, y: 0, z: -0.49997517}
-      - position: {x: 3.8107967, y: 0, z: 20.099667}
+      - position: {x: 3.552347, y: 0, z: 20.099667}
         inTangentLocal: {x: -0.49998468, y: -0, z: -0.003913392}
         outTangentLocal: {x: 0.49998468, y: 0, z: 0.003913392}
       resolution: 1
@@ -43,7 +43,7 @@ MonoBehaviour:
       inverseDirection: 0
     - type: 1
       bezierKeyframes:
-      - position: {x: 5.532709, y: 0, z: 3.0857239}
+      - position: {x: 5.477957, y: 0, z: 3.0857239}
         inTangentLocal: {x: -0.5, y: 0, z: 0}
         outTangentLocal: {x: 0.5, y: 0, z: 0}
       - position: {x: -5.071146, y: 0, z: 2.9325714}
@@ -55,7 +55,7 @@ MonoBehaviour:
       - position: {x: 5.477957, y: 0, z: 22.18576}
         inTangentLocal: {x: 0.005167257, y: -0, z: -0.49997327}
         outTangentLocal: {x: -0.005167257, y: 0, z: 0.49997327}
-      - position: {x: 5.5123854, y: 0, z: 3.0490623}
+      - position: {x: 5.477957, y: 0, z: 3.0490623}
         inTangentLocal: {x: -0.49984273, y: -0, z: -0.012539476}
         outTangentLocal: {x: 0.49984273, y: 0, z: 0.012539476}
       resolution: 1
@@ -66,11 +66,11 @@ MonoBehaviour:
     whirlpoolObstacles: []
   drownCharacters:
   - position: {x: 0, y: 0, z: 7.55}
-    waitTimePercentage: 0.4
+    waitTimePercentage: 0.21466666
   - position: {x: -6.39, y: 0, z: 14.71}
-    waitTimePercentage: 1
+    waitTimePercentage: 0.96266663
   - position: {x: 0.12, y: 0, z: 21.76}
-    waitTimePercentage: 0.9
+    waitTimePercentage: 0.592
   collectables:
   - type: 1
     position: {x: 0, y: 0, z: 1.5}
@@ -213,7 +213,7 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   medalRequirements:
-    requiredCurrencyForThreeMedals: 5
-    requiredCurrencyForTwoMedals: 3
+    requiredCurrencyForThreeMedals: 35
+    requiredCurrencyForTwoMedals: 20
     requiredCurrencyForOneMedal: 0
-  BoatSpeed: 5
+  BoatIndex: 0

@@ -12,27 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41ec7b45cdb520b4fb3b55ccaac3e1fc, type: 3}
   m_Name: Level_56
   m_EditorClassIdentifier: 
-  levelTime: 8
+  levelTime: 7
   startPoint:
     Position: {x: -0.82, y: 0, z: -0.91}
     Rotation: {x: 0, y: 0, z: 0}
   obstacles:
     staticObstacles:
     - type: 4
-      position: {x: 2.52, y: 3.8, z: 7.65}
+      position: {x: 2.52, y: 0, z: 7.65}
       rotation: {x: 0, y: 0, z: 0}
-      scale: {x: 1, y: 1, z: 1}
+      scale: {x: 2.08, y: 2.08, z: 2.08}
     - type: 4
-      position: {x: -3.08, y: 3.8, z: 15.77}
+      position: {x: -3.08, y: 0, z: 15.77}
       rotation: {x: 0, y: 0, z: 0}
-      scale: {x: 1, y: 1, z: 1}
+      scale: {x: 2.08, y: 2.08, z: 2.08}
     - type: 4
-      position: {x: 3.58, y: 3.8, z: 20.04}
+      position: {x: 3.58, y: 0, z: 20.04}
       rotation: {x: 0, y: 0, z: 0}
-      scale: {x: 1, y: 1, z: 1}
+      scale: {x: 2.08, y: 2.08, z: 2.08}
     - type: 8
       position: {x: -1.09, y: 0, z: 9.72}
-      rotation: {x: 359.88846, y: 33.09453, z: 0.37544197}
+      rotation: {x: 333.3954, y: 37.638767, z: 341.39532}
       scale: {x: 1, y: 1, z: 1}
     - type: 8
       position: {x: -2.69, y: -0.01, z: 7.28}
@@ -50,9 +50,9 @@ MonoBehaviour:
     whirlpoolObstacles: []
   drownCharacters:
   - position: {x: -0.55, y: 0, z: 12.07}
-    waitTimePercentage: 0.7
+    waitTimePercentage: 0.61428577
   - position: {x: -2.75, y: 0, z: 19.97}
-    waitTimePercentage: 1
+    waitTimePercentage: 0.9142857
   collectables:
   - type: 1
     position: {x: -0.73, y: 0, z: 1.85}
@@ -147,7 +147,7 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   medalRequirements:
-    requiredCurrencyForThreeMedals: 5
-    requiredCurrencyForTwoMedals: 3
+    requiredCurrencyForThreeMedals: 23
+    requiredCurrencyForTwoMedals: 15
     requiredCurrencyForOneMedal: 0
-  BoatSpeed: 5
+  BoatIndex: 0
