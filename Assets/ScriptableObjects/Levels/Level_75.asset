@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41ec7b45cdb520b4fb3b55ccaac3e1fc, type: 3}
   m_Name: Level_75
   m_EditorClassIdentifier: 
-  levelTime: 8
+  levelTime: 6
   startPoint:
-    Position: {x: 0.31, y: 0, z: -0.26}
+    Position: {x: 0.31, y: 0, z: -1.45}
     Rotation: {x: 0, y: 0, z: 0}
   obstacles:
     staticObstacles:
@@ -45,10 +45,10 @@ MonoBehaviour:
     movingObstacles:
     - type: 1
       bezierKeyframes:
-      - position: {x: -6.569214, y: 0, z: 7.4592466}
+      - position: {x: -7.61, y: 0, z: 7.4592466}
         inTangentLocal: {x: -0.5, y: 0, z: 0}
         outTangentLocal: {x: 0.5, y: 0, z: 0}
-      - position: {x: 6.8613386, y: 0, z: 7.4592896}
+      - position: {x: 7.15, y: 0, z: 7.4592896}
         inTangentLocal: {x: -0.5, y: 0, z: 0}
         outTangentLocal: {x: 0.5, y: 0, z: 0}
       resolution: 1
@@ -58,23 +58,23 @@ MonoBehaviour:
       inverseDirection: 1
     - type: 1
       bezierKeyframes:
-      - position: {x: 6.1229696, y: 0, z: 16.147715}
+      - position: {x: 8.07, y: 0, z: 16.147715}
         inTangentLocal: {x: -0.5, y: 0, z: 0}
         outTangentLocal: {x: 0.5, y: 0, z: 0}
       - position: {x: -7.8565936, y: 0, z: 16.147715}
         inTangentLocal: {x: -0.5, y: 0, z: 0}
         outTangentLocal: {x: 0.5, y: 0, z: 0}
       resolution: 1
-      movementSpeed: 4
+      movementSpeed: 5
       rotationSpeedMultiplier: 1
       loopedMovement: 1
       inverseDirection: 1
     whirlpoolObstacles: []
   drownCharacters:
   - position: {x: 2.84, y: 0, z: 12.81}
-    waitTimePercentage: 0.85
+    waitTimePercentage: 0.48833334
   - position: {x: -3.06, y: 0, z: 21.98}
-    waitTimePercentage: 1
+    waitTimePercentage: 0.95
   collectables:
   - type: 1
     position: {x: 0.14, y: 0, z: 2.49}
@@ -161,7 +161,7 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   medalRequirements:
-    requiredCurrencyForThreeMedals: 5
-    requiredCurrencyForTwoMedals: 3
+    requiredCurrencyForThreeMedals: 21
+    requiredCurrencyForTwoMedals: 19
     requiredCurrencyForOneMedal: 0
-  BoatSpeed: 5
+  BoatIndex: 0

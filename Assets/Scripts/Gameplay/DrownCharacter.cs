@@ -108,7 +108,7 @@ namespace BeachHero
         }
         public void OnPickUp()
         {
-            if(isPickedUp)
+            if (isPickedUp || isDrown)
             {
                 return;
             }

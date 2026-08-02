@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelTime: 8
   startPoint:
-    Position: {x: 0.35, y: 0, z: 0.27}
+    Position: {x: 0.22, y: 0, z: -2.79}
     Rotation: {x: 0, y: 0, z: 0}
   obstacles:
     staticObstacles: []
@@ -92,14 +92,26 @@ MonoBehaviour:
     whirlpoolObstacles: []
   drownCharacters:
   - position: {x: -4.1, y: 0, z: 14.31}
-    waitTimePercentage: 0.5
+    waitTimePercentage: 0.4325
   - position: {x: 1.62, y: 0, z: 11.74}
     waitTimePercentage: 1
   - position: {x: 3.55, y: 0, z: 21.77}
-    waitTimePercentage: 0.85
+    waitTimePercentage: 0.7325
   collectables:
   - type: 1
     position: {x: 0.24, y: 0, z: 3.53}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 0.24, y: 0, z: 2.18}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 0.24, y: 0, z: 0.65}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 0.24, y: 0, z: -0.8}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
@@ -215,7 +227,7 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   medalRequirements:
-    requiredCurrencyForThreeMedals: 5
-    requiredCurrencyForTwoMedals: 3
+    requiredCurrencyForThreeMedals: 32
+    requiredCurrencyForTwoMedals: 21
     requiredCurrencyForOneMedal: 0
-  BoatSpeed: 5
+  BoatIndex: 0

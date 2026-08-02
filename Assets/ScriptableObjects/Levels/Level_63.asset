@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41ec7b45cdb520b4fb3b55ccaac3e1fc, type: 3}
   m_Name: Level_63
   m_EditorClassIdentifier: 
-  levelTime: 6
+  levelTime: 5.4
   startPoint:
     Position: {x: 0.02, y: 0, z: 10.91}
     Rotation: {x: 0, y: 0, z: 0}
@@ -20,7 +20,7 @@ MonoBehaviour:
     staticObstacles:
     - type: 8
       position: {x: 2.96, y: 0.01, z: 13.42}
-      rotation: {x: 359.79648, y: 45.25117, z: 0.4883324}
+      rotation: {x: 359.79648, y: 45.251167, z: 0.4883324}
       scale: {x: 1, y: 1, z: 1}
     - type: 8
       position: {x: -2.94, y: -0.03, z: 7.29}
@@ -70,9 +70,9 @@ MonoBehaviour:
     whirlpoolObstacles: []
   drownCharacters:
   - position: {x: 0, y: 0, z: 18.8}
-    waitTimePercentage: 0.35
+    waitTimePercentage: 0.28888887
   - position: {x: 0, y: 0, z: 1.49}
-    waitTimePercentage: 1
+    waitTimePercentage: 0.9351852
   collectables:
   - type: 1
     position: {x: 0, y: 0, z: -1.75}
@@ -223,7 +223,7 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   medalRequirements:
-    requiredCurrencyForThreeMedals: 5
-    requiredCurrencyForTwoMedals: 3
+    requiredCurrencyForThreeMedals: 37
+    requiredCurrencyForTwoMedals: 26
     requiredCurrencyForOneMedal: 0
-  BoatSpeed: 5
+  BoatIndex: 0

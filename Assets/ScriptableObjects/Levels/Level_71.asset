@@ -36,7 +36,7 @@ MonoBehaviour:
       scale: {x: 1, y: 1, z: 1}
     - type: 8
       position: {x: 4.62, y: -0.1, z: 13.41}
-      rotation: {x: 359.36954, y: 85.23342, z: 0.68522865}
+      rotation: {x: 359.36954, y: 85.23342, z: 0.68522847}
       scale: {x: 1, y: 1, z: 1}
     - type: 8
       position: {x: -4.61, y: -0.04, z: 7.61}
@@ -50,11 +50,11 @@ MonoBehaviour:
     whirlpoolObstacles: []
   drownCharacters:
   - position: {x: 0, y: 0, z: 10.19}
-    waitTimePercentage: 0.58
+    waitTimePercentage: 0.5
   - position: {x: 0, y: 0, z: 19.21}
-    waitTimePercentage: 1
+    waitTimePercentage: 0.9
   - position: {x: 3.87, y: 0, z: 3.53}
-    waitTimePercentage: 0.3
+    waitTimePercentage: 0.225
   collectables:
   - type: 1
     position: {x: 1.86, y: 0, z: 1.61}
@@ -165,7 +165,7 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   medalRequirements:
-    requiredCurrencyForThreeMedals: 5
-    requiredCurrencyForTwoMedals: 3
+    requiredCurrencyForThreeMedals: 27
+    requiredCurrencyForTwoMedals: 21
     requiredCurrencyForOneMedal: 0
-  BoatSpeed: 5
+  BoatIndex: 0

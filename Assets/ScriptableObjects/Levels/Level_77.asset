@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41ec7b45cdb520b4fb3b55ccaac3e1fc, type: 3}
   m_Name: Level_77
   m_EditorClassIdentifier: 
-  levelTime: 9
+  levelTime: 5
   startPoint:
     Position: {x: 0.84, y: 0, z: -0.26}
     Rotation: {x: 0, y: 0, z: 0}
@@ -40,43 +40,43 @@ MonoBehaviour:
       scale: {x: 1, y: 1, z: 1}
     - type: 8
       position: {x: -0.31, y: 0.01, z: 22.49}
-      rotation: {x: 359.2496, y: 96.40777, z: 0.54549736}
+      rotation: {x: 359.2496, y: 96.407776, z: 0.5454972}
       scale: {x: 1, y: 1, z: 1}
     - type: 8
       position: {x: -3.96, y: 0.05, z: 9.03}
-      rotation: {x: 359.9026, y: 30.872202, z: 0.35280058}
+      rotation: {x: 359.9026, y: 30.872202, z: 0.35280064}
       scale: {x: 1, y: 1, z: 1}
     - type: 8
       position: {x: 3.86, y: 0.03, z: 13.02}
       rotation: {x: 359.81097, y: 43.52448, z: 0.47352448}
       scale: {x: 1, y: 1, z: 1}
     - type: 4
-      position: {x: -4.65, y: 4.53, z: 3.14}
-      rotation: {x: 0, y: 0, z: 0}
-      scale: {x: 1, y: 1, z: 1}
+      position: {x: -4.82, y: 0, z: 3.42}
+      rotation: {x: -0, y: 333.62, z: -0}
+      scale: {x: 1.93, y: 1.93, z: 1.93}
     - type: 4
-      position: {x: -5.87, y: 3.18, z: 12.49}
-      rotation: {x: 0, y: 0, z: 0}
-      scale: {x: 1, y: 1, z: 1}
+      position: {x: -5.87, y: 0, z: 12.49}
+      rotation: {x: 0, y: 300.64996, z: 0}
+      scale: {x: 1.68, y: 1.68, z: 1.68}
     - type: 4
-      position: {x: -7.3, y: 3.01, z: 21.86}
+      position: {x: -7.3, y: 0, z: 21.86}
       rotation: {x: 0, y: 0, z: 0}
-      scale: {x: 1, y: 1, z: 1}
+      scale: {x: 2.24, y: 2.24, z: 2.24}
     - type: 4
-      position: {x: 5.76, y: 3.21, z: 10.26}
+      position: {x: 5.59, y: 0, z: 9.98}
       rotation: {x: 0, y: 0, z: 0}
-      scale: {x: 1, y: 1, z: 1}
+      scale: {x: 1.8300002, y: 1.8300002, z: 1.8300002}
     - type: 4
-      position: {x: 5.76, y: 3.23, z: 20.39}
-      rotation: {x: 0, y: 0, z: 0}
-      scale: {x: 1, y: 1, z: 1}
+      position: {x: 6.55, y: 0, z: 20.39}
+      rotation: {x: -0, y: 33.089993, z: -0}
+      scale: {x: 2.49, y: 2.49, z: 2.49}
     movingObstacles: []
     whirlpoolObstacles: []
   drownCharacters:
   - position: {x: 5.81, y: 0, z: 5.74}
-    waitTimePercentage: 0.45
+    waitTimePercentage: 0.3
   - position: {x: 0.48, y: 0, z: 11.79}
-    waitTimePercentage: 0.65
+    waitTimePercentage: 0.64
   - position: {x: 1.52, y: 0, z: 20.13}
     waitTimePercentage: 1
   collectables:
@@ -121,7 +121,7 @@ MonoBehaviour:
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   medalRequirements:
-    requiredCurrencyForThreeMedals: 5
-    requiredCurrencyForTwoMedals: 3
+    requiredCurrencyForThreeMedals: 10
+    requiredCurrencyForTwoMedals: 6
     requiredCurrencyForOneMedal: 0
-  BoatSpeed: 5
+  BoatIndex: 0
