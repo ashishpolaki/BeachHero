@@ -124,7 +124,6 @@ namespace BeachHero
         }
         #endregion
 
-
         #region NativeOverlay AD
         public void RequestNativeOverlay()
         {
