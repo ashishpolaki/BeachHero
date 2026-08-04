@@ -31,7 +31,7 @@ namespace BeachHero
         #region Actions
         public event Action<bool> OnStoreItemPurchaseAction;
         public event Action OnBoatPurchaseFail;
-        public event Action OnGameCurrencyBalanceChange;
+        public event Action OnCoinsBalanceChange;
         #endregion
 
         #region Properties
@@ -42,7 +42,7 @@ namespace BeachHero
             {
                 gameCurrencyBalance = value;
                 SaveSystem.SaveInt(StringUtils.GAME_CURRENCY_BALANCE, gameCurrencyBalance);
-                OnGameCurrencyBalanceChange?.Invoke();
+                OnCoinsBalanceChange?.Invoke();
             }
         }
         #endregion

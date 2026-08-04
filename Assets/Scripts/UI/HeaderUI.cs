@@ -25,7 +25,7 @@ namespace BeachHero
         private void OnEnable()
         {
             GameController.GetInstance.PowerupController.OnBalanceChange += OnPowerupBalanceChange;
-            GameController.GetInstance.StoreController.OnGameCurrencyBalanceChange += OnGameCurrencyBalanceChange;
+            GameController.GetInstance.StoreController.OnCoinsBalanceChange += OnGameCurrencyBalanceChange;
             UpdateBalances();
             uiScreenTextStyler.ApplyStyle();
         }
@@ -35,7 +35,7 @@ namespace BeachHero
             if (GameController.GetInstance != null)
             {
                 GameController.GetInstance.PowerupController.OnBalanceChange -= OnPowerupBalanceChange;
-                GameController.GetInstance.StoreController.OnGameCurrencyBalanceChange -= OnGameCurrencyBalanceChange;
+                GameController.GetInstance.StoreController.OnCoinsBalanceChange -= OnGameCurrencyBalanceChange;
             }
             UnSetupAddButton(addShieldButton);
             UnSetupAddButton(addGameCurrencyButton);

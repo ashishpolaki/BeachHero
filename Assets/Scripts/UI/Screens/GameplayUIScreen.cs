@@ -225,6 +225,7 @@ namespace BeachHero
         #endregion
 
         #region Handle Button Listener
+
         private void HandlePowerupBalance(PowerupType powerupType)
         {
             switch (powerupType)
