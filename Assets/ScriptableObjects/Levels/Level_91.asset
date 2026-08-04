@@ -12,17 +12,196 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41ec7b45cdb520b4fb3b55ccaac3e1fc, type: 3}
   m_Name: Level_91
   m_EditorClassIdentifier: 
-  levelTime: 6
+  levelTime: 9
   startPoint:
-    Position: {x: 0.02, y: 0, z: -0.26}
+    Position: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 0}
   obstacles:
-    staticObstacles: []
-    movingObstacles: []
+    staticObstacles:
+    - type: 7
+      position: {x: -6.65, y: 0.88, z: 16.21}
+      rotation: {x: 359.48743, y: 41.517418, z: 1.4997478}
+      scale: {x: 1.4846444, y: 1.6253587, z: 1.1976}
+    - type: 7
+      position: {x: 0.06, y: 0.98, z: 21.73}
+      rotation: {x: 358.58603, y: 70.350655, z: 2.1537054}
+      scale: {x: 1.4846444, y: 1.6253587, z: 1.1976}
+    - type: 7
+      position: {x: -0.04, y: 1.26, z: 10.74}
+      rotation: {x: 358.58603, y: 70.350655, z: 2.1537054}
+      scale: {x: 1.4846444, y: 1.6253587, z: 1.1976}
+    - type: 7
+      position: {x: 6.38, y: 1.21, z: 15.54}
+      rotation: {x: 359.48743, y: 41.517418, z: 1.4997478}
+      scale: {x: 1.4846444, y: 1.6253587, z: 1.1976}
+    - type: 8
+      position: {x: 2.21, y: 0.01, z: 3.55}
+      rotation: {x: 359.6809, y: 330.84317, z: 358.92065}
+      scale: {x: 1, y: 1, z: 1}
+    - type: 8
+      position: {x: -2.58, y: 0.14, z: 3.86}
+      rotation: {x: 359.5979, y: 36.843723, z: 1.3546636}
+      scale: {x: 1, y: 1, z: 1}
+    - type: 5
+      position: {x: -4.69, y: 0, z: 1.74}
+      rotation: {x: -0, y: 0, z: 0}
+      scale: {x: 1.3, y: 1.3, z: 1.3}
+    - type: 5
+      position: {x: 7.24, y: 0, z: 1.74}
+      rotation: {x: -0, y: 0, z: 0}
+      scale: {x: 1.3, y: 1.3, z: 1.3}
+    - type: 5
+      position: {x: -6.03, y: 0, z: 1.74}
+      rotation: {x: -0, y: 0, z: 0}
+      scale: {x: 1.3, y: 1.3, z: 1.3}
+    - type: 5
+      position: {x: 5.9, y: 0, z: 1.74}
+      rotation: {x: -0, y: 0, z: 0}
+      scale: {x: 1.3, y: 1.3, z: 1.3}
+    - type: 5
+      position: {x: -7.42, y: 0, z: 1.67}
+      rotation: {x: -0, y: 0, z: 0}
+      scale: {x: 1.3, y: 1.3, z: 1.3}
+    - type: 5
+      position: {x: 4.51, y: 0, z: 1.67}
+      rotation: {x: -0, y: 0, z: 0}
+      scale: {x: 1.3, y: 1.3, z: 1.3}
+    movingObstacles:
+    - type: 6
+      bezierKeyframes:
+      - position: {x: -6.1146936, y: 0, z: 24.3793}
+        inTangentLocal: {x: -0.5, y: 0, z: 0}
+        outTangentLocal: {x: 0.5, y: 0, z: 0}
+      - position: {x: 6.878792, y: 0, z: 7.60284}
+        inTangentLocal: {x: -0.5, y: 0, z: 0}
+        outTangentLocal: {x: 0.5, y: 0, z: 0}
+      resolution: 1
+      movementSpeed: 4
+      rotationSpeedMultiplier: 1
+      loopedMovement: 1
+      inverseDirection: 0
+    - type: 6
+      bezierKeyframes:
+      - position: {x: -7.264202, y: 0, z: 8.419407}
+        inTangentLocal: {x: -0.5, y: 0, z: 0}
+        outTangentLocal: {x: 0.5, y: 0, z: 0}
+      - position: {x: 6.9626045, y: 0, z: 23.52869}
+        inTangentLocal: {x: -0.5, y: 0, z: 0}
+        outTangentLocal: {x: 0.5, y: 0, z: 0}
+      resolution: 1
+      movementSpeed: 4
+      rotationSpeedMultiplier: 1
+      loopedMovement: 1
+      inverseDirection: 1
     whirlpoolObstacles: []
-  drownCharacters: []
-  collectables: []
+  drownCharacters:
+  - position: {x: -4.18, y: 0, z: 18.61}
+    waitTimePercentage: 0.8
+  - position: {x: 3.47, y: 0, z: 21.82}
+    waitTimePercentage: 1
+  collectables:
+  - type: 1
+    position: {x: -0.18, y: 0, z: 3.12}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -4.14, y: 0, z: 9.48}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 3.3700001, y: 0, z: 15.059999}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 0.1500001, y: 0, z: 15.550001}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -0.18, y: 0, z: 6.16}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -4.14, y: 0, z: 15.08}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 3.3700001, y: 0, z: 18.349998}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 0.1500001, y: 0, z: 18.84}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -0.18, y: 0, z: 4.64}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -4.14, y: 0, z: 11.32}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -4.14, y: 0, z: 13.17}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 3.37, y: 0, z: 16.759998}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 0.14999986, y: 0, z: 17.25}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -0.18, y: 0, z: 7.74}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 1.54, y: 0, z: 7.74}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 3.43, y: 0, z: 7.74}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -4.14, y: 0, z: 16.67}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -4.32, y: 0, z: 21.67}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 3.3700001, y: 0, z: 20.05}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -2.19, y: 0, z: 7.74}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: -4.09, y: 0, z: 7.74}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 3.4199998, y: 0, z: 13.42}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 0.19999981, y: 0, z: 13.910002}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 3.4199998, y: 0, z: 9.61}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
+  - type: 1
+    position: {x: 3.4199998, y: 0, z: 11.55}
+    rotation: {x: 0, y: 0, z: 0}
+    count: 0
   medalRequirements:
     requiredCurrencyForThreeMedals: 5
     requiredCurrencyForTwoMedals: 3
     requiredCurrencyForOneMedal: 0
+  BoatIndex: 0

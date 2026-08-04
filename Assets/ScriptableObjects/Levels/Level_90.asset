@@ -74,7 +74,29 @@ MonoBehaviour:
       position: {x: -7.72, y: 3.7, z: 21.23}
       rotation: {x: -0, y: 0, z: 0}
       scale: {x: 1, y: 1, z: 1}
-    movingObstacles: []
+    movingObstacles:
+    - type: 1
+      bezierKeyframes:
+      - position: {x: 1.3233938, y: 0, z: 22.0798}
+        inTangentLocal: {x: -0.5, y: 0, z: 0}
+        outTangentLocal: {x: 0.5, y: 0, z: 0}
+      - position: {x: -4.681793, y: 0, z: 16.261305}
+        inTangentLocal: {x: -0.5, y: 0, z: 0}
+        outTangentLocal: {x: 0.5, y: 0, z: 0}
+      - position: {x: 5.589368, y: 0, z: 10.30482}
+        inTangentLocal: {x: 0.33577713, y: -0, z: 0.3704777}
+        outTangentLocal: {x: -0.33577713, y: 0, z: -0.3704777}
+      - position: {x: -4.103748, y: 0, z: 6.0996842}
+        inTangentLocal: {x: -0.43387932, y: -0, z: 0.24849293}
+        outTangentLocal: {x: -0.55707264, y: -0.011388779, z: 0.07626724}
+      - position: {x: 6.9622793, y: 0, z: -0.56009865}
+        inTangentLocal: {x: 0.46420607, y: -0, z: 0.18577595}
+        outTangentLocal: {x: -0.46420607, y: 0, z: -0.18577595}
+      resolution: 1
+      movementSpeed: 4
+      rotationSpeedMultiplier: 1
+      loopedMovement: 1
+      inverseDirection: 1
     whirlpoolObstacles: []
   drownCharacters:
   - position: {x: -6.12, y: 0.02, z: 9.84}
