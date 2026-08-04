@@ -116,7 +116,8 @@ namespace BeachHero
         }
         public void RetryLevel()
         {
-            InitializeLevel(LevelController.CurrentLevelIndex);
+            levelController.StartState(levelDatabaseSO.GetLevelByIndex(LevelController.CurrentLevelIndex), LevelController.CurrentLevelIndex);
+            levelDatabaseSO.Init();
         }
         public void NextLevel()
         {

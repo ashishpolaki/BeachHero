@@ -27,11 +27,11 @@ namespace BeachHero
 
         #region Ad Id's
         // test id's ----------------------------------------
-        private readonly string androidAppId = "ca-app-pub-3940256099942544~3347511713";
-        private readonly string androidRewardedAdId = "ca-app-pub-3940256099942544/5224354917";
-        private readonly string androidInterstitialAdId = "ca-app-pub-3940256099942544/1033173712";
-        private readonly string androidNativeOverlayAdId = "ca-app-pub-3940256099942544/2247696110";
-        private readonly string androidBannerAdId = "ca-app-pub-3940256099942544/6300978111";
+        //private readonly string androidAppId = "ca-app-pub-3940256099942544~3347511713";
+        //private readonly string androidRewardedAdId = "ca-app-pub-3940256099942544/5224354917";
+        //private readonly string androidInterstitialAdId = "ca-app-pub-3940256099942544/1033173712";
+        //private readonly string androidBannerAdId = "ca-app-pub-3940256099942544/6300978111";
+        //private readonly string androidNativeOverlayAdId = "ca-app-pub-3940256099942544/2247696110";
 
         //private readonly string iosAppId = "ca-app-pub-3940256099942544~1458002511";
         //private readonly string iosBannerAdId = "ca-app-pub-3940256099942544/2934735716";
@@ -40,10 +40,11 @@ namespace BeachHero
         //private readonly string iosRewardedAdId = "ca-app-pub-3940256099942544/1712485313";
 
         // orginal id's -------------------------------------
-        // private string androidAppId = "";
-        //private string androidRewardedAdId = "";
-        //private string androidInterstitialAdId = "";
-        //private string androidBannerAdId = "ca-app-pub-9358123754024746/6409681398";
+        private string androidAppId = "ca-app-pub-9358123754024746~1633649821";
+        private string androidRewardedAdId = "ca-app-pub-9358123754024746/5276185434";
+        private string androidInterstitialAdId = "ca-app-pub-9358123754024746/4837201738";
+        private string androidBannerAdId = "ca-app-pub-9358123754024746/6409681398";
+        private readonly string androidNativeOverlayAdId = "ca-app-pub-3940256099942544/2247696110"; //Test ID
 
         //private string iosAppId = "";
         //private string iosBannerAdId = "";
@@ -109,7 +110,7 @@ namespace BeachHero
             RequestRewardedAD();
 
             // Request Native Overlay Ad
-            RequestNativeOverlay();
+            //  RequestNativeOverlay();
         }
         #endregion
 
@@ -123,7 +124,6 @@ namespace BeachHero
             return SaveSystem.LoadBool(StringUtils.NO_ADS_PURCHASED, false);
         }
         #endregion
-
 
         #region NativeOverlay AD
         public void RequestNativeOverlay()

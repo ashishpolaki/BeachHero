@@ -102,6 +102,7 @@ namespace BeachHero
             GameController.GetInstance.LevelController.OnDrawPathError += HandleShowPanels;
             GameController.GetInstance.LevelController.OnCompleteSpawnAnimation += HandleCompleteSPawnAnimation;
             GameController.GetInstance.LevelController.OnDrownCharactersCollected += AnimateTopButtons;
+            GameController.GetInstance.PowerupController.OnBalanceChange += HandlePowerupBalance;
         }
         public override void Close()
         {
@@ -127,6 +128,7 @@ namespace BeachHero
             GameController.GetInstance.LevelController.OnDrawPathError -= HandleShowPanels;
             GameController.GetInstance.LevelController.OnCompleteSpawnAnimation -= HandleCompleteSPawnAnimation;
             GameController.GetInstance.LevelController.OnDrownCharactersCollected -= AnimateTopButtons;
+            GameController.GetInstance.PowerupController.OnBalanceChange -= HandlePowerupBalance;
         }
         #endregion
 
@@ -223,6 +225,21 @@ namespace BeachHero
         #endregion
 
         #region Handle Button Listener
+        private void HandlePowerupBalance(PowerupType powerupType)
+        {
+            switch (powerupType)
+            {
+                case PowerupType.SpeedBoost:
+                    speedBoostPowerupButton.UpdateBalance();
+                    break;
+                case PowerupType.Shield:
+                    shieldPowerupButton.UpdateBalance();
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private void OnBoatCustomize()
         {
             GameController.GetInstance.SetGameState(GameState.Paused);
@@ -248,7 +265,6 @@ namespace BeachHero
         }
         private void OnRetry()
         {
-            GameController.GetInstance.SetGameState(GameState.Paused);
             GameController.GetInstance.RetryLevel();
             GameController.GetInstance.StartGameplay();
             GameController.GetInstance.LevelController.PlaySpawnAnimations();

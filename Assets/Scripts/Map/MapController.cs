@@ -83,6 +83,16 @@ namespace BeachHero
         #endregion
 
         #region Properties
+
+        private int LevelsCount
+        {
+            get
+            {
+                if (levelDatabase == null || levelDatabase.LevelsList == null)
+                    return 0;
+                return levelDatabase.LevelsList.Length;
+            }
+        }
         public SplineSystem SplineSystem => splineSystem;
         public List<MapLevelSpawnData> MapLevels => mapLevels;
         public Transform LevelsParent => levelsParent;
@@ -107,6 +117,7 @@ namespace BeachHero
             }
             InitializeWater();
             ApplyLevelNumberTextStyle();
+            InitializeMapLevels();
         }
         private void OnEnable()
         {
@@ -138,7 +149,7 @@ namespace BeachHero
                 float currentY = pos.y;
                 float delta = currentY - lastPointerY;
                 Vector3 firstPos = mapLevels[0].levelVisual.transform.position;
-                Vector3 lastPos = mapLevels[MapLevels.Count - 1].levelVisual.transform.position;
+                Vector3 lastPos = mapLevels[LevelsCount - 1].levelVisual.transform.position;
                 Vector3 forward = CameraController.GetInstance.GetCameraForward(GameCameraType.Map);
                 float minY = firstPos.y - forward.y * cameraStartDistance;
                 float maxY = lastPos.y - forward.y * (cameraEndDistance - comingSoonOffsetFromLastLevel);
@@ -240,7 +251,7 @@ namespace BeachHero
             Vector3 levelPos = mapLevels[index].levelVisual.transform.position;
             Vector3 forward = CameraController.GetInstance.GetCameraForward(GameCameraType.Map);
             Vector3 firstPos = mapLevels[0].levelVisual.transform.position;
-            Vector3 lastPos = mapLevels[MapLevels.Count - 1].levelVisual.transform.position;
+            Vector3 lastPos = mapLevels[LevelsCount - 1].levelVisual.transform.position;
             float minY = firstPos.y - forward.y * cameraStartDistance;
             float maxY = lastPos.y - forward.y * (cameraEndDistance - comingSoonOffsetFromLastLevel);
             currentScrollY = levelPos.y - 7f;
@@ -389,11 +400,27 @@ namespace BeachHero
             SetupLevels();
             SetComingSoonText();
         }
+
+        private void InitializeMapLevels()
+        {
+            if (levelDatabase == null || levelDatabase.LevelsList == null)
+                return;
+
+            //Activate and deactivate level visuals based on the level database
+            for (int i = 0; i < mapLevels.Count; i++)
+            {
+                var levelVisual = mapLevels[i].levelVisual;
+                if (levelVisual == null)
+                    continue;
+                levelVisual.gameObject.SetActive(i < levelDatabase.LevelsList.Length);
+            }
+        }
+
         public void SetupLevels()
         {
             // Set level visuals to face camera
             Vector3 camRot = CameraController.GetInstance.GetCameraRotation(GameCameraType.Map);
-            for (int i = 0; i < mapLevels.Count; i++)
+            for (int i = 0; i < levelDatabase.LevelsList.Length; i++)
             {
                 var levelVisual = mapLevels[i].levelVisual;
                 if (levelVisual == null)
@@ -411,7 +438,7 @@ namespace BeachHero
         {
             if (comingSoonTxt != null && mapLevels.Count > 0)
             {
-                float Y = (mapLevels[^1].levelVisual.transform.position.y + comingSoonOffsetY);
+                float Y = (mapLevels[levelDatabase.LevelsList.Length - 1].levelVisual.transform.position.y + comingSoonOffsetY);
                 comingSoonTxt.transform.position = new Vector3(comingSoonTxt.transform.position.x, Y, 0);
             }
         }
@@ -452,8 +479,7 @@ namespace BeachHero
             var levelData = levelDatabase.GetLevelDataByIndex(levelIndex);
             mapLevels[levelIndex].levelVisual.OnLevelComplete(levelData.StarsEarned);
             //Next level should be unlocked
-            DebugUtils.Log($"levelIndex: {levelIndex}, mapLevels: {mapLevels.Count}");
-            if (GameController.GetInstance.HighestCompletedLevelIndex + 1 <= mapLevels.Count)
+            if (GameController.GetInstance.HighestCompletedLevelIndex + 1 <= LevelsCount)
             {
                 if (levelIndex + 1 < mapLevels.Count && mapLevels[levelIndex + 1].levelVisual.State == LevelVisualState.Locked)
                 {
@@ -465,7 +491,7 @@ namespace BeachHero
         public void SyncCharacterToLevel()
         {
             int currentLevelIndex = GameController.GetInstance.HighestCompletedLevelIndex;
-            if (currentLevelIndex >= 0 && currentLevelIndex < mapLevels.Count)
+            if (currentLevelIndex >= 0 && currentLevelIndex < LevelsCount)
             {
                 selectedLevelIndex = currentLevelIndex;
                 currentSplinePercent = mapLevels[selectedLevelIndex].splinePercent;

@@ -8,6 +8,7 @@ namespace BeachHero
     {
         [Header("Google Play Leaderboard")]
         [SerializeField] private string leaderboardID;
+        [SerializeField] private bool debugLogEnabled = false;
 
         private bool isInitialized;
         private bool isAuthenticating;
@@ -18,7 +19,7 @@ namespace BeachHero
         {
             if (isInitialized)
                 return;
-            PlayGamesPlatform.DebugLogEnabled = true;
+            PlayGamesPlatform.DebugLogEnabled = debugLogEnabled;
             PlayGamesPlatform.Activate();
             isInitialized = true;
 

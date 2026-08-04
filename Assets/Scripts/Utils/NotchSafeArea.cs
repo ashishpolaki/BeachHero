@@ -44,8 +44,6 @@ namespace BeachHero
         {
             Rect safeArea = Screen.safeArea;
 
-            DebugUtils.Log($"NotchSafeArea: Refresh called. Safe Area: {safeArea}," +
-                $" Screen Size: {Screen.width}x{Screen.height}, Orientation: {Screen.orientation}");
             if (safeArea != lastSafeArea || Screen.width != lastScreenSize.x || Screen.height != lastScreenSize.y || Screen.orientation != lastOrientation || forceRefresh)
             {
                 lastScreenSize.x = Screen.width;
