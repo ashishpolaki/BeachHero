@@ -86,7 +86,6 @@ namespace BeachHero
             ResetTopButtons();
 
             //Powerups
-            //  magnetPowerupButton.Init(PowerupType.Magnet, SaveSystem.LoadInt(StringUtils.MAGNET_BALANCE 3);
             speedBoostPowerupButton.Init(PowerupType.SpeedBoost);
             shieldPowerupButton.Init(PowerupType.Shield);
 

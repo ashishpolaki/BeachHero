@@ -69,6 +69,7 @@ namespace BeachHero
         private async void OnSkipLevelASync()
         {
             await UIController.GetInstance.LoadingUI.ShowLoadingScreen();
+            GameController.GetInstance.LevelController.SaveCurrentLevelProgress();
             GameController.GetInstance.SkipLevel();
             UIController.GetInstance.ScreenEvent(ScreenType.Map, UIScreenEvent.Open);
             await UIController.GetInstance.LoadingUI.DisableLoadingScreen();
