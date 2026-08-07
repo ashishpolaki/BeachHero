@@ -492,7 +492,7 @@ namespace BeachHero
                 return false;
             }
 
-            if (interstitial == null || interstitial.CanShowAd())
+            if (interstitial == null || !interstitial.CanShowAd())
             {
                 RequestInterstitial();
                 return false;

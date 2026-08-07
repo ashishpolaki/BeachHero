@@ -64,6 +64,7 @@ namespace BeachHero
         [Tooltip("Number of characters saved by the player in current level")]
         private int drownCharactersCounter;
         private int levelFailCounter;
+        private float levelElapsedTime;
         #endregion
 
         #region Properties
@@ -411,13 +412,24 @@ namespace BeachHero
                 StarsEarned = 1;
             }
         }
-        public void SetStarsForCurrentLevel()
+        public void SaveCurrentLevelProgress()
         {
+            // Set the stars for the current level
             if (StarsEarned == 0)
             {
                 UpdateStarsCount();
             }
             levelDatabaseSO.SetStarsForLevel(currentLevelIndex, StarsEarned);
+
+            // Set the score for the current level
+            float levelTime = levelDatabaseSO.GetLevelByIndex(currentLevelIndex).LevelTime;
+            float remainingTime = Mathf.Max(0f, levelTime - levelElapsedTime);
+            int score = IntUtils.LEADERBOARD_LEVEL_MULTIPLIER +
+                StarsEarned * IntUtils.LEADERBOARD_STAR_MULTIPLIER +
+                Mathf.RoundToInt(remainingTime * IntUtils.LEADERBOARD_REMAINING_TIME_MULTIPLIER);
+            levelDatabaseSO.SetScoreForLevel(currentLevelIndex, score);
+
+            LeaderboardController.GetInstance.SubmitScore();
             MapController.GetInstance.OnLevelComplete(currentLevelIndex);
         }
         #endregion
@@ -517,6 +529,7 @@ namespace BeachHero
             {
                 return;
             }
+            levelElapsedTime += Time.deltaTime;
 
             if (levelPhase != LevelPhase.CompletedFail)
             {
@@ -534,6 +547,7 @@ namespace BeachHero
             isPlayerInitialRotationSet = false;
             gameCurrencyCount = 0;
             drownCharactersCounter = 0;
+            levelElapsedTime = 0f;
             ReturnToPoolEverything();
             hasDrawnPath = false;
             isPathDrawingAllowed = false;

@@ -30,7 +30,6 @@ namespace BeachHero
             homeButton.OnButtonReleased += (OnHomeASync);
             watchAdTween = TweenManager.Scale(Vector3.one, Vector3.one * 1.1f, multiplyGameCurrencyButton.transform, 0.8f, LitMotion.Ease.InOutSine,
                  loops: -1, loopType: LitMotion.LoopType.Yoyo);
-            LeaderboardController.GetInstance.SubmitScore();
             openAnimator.BuildSequence();
             openAnimator.OnComplete(() => UIController.GetInstance.EndTransition());
             openAnimator.Play();

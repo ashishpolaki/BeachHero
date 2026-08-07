@@ -172,7 +172,7 @@ namespace BeachHero
         }
         public void LevelWinFeedback()
         {
-            levelController.SetStarsForCurrentLevel();
+            levelController.SaveCurrentLevelProgress();
             UIController.GetInstance.ScreenEvent(ScreenType.Results, UIScreenEvent.Open, ScreenTabType.LevelWin);
             AudioController.GetInstance.PlaySound(AudioType.LevelWin);
         }

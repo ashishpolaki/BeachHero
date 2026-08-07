@@ -104,8 +104,11 @@ namespace BeachHero
                 levelDatas[i].LevelNumber = i + 1;
                 levelDatas[i].SetState(LevelVisualState.Locked);
                 levelDatas[i].StarsEarned = 0;
+                levelDatas[i].Score = 0;
                 SaveSystem.SaveInt($"{StringUtils.STARS_EARNED_PREFIX}{i}", 0);
+                SaveSystem.SaveInt($"{StringUtils.SCORE_EARNED_PREFIX}{i}", 0);
             }
+            SaveSystem.SaveInt(StringUtils.TOTAL_SCORE, 0);
         }
         private void OnValidate()
         {
@@ -146,6 +149,7 @@ namespace BeachHero
                     levelDatas[i].SetState(LevelVisualState.Locked);
                 }
                 levelDatas[i].StarsEarned = SaveSystem.LoadInt($"{StringUtils.STARS_EARNED_PREFIX}{i}", 0);
+                levelDatas[i].Score = SaveSystem.LoadInt($"{StringUtils.SCORE_EARNED_PREFIX}{i}", 0);
             }
         }
 
@@ -157,24 +161,35 @@ namespace BeachHero
         {
             return levelDatas[index % levelDatas.Count];
         }
-        public void SetStarsForLevel(int levelIndex, int medals)
+        public void SetStarsForLevel(int levelIndex, int stars)
         {
             if (levelIndex >= 0 && levelIndex < levelDatas.Count)
             {
-                if (medals > levelDatas[levelIndex].StarsEarned)
+                if (stars > levelDatas[levelIndex].StarsEarned)
                 {
-                    levelDatas[levelIndex].StarsEarned = medals;
-                    SaveSystem.SaveInt($"{StringUtils.STARS_EARNED_PREFIX}{levelIndex}", medals);
+                    levelDatas[levelIndex].StarsEarned = stars;
+                    SaveSystem.SaveInt($"{StringUtils.STARS_EARNED_PREFIX}{levelIndex}", stars);
+                }
+            }
+        }
+
+        public void SetScoreForLevel(int levelIndex, int score)
+        {
+            if (levelIndex >= 0 && levelIndex < levelDatas.Count)
+            {
+                if (score > levelDatas[levelIndex].Score)
+                {
+                    levelDatas[levelIndex].Score = score;
+                    SaveSystem.SaveInt($"{StringUtils.SCORE_EARNED_PREFIX}{levelIndex}", score);
                 }
             }
 
-            //Set TotalMedals as well
-            int totalmedals = 0;
+            int totalScore = 0;
             for (int i = 0; i < levelDatas.Count; i++)
             {
-                medals += levelDatas[i].StarsEarned;
+                totalScore += levelDatas[i].Score;
             }
-            SaveSystem.SaveInt(StringUtils.TOTAL_STARS, totalmedals);
+            SaveSystem.SaveInt(StringUtils.TOTAL_SCORE, totalScore);
         }
         #endregion
     }

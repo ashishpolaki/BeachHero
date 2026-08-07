@@ -35,8 +35,10 @@ namespace BeachHero
         public const string SOUND_VOLUME = "SoundVolume";
         public const string MUSIC_VOLUME = "MusicVolume";
 
-        //Stars
-        public const string TOTAL_STARS = "TotalStars";
+        //Stars & Score
+        public const string TOTAL_SCORE = "TotalScore";
+        public const string STARS_EARNED_PREFIX = "StarsEarned_Level_";
+        public const string SCORE_EARNED_PREFIX = "Score_Level_";
 
         //Haptics
         public const string HAPTICS_ON = "Haptics";
@@ -70,9 +72,6 @@ namespace BeachHero
 
         //Game Currency
         public const string GAME_CURRENCY_BALANCE = "GameCurrencyBalance";
-
-        //Stars
-        public const string STARS_EARNED_PREFIX = "StarsEarned_Level_";
 
         //ADS
         public const string NO_ADS_PURCHASED = "NoAdsPurchased";
@@ -130,6 +129,11 @@ namespace BeachHero
         //Ads
         public const int INTERSTITIAL_AD_INTERVAL = 3;
         public const int ADS_START_LEVEL = 1;
+
+        //Leaderboard
+        public const int LEADERBOARD_LEVEL_MULTIPLIER = 1000;
+        public const int LEADERBOARD_STAR_MULTIPLIER = 50;
+        public const int LEADERBOARD_REMAINING_TIME_MULTIPLIER = 10;
     }
 
 }

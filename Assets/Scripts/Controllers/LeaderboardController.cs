@@ -49,6 +49,8 @@ namespace BeachHero
         #region Leaderboard
         public void SubmitScore()
         {
+            int totalScore = SaveSystem.LoadInt(StringUtils.TOTAL_SCORE, 0);
+
             if (string.IsNullOrEmpty(leaderboardID))
             {
                 DebugUtils.LogError("Leaderboard ID not set");
@@ -62,15 +64,11 @@ namespace BeachHero
                 return;
             }
 
-            int totalStars = SaveSystem.LoadInt(StringUtils.TOTAL_STARS, 0);
-            int totalLevels = GameController.GetInstance.HighestCompletedLevelIndex + 1;
-            int score = (totalStars * 100) + (totalLevels * 5);
-
-            PlayGamesPlatform.Instance.ReportScore(score, leaderboardID, success =>
+            PlayGamesPlatform.Instance.ReportScore(totalScore, leaderboardID, success =>
             {
                 if (success)
                 {
-                    DebugUtils.Log($"Score {score} submitted successfully");
+                    DebugUtils.Log($"Score {totalScore} submitted successfully");
                 }
                 else
                 {
