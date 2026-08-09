@@ -15,6 +15,7 @@ namespace BeachHero
         [SerializeField] private float movementSpeed;
         [SerializeField] private float rotationSpeed;
         [SerializeField] private float speedMultiplier;
+        [SerializeField] private float victoryObstacleClearRadius = 10f;
         #endregion
 
         #region Private Variables
@@ -214,13 +215,15 @@ namespace BeachHero
             currentBoat.SetBoatInit(boatIndex, boatColorIndex);
         }
         #endregion
-
+      
         #region Animation
         public async void PlayVictoryAnimation()
         {
             currentBoat.PlayVictoryAnimation();
             CameraController.GetInstance.SetCameraFollow(this.transform, GameCameraType.VictoryClose);
             CameraController.GetInstance.SetActiveCamera(GameCameraType.VictoryClose);
+            var cameraPos = CameraController.GetInstance.GetCameraPosition(GameCameraType.VictoryClose);
+            GameController.GetInstance.LevelController.DisableStaticObstaclesNearCamera(cameraPos, victoryObstacleClearRadius);
             AudioController.GetInstance.PlaySound(AudioType.PlayerCelebrate);
             await Task.Delay(1000); // Wait for 1 seconds to allow the animation to play
             GameController.GetInstance.LevelWinFeedback();

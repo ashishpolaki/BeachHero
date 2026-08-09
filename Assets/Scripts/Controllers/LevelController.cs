@@ -630,6 +630,33 @@ namespace BeachHero
         #endregion
 
         #region Static obstacle
+        public void DisableStaticObstaclesNearCamera(Vector3 centerPosition, float distanceThreshold = 5f)
+        {
+            ObstacleType[] staticTypes = new ObstacleType[]
+            {
+        ObstacleType.Rock,
+        ObstacleType.Barrel,
+        ObstacleType.Iceberg,
+        ObstacleType.ShipWreck
+            };
+            foreach (var type in staticTypes)
+            {
+                if (obstaclesDictionary.TryGetValue(type, out var obstacleList))
+                {
+                    foreach (var obstacle in obstacleList)
+                    {
+                        if (obstacle != null && obstacle.gameObject.activeSelf)
+                        {
+                            if (Vector3.Distance(obstacle.transform.position, centerPosition) <= distanceThreshold)
+                            {
+                                obstacle.gameObject.SetActive(false);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         private void SpawnStaticObstacles(ObstacleData obstacle)
         {
             if (obstacle.StaticObstacles != null && obstacle.StaticObstacles.Length > 0)

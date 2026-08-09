@@ -3,8 +3,11 @@ using BeachHero;
 
 #if UNITY_ANDROID
 using Unity.Notifications.Android;
+using Unity.Android;
 using AndroidImportance = Unity.Notifications.Android.Importance;
 using System;
+using UnityEngine.Android;
+
 #else
 using AndroidImportance = System.Int32;
 #endif
@@ -76,6 +79,14 @@ namespace Shared.PushNotifications
         {
             if (channelRegistered)
                 return;
+
+#if UNITY_ANDROID
+            // Request permission on Android 13 (API level 33) and above
+            if (!Permission.HasUserAuthorizedPermission("android.permission.POST_NOTIFICATIONS"))
+            {
+                Permission.RequestUserPermission("android.permission.POST_NOTIFICATIONS");
+            }
+#endif
 
             var channel = new AndroidNotificationChannel
             {
