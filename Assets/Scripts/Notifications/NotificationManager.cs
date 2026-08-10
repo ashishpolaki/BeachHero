@@ -59,19 +59,27 @@ namespace Shared.PushNotifications
             DontDestroyOnLoad(gameObject);
 
             Initialize();
+
+            CancelAll();
         }
 
         private void OnApplicationPause(bool pause)
         {
             if (pause)
             {
-                Cancel(androidChannelId);
+                CancelAll();
                 Schedule(androidChannelId, androidChannelName, androidChannelDescription, DateTime.UtcNow.AddSeconds(notificationDelaySeconds), string.Empty);
             }
             else
             {
-                Cancel(androidChannelId);
+                CancelAll();
             }
+        }
+
+        private void OnApplicationQuit()
+        {
+            CancelAll();
+            Schedule(androidChannelId, androidChannelName, androidChannelDescription, DateTime.UtcNow.AddSeconds(notificationDelaySeconds), string.Empty);
         }
         #endregion
 

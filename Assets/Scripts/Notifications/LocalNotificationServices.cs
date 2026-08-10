@@ -3,7 +3,6 @@ using BeachHero;
 
 #if UNITY_ANDROID
 using Unity.Notifications.Android;
-using Unity.Android;
 using AndroidImportance = Unity.Notifications.Android.Importance;
 using System;
 using UnityEngine.Android;
@@ -80,13 +79,13 @@ namespace Shared.PushNotifications
             if (channelRegistered)
                 return;
 
-#if UNITY_ANDROID
             // Request permission on Android 13 (API level 33) and above
-            if (!Permission.HasUserAuthorizedPermission("android.permission.POST_NOTIFICATIONS"))
+            bool isNotificationPermissionGranted = Permission.HasUserAuthorizedPermission("android.permission.POST_NOTIFICATIONS");
+            DebugUtils.Log($"[Push] Android notification permission: {isNotificationPermissionGranted}");
+            if (!isNotificationPermissionGranted)
             {
                 Permission.RequestUserPermission("android.permission.POST_NOTIFICATIONS");
             }
-#endif
 
             var channel = new AndroidNotificationChannel
             {
@@ -97,10 +96,7 @@ namespace Shared.PushNotifications
             };
             AndroidNotificationCenter.RegisterNotificationChannel(channel);
             channelRegistered = true;
-            if (log)
-            {
-                DebugUtils.Log($"[Push] Android channel '{channelId}' registered.");
-            }
+            DebugUtils.Log($"[Push] Android channel '{channelId}' registered.");
         }
 
         public void Schedule(LocalNotificationRequest request)
@@ -116,11 +112,8 @@ namespace Shared.PushNotifications
                 IntentData = request.Payload ?? string.Empty
             };
             int id = AndroidNotificationCenter.SendNotification(notification, channelId);
-            if (log)
-            {
-                DebugUtils.Log($"[Push] Scheduled Android notification '{request.Title}' ({id}) for {request.FireTimeUtc}.");
-            }
-          //  return id.ToString();
+            DebugUtils.Log($"[Push] Scheduled Android notification '{request.Title}' ({id}) for {request.FireTimeUtc}.");
+            //  return id.ToString();
         }
 
         public void Cancel(string platformId)
