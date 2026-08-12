@@ -7,6 +7,8 @@ namespace BeachHero
     {
         [SerializeField] private Button homeButton;
         [SerializeField] private Transform content;
+        [SerializeField] private RectTransform storeBoardBg;
+        [SerializeField] private float extraBgHeight = 200f;
         private int currentPurchaseIndex;
 
         public RealMoneyProductUI[] realMoneyProductsList;
@@ -17,6 +19,7 @@ namespace BeachHero
         public override void Open(ScreenTabType screenTabType)
         {
             base.Open(screenTabType);
+            AdjustStoreBoardBgHeight();
             InitializeIAPItems();
             InitializeRewardedADItems();
             InitializeGameCurrencyProducts();
@@ -31,6 +34,20 @@ namespace BeachHero
         #endregion
 
         #region Initialize
+        private void AdjustStoreBoardBgHeight()
+        {
+            if (storeBoardBg != null && UIController.GetInstance != null && UIController.GetInstance.Canvas != null)
+            {
+                RectTransform canvasRect = UIController.GetInstance.Canvas.GetComponent<RectTransform>();
+                if (canvasRect != null)
+                {
+                    float canvasHeight = canvasRect.rect.height;
+                    float decreaseBgHeight = Screen.height - Screen.safeArea.height;
+                    storeBoardBg.sizeDelta = new Vector2(storeBoardBg.sizeDelta.x, canvasHeight +extraBgHeight - decreaseBgHeight);
+                }
+            }
+        }
+
         private void InitializeRewardedADItems()
         {
             for (int i = 0; i < rewardAdItems.Length; i++)
