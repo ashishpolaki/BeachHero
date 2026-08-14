@@ -16,13 +16,19 @@ namespace BeachHero
         //    lineRenderer.positionCount = curvePoints.Length;
         //    lineRenderer.SetPositions(curvePoints);
         //}
-        public void InitializeTrail(Vector3[] positions,float speed)
+        public void InitializeTrail(Vector3[] positions, float speed)
         {
             trailRenderer.Clear();
             transparentRenderer.Clear();
-            cachedPositions = positions.SubArray(0, positions.Length - 3);
-            trailRenderer.AddPositions(cachedPositions);
-            transparentRenderer.AddPositions(cachedPositions);
+
+            if (positions != null && positions.Length > 0)
+            {
+                int count = Mathf.Clamp(positions.Length - 3, 1, positions.Length);
+                cachedPositions = positions.SubArray(0, count);
+                trailRenderer.AddPositions(cachedPositions);
+                transparentRenderer.AddPositions(cachedPositions);
+            }
+
             SetTrailSpeed(speed);
         }
         public void TrimTrailFromStart()

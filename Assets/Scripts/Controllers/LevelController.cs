@@ -144,8 +144,20 @@ namespace BeachHero
                 if (drawnPoints.Count >= 4)
                 {
                     smoothedDrawnPoints = CatmullSplineUtils.GetEvenlySpacedPoints(drawnPoints, spacing);
-                    GameController.GetInstance.PowerupController.ActivateSelectedPowerups();
-                    StartSimulation();
+                    if (smoothedDrawnPoints != null && smoothedDrawnPoints.Count >= 2)
+                    {
+                        GameController.GetInstance.PowerupController.ActivateSelectedPowerups();
+                        StartSimulation();
+                    }
+                    else
+                    {
+                        hasDrawnPath = false;
+                        drawnPoints.Clear();
+                        if (isPathDrawingAllowed)
+                        {
+                            OnDrawPathError?.Invoke();
+                        }
+                    }
                 }
                 else
                 {
