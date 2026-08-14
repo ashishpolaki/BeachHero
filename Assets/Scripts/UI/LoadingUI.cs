@@ -77,5 +77,10 @@ namespace BeachHero
             await Task.Delay((int)milliSeconds);
             SetActiveLoadingScreen(false);
         }
+
+        public void EnableLoadingScreen(bool value)
+        {
+            SetActiveLoadingScreen(value);
+        }
     }
 }

@@ -17,7 +17,8 @@ namespace BeachHero
         AdNotLoaded,
         Settings,
         Purchase,
-        RateUs
+        RateUs,
+        Login
     }
     public interface IScreen
     {

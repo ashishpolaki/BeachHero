@@ -132,6 +132,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIController
       objectReference: {fileID: 0}
+    - target: {fileID: 3075912564308695415, guid: 59a95909a6811b248a5809ee9d6a6dd6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5395178095304450007, guid: 59a95909a6811b248a5809ee9d6a6dd6,
         type: 3}
       propertyPath: m_Camera
@@ -232,7 +237,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _GradientTex:
-        m_Texture: {fileID: 957692215}
+        m_Texture: {fileID: 629965959}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -594,7 +599,7 @@ GameObject:
   - component: {fileID: 481375572}
   - component: {fileID: 481375573}
   m_Layer: 0
-  m_Name: LeaderboardController
+  m_Name: PlayGamesController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -624,7 +629,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 481375571}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84ae7ed238a258547a023916076d1979, type: 3}
+  m_Script: {fileID: 11500000, guid: e09cefab0fcddb541886b0052409ab01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   leaderboardID: CgkIocWC5K4TEAIQAQ
@@ -685,7 +690,7 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 500959292}
   m_Enabled: 1
---- !u!28 &957692215
+--- !u!28 &629965959
 Texture2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -731,6 +736,37 @@ Texture2D:
     offset: 0
     size: 0
     path: 
+--- !u!1 &692528675
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 692528676}
+  m_Layer: 0
+  m_Name: NetworkController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &692528676
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 692528675}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1117133347
 GameObject:
   m_ObjectHideFlags: 0
@@ -1288,6 +1324,7 @@ SceneRoots:
   - {fileID: 1117133348}
   - {fileID: 404070988}
   - {fileID: 1215954460}
+  - {fileID: 692528676}
   - {fileID: 1629038579}
   - {fileID: 481375572}
   - {fileID: 126602986}

@@ -429,7 +429,7 @@ namespace BeachHero
                 Mathf.RoundToInt(remainingTime * IntUtils.LEADERBOARD_REMAINING_TIME_MULTIPLIER);
             levelDatabaseSO.SetScoreForLevel(currentLevelIndex, score);
 
-            LeaderboardController.GetInstance.SubmitScore();
+            PlayGamesController.GetInstance.SubmitScore();
             MapController.GetInstance.OnLevelComplete(currentLevelIndex);
         }
         #endregion

@@ -17,6 +17,7 @@ namespace BeachHero
         [SerializeField] private UIButton storeButton;
         [SerializeField] private UIButton settingsButton;
         [SerializeField] private UIButton leaderBoardButton;
+        [SerializeField] private UIButton gpgsSignInButton;
         [SerializeField] private UIButton shareGameButton;
         [SerializeField] private UIButton noAdsButton;
         [SerializeField] private TextMeshProUGUI levelNumberText;
@@ -88,6 +89,7 @@ namespace BeachHero
             storeButton.OnButtonReleased += (OnStoreButtonClicked);
             settingsButton.OnButtonReleased += (OnSettingsButtonClick);
             leaderBoardButton.OnButtonReleased += OpenLeaderboards;
+            if (gpgsSignInButton != null) gpgsSignInButton.OnButtonReleased += OnGPGSSignInClicked;
             shareGameButton.OnButtonReleased += ShareClicked;
             noAdsButton.OnButtonReleased += NoAdsButtonClicked;
         }
@@ -99,6 +101,7 @@ namespace BeachHero
             storeButton.OnButtonReleased -= (OnStoreButtonClicked);
             settingsButton.OnButtonReleased -= (OnSettingsButtonClick);
             leaderBoardButton.OnButtonReleased -= OpenLeaderboards;
+            if (gpgsSignInButton != null) gpgsSignInButton.OnButtonReleased -= OnGPGSSignInClicked;
             shareGameButton.OnButtonReleased -= ShareClicked;
             noAdsButton.OnButtonReleased -= NoAdsButtonClicked;
         }
@@ -125,7 +128,16 @@ namespace BeachHero
 
         private void OpenLeaderboards()
         {
-            LeaderboardController.GetInstance.ShowLeaderboardUI();
+            if (!PlayGamesController.GetInstance.IsAuthenticated)
+            {
+                return;
+            }
+            PlayGamesController.GetInstance.ShowLeaderboardUI();
+        }
+
+        private void OnGPGSSignInClicked()
+        {
+            PlayGamesController.GetInstance.SignIn();
         }
 
         private void OnSettingsButtonClick()

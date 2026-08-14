@@ -21,9 +21,6 @@ namespace BeachHero
         private int interstitialCounter = 0;
         private string gameName = "Beach Hero";
 
-        #region Properties
-        private bool IsInternetAvailable => Application.internetReachability != NetworkReachability.NotReachable;
-        #endregion
 
         #region Ad Id's
         // test id's ----------------------------------------
@@ -95,7 +92,7 @@ namespace BeachHero
         }
         public void RequestADs()
         {
-            if (!IsInternetAvailable)
+            if (!NetworkController.IsInternetAvailable)
             {
                 return;
             }
@@ -289,7 +286,7 @@ namespace BeachHero
         }
         public void RequestRewardedAD()
         {
-            if (!IsInternetAvailable)
+            if (!NetworkController.IsInternetAvailable)
             {
                 return;
             }
@@ -338,16 +335,15 @@ namespace BeachHero
             {
                 pendingRewardCallback = onUserEarnedReward;
             }
-            if (!IsInternetAvailable)
+            if (!NetworkController.IsInternetAvailable)
             {
                 // Show no internet dialog
-                UIController.GetInstance.ScreenEvent(ScreenType.NoInternet, UIScreenEvent.Push);
+                NetworkController.ShowNoInternetScreen(NetworkActionType.RewardedAd);
                 return;
             }
             //If rewarded ad not loaded
             if (rewardedAd == null || !rewardedAd.CanShowAd())
             {
-                UIController.GetInstance.ScreenEvent(ScreenType.NoInternet, UIScreenEvent.Push);
                 RequestRewardedAD();
                 return;
             }
@@ -416,7 +412,7 @@ namespace BeachHero
         #region Interstitial AD
         public void RequestInterstitial()
         {
-            if (!IsInternetAvailable || NoAdsPurchased())
+            if (!NetworkController.IsInternetAvailable || NoAdsPurchased())
             {
                 return;
             }
@@ -469,7 +465,7 @@ namespace BeachHero
         }
         public bool ShouldShowInterstitial()
         {
-            if (!IsInternetAvailable || NoAdsPurchased())
+            if (!NetworkController.IsInternetAvailable || NoAdsPurchased())
             {
                 return false;
             }
@@ -552,7 +548,7 @@ namespace BeachHero
         #region Banner AD
         public void RequestBanner()
         {
-            if (!IsInternetAvailable || NoAdsPurchased())
+            if (!NetworkController.IsInternetAvailable || NoAdsPurchased())
             {
                 return;
             }
@@ -582,7 +578,7 @@ namespace BeachHero
 
         public void HideBanner()
         {
-            if (!IsInternetAvailable || NoAdsPurchased())
+            if (!NetworkController.IsInternetAvailable || NoAdsPurchased())
             {
                 return;
             }
@@ -602,7 +598,7 @@ namespace BeachHero
 
         public void ShowBanner()
         {
-            if (!IsInternetAvailable || NoAdsPurchased())
+            if (!NetworkController.IsInternetAvailable || NoAdsPurchased())
             {
                 return;
             }

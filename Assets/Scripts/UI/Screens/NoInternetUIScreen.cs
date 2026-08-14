@@ -29,14 +29,7 @@ namespace BeachHero
         {
             AudioController.GetInstance.PlaySound(AudioType.Swoosh);
             UIController.GetInstance.ScreenEvent(ScreenType.NoInternet, UIScreenEvent.Close);
-            if (AdController.GetInstance.IsRewardedADLoaded())
-            {
-                AdController.GetInstance.ShowRewardedAd();
-            }
-            else
-            {
-                AdController.GetInstance.RequestRewardedAD();
-            }
+            NetworkController.ExecuteRetry();
         }
     }
 }

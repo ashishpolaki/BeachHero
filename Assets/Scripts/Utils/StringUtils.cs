@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace BeachHero
 {
     public class StringUtils
@@ -39,6 +41,10 @@ namespace BeachHero
         public const string TOTAL_SCORE = "TotalScore";
         public const string STARS_EARNED_PREFIX = "StarsEarned_Level_";
         public const string SCORE_EARNED_PREFIX = "Score_Level_";
+
+        //Auth & Login 
+        [Tooltip("0 = First Launch, 1 = GPGS, 2 = Guest")]
+        public const string AUTH_LOGIN_TYPE = "Auth_LoginType";
 
         //Haptics
         public const string HAPTICS_ON = "Haptics";

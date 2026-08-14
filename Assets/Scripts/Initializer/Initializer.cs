@@ -5,9 +5,19 @@ namespace BeachHero
 {
     public class Initializer : MonoBehaviour
     {
+        private int loginType = 0;
         private void Awake()
         {
-            LeaderboardController.GetInstance.InitializeGPGS();
+            loginType = SaveSystem.LoadInt(StringUtils.AUTH_LOGIN_TYPE, 0);
+            if (loginType == 0)
+            {
+                UIController.GetInstance.LoadingUI.EnableLoadingScreen(false);
+                UIController.GetInstance.ScreenEvent(ScreenType.Login, UIScreenEvent.Open, ScreenTabType.None);
+            }
+            else 
+            {
+                UIController.GetInstance.LoadingUI.EnableLoadingScreen(true);
+            }
         }
 
         private void Start()
@@ -64,11 +74,23 @@ namespace BeachHero
 
             // wait a little to avoid freezing all at once
             await Task.Delay(100);
-            await UIController.GetInstance.LoadingUI.LoadSceneAsync(StringUtils.GAME_SCENE);
-            GameController.GetInstance.SpawnLevel();
-            await SceneLoader.GetInstance.UnloadScene(StringUtils.INIT_SCENE);
-            AdController.GetInstance.Init();
-            await UIController.GetInstance.LoadingUI.DisableLoadingScreen();
+
+            // Check login status 
+            int loginType = SaveSystem.LoadInt(StringUtils.AUTH_LOGIN_TYPE, 0);
+            if (loginType == 1 || loginType == 2)
+            {
+                if (loginType == 1)
+                {
+                    // GPGS login: keep loading screen visible and silently authenticate GPGS
+                    await PlayGamesController.GetInstance.AuthenticateAsync();
+                }
+
+                await UIController.GetInstance.LoadingUI.LoadSceneAsync(StringUtils.GAME_SCENE);
+                GameController.GetInstance.SpawnLevel();
+                await SceneLoader.GetInstance.UnloadScene(StringUtils.INIT_SCENE);
+                AdController.GetInstance.Init();
+                await UIController.GetInstance.LoadingUI.DisableLoadingScreen();
+            }
         }
     }
 }
