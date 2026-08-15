@@ -1,8 +1,10 @@
-using System;
-using System.Threading.Tasks;
-using UnityEngine;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
+using GooglePlayGames.BasicApi.SavedGame;
+using System;
+using System.Text;
+using System.Threading.Tasks;
+using UnityEngine;
 
 namespace BeachHero
 {
@@ -11,6 +13,13 @@ namespace BeachHero
         [Header("Google Play Games Settings")]
         [SerializeField] private string leaderboardID;
         [SerializeField] private bool debugLogEnabled = false;
+
+        [Header("Save Settings")]
+        private bool isLoading = false;
+        private bool isSaving;
+        [SerializeField] private string fileName = "MySaveFile";
+
+
 
         #region Properties
         public bool IsAuthenticated => PlayGamesPlatform.Instance != null && PlayGamesPlatform.Instance.IsAuthenticated();
@@ -154,6 +163,102 @@ namespace BeachHero
 
             PlayGamesPlatform.Instance.ShowLeaderboardUI(leaderboardID);
         }
+        #endregion
+
+        #region Save & Load
+        public class SaveData
+        {
+            public string playerName;
+            public int score;
+        }
+        public void SaveDataToJson()
+        {
+            if (!IsAuthenticated)
+            {
+                DebugUtils.LogWarning("User is not authenticated to Google Play Services");
+                return;
+            }
+
+            if (isSaving)
+            {
+                DebugUtils.LogWarning("Already saving data");
+                return;
+            }
+
+            isSaving = true;
+            ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+            savedGameClient.OpenWithAutomaticConflictResolution(fileName, DataSource.ReadCacheOrNetwork, ConflictResolutionStrategy.UseMostRecentlySaved,
+                (status, metadata) =>
+                {
+                    if (status != SavedGameRequestStatus.Success)
+                    {
+                        DebugUtils.LogError("Error opening saved game");
+                        isSaving = false;
+                        return;
+                    }
+
+                    SaveData data = new SaveData
+                    {
+                        playerName = "John",
+                        score = UnityEngine.Random.Range(0, 101)
+                    };
+
+                    string jsonString = JsonUtility.ToJson(data);
+                    byte[] savedData = Encoding.ASCII.GetBytes(jsonString);
+
+                    SavedGameMetadataUpdate updatedMetadata = new SavedGameMetadataUpdate.Builder().WithUpdatedDescription("Saved game at " + DateTime.Now).Build();
+
+                    savedGameClient.CommitUpdate(
+                        metadata,
+                        updatedMetadata,
+                        savedData,
+                        (commitStatus, _) =>
+                        {
+                            isSaving = false;
+                            bool success = commitStatus == SavedGameRequestStatus.Success;
+                            DebugUtils.Log(success ? "Data saved successfully" : "Error saving data");
+                        });
+                });
+        }
+
+        public void LoadDataFromJson()
+        {
+            if (!IsAuthenticated)
+            {
+                DebugUtils.LogWarning("User is not authenticated to Google Play Services");
+                return;
+            }
+            if (isLoading)
+            {
+                DebugUtils.LogWarning("Already loading data");
+                return;
+            }
+            isLoading = true;
+            ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+            savedGameClient.OpenWithAutomaticConflictResolution(fileName, DataSource.ReadCacheOrNetwork, ConflictResolutionStrategy.UseMostRecentlySaved,
+                (status, metadata) =>
+                {
+                    if (status != SavedGameRequestStatus.Success)
+                    {
+                        DebugUtils.LogError("Error opening saved game");
+                        isLoading = false;
+                        return;
+                    }
+                    savedGameClient.ReadBinaryData(metadata, (readStatus, data) =>
+                    {
+                        isLoading = false;
+                        if (readStatus != SavedGameRequestStatus.Success)
+                        {
+                            DebugUtils.LogError("Error reading saved game data");
+                            return;
+                        }
+                        string jsonString = Encoding.ASCII.GetString(data);
+                        SaveData loadedData = JsonUtility.FromJson<SaveData>(jsonString);
+                        DebugUtils.Log($"Loaded Data: Player Name - {loadedData.playerName}, Score - {loadedData.score}");
+                    });
+                });
+        }
+
         #endregion
     }
 }

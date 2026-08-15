@@ -76,7 +76,6 @@ namespace BeachHero
             await Task.Delay(100);
 
             // Check login status 
-            int loginType = SaveSystem.LoadInt(StringUtils.AUTH_LOGIN_TYPE, 0);
             if (loginType == 1 || loginType == 2)
             {
                 if (loginType == 1)
@@ -94,3 +93,4 @@ namespace BeachHero
         }
     }
 }
+
