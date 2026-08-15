@@ -8,6 +8,7 @@ namespace BeachHero
         [SerializeField] private Button homeButton;
         [SerializeField] private Transform content;
         [SerializeField] private RectTransform storeBoardBg;
+        [SerializeField] private GameObject noAdsPackObject;
         [SerializeField] private float extraBgHeight = 200f;
         private int currentPurchaseIndex;
 
@@ -24,6 +25,7 @@ namespace BeachHero
             InitializeRewardedADItems();
             InitializeGameCurrencyProducts();
             AddListener();
+            NoAdsPackPurchase();
         }
         public override void Close()
         {
@@ -43,7 +45,7 @@ namespace BeachHero
                 {
                     float canvasHeight = canvasRect.rect.height;
                     float decreaseBgHeight = Screen.height - Screen.safeArea.height;
-                    storeBoardBg.sizeDelta = new Vector2(storeBoardBg.sizeDelta.x, canvasHeight +extraBgHeight - decreaseBgHeight);
+                    storeBoardBg.sizeDelta = new Vector2(storeBoardBg.sizeDelta.x, canvasHeight + extraBgHeight - decreaseBgHeight);
                 }
             }
         }
@@ -122,6 +124,7 @@ namespace BeachHero
         private void AddListener()
         {
             GameController.GetInstance.StoreController.OnStoreItemPurchaseAction += OnPurchaseSuccess;
+            GameController.GetInstance.StoreController.OnNoAdsPurchased += NoAdsPackPurchase;
             homeButton.ButtonRegister(OpenHomeButtonListener);
             //Real Money Products
             for (int i = 0; i < realMoneyProductsList.Length; i++)
@@ -157,6 +160,7 @@ namespace BeachHero
         private void RemoveListener()
         {
             GameController.GetInstance.StoreController.OnStoreItemPurchaseAction -= OnPurchaseSuccess;
+            GameController.GetInstance.StoreController.OnNoAdsPurchased -= NoAdsPackPurchase;
             homeButton.ButtonDeRegister(OpenHomeButtonListener);
             //Real Money Products
             for (int i = 0; i < realMoneyProductsList.Length; i++)
@@ -219,6 +223,13 @@ namespace BeachHero
             else
             {
                 UIController.GetInstance.ScreenEvent(ScreenType.Purchase, UIScreenEvent.Push, ScreenTabType.PurchasFail);
+            }
+        }
+        private void NoAdsPackPurchase()
+        {
+            if (AdController.GetInstance.NoAdsPurchased())
+            {
+                noAdsPackObject.SetActive(false);
             }
         }
 

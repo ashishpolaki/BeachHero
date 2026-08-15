@@ -112,11 +112,7 @@ namespace BeachHero
         #endregion
 
         #region No Ads
-        public void PurchasedNoADsPack()
-        {
-            SaveSystem.SaveBool(StringUtils.NO_ADS_PURCHASED, true);
-        }
-        private bool NoAdsPurchased()
+        public bool NoAdsPurchased()
         {
             return SaveSystem.LoadBool(StringUtils.NO_ADS_PURCHASED, false);
         }

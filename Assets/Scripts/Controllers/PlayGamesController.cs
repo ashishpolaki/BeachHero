@@ -11,7 +11,6 @@ namespace BeachHero
         [Header("Google Play Games Settings")]
         [SerializeField] private string leaderboardID;
         [SerializeField] private bool debugLogEnabled = false;
-        private bool isAuthenticating;
 
         #region Properties
         public bool IsAuthenticated => PlayGamesPlatform.Instance != null && PlayGamesPlatform.Instance.IsAuthenticated();
@@ -42,17 +41,8 @@ namespace BeachHero
                 return tcs.Task;
             }
 
-            if (isAuthenticating)
-            {
-                tcs.SetResult(false);
-                return tcs.Task;
-            }
-
-            isAuthenticating = true;
-
             PlayGamesPlatform.Instance.Authenticate(status =>
             {
-                isAuthenticating = false;
                 bool success = (status == SignInStatus.Success);
 
                 if (success)
@@ -83,13 +73,11 @@ namespace BeachHero
                 return;
             }
 
-            isAuthenticating = true;
-
             PlayGamesPlatform.Instance.Authenticate(status =>
             {
-                isAuthenticating = false;
                 bool success = (status == SignInStatus.Success);
-
+                DebugUtils.Log(success ? $"[PlayGamesController] Sign-in Successful: {DisplayName} ({UserId})" :
+                    $"[PlayGamesController] Sign-in Failed: {status}");
                 if (success)
                 {
                     SaveSystem.SaveInt(StringUtils.AUTH_LOGIN_TYPE, 1); // 1 = GPGS

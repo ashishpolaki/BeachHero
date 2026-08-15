@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Services.Core;
 using UnityEngine;
 using UnityEngine.Purchasing;
@@ -11,6 +12,32 @@ namespace BeachHero
         None,
         StoreProduct,
         BoatSkin
+    }
+    [Serializable]
+    public class IAPPayData
+    {
+        public string Payload;
+        public string Store;
+        public string TransactionID;
+    }
+    [Serializable]
+    public class IAPPayload
+    {
+        public string json;
+        public string signature;
+        public IAPPayloadData payloadData;
+    }
+    [Serializable]
+    public class IAPPayloadData
+    {
+        public string orderId;
+        public string packageName;
+        public string productId;
+        public long purchaseTime;
+        public int purchaseState;
+        public string purchaseToken;
+        public int quantity;
+        public bool acknowledged;
     }
     public class StoreManager : MonoBehaviour
     {
@@ -24,7 +51,6 @@ namespace BeachHero
         private PurchaseItemType currentPurchaseItemType;
         private int currentIndex;
         private int gameCurrencyBalance;
-
         private string defaultPrice = "$0.01"; // Default price for products that do not have a real money cost set.
         #endregion
 
@@ -32,6 +58,7 @@ namespace BeachHero
         public event Action<bool> OnStoreItemPurchaseAction;
         public event Action OnBoatPurchaseFail;
         public event Action OnCoinsBalanceChange;
+        public event Action OnNoAdsPurchased;
         #endregion
 
         #region Properties
@@ -87,13 +114,13 @@ namespace BeachHero
             }
 
             // Add Boat Skins that are for sale with real money
-            foreach (var boatSkin in boatSkinDatabase.BoatSkins)
-            {
-                if (boatSkin.IsRealMoney && !boatSkin.IsDefaultBoat && !string.IsNullOrEmpty(boatSkin.ID))
-                {
-                    catalogProvider.AddProduct(boatSkin.ID, boatSkin.ProductType);
-                }
-            }
+            //foreach (var boatSkin in boatSkinDatabase.BoatSkins)
+            //{
+            //    if (boatSkin.IsRealMoney && !boatSkin.IsDefaultBoat && !string.IsNullOrEmpty(boatSkin.ID))
+            //    {
+            //        catalogProvider.AddProduct(boatSkin.ID, boatSkin.ProductType);
+            //    }
+            //}
             await m_StoreController.Connect();
             // Fetch products from store
             catalogProvider.FetchProducts(list => m_StoreController.FetchProducts(list));
@@ -128,23 +155,23 @@ namespace BeachHero
                 if (!string.Equals(defaultPrice, item.metadata.localizedPriceString))
                 {
                     //Boat Skin
-                    if (item.definition.id.Contains("boat", StringComparison.OrdinalIgnoreCase))
+                    //if (item.definition.id.Contains("boat", StringComparison.OrdinalIgnoreCase))
+                    //{
+                    //    BoatSkinSO boatSkin = GameController.GetInstance.SkinController.GetBoatSkinByID(item.definition.id);
+                    //    if (boatSkin != null)
+                    //    {
+                    //        boatSkin.SetRealMoneyCost(item.metadata.localizedPriceString);
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //Store Product
+                    RealMoneyProduct storeProduct = GetRealMoneyProduct(item.definition.id);
+                    if (storeProduct != null)
                     {
-                        BoatSkinSO boatSkin = GameController.GetInstance.SkinController.GetBoatSkinByID(item.definition.id);
-                        if (boatSkin != null)
-                        {
-                            boatSkin.SetRealMoneyCost(item.metadata.localizedPriceString);
-                        }
+                        storeProduct.realMoneyCost = item.metadata.localizedPriceString;
                     }
-                    else
-                    {
-                        //Store Product
-                        RealMoneyProduct storeProduct = GetRealMoneyProduct(item.definition.id);
-                        if (storeProduct != null)
-                        {
-                            storeProduct.realMoneyCost = item.metadata.localizedPriceString;
-                        }
-                    }
+                    //   }
                 }
             }
             DebugUtils.Log("Store initialized with products: ");
@@ -159,21 +186,50 @@ namespace BeachHero
         {
             if (currentPurchaseItemType == PurchaseItemType.StoreProduct)
             {
-                StoreItemBought();
+                string receipt = order.Info.Receipt;
+                if (string.IsNullOrEmpty(receipt))
+                {
+                    DebugUtils.LogError("Receipt is null or empty for Store Product purchase.");
+                    return;
+                }
+                var product = order.CartOrdered.Items().FirstOrDefault()?.Product;
+                if (product == null)
+                {
+                    DebugUtils.LogError("Product is null for Store Product purchase.");
+                    return;
+                }
+                m_StoreController.ConfirmPurchase(order);
             }
-            else if (currentPurchaseItemType == PurchaseItemType.BoatSkin)
-            {
-                GameController.GetInstance.SkinController.UnlockBoatSkin(currentIndex);
-            }
-            DebugUtils.Log($"Processing purchase for Store Product: {order.Info.PurchasedProductInfo}");
-        }
-        private void OnPurchaseDeferred(DeferredOrder deferredOrder)
-        {
-            DebugUtils.Log($"OnPurchaseDeferred: {deferredOrder.Info.PurchasedProductInfo}");
+            //else if (currentPurchaseItemType == PurchaseItemType.BoatSkin)
+            //{
+            //    GameController.GetInstance.SkinController.UnlockBoatSkin(currentIndex);
+            //}
         }
         private void OnPUrchaseConfirm(Order confirmedOrder)
         {
-            DebugUtils.Log($"OnPUrchaseConfirm: {confirmedOrder.Info.PurchasedProductInfo}");
+            int quantity = GetPurchaseQuantity(confirmedOrder);
+            StoreItemBought(quantity);
+        }
+        private int GetPurchaseQuantity(Order confirmedOrder)
+        {
+            int quantity = 1; // Default quantity
+            string receipt = confirmedOrder.Info.Receipt;
+            if (!string.IsNullOrEmpty(receipt))
+            {
+                var paydata = JsonUtility.FromJson<IAPPayData>(receipt);
+                if (paydata.Store != "fake")
+                {
+                    IAPPayload payload = JsonUtility.FromJson<IAPPayload>(paydata.Payload);
+                    IAPPayloadData payloadData = JsonUtility.FromJson<IAPPayloadData>(payload.json);
+                    quantity = payloadData.quantity;
+                }
+            }
+            return quantity;
+        }
+
+        private void OnPurchaseDeferred(DeferredOrder deferredOrder)
+        {
+            DebugUtils.Log($"OnPurchaseDeferred: {deferredOrder.Info.PurchasedProductInfo}");
         }
         private void OnPurchaseFailed(FailedOrder failedOrder)
         {
@@ -186,62 +242,27 @@ namespace BeachHero
                 OnBoatPurchaseFail?.Invoke();
             }
             DebugUtils.LogError($"OnPurchaseFailed for Store Product: {failedOrder.FailureReason}");
-            //            if (Application.internetReachability != NetworkReachability.NotReachable)
-            //            {
-
-            //                PlayerPrefs.SetInt("PURCHASE_FAILED_COUNT", PlayerPrefs.GetInt("PURCHASE_FAILED_COUNT", 0) + 1);
-
-            //                //GameAnalytics.PurchasedFailedCount(PlayerPrefs.GetInt("PURCHASE_FAILED_COUNT", 0));
-
-            //#if UNITY_ANDROID
-            //                //Show Purchase failed popup or native message
-            //                //  ShopDialog.instance.PurchaseGems(false, currentIndex);
-
-            //#elif UNITY_IOS
-            //        //MobileNativePopups.OpenAlertDialog(
-            //        //        "PURCHASE FAIL", failureReason.ToString(),
-            //        //        "OK",
-            //        //        () => { DebugUtils.Log("Ok was pressed"); });
-            //#endif
-            //            }
-            //            return;
         }
         private void OnPurchasesFetched(Orders orders)
         {
-            DebugUtils.Log($"OnPurchasesFetched for Store Product");
+            // Store the confirmed orders for later access
+            foreach (var order in orders.ConfirmedOrders)
+            {
+                foreach (var product in order.CartOrdered.Items())
+                {
+                    var storeProduct = product.Product;
+                    DebugUtils.Log($"Confirmed purchase for Store Product: {storeProduct.definition.id}, Quantity: {product.Quantity}");
+                    if (storeProduct.definition.id == "no_ads")
+                    {
+                        NoAdsPurchased();
+                    }
+                }
+            }
         }
         private void OnPurchasesFetchFailed(PurchasesFetchFailureDescription failure)
         {
             DebugUtils.LogError($"OnPurchasesFetchFailed for Store Product: {failure.FailureReason}");
         }
-        //public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs purchaseEvent)
-        //{
-        //    if (currentPurchaseItemType == PurchaseItemType.StoreProduct)
-        //    {
-        //        StoreItemBought();
-        //    }
-        //    else if (currentPurchaseItemType == PurchaseItemType.BoatSkin)
-        //    {
-        //        GameController.GetInstance.SkinController.UnlockBoatSkin(currentIndex);
-        //    }
-        //    DebugUtils.Log($"Processing purchase for Store Product: {purchaseEvent.purchasedProduct.definition.id}");
-        //    // Return a flag indicating whether this product has completely been received, or if the application needs 
-        //    // to be reminded of this purchase at next app launch. Use PurchaseProcessingResult.Pending when still 
-        //    // saving purchased products to the cloud, and when that save is delayed. 
-        //    return PurchaseProcessingResult.Complete;
-        //}
-
-        //public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
-        //{
-        //    if (currentPurchaseItemType == PurchaseItemType.StoreProduct)
-        //    {
-        //        OnStoreItemPurchaseAction?.Invoke(false);
-        //    }
-        //    else
-        //    {
-        //        OnBoatPurchaseFail?.Invoke();
-        //    }
-        //}
         #endregion
 
         #region Purchase with Coins
@@ -282,10 +303,6 @@ namespace BeachHero
 
                         case StoreItemType.Coins:
                             CoinsBalance += reward.quantity;
-                            break;
-
-                        case StoreItemType.NoAds:
-                            AdController.GetInstance.PurchasedNoADsPack();
                             break;
                     }
                 }
@@ -359,18 +376,18 @@ namespace BeachHero
             currentIndex = index;
             currentPurchaseItemType = purchaseItemType;
 
-            if (currentPurchaseItemType == PurchaseItemType.BoatSkin)
-            {
-                string productID = GameController.GetInstance.SkinController.GetBoatSkinByIndex(currentIndex).ID;
-                m_StoreController.PurchaseProduct(productID);
-            }
-            else
-            {
-                m_StoreController.PurchaseProduct(GetRealMoneyProductID(currentIndex));
-            }
+            //if (currentPurchaseItemType == PurchaseItemType.BoatSkin)
+            //{
+            //    string productID = GameController.GetInstance.SkinController.GetBoatSkinByIndex(currentIndex).ID;
+            //    m_StoreController.PurchaseProduct(productID);
+            //}
+            //else
+            //{
+            m_StoreController.PurchaseProduct(GetRealMoneyProductID(currentIndex));
+            //}
         }
 
-        private void StoreItemBought()
+        private void StoreItemBought(int quantity)
         {
             var storeItem = GetRealMoneyProduct(currentIndex);
             //Show Purchase Dialog
@@ -380,22 +397,23 @@ namespace BeachHero
                 {
                     var reward = storeItem.rewards[i];
 
+
                     switch (reward.itemType)
                     {
                         case StoreItemType.Shield:
-                            GameController.GetInstance.PowerupController.UpdatePowerupBalance(PowerupType.Shield, reward.quantity);
+                            GameController.GetInstance.PowerupController.UpdatePowerupBalance(PowerupType.Shield, reward.quantity * quantity);
                             break;
 
                         case StoreItemType.SpeedBoost:
-                            GameController.GetInstance.PowerupController.UpdatePowerupBalance(PowerupType.SpeedBoost, reward.quantity);
+                            GameController.GetInstance.PowerupController.UpdatePowerupBalance(PowerupType.SpeedBoost, reward.quantity * quantity);
                             break;
 
                         case StoreItemType.Coins:
-                            CoinsBalance += reward.quantity;
+                            CoinsBalance += (reward.quantity * quantity);
                             break;
 
                         case StoreItemType.NoAds:
-                            AdController.GetInstance.PurchasedNoADsPack();
+                            NoAdsPurchased();
                             break;
                     }
                 }
@@ -414,6 +432,12 @@ namespace BeachHero
             {
                 m_StoreController.PurchaseProduct(GetRealMoneyProductID(currentIndex));
             }
+        }
+
+        public void NoAdsPurchased()
+        {
+            SaveSystem.SaveBool(StringUtils.NO_ADS_PURCHASED, true);
+            OnNoAdsPurchased?.Invoke();
         }
 
         #endregion

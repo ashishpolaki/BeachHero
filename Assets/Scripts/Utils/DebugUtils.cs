@@ -2,22 +2,22 @@ using UnityEngine;
 
 namespace BeachHero
 {
-    public class DebugUtils
+    public static class DebugUtils
     {
-        public static void Log(string message, Object context = null)
+        public static void Log(this string message, Object context = null)
         {
 #if ENABLE_DEBUG
             Debug.Log(message, context);
 #endif
         }
-        public static void LogWarning(string message, Object context = null)
+        public static void LogWarning(this string message, Object context = null)
         {
 #if ENABLE_DEBUG
             Debug.LogWarning(message, context);
 #endif
         }
 
-        public static void LogError(string message, Object context = null)
+        public static void LogError(this string message, Object context = null)
         {
 #if ENABLE_DEBUG
             Debug.LogError(message, context);
