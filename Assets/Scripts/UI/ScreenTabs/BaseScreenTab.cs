@@ -22,6 +22,7 @@ namespace BeachHero
     }
     public class BaseScreenTab : MonoBehaviour, IScreenTab
     {
+        [SerializeField] private RectTransform notchSafeArea;
         [SerializeField] private ScreenTabType screenTabType;
 
         public ScreenTabType ScreenTabType => screenTabType;
@@ -33,6 +34,10 @@ namespace BeachHero
         }
         public virtual void Open()
         {
+            if (notchSafeArea != null)
+            {
+                UIController.GetInstance.NotchSafeArea.RegisterRectTransform(notchSafeArea);
+            }
             gameObject.SetActive(true);
         }
     }
