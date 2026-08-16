@@ -68,7 +68,9 @@ namespace BeachHero
             private set
             {
                 coinBalance = value;
-                SaveSystem.SaveInt(StringUtils.COINS_BALANCE, coinBalance);
+                SaveSystem.CurrentData.coins = coinBalance;
+                SaveSystem.SaveGameData();
+                PlayGamesController.GetInstance.SaveDataInCloud();
                 OnCoinsBalanceChange?.Invoke();
             }
         }
@@ -127,7 +129,7 @@ namespace BeachHero
         }
         private void InitBalances()
         {
-            coinBalance = SaveSystem.LoadInt(StringUtils.COINS_BALANCE, IntUtils.DEFAULT_COINS_BALANCE);
+            coinBalance = SaveSystem.CurrentData.coins;
         }
         #endregion
 
@@ -299,10 +301,6 @@ namespace BeachHero
 
                         case StoreItemType.SpeedBoost:
                             GameController.GetInstance.PowerupController.UpdatePowerupBalance(PowerupType.SpeedBoost, reward.quantity);
-                            break;
-
-                        case StoreItemType.Coins:
-                            CoinsBalance += reward.quantity;
                             break;
                     }
                 }
