@@ -49,7 +49,7 @@ namespace BeachHero
     public enum CollectableType
     {
         None,
-        GameCurrency,
+        Coin,
         Gem,
         Shield,
         SpeedBoost,

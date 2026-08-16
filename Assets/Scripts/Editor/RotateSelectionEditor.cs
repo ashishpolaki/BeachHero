@@ -49,7 +49,7 @@ namespace BeachHero
                         var child = container.transform.GetChild(i);
                         if (child == null) continue;
                         var collectable = child.GetComponentInChildren<Collectable>();
-                        if (collectable != null && collectable.CollectableType == CollectableType.GameCurrency)
+                        if (collectable != null && collectable.CollectableType == CollectableType.Coin)
                             list.Add(child.gameObject);
                     }
 
@@ -216,7 +216,7 @@ namespace BeachHero
             {
                 if (t == null) continue;
                 var collectable = t.GetComponentInChildren<Collectable>();
-                if (collectable != null && collectable.CollectableType == CollectableType.GameCurrency)
+                if (collectable != null && collectable.CollectableType == CollectableType.Coin)
                     coins.Add(t);
             }
 

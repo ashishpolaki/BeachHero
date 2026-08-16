@@ -51,14 +51,14 @@ namespace BeachHero
             //  particle.SetRotation(transform.eulerAngles);
             // graphics.SetActive(false);
             AudioController.GetInstance.PlaySound(AudioType.CoinCollect);
-            GameController.GetInstance.OnGameCurrencyPickup();
+            GameController.GetInstance.OnCoinPickup();
 
             Vector3 moveTarget = UIController.GetInstance.StarsPanelWorldPosition();
             moveTween = TweenManager.Move(transform, transform.position, moveTarget, moveDuration,
             onComplete: () =>
             {
                 ResetState();
-                GameController.GetInstance.LevelController.OnGameCurrencyAnimation();
+                GameController.GetInstance.LevelController.OnCoinAnimation();
             });
         }
 

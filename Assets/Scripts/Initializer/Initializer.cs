@@ -8,13 +8,14 @@ namespace BeachHero
         private int loginType = 0;
         private void Awake()
         {
+            SaveSystem.Init();
             loginType = SaveSystem.LoadInt(StringUtils.AUTH_LOGIN_TYPE, 0);
             if (loginType == 0)
             {
                 UIController.GetInstance.LoadingUI.EnableLoadingScreen(false);
                 UIController.GetInstance.ScreenEvent(ScreenType.Login, UIScreenEvent.Open, ScreenTabType.None);
             }
-            else 
+            else
             {
                 UIController.GetInstance.LoadingUI.EnableLoadingScreen(true);
             }
@@ -69,7 +70,6 @@ namespace BeachHero
             RemoteConfig.GetInstance.Init();
             HapticsManager.GetInstance.Init();
             ParticleController.GetInstance.Initialize();
-            ES3.Init();
             Febucci.UI.Core.TAnimBuilder.InitializeGlobalDatabase();
 
             // wait a little to avoid freezing all at once
@@ -78,13 +78,15 @@ namespace BeachHero
             // Check login status 
             if (loginType == 1 || loginType == 2)
             {
-                if (loginType == 1)
-                {
-                    // GPGS login: keep loading screen visible and silently authenticate GPGS
-                    await PlayGamesController.GetInstance.AuthenticateAsync();
-                }
-
                 await UIController.GetInstance.LoadingUI.LoadSceneAsync(StringUtils.GAME_SCENE);
+                if (loginType == 1)   // GPGS login
+                {
+                    // Authenticates automatically loads + smart-merges cloud save
+                    if (NetworkController.IsInternetAvailable)
+                    {
+                        await PlayGamesController.GetInstance.AutoAuthenticateAsync();
+                    }
+                }
                 GameController.GetInstance.SpawnLevel();
                 await SceneLoader.GetInstance.UnloadScene(StringUtils.INIT_SCENE);
                 AdController.GetInstance.Init();

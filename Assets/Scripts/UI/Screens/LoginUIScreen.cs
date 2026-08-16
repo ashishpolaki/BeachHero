@@ -56,7 +56,7 @@ namespace BeachHero
                 return;
             }
             SetLoadingState(true);
-            PlayGamesController.GetInstance.SignIn(success =>
+            PlayGamesController.GetInstance.SignInASync(success =>
             {
                 SetLoadingState(false);
                 if (success)

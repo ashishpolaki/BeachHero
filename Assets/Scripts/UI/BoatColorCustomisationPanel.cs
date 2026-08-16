@@ -86,7 +86,7 @@ namespace BeachHero
             bool isGameCurrency = boatSkin.SkinColors[currentBoatColorIndex].isGameCurrency;
             if (isGameCurrency)
             {
-                gameCurrencyText.text = $"{boatSkin.SkinColors[currentBoatColorIndex].inGameCurrencyCost}";
+                gameCurrencyText.text = $"{boatSkin.SkinColors[currentBoatColorIndex].coinCost}";
             }
             gameCurrencyBuyButton.gameObject.SetActive(isGameCurrency && !isDefaultColor);
         }

@@ -14,12 +14,10 @@ namespace BeachHero
         [SerializeField] private string leaderboardID;
         [SerializeField] private bool debugLogEnabled = false;
 
-        [Header("Save Settings")]
-        private bool isLoading = false;
-        private bool isSaving;
-        [SerializeField] private string fileName = "MySaveFile";
-
-
+        private const string fileName = "BeachHeroSaveFile";
+        private const float AUTH_TIMEOUT = 5f;
+        private const float SIGNIN_TIMEOUT = 10f;
+        private const float LOAD_TIMEOUT = 5f;
 
         #region Properties
         public bool IsAuthenticated => PlayGamesPlatform.Instance != null && PlayGamesPlatform.Instance.IsAuthenticated();
@@ -37,63 +35,113 @@ namespace BeachHero
 
         /// <summary>
         /// Async silent authentication for game startup / auto-login.
+        /// Authenticates silently AND automatically loads + merges cloud save data before returning.
         /// </summary>
-        public Task<bool> AuthenticateAsync()
+        public async Task<bool> AutoAuthenticateAsync()
         {
-            var tcs = new TaskCompletionSource<bool>();
-
             InitializeGPGS();
+
+            bool isAuthDone = false;
+            bool isAuthSuccess = false;
 
             if (IsAuthenticated)
             {
-                tcs.SetResult(true);
-                return tcs.Task;
+                isAuthSuccess = true;
+                isAuthDone = true;
+            }
+            else
+            {
+                PlayGamesPlatform.Instance.Authenticate(status =>
+                {
+                    isAuthSuccess = (status == SignInStatus.Success);
+                    if (isAuthSuccess)
+                    {
+                        DebugUtils.Log($"[PlayGamesController] Auto-Auth Successful: {DisplayName} ({UserId})");
+                    }
+                    else
+                    {
+                        DebugUtils.LogWarning($"[PlayGamesController] Silent Authentication Failed/Not Signed In: {status}");
+                    }
+                    isAuthDone = true;
+                });
             }
 
-            PlayGamesPlatform.Instance.Authenticate(status =>
+            // Timeout for authentication (Max 5 Seconds)
+            float authTimer = 0f;
+            while (!isAuthDone && authTimer < AUTH_TIMEOUT)
             {
-                bool success = (status == SignInStatus.Success);
+                await Task.Yield();
+                authTimer += Time.unscaledDeltaTime;
+            }
 
-                if (success)
-                {
-                    DebugUtils.Log($"[PlayGamesController] Authentication Successful: {DisplayName} ({UserId})");
-                }
-                else
-                {
-                    DebugUtils.LogWarning($"[PlayGamesController] Authentication Failed: {status}");
-                }
+            if (!isAuthDone)
+            {
+                DebugUtils.LogWarning("[PlayGamesController] Auto-Auth timed out after 5 seconds.");
+                isAuthSuccess = false;
+                return isAuthSuccess;
+            }
 
-                tcs.SetResult(success);
-            });
+            if (isAuthSuccess)
+            {
+                // Load and merge cloud data (has its own 5s timeout internally)
+                await LoadDataFromCloud();
+            }
 
-            return tcs.Task;
+            return isAuthSuccess;
         }
 
-        /// <summary>
-        /// Manual Sign-in call with callback.
-        /// </summary>
-        public void SignIn(Action<bool> onComplete = null)
+        public async void SignInASync(Action<bool> onComplete = null)
         {
             InitializeGPGS();
+            bool isAuthSuccess = false;
+            bool isAuthDone = false;
 
             if (IsAuthenticated)
             {
-                onComplete?.Invoke(true);
+                isAuthSuccess = true;
+                isAuthDone = true;
+            }
+            else
+            {
+                PlayGamesPlatform.Instance.ManuallyAuthenticate(status =>
+                {
+                    isAuthSuccess = (status == SignInStatus.Success);
+                    if (isAuthSuccess)
+                    {
+                        DebugUtils.Log($"[PlayGamesController] Sign-in Successful: {DisplayName} ({UserId})");
+                        SaveSystem.SaveInt(StringUtils.AUTH_LOGIN_TYPE, 1); // 1 = GPGS
+                    }
+                    else
+                    {
+                        DebugUtils.LogWarning($"[PlayGamesController] Sign-in Failed: {status}");
+                    }
+                    isAuthDone = true;
+                });
+            }
+
+            // Timeout for interactive sign-in (Max 10 Seconds)
+            float signinTimer = 0f;
+
+            while (!isAuthDone && signinTimer < SIGNIN_TIMEOUT)
+            {
+                await Task.Yield();
+                signinTimer += Time.unscaledDeltaTime;
+            }
+
+            if (!isAuthDone)
+            {
+                DebugUtils.LogWarning("[PlayGamesController] Sign-in timed out.");
+                isAuthSuccess = false;
+                onComplete?.Invoke(isAuthSuccess);
                 return;
             }
 
-            PlayGamesPlatform.Instance.Authenticate(status =>
+            if (isAuthSuccess)
             {
-                bool success = (status == SignInStatus.Success);
-                DebugUtils.Log(success ? $"[PlayGamesController] Sign-in Successful: {DisplayName} ({UserId})" :
-                    $"[PlayGamesController] Sign-in Failed: {status}");
-                if (success)
-                {
-                    SaveSystem.SaveInt(StringUtils.AUTH_LOGIN_TYPE, 1); // 1 = GPGS
-                }
+                await LoadDataFromCloud();
+            }
 
-                onComplete?.Invoke(success);
-            });
+            onComplete?.Invoke(isAuthSuccess);
         }
         #endregion
 
@@ -116,10 +164,6 @@ namespace BeachHero
             if (!IsAuthenticated)
             {
                 DebugUtils.LogWarning("[PlayGamesController] User not authenticated. Attempting sign-in before submitting score.");
-                SignIn(success =>
-                {
-                    if (success) SubmitScore();
-                });
                 return;
             }
 
@@ -154,10 +198,6 @@ namespace BeachHero
             if (!IsAuthenticated)
             {
                 DebugUtils.LogWarning("[PlayGamesController] User not authenticated. Attempting sign-in before showing leaderboard.");
-                SignIn(success =>
-                {
-                    if (success) ShowLeaderboardUI();
-                });
                 return;
             }
 
@@ -166,12 +206,7 @@ namespace BeachHero
         #endregion
 
         #region Save & Load
-        public class SaveData
-        {
-            public string playerName;
-            public int score;
-        }
-        public void SaveDataToJson()
+        public void SaveDataInCloud()
         {
             if (!IsAuthenticated)
             {
@@ -179,13 +214,6 @@ namespace BeachHero
                 return;
             }
 
-            if (isSaving)
-            {
-                DebugUtils.LogWarning("Already saving data");
-                return;
-            }
-
-            isSaving = true;
             ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
             savedGameClient.OpenWithAutomaticConflictResolution(fileName, DataSource.ReadCacheOrNetwork, ConflictResolutionStrategy.UseMostRecentlySaved,
                 (status, metadata) =>
@@ -193,72 +221,89 @@ namespace BeachHero
                     if (status != SavedGameRequestStatus.Success)
                     {
                         DebugUtils.LogError("Error opening saved game");
-                        isSaving = false;
                         return;
                     }
 
-                    SaveData data = new SaveData
-                    {
-                        playerName = "John",
-                        score = UnityEngine.Random.Range(0, 101)
-                    };
+                    // Get the current game data or create a default one if it doesn't exist
+                    GameData data = SaveSystem.CurrentData ?? GameData.CreateDefault();
+                    string jsonString = data.ToJson();
+                    byte[] savedData = Encoding.UTF8.GetBytes(jsonString);
 
-                    string jsonString = JsonUtility.ToJson(data);
-                    byte[] savedData = Encoding.ASCII.GetBytes(jsonString);
-
-                    SavedGameMetadataUpdate updatedMetadata = new SavedGameMetadataUpdate.Builder().WithUpdatedDescription("Saved game at " + DateTime.Now).Build();
-
-                    savedGameClient.CommitUpdate(
-                        metadata,
-                        updatedMetadata,
-                        savedData,
-                        (commitStatus, _) =>
+                    // Update the metadata with a new description (optional)
+                    SavedGameMetadataUpdate updatedMetadata = new SavedGameMetadataUpdate.Builder().WithUpdatedDescription("Saved game at " + DateTime.UtcNow).Build();
+                    savedGameClient.CommitUpdate(metadata, updatedMetadata, savedData, (commitStatus, _) =>
                         {
-                            isSaving = false;
                             bool success = commitStatus == SavedGameRequestStatus.Success;
-                            DebugUtils.Log(success ? "Data saved successfully" : "Error saving data");
+                            DebugUtils.Log(success ? "Data saved successfully to cloud" : "Error saving data to cloud");
                         });
                 });
         }
 
-        public void LoadDataFromJson()
+        public async Task<GameData> LoadDataFromCloud()
         {
             if (!IsAuthenticated)
             {
-                DebugUtils.LogWarning("User is not authenticated to Google Play Services");
-                return;
+                DebugUtils.LogWarning("[PlayGamesController] User not authenticated. Cannot load cloud data.");
+                return SaveSystem.CurrentData;
             }
-            if (isLoading)
-            {
-                DebugUtils.LogWarning("Already loading data");
-                return;
-            }
-            isLoading = true;
+
+            bool isLoadDone = false;
+
             ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
             savedGameClient.OpenWithAutomaticConflictResolution(fileName, DataSource.ReadCacheOrNetwork, ConflictResolutionStrategy.UseMostRecentlySaved,
                 (status, metadata) =>
                 {
                     if (status != SavedGameRequestStatus.Success)
                     {
-                        DebugUtils.LogError("Error opening saved game");
-                        isLoading = false;
+                        DebugUtils.LogError("[PlayGamesController] Error opening saved game: " + status);
+                        isLoadDone = true;
                         return;
                     }
+
                     savedGameClient.ReadBinaryData(metadata, (readStatus, data) =>
                     {
-                        isLoading = false;
+                        // Return if the read operation failed
                         if (readStatus != SavedGameRequestStatus.Success)
                         {
-                            DebugUtils.LogError("Error reading saved game data");
+                            DebugUtils.LogError("[PlayGamesController] Error reading saved game data: " + readStatus);
+                            isLoadDone = true;
                             return;
                         }
-                        string jsonString = Encoding.ASCII.GetString(data);
-                        SaveData loadedData = JsonUtility.FromJson<SaveData>(jsonString);
-                        DebugUtils.Log($"Loaded Data: Player Name - {loadedData.playerName}, Score - {loadedData.score}");
+
+                        if (data != null && data.Length > 0)
+                        {
+                            string jsonString = Encoding.UTF8.GetString(data);
+                            GameData cloudData = GameData.FromJson(jsonString);
+
+                            if (cloudData != null)
+                            {
+                                // Smart Merge: Merge cloud progress with offline local progress
+                                SaveSystem.MergeAndSaveWithCloudData(cloudData);
+
+                                // Immediately update the cloud with the merged result
+                                SaveDataInCloud();
+                                DebugUtils.Log("[PlayGamesController] Cloud data loaded and merged: " + jsonString);
+                            }
+                        }
+
+                        isLoadDone = true;
                     });
                 });
-        }
 
+            // Wait for cloud load to finish (Max 5 Seconds Timeout)
+            float loadTimer = 0f;
+
+            while (!isLoadDone && loadTimer < LOAD_TIMEOUT)
+            {
+                await Task.Yield();
+                loadTimer += Time.unscaledDeltaTime;
+            }
+            if (!isLoadDone)
+            {
+                DebugUtils.LogWarning("[PlayGamesController] LoadDataFromCloud timed out after 5s. Proceeding with local data.");
+            }
+            return SaveSystem.CurrentData;
+        }
         #endregion
     }
 }

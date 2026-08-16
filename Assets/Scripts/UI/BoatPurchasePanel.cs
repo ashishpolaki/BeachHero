@@ -111,7 +111,7 @@ namespace BeachHero
             if (skin.IsGameCurrency)
             {
                 gameCurrencyContainer.SetActive(true);
-                gameCurrencyPriceLabel.text = skin.InGameCurrencyCost.ToString();
+                gameCurrencyPriceLabel.text = skin.CoinCost.ToString();
             }
             if (skin.IsRealMoney)
             {
@@ -126,7 +126,7 @@ namespace BeachHero
             if (colorData.isGameCurrency)
             {
                 gameCurrencyContainer.SetActive(true);
-                gameCurrencyPriceLabel.text = colorData.inGameCurrencyCost.ToString();
+                gameCurrencyPriceLabel.text = colorData.coinCost.ToString();
             }
             if (colorData.isAds)
             {

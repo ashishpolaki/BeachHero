@@ -59,7 +59,7 @@ namespace BeachHero
         private bool isPlayerInitialRotationSet = false;
 
         private int currentLevelIndex;
-        private int gameCurrencyCount;
+        private int coinCount;
         private int targetDrownCharacters;
         [Tooltip("Number of characters saved by the player in current level")]
         private int drownCharactersCounter;
@@ -70,7 +70,7 @@ namespace BeachHero
         #region Properties
         public Transform PlayerTransform => player != null ? player.transform : null;
         public bool IsLevelPassed => levelPhase == LevelPhase.CompletedSuccess;
-        public int GameCurrencyCount => gameCurrencyCount;
+        public int CoinCount => coinCount;
         public int StarsEarned
         {
             get; private set;
@@ -337,7 +337,7 @@ namespace BeachHero
                 foreach (var collectable in collectableList)
                 {
                     collectable.ResetState();
-                    if (collectable.CollectableType == CollectableType.GameCurrency)
+                    if (collectable.CollectableType == CollectableType.Coin)
                     {
                         poolManager.GameCurrencyPool.ReturnObject(collectable.gameObject);
                     }
@@ -411,15 +411,15 @@ namespace BeachHero
         }
         public void UpdateStarsCount()
         {
-            if (gameCurrencyCount >= medalCurrencyRequirements.requiredCurrencyForThreeMedals && StarsEarned < 3)
+            if (coinCount >= medalCurrencyRequirements.requiredCurrencyForThreeMedals && StarsEarned < 3)
             {
                 StarsEarned = 3;
             }
-            else if (gameCurrencyCount >= medalCurrencyRequirements.requiredCurrencyForTwoMedals && StarsEarned < 2)
+            else if (coinCount >= medalCurrencyRequirements.requiredCurrencyForTwoMedals && StarsEarned < 2)
             {
                 StarsEarned = 2;
             }
-            else if (gameCurrencyCount >= medalCurrencyRequirements.requiredCurrencyForOneMedal && StarsEarned < 1)
+            else if (coinCount >= medalCurrencyRequirements.requiredCurrencyForOneMedal && StarsEarned < 1)
             {
                 StarsEarned = 1;
             }
@@ -447,11 +447,11 @@ namespace BeachHero
         #endregion
 
         #region Collectables
-        public void OnGameCurrencyCollect()
+        public void OnCoinCollect()
         {
-            gameCurrencyCount++;
+            coinCount++;
         }
-        public void OnGameCurrencyAnimation()
+        public void OnCoinAnimation()
         {
             OnCoinCollectAnimation?.Invoke();
         }
@@ -466,7 +466,7 @@ namespace BeachHero
         {
             return type switch
             {
-                CollectableType.GameCurrency =>
+                CollectableType.Coin =>
                     poolManager.GameCurrencyPool.GetObject().GetComponent<Collectable>(),
 
                 CollectableType.Shield =>
@@ -557,7 +557,7 @@ namespace BeachHero
         {
             StarsEarned = 0;
             isPlayerInitialRotationSet = false;
-            gameCurrencyCount = 0;
+            coinCount = 0;
             drownCharactersCounter = 0;
             levelElapsedTime = 0f;
             ReturnToPoolEverything();

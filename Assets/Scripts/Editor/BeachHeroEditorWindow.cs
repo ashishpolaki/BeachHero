@@ -485,7 +485,7 @@ public class BeachHeroEditorWindow : EditorWindow
             SerializedProperty typeProp = element.FindPropertyRelative("type");
 
             //  IMPORTANT: enum comparison
-            if ((CollectableType)typeProp.enumValueIndex == CollectableType.GameCurrency)
+            if ((CollectableType)typeProp.enumValueIndex == CollectableType.Coin)
             {
                 total++;
             }

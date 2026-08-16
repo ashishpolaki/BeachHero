@@ -50,7 +50,7 @@ namespace BeachHero
         }
         private void SetCoins()
         {
-            collectedGameCurrency = GameController.GetInstance.LevelController.GameCurrencyCount;
+            collectedGameCurrency = GameController.GetInstance.LevelController.CoinCount;
             collectedGameCurrencyText.text = $"You Earned {collectedGameCurrency}";
             SetStars();
             SetADGameCurrency();

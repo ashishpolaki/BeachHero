@@ -50,7 +50,7 @@ namespace BeachHero
         private StoreController m_StoreController; // The Unity Purchasing system.
         private PurchaseItemType currentPurchaseItemType;
         private int currentIndex;
-        private int gameCurrencyBalance;
+        private int coinBalance;
         private string defaultPrice = "$0.01"; // Default price for products that do not have a real money cost set.
         #endregion
 
@@ -64,11 +64,11 @@ namespace BeachHero
         #region Properties
         public int CoinsBalance
         {
-            get => gameCurrencyBalance;
+            get => coinBalance;
             private set
             {
-                gameCurrencyBalance = value;
-                SaveSystem.SaveInt(StringUtils.GAME_CURRENCY_BALANCE, gameCurrencyBalance);
+                coinBalance = value;
+                SaveSystem.SaveInt(StringUtils.COINS_BALANCE, coinBalance);
                 OnCoinsBalanceChange?.Invoke();
             }
         }
@@ -127,7 +127,7 @@ namespace BeachHero
         }
         private void InitBalances()
         {
-            gameCurrencyBalance = SaveSystem.LoadInt(StringUtils.GAME_CURRENCY_BALANCE, IntUtils.DEFAULT_GAME_CURRENCY_BALANCE);
+            coinBalance = SaveSystem.LoadInt(StringUtils.COINS_BALANCE, IntUtils.DEFAULT_COINS_BALANCE);
         }
         #endregion
 
@@ -317,10 +317,10 @@ namespace BeachHero
         {
             SkinController skinController = GameController.GetInstance.SkinController;
             BoatSkinSO boatSkin = skinController.GetBoatSkinByIndex(index);
-            if (CoinsBalance >= boatSkin.InGameCurrencyCost)
+            if (CoinsBalance >= boatSkin.CoinCost)
             {
                 skinController.UnlockBoatSkin(index);
-                DeductCoinsBalance(boatSkin.InGameCurrencyCost);
+                DeductCoinsBalance(boatSkin.CoinCost);
             }
             else
             {
@@ -332,10 +332,10 @@ namespace BeachHero
         {
             SkinController skinController = GameController.GetInstance.SkinController;
             BoatSkinSO boatSkin = skinController.GetBoatSkinByIndex(boatIndex);
-            if (CoinsBalance >= boatSkin.SkinColors[colorIndex].inGameCurrencyCost)
+            if (CoinsBalance >= boatSkin.SkinColors[colorIndex].coinCost)
             {
                 skinController.UnlockBoatSkinColor(boatIndex, colorIndex);
-                DeductCoinsBalance(boatSkin.SkinColors[colorIndex].inGameCurrencyCost);
+                DeductCoinsBalance(boatSkin.SkinColors[colorIndex].coinCost);
             }
             else
             {

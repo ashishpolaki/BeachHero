@@ -225,7 +225,7 @@ public class EditorSceneController : MonoBehaviour
         {
             string path = item.type switch
             {
-                CollectableType.GameCurrency => gameCurrencyPath,
+                CollectableType.Coin => gameCurrencyPath,
                 CollectableType.Shield => shieldPath,
                 CollectableType.SpeedBoost => speedBoostPath,
                 _ => null

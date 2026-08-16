@@ -15,9 +15,9 @@ namespace BeachHero
         [SerializeField] private float boostSpeed;
         [Range(0f, 1f), SerializeField] private float speedMeter;
         [SerializeField] private bool isUnlocked;
-        [Hide("isDefault"), SerializeField] private bool isGameCurrency;
+        [Hide("isDefault"), SerializeField] private bool isCoin;
         [Hide("isDefault"), SerializeField] private bool isRealMoney;
-        [Show("isGameCurrency"), SerializeField] private int gameCurrencyCost;
+        [Show("isGameCurrency"), SerializeField] private int coinCost;
         [Show("isRealMoney"), SerializeField] private ProductType productType;
         [Show("isRealMoney"), SerializeField] private string realMoneyCost;
         [SerializeField] private BoatSkinColorData[] skinColors;
@@ -33,9 +33,9 @@ namespace BeachHero
         public float BoostSpeed => boostSpeed;
         public BoatSkinColorData[] SkinColors => skinColors;
         public bool IsDefaultBoat => isUnlocked;
-        public bool IsGameCurrency => isGameCurrency;
+        public bool IsGameCurrency => isCoin;
         public bool IsRealMoney => isRealMoney;
-        public int InGameCurrencyCost => gameCurrencyCost;
+        public int CoinCost => coinCost;
         public string RealMoneyCost => realMoneyCost;
         public GameObject BoatPrefab => boatPrefab;
         public ProductType ProductType => productType;
@@ -60,6 +60,6 @@ namespace BeachHero
         public bool isUnlocked;
         [Hide("isDefault")] public bool isGameCurrency;
         [Hide("isDefault")] public bool isAds;
-        [Show("isGameCurrency")] public int inGameCurrencyCost;
+        [Show("isGameCurrency")] public int coinCost;
     }
 }

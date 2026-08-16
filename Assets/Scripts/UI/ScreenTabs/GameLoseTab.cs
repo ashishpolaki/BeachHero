@@ -54,7 +54,7 @@ namespace BeachHero
         }
         private void SetGameCurrency()
         {
-            int collectedGameCurrency = GameController.GetInstance.LevelController.GameCurrencyCount;
+            int collectedGameCurrency = GameController.GetInstance.LevelController.CoinCount;
             GameController.GetInstance.StoreController.IncrementCoinsBalance(collectedGameCurrency);
             gameCurrencyBalanceText.text = GameController.GetInstance.StoreController.CoinsBalance.ToString();
         }

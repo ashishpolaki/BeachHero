@@ -198,9 +198,9 @@ namespace BeachHero
         #endregion
 
         #region Collect
-        public void OnGameCurrencyPickup()
+        public void OnCoinPickup()
         {
-            levelController.OnGameCurrencyCollect();
+            levelController.OnCoinCollect();
         }
         #endregion
 

@@ -4,6 +4,7 @@ namespace BeachHero
 {
     public class StringUtils
     {
+        public const string GAME_DATA = "BeachHero_GameData";
         public const string HIGHEST_COMPLETED_LEVEL = "HighestCompletedLevel";
 
         //Tutorial
@@ -77,7 +78,7 @@ namespace BeachHero
         public const string PRODUCT_PURCHASE_FAILED = "Purchase failed. Please try again later.";
 
         //Game Currency
-        public const string GAME_CURRENCY_BALANCE = "GameCurrencyBalance";
+        public const string COINS_BALANCE = "CoinsBalance";
 
         //ADS
         public const string NO_ADS_PURCHASED = "NoAdsPurchased";
@@ -110,7 +111,7 @@ namespace BeachHero
         public const int DEFAULT_STARFISHMULTIPLIER_BALANCE = 2;
 
         //Game Currency
-        public const int DEFAULT_GAME_CURRENCY_BALANCE = 100;
+        public const int DEFAULT_COINS_BALANCE = 100;
         public const int BASE_GAME_CURRENCY_REWARD = 3;
         public const int MULTIPLIER_GAME_CURRENCY_REWARD = 2;
 

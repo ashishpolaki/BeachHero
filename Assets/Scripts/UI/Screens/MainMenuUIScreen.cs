@@ -137,7 +137,7 @@ namespace BeachHero
 
         private void OnGPGSSignInClicked()
         {
-            PlayGamesController.GetInstance.SignIn();
+            //  PlayGamesController.GetInstance.si();
         }
 
         private void OnSettingsButtonClick()
