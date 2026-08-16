@@ -95,8 +95,7 @@ namespace BeachHero
         }
         private void OnNextLevel()
         {
-            bool rateUsShown = SaveSystem.LoadBool(StringUtils.RATE_US_SHOWN, false);
-            if (!rateUsShown)
+            if (!SaveSystem.CurrentData.isRateUsShown)
             {
                 if (GameController.GetInstance.HighestCompletedLevelIndex + 1 > RemoteConfig.GetInstance.RateUsShowLevel)
                 {

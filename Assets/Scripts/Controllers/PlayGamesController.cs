@@ -208,6 +208,12 @@ namespace BeachHero
         #region Save & Load
         public void SaveDataInCloud()
         {
+            if (!NetworkController.IsInternetAvailable)
+            {
+                DebugUtils.LogWarning("No internet connection available. Cannot save data to cloud.");
+                return;
+            }
+
             if (!IsAuthenticated)
             {
                 DebugUtils.LogWarning("User is not authenticated to Google Play Services");
@@ -241,6 +247,12 @@ namespace BeachHero
 
         public async Task<GameData> LoadDataFromCloud()
         {
+            if(!NetworkController.IsInternetAvailable)
+            {
+                DebugUtils.LogWarning("[PlayGamesController] No internet connection available. Cannot load cloud data.");
+                return SaveSystem.CurrentData;
+            }
+
             if (!IsAuthenticated)
             {
                 DebugUtils.LogWarning("[PlayGamesController] User not authenticated. Cannot load cloud data.");

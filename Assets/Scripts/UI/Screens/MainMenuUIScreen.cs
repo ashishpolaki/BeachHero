@@ -26,8 +26,6 @@ namespace BeachHero
         [SerializeField] private Vector3 tutorialCharacterPosition;
         [SerializeField] private Vector3 speechBubblePosition;
 
-        private bool isWelcomeMessageShown = false;
-
         public override void Open(ScreenTabType screenTabType)
         {
             base.Open(screenTabType);
@@ -51,12 +49,12 @@ namespace BeachHero
 
         public override void OnScreenOpened()
         {
-            isWelcomeMessageShown = SaveSystem.LoadBool(StringUtils.SHOW_WELCOME_MESSAGE, false);
-            if (!isWelcomeMessageShown)
+            if (!SaveSystem.CurrentData.isWelcomeMessageShown)
             {
                 OpenAnimator.ApplyAllToStates();
-                SaveSystem.SaveBool(StringUtils.SHOW_WELCOME_MESSAGE, true);
-                isWelcomeMessageShown = true;
+                SaveSystem.CurrentData.isWelcomeMessageShown = true;
+                SaveSystem.SaveGameData();
+                PlayGamesController.GetInstance.SaveDataInCloud();
 
                 // Highlight the play button and show tutorial.
                 var tc = TutorialController.GetInstance;
@@ -152,7 +150,7 @@ namespace BeachHero
 
         private void OnPlayButtonClicked()
         {
-            if (isWelcomeMessageShown)
+            if (SaveSystem.CurrentData.isWelcomeMessageShown)
             {
                 var tc = TutorialController.GetInstance;
                 tc.RemoveTutorialCanvas(playButton.gameObject);

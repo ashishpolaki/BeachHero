@@ -8,7 +8,6 @@ namespace BeachHero
         public const string HIGHEST_COMPLETED_LEVEL = "HighestCompletedLevel";
 
         //Tutorial
-        public const string SHOW_WELCOME_MESSAGE = "IsWelcomeMessageShown";
         public const string TAP_AND_DRAG_TUTORIAL = "TAP & DRAG THE BOAT";
         public const string RESCUE_ALL_TUTORIAL = "RESCUE THEM ALL !";
 
@@ -17,9 +16,6 @@ namespace BeachHero
 
         //ToonShader (ShaderGraph Properties)
         public const string TINT_COLOR = "_Tint";
-
-        //RateUS
-        public const string RATE_US_SHOWN = "RateUsShown";
 
         //Tags
         public const string PLAYER_TAG = "Player";

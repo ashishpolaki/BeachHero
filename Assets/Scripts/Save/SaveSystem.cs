@@ -50,15 +50,6 @@ namespace BeachHero
             ES3.Save(StringUtils.GAME_DATA, json);
         }
 
-        public static void SetGameData(GameData data, bool saveToDisk = true)
-        {
-            CurrentData = data ?? GameData.CreateDefault();
-            if (saveToDisk)
-            {
-                SaveGameData();
-            }
-        }
-
         public static void MergeAndSaveWithCloudData(GameData cloudData)
         {
             if (CurrentData == null)

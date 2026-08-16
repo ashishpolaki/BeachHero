@@ -17,7 +17,10 @@ namespace BeachHero
         {
             base.Open(screenTabType);
             currentRating = 0;
-            SaveSystem.SaveBool(StringUtils.RATE_US_SHOWN, true);
+            SaveSystem.CurrentData.isRateUsShown = true;
+            SaveSystem.SaveGameData();
+            PlayGamesController.GetInstance.SaveDataInCloud();
+
             for (int i = 0; i < starImages.Length; i++)
             {
                 starImages[i].sprite = inactiveStarSprite;
