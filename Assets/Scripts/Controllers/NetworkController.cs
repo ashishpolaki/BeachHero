@@ -27,18 +27,24 @@ namespace BeachHero
             switch (lastNetworkAction)
             {
                 case NetworkActionType.RewardedAd:
-                    if (AdController.GetInstance.IsRewardedADLoaded())
+                    if (IsInternetAvailable)
                     {
-                        AdController.GetInstance.ShowRewardedAd();
-                    }
-                    else
-                    {
-                        AdController.GetInstance.RequestRewardedAD();
+                        if (AdController.GetInstance.IsRewardedADLoaded())
+                        {
+                            AdController.GetInstance.ShowRewardedAd();
+                        }
+                        else
+                        {
+                            AdController.GetInstance.RequestRewardedAD();
+                        }
                     }
                     break;
 
                 case NetworkActionType.Leaderboard:
-                    PlayGamesController.GetInstance.ShowLeaderboardUI();
+                    if (IsInternetAvailable)
+                    {
+                        PlayGamesController.GetInstance.ShowLeaderboardUI();
+                    }
                     break;
 
                 case NetworkActionType.StorePurchase:

@@ -318,8 +318,7 @@ namespace BeachHero
                         return;
                     }
 
-                    DebugUtils.Log("Rewarded ad loaded with response : "
-                              + ad.GetResponseInfo());
+                    DebugUtils.Log("Rewarded ad loaded: ");
                     rewardedAd = ad;
                     RegisterEventHandlers(rewardedAd);
                 });

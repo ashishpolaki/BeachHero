@@ -5,7 +5,7 @@ namespace BeachHero
 {
     public class PurchaseFailTab : BaseScreenTab
     {
-        [SerializeField] private Button retryPurchaseBtn; 
+        [SerializeField] private Button retryPurchaseBtn;
 
         public override void Open()
         {
@@ -22,7 +22,10 @@ namespace BeachHero
         private void OnRetryPurchaseButtonClicked()
         {
             UIController.GetInstance.ScreenEvent(ScreenType.Purchase, UIScreenEvent.Close);
-            GameController.GetInstance.StoreController.RetryPurchase();
+            if (NetworkController.IsInternetAvailable)
+            {
+                GameController.GetInstance.StoreController.RetryPurchase();
+            }
         }
     }
 }

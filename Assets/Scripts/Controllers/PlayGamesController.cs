@@ -294,7 +294,7 @@ namespace BeachHero
 
                                 // Immediately update the cloud with the merged result
                                 SaveDataInCloud();
-                                DebugUtils.Log("[PlayGamesController] Cloud data loaded and merged: " + jsonString);
+                                DebugUtils.Log("[PlayGamesController] Cloud Game data " + jsonString);
                             }
                         }
 

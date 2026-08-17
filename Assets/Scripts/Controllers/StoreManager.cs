@@ -64,7 +64,7 @@ namespace BeachHero
         #region Properties
         public int CoinsBalance
         {
-            get => coinBalance;
+            get => SaveSystem.CurrentData != null ? SaveSystem.CurrentData.coins : IntUtils.DEFAULT_COINS_BALANCE;
             private set
             {
                 coinBalance = value;
@@ -80,7 +80,6 @@ namespace BeachHero
         public void Init()
         {
             InitializeServices();
-            InitBalances();
         }
         private async void InitializeServices()
         {
@@ -126,10 +125,6 @@ namespace BeachHero
             await m_StoreController.Connect();
             // Fetch products from store
             catalogProvider.FetchProducts(list => m_StoreController.FetchProducts(list));
-        }
-        private void InitBalances()
-        {
-            coinBalance = SaveSystem.CurrentData.coins;
         }
         #endregion
 
@@ -253,7 +248,7 @@ namespace BeachHero
                 foreach (var product in order.CartOrdered.Items())
                 {
                     var storeProduct = product.Product;
-                    DebugUtils.Log($"Confirmed purchase for Store Product: {storeProduct.definition.id}, Quantity: {product.Quantity}");
+                    DebugUtils.Log($"Fetched purchase for Store : {storeProduct.definition.id}, Quantity: {product.Quantity}");
                     if (storeProduct.definition.id == "no_ads")
                     {
                         NoAdsPurchased();
