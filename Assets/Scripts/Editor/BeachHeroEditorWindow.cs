@@ -576,7 +576,8 @@ public class BeachHeroEditorWindow : EditorWindow
     private void TestLevel()
     {
         SaveLevel();
-        SaveSystem.SaveInt(StringUtils.HIGHEST_COMPLETED_LEVEL, selectedLevelIndex + 1);
+        SaveSystem.CurrentData.highestCompletedLevel = selectedLevelIndex + 1;
+        SaveSystem.SaveGameData();
         EditorSceneManager.OpenScene(TEST_SCENE_PATH);
         EditorApplication.isPlaying = true;
         //  window.Close();

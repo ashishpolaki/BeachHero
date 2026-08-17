@@ -153,7 +153,7 @@ namespace BeachHero
                 return;
             }
 
-            int totalScore = SaveSystem.LoadInt(StringUtils.TOTAL_SCORE, 0);
+            int totalScore = SaveSystem.CurrentData.totalScore;
 
             if (string.IsNullOrEmpty(leaderboardID))
             {
@@ -163,7 +163,7 @@ namespace BeachHero
 
             if (!IsAuthenticated)
             {
-                DebugUtils.LogWarning("[PlayGamesController] User not authenticated. Attempting sign-in before submitting score.");
+                DebugUtils.LogWarning("[PlayGamesController] User not authenticated.");
                 return;
             }
 
@@ -197,7 +197,7 @@ namespace BeachHero
 
             if (!IsAuthenticated)
             {
-                DebugUtils.LogWarning("[PlayGamesController] User not authenticated. Attempting sign-in before showing leaderboard.");
+                DebugUtils.LogWarning("[PlayGamesController] User not authenticated. ");
                 return;
             }
 
@@ -247,7 +247,7 @@ namespace BeachHero
 
         public async Task<GameData> LoadDataFromCloud()
         {
-            if(!NetworkController.IsInternetAvailable)
+            if (!NetworkController.IsInternetAvailable)
             {
                 DebugUtils.LogWarning("[PlayGamesController] No internet connection available. Cannot load cloud data.");
                 return SaveSystem.CurrentData;

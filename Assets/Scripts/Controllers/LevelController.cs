@@ -431,7 +431,6 @@ namespace BeachHero
             {
                 UpdateStarsCount();
             }
-            levelDatabaseSO.SetStarsForLevel(currentLevelIndex, StarsEarned);
 
             // Set the score for the current level
             float levelTime = levelDatabaseSO.GetLevelByIndex(currentLevelIndex).LevelTime;
@@ -439,8 +438,8 @@ namespace BeachHero
             int score = IntUtils.LEADERBOARD_LEVEL_MULTIPLIER +
                 StarsEarned * IntUtils.LEADERBOARD_STAR_MULTIPLIER +
                 Mathf.RoundToInt(remainingTime * IntUtils.LEADERBOARD_REMAINING_TIME_MULTIPLIER);
-            levelDatabaseSO.SetScoreForLevel(currentLevelIndex, score);
 
+            levelDatabaseSO.SetStarsAndScoreForLevel(currentLevelIndex,StarsEarned, score);
             PlayGamesController.GetInstance.SubmitScore();
             MapController.GetInstance.OnLevelComplete(currentLevelIndex);
         }

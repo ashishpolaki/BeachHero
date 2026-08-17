@@ -108,6 +108,34 @@ namespace BeachHero
         }
         #endregion
 
+        #region Level Helper Methods
+        public LevelSaveData GetLevelData(int levelindex)
+        {
+            for (int i = 0; i < levelProgress.Count; i++)
+            {
+                if (levelProgress[i].levelIndex == levelindex)
+                {
+                    return levelProgress[i];
+                }
+            }
+            return null;
+        }
+
+        public void SetLevelProgress(int levelIndex, int stars, int score)
+        {
+            LevelSaveData existing = GetLevelData(levelIndex);
+            if (existing != null)
+            {
+                existing.starsEarned = Mathf.Max(existing.starsEarned, stars);
+                existing.highScore = Mathf.Max(existing.highScore, score);
+            }
+            else
+            {
+                levelProgress.Add(new LevelSaveData(levelIndex, stars, score));
+            }
+        }
+        #endregion
+
         #region Smart Merge (Offline <-> Cloud)
         /// <summary>
         /// Merges offline local progress with cloud progress.
@@ -131,7 +159,7 @@ namespace BeachHero
                     var cloudLevel = cloudData.levelProgress[i];
                     if (cloudLevel != null)
                     {
-                        MergeLevelProgress(cloudLevel.levelIndex, cloudLevel.starsEarned, cloudLevel.highScore);
+                        SetLevelProgress(cloudLevel.levelIndex, cloudLevel.starsEarned, cloudLevel.highScore);
                     }
                 }
             }
@@ -151,30 +179,6 @@ namespace BeachHero
             shieldBalance = Mathf.Max(shieldBalance, cloudData.shieldBalance);
             isSpeedBoostUnlock = isSpeedBoostUnlock || cloudData.isSpeedBoostUnlock;
             isShieldUnlock = isShieldUnlock || cloudData.isShieldUnlock;
-        }
-        public void MergeLevelProgress(int level, int stars, int score)
-        {
-            LevelSaveData existing = GetLevelData(level);
-            if (existing != null)
-            {
-                existing.starsEarned = Mathf.Max(existing.starsEarned, stars);
-                existing.highScore = Mathf.Max(existing.highScore, score);
-            }
-            else
-            {
-                levelProgress.Add(new LevelSaveData(level, stars, score));
-            }
-        }
-        public LevelSaveData GetLevelData(int level)
-        {
-            for (int i = 0; i < levelProgress.Count; i++)
-            {
-                if (levelProgress[i].levelIndex == level)
-                {
-                    return levelProgress[i];
-                }
-            }
-            return null;
         }
         #endregion
     }

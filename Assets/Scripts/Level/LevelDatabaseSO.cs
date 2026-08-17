@@ -105,10 +105,10 @@ namespace BeachHero
                 levelDatas[i].SetState(LevelVisualState.Locked);
                 levelDatas[i].StarsEarned = 0;
                 levelDatas[i].Score = 0;
-                SaveSystem.SaveInt($"{StringUtils.STARS_EARNED_PREFIX}{i}", 0);
-                SaveSystem.SaveInt($"{StringUtils.SCORE_EARNED_PREFIX}{i}", 0);
+                SaveSystem.CurrentData.SetLevelProgress(i, 0, 0);
             }
-            SaveSystem.SaveInt(StringUtils.TOTAL_SCORE, 0);
+            SaveSystem.CurrentData.totalScore = 0;
+            SaveSystem.SaveGameData();
         }
         private void OnValidate()
         {
@@ -148,8 +148,14 @@ namespace BeachHero
                 {
                     levelDatas[i].SetState(LevelVisualState.Locked);
                 }
-                levelDatas[i].StarsEarned = SaveSystem.LoadInt($"{StringUtils.STARS_EARNED_PREFIX}{i}", 0);
-                levelDatas[i].Score = SaveSystem.LoadInt($"{StringUtils.SCORE_EARNED_PREFIX}{i}", 0);
+
+                // Read level stars and score directly from GameData:
+                LevelSaveData savedLevel = SaveSystem.CurrentData.GetLevelData(i);
+                if (savedLevel != null)
+                {
+                    levelDatas[i].StarsEarned = savedLevel.starsEarned;
+                    levelDatas[i].Score = savedLevel.highScore;
+                }
             }
         }
 
@@ -161,27 +167,21 @@ namespace BeachHero
         {
             return levelDatas[index % levelDatas.Count];
         }
-        public void SetStarsForLevel(int levelIndex, int stars)
+
+        public void SetStarsAndScoreForLevel(int levelIndex, int stars, int score)
         {
             if (levelIndex >= 0 && levelIndex < levelDatas.Count)
             {
                 if (stars > levelDatas[levelIndex].StarsEarned)
                 {
                     levelDatas[levelIndex].StarsEarned = stars;
-                    SaveSystem.SaveInt($"{StringUtils.STARS_EARNED_PREFIX}{levelIndex}", stars);
                 }
-            }
-        }
-
-        public void SetScoreForLevel(int levelIndex, int score)
-        {
-            if (levelIndex >= 0 && levelIndex < levelDatas.Count)
-            {
                 if (score > levelDatas[levelIndex].Score)
                 {
                     levelDatas[levelIndex].Score = score;
-                    SaveSystem.SaveInt($"{StringUtils.SCORE_EARNED_PREFIX}{levelIndex}", score);
                 }
+
+                SaveSystem.CurrentData.SetLevelProgress(levelIndex, levelDatas[levelIndex].StarsEarned, levelDatas[levelIndex].Score);
             }
 
             int totalScore = 0;
@@ -189,7 +189,9 @@ namespace BeachHero
             {
                 totalScore += levelDatas[i].Score;
             }
-            SaveSystem.SaveInt(StringUtils.TOTAL_SCORE, totalScore);
+            SaveSystem.CurrentData.totalScore = totalScore;
+            SaveSystem.SaveGameData();
+            PlayGamesController.GetInstance.SaveDataInCloud();
         }
         #endregion
     }

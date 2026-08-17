@@ -5,7 +5,6 @@ namespace BeachHero
     public class StringUtils
     {
         public const string GAME_DATA = "BeachHero_GameData";
-        public const string HIGHEST_COMPLETED_LEVEL = "HighestCompletedLevel";
 
         //Tutorial
         public const string TAP_AND_DRAG_TUTORIAL = "TAP & DRAG THE BOAT";
@@ -33,11 +32,6 @@ namespace BeachHero
         public const string SOUND_ON = "Sound";
         public const string SOUND_VOLUME = "SoundVolume";
         public const string MUSIC_VOLUME = "MusicVolume";
-
-        //Stars & Score
-        public const string TOTAL_SCORE = "TotalScore";
-        public const string STARS_EARNED_PREFIX = "StarsEarned_Level_";
-        public const string SCORE_EARNED_PREFIX = "Score_Level_";
 
         //Auth & Login 
         [Tooltip("0 = First Launch, 1 = GPGS, 2 = Guest")]

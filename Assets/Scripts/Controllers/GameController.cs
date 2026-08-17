@@ -138,7 +138,9 @@ namespace BeachHero
             if (LevelController.CurrentLevelIndex == HighestCompletedLevelIndex)
             {
                 highestCompletedLevelIndex++;
-                SaveSystem.SaveInt(StringUtils.HIGHEST_COMPLETED_LEVEL, highestCompletedLevelIndex + 1);
+                SaveSystem.CurrentData.highestCompletedLevel = highestCompletedLevelIndex + 1;
+                SaveSystem.SaveGameData();
+                PlayGamesController.GetInstance.SaveDataInCloud();
             }
         }
         public void OnLevelWin()
@@ -193,7 +195,7 @@ namespace BeachHero
         }
         private int LoadHighestCompletedLevelNumber()
         {
-            return SaveSystem.LoadInt(StringUtils.HIGHEST_COMPLETED_LEVEL, IntUtils.DEFAULT_LEVEL);
+            return SaveSystem.CurrentData.highestCompletedLevel;
         }
         #endregion
 
