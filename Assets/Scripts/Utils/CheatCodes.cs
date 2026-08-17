@@ -102,10 +102,10 @@ public class CheatCodes : MonoBehaviour
     public static void SetLevel(int levelNumber)
     {
         SaveSystem.SaveInt(StringUtils.HIGHEST_COMPLETED_LEVEL, levelNumber);
-        SaveSystem.SaveBool(StringUtils.SHIELD_UNLOCKED, false);
-        SaveSystem.SaveBool(StringUtils.SPEEDBOOST_UNLOCKED, false);
-        SaveSystem.SaveInt(StringUtils.SHIELD_BALANCE, IntUtils.DEFAULT_SHIELD_BALANCE);
-        SaveSystem.SaveInt(StringUtils.SPEEDBOOST_BALANCE, IntUtils.DEFAULT_SPEEDBOOST_BALANCE);
+        SaveSystem.CurrentData.isShieldUnlock = false;
+        SaveSystem.CurrentData.isSpeedBoostUnlock = false;
+        SaveSystem.CurrentData.shieldBalance = IntUtils.DEFAULT_SHIELD_BALANCE;
+        SaveSystem.CurrentData.speedBoostBalance = IntUtils.DEFAULT_SPEEDBOOST_BALANCE;
         GameController.GetInstance.PowerupController.UpdatePowerupBalance(PowerupType.SpeedBoost, IntUtils.DEFAULT_SPEEDBOOST_BALANCE);
         GameController.GetInstance.PowerupController.UpdatePowerupBalance(PowerupType.Shield, IntUtils.DEFAULT_SHIELD_BALANCE);
 #if UNITY_EDITOR

@@ -52,12 +52,14 @@ namespace BeachHero
         public int coins;
         public int speedBoostBalance;
         public int shieldBalance;
-
-        // Customization & Boats
+        public bool isSpeedBoostUnlock;
+        public bool isShieldUnlock;
 
         //Tutorials & Engagement
         public bool isWelcomeMessageShown;
         public bool isRateUsShown;
+
+        // Customization & Boats
         #endregion
 
         #region Factory & Serialization
@@ -72,6 +74,8 @@ namespace BeachHero
                 shieldBalance = IntUtils.DEFAULT_SHIELD_BALANCE,
                 isWelcomeMessageShown = false,
                 isRateUsShown = false,
+                isSpeedBoostUnlock = false,
+                isShieldUnlock = false,
 
                 levelProgress = new List<LevelSaveData>(),
             };
@@ -141,6 +145,12 @@ namespace BeachHero
                     totalScore += levelData.highScore;
                 }
             }
+
+            //Powerups
+            speedBoostBalance = Mathf.Max(speedBoostBalance, cloudData.speedBoostBalance);
+            shieldBalance = Mathf.Max(shieldBalance, cloudData.shieldBalance);
+            isSpeedBoostUnlock = isSpeedBoostUnlock || cloudData.isSpeedBoostUnlock;
+            isShieldUnlock = isShieldUnlock || cloudData.isShieldUnlock;
         }
         public void MergeLevelProgress(int level, int stars, int score)
         {

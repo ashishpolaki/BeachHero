@@ -31,7 +31,9 @@ namespace BeachHero
             private set
             {
                 speedBoostBalance = value;
-                SaveSystem.SaveInt(StringUtils.SPEEDBOOST_BALANCE, speedBoostBalance);
+                SaveSystem.CurrentData.speedBoostBalance = value;
+                SaveSystem.SaveGameData();
+                PlayGamesController.GetInstance.SaveDataInCloud();
                 OnBalanceChange?.Invoke(PowerupType.SpeedBoost);
             }
         }
@@ -41,7 +43,9 @@ namespace BeachHero
             private set
             {
                 shieldBalance = value;
-                SaveSystem.SaveInt(StringUtils.SHIELD_BALANCE, shieldBalance);
+                SaveSystem.CurrentData.shieldBalance = value;
+                SaveSystem.SaveGameData();
+                PlayGamesController.GetInstance.SaveDataInCloud();
                 OnBalanceChange?.Invoke(PowerupType.Shield);
             }
         }
@@ -54,8 +58,8 @@ namespace BeachHero
         }
         private void InitBalances()
         {
-            speedBoostBalance = SaveSystem.LoadInt(StringUtils.SPEEDBOOST_BALANCE, IntUtils.DEFAULT_SPEEDBOOST_BALANCE);
-            shieldBalance = SaveSystem.LoadInt(StringUtils.SHIELD_BALANCE, IntUtils.DEFAULT_SHIELD_BALANCE);
+            speedBoostBalance = SaveSystem.CurrentData.speedBoostBalance;
+            shieldBalance = SaveSystem.CurrentData.shieldBalance;
         }
         #endregion
 
@@ -167,30 +171,26 @@ namespace BeachHero
         }
         public bool IsPowerupUnlocked(PowerupType powerupType)
         {
-            string key = powerupType switch
+            return powerupType switch
             {
-                PowerupType.Shield => StringUtils.SHIELD_UNLOCKED,
-                PowerupType.SpeedBoost => StringUtils.SPEEDBOOST_UNLOCKED,
-                _ => null
+                PowerupType.Shield => SaveSystem.CurrentData.isShieldUnlock,
+                PowerupType.SpeedBoost => SaveSystem.CurrentData.isSpeedBoostUnlock,
+                _ => false
             };
-
-            if (string.IsNullOrEmpty(key))
-            {
-                DebugUtils.LogError($" No unlock key defined for PowerupType: {powerupType}");
-                return false; // default safe value
-            }
-
-            return SaveSystem.LoadBool(key, false);
         }
         public void UnlockPowerup(PowerupType powerupType)
         {
             switch (powerupType)
             {
                 case PowerupType.Shield:
-                    SaveSystem.SaveBool(StringUtils.SHIELD_UNLOCKED, true);
+                    SaveSystem.CurrentData.isShieldUnlock = true;
+                    SaveSystem.SaveGameData();
+                    PlayGamesController.GetInstance.SaveDataInCloud();
                     break;
                 case PowerupType.SpeedBoost:
-                    SaveSystem.SaveBool(StringUtils.SPEEDBOOST_UNLOCKED, true);
+                    SaveSystem.CurrentData.isSpeedBoostUnlock = true;
+                    SaveSystem.SaveGameData();
+                    PlayGamesController.GetInstance.SaveDataInCloud();
                     break;
                 default:
                     DebugUtils.LogError($"Powerup {powerupType} not recognized.");

@@ -52,12 +52,6 @@ namespace BeachHero
         public const string VICTORY_ANIM = "Victory";
         public const string DROWN_ANIM = "Drown";
 
-        //Powerups
-        public const string SPEEDBOOST_UNLOCKED = "SpeedBoostUnlockLevel";
-        public const string SHIELD_UNLOCKED = "ShieldUnlockLevel";
-        public const string SPEEDBOOST_BALANCE = "SpeedBoostBalance";
-        public const string SHIELD_BALANCE = "ShieldBalance";
-
         //Boat Skins
         public const string CURRENT_BOAT_INDEX = "BoatSelectionIndex";
         public const string CURRENT_BOAT_COLOR_INDEX = "CurrentBoatColorIndex_";
@@ -72,9 +66,6 @@ namespace BeachHero
         //Product Purchase
         public const string PRODUCT_PURCHASED_SUCCESS = "Purchase successful!";
         public const string PRODUCT_PURCHASE_FAILED = "Purchase failed. Please try again later.";
-
-        //Game Currency
-        public const string COINS_BALANCE = "CoinsBalance";
 
         //ADS
         public const string NO_ADS_PURCHASED = "NoAdsPurchased";
