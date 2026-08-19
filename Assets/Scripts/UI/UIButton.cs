@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using LitMotion;
+using UnityEngine.UI;
 
 namespace BeachHero
 {
@@ -14,8 +15,8 @@ namespace BeachHero
 
         [Header("Scale Animation")]
         [SerializeField] private Vector3 _originalScale = new Vector3(1, 1, 1);
-        [SerializeField] private float pressedScale = 0.9f;
-     //   [SerializeField] private float hoverScale = 1.05f;
+        [SerializeField] private Vector3 pressedScale = new Vector3(0.9f, 0.9f, 0.9f);
+        //   [SerializeField] private float hoverScale = 1.05f;
         [SerializeField] private float tweenDuration = 0.15f;
         [SerializeField] private Ease pressEase = Ease.OutBack;
         [SerializeField] private Ease releaseEase = Ease.OutBack;
@@ -24,6 +25,9 @@ namespace BeachHero
         [Tooltip("Event triggered when button animation completes")]
         public event System.Action OnButtonReleased;
         public event System.Action OnButtonPressed;
+
+        private bool isInteractable = true;
+        private static readonly Color DisabledColor = new Color(0.7843137f, 0.7843137f, 0.7843137f, 0.5019608f);
 
         #region Unity Methods
         private void Awake()
@@ -52,6 +56,8 @@ namespace BeachHero
         #region Pointers
         public void OnPointerDown(PointerEventData eventData)
         {
+            if (!isInteractable) return;
+
             if (UIController.GetInstance.IsScreenTransitioning || UIController.GetInstance.IsInputBlocked)
             {
                 return;
@@ -76,6 +82,8 @@ namespace BeachHero
 
         public void OnPointerUp(PointerEventData eventData)
         {
+            if (!isInteractable) return;
+
             if (IsPointerInside(eventData))
             {
                 PlayReleaseAnimation();
@@ -89,12 +97,12 @@ namespace BeachHero
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (!enableHover) return;
+            if (!isInteractable || !enableHover) return;
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            if (!enableHover) return;
+            if (!isInteractable || !enableHover) return;
         }
         #endregion
 
@@ -111,7 +119,7 @@ namespace BeachHero
         public virtual void PlayPressAnimation()
         {
             OnButtonPressed?.Invoke();
-            AnimateScale(Vector3.one * pressedScale, pressEase);
+            AnimateScale(pressedScale, pressEase);
         }
         public virtual void PlayReleaseAnimation()
         {
@@ -127,6 +135,16 @@ namespace BeachHero
             });
         }
         #endregion
+
+        #region Interactability
+        public void SetInteractable(bool state)
+        {
+            isInteractable = state;
+            if (TryGetComponent(out Image image))
+            {
+                image.color = isInteractable ? Color.white : DisabledColor;
+            }
+        }
+        #endregion
     }
 }
-

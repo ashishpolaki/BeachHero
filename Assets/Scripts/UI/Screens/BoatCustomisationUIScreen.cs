@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,26 +13,24 @@ namespace BeachHero
         PurchaseSkinColor,
         SelectSkin
     }
+
     public class BoatCustomisationUIScreen : BaseScreen
     {
         #region Inspector Variables
+        // References
         [SerializeField] private BoatSkinColorUI boatSkinColorUIPrefab;
         [SerializeField] private Transform boatColorListContainer;
-        //  [SerializeField] private BoatPurchasePanel purchasePanel;
-        //  [SerializeField] private BoatSkinUI boatSkinPrefab;
-        //  [SerializeField] private Transform boatListContainer;
-        //  private Dictionary<int, BoatSkinUI> boatSkinMap = new Dictionary<int, BoatSkinUI>();
-        //  [SerializeField] private Image selectedBoatImage;
 
-        [SerializeField] private RectTransform screenBounds;
-        [SerializeField] private RectTransform boatScrollView;
-        [SerializeField] private Button homeButton;
-        [SerializeField] private Button purchaseButton;
-        [SerializeField] private Button nextBoatButton;
-        [SerializeField] private Button prevBoatButton;
+        //UI
+        [SerializeField] private UIButton backButton;
+        [SerializeField] private UIButton purchaseButton;
+        [SerializeField] private UIButton equipButton;
+        [SerializeField] private UIButton nextBoatButton;
+        [SerializeField] private UIButton prevBoatButton;
         [SerializeField] private TextMeshProUGUI purchaseBtnText;
+        [SerializeField] private TextMeshProUGUI equipBtnText;
         [SerializeField] private TextMeshProUGUI boatNameText;
-        [SerializeField] private Slider speedBar;
+        [SerializeField] private Image speedBarFill;
 
         [Header("Camera Settings")]
         [SerializeField] private Camera customisationCamera;
@@ -42,7 +42,6 @@ namespace BeachHero
         private BoatSelectionAction boatSelectionAction = BoatSelectionAction.SelectSkin;
         private int selectedBoatIndex = -1;
         private int selectedColorIndex = 0;
-        private bool isSetupComplete = false;
         private List<BoatSkinColorUI> colorUIList = new List<BoatSkinColorUI>();
         #endregion
 
@@ -50,172 +49,134 @@ namespace BeachHero
         public override void Open(ScreenTabType screenTabType)
         {
             base.Open(screenTabType);
-            selectedBoatIndex = -1;
+            if (customisationCamera != null)
+            {
+                customisationCamera.gameObject.SetActive(true);
+            }
             AddListeners();
             SetupCustomisation();
         }
+
         public override void Close()
         {
             base.Close();
-            RemoveListeneres();
-            //    purchasePanel.Close();
+            if (customisationCamera != null)
+            {
+                customisationCamera.gameObject.SetActive(false);
+            }
+            RemoveListeners();
         }
         #endregion
 
         #region Button & Event Listeners
         private void AddListeners()
         {
-            homeButton.ButtonRegister(OnHomePressed);
-            purchaseButton.ButtonRegister(OnPurchasePressed);
-            nextBoatButton.ButtonRegister(() => ChangeBoat(1));
-            prevBoatButton.ButtonRegister(() => ChangeBoat(-1));
-            //   purchasePanel.AddListeners();
-            GameController.GetInstance.SkinController.OnSkinPurchased += BoatSkinPurchased;
-            GameController.GetInstance.SkinController.OnSkinColorPurchased += BoatSkinColorPurchased;
-            GameController.GetInstance.StoreController.OnBoatPurchaseFail += BoatSkinPurchasedFail;
-        }
-        private void RemoveListeneres()
-        {
-            homeButton.ButtonDeRegister(OnHomePressed);
-            purchaseButton.ButtonDeRegister(OnPurchasePressed);
-            nextBoatButton.ButtonDeRegister(() => ChangeBoat(1));
-            prevBoatButton.ButtonDeRegister(() => ChangeBoat(-1));
-            //  purchasePanel.RemoveListeners();
-            GameController.GetInstance.SkinController.OnSkinPurchased -= BoatSkinPurchased;
-            GameController.GetInstance.SkinController.OnSkinColorPurchased -= BoatSkinColorPurchased;
-            GameController.GetInstance.StoreController.OnBoatPurchaseFail -= BoatSkinPurchasedFail;
-        }
-        private void OnPurchasePressed()
-        {
-            if (boatSelectionAction == BoatSelectionAction.SelectSkin)
+            if (backButton != null) backButton.OnButtonReleased += (OnBackOrHomePressed);
+            if (purchaseButton != null) purchaseButton.OnButtonReleased += (OnPurchasePressed);
+            if (equipButton != null) equipButton.OnButtonReleased += (OnPurchasePressed);
+            if (nextBoatButton != null) nextBoatButton.OnButtonReleased += (OnNextBoatPressed);
+            if (prevBoatButton != null) prevBoatButton.OnButtonReleased += (OnPrevBoatPressed);
+
+            var skinController = GameController.GetInstance.SkinController;
+            if (skinController != null)
             {
-                GameController.GetInstance.SkinController.SetSavedBoatIndex(selectedBoatIndex, selectedColorIndex);
-                purchaseBtnText.text = "SELECT";
-                purchaseButton.interactable = false;
-            }
-            else
-            {
-                //   purchasePanel.InitPurchase(selectedBoatIndex, selectedColorIndex, boatSelectionAction);
+                skinController.BoatCustomisationScreenActive(true);
+                skinController.OnSkinPurchased += BoatSkinPurchased;
+                skinController.OnSkinColorPurchased += BoatSkinColorPurchased;
             }
         }
-        private void OnHomePressed()
+
+        private void RemoveListeners()
         {
-            Close();
+            if (backButton != null) backButton.OnButtonReleased -= (OnBackOrHomePressed);
+            if (purchaseButton != null) purchaseButton.OnButtonReleased -= (OnPurchasePressed);
+            if (equipButton != null) equipButton.OnButtonReleased -= (OnPurchasePressed);
+            if (nextBoatButton != null) nextBoatButton.OnButtonReleased -= (OnNextBoatPressed);
+            if (prevBoatButton != null) prevBoatButton.OnButtonReleased -= (OnPrevBoatPressed);
+
+            var skinController = GameController.GetInstance.SkinController;
+            if (skinController != null)
+            {
+                skinController.BoatCustomisationScreenActive(false);
+                skinController.OnSkinPurchased -= BoatSkinPurchased;
+                skinController.OnSkinColorPurchased -= BoatSkinColorPurchased;
+            }
+        }
+
+        private void OnNextBoatPressed()
+        {
+            ChangeBoat(1);
+        }
+
+        private void OnPrevBoatPressed()
+        {
+            ChangeBoat(-1);
+        }
+
+        private void OnBackOrHomePressed()
+        {
             GameController.GetInstance.SetPreviousGameState();
+            Close();
         }
-        //private void ChangeBoatColor(int direction)
-        //{
-        //    int colorCount = GameController.GetInstance.SkinController.GetBoatSkinByIndex(selectedBoatIndex).SkinColors.Length;
-        //    selectedColorIndex = (selectedColorIndex + direction) % colorCount;
-        //    ApplyBoatColor(selectedColorIndex);
-        //}
-        private void ChangeBoat(int direction)
+        private void UpdateNavigationButtons()
         {
-            int boatCount = GameController.GetInstance.SkinController.BoatSkinsDatabase.BoatSkins.Length;
-            selectedBoatIndex = (selectedBoatIndex + direction + boatCount) % boatCount;
-            UpdateSelectedBoat(selectedBoatIndex);
-        }
-        #endregion
-
-        #region Setup/Init
-        //private void AdjustBoatScrollViewHeight()
-        //{
-        //    float actualScreenHeight = screenBounds.rect.height;
-        //    float boatsScrollPosY = boatScrollView.anchoredPosition.y;
-        //    float adjustedHeight = actualScreenHeight + boatsScrollPosY;
-        //    boatScrollView.sizeDelta = new Vector2(boatScrollView.sizeDelta.x, adjustedHeight);
-        //}
-        private void SetupCustomisation()
-        {
-            if (!isSetupComplete)
+            var database = GameController.GetInstance.SkinController.BoatSkinsDatabase;
+            if (database == null || database.BoatSkins == null || database.BoatSkins.Length == 0)
             {
-                isSetupComplete = true;
-
-                //Initialize the Boat Skins
-                //foreach (var skinData in GameController.GetInstance.SkinController.BoatSkinsDatabase.BoatSkins)
-                //{
-                //    var boatSkinUI = Instantiate(boatSkinPrefab, boatListContainer);
-                //    boatSkinUI.SetSkin(this, skinData);
-                //    boatSkinMap.Add(skinData.Index, boatSkinUI);
-                //}
-                for (int i = 0; i < 5; i++)
-                {
-                    var boatColorUI = Instantiate(boatSkinColorUIPrefab, boatColorListContainer);
-                    boatColorUI.gameObject.SetActive(false);
-                    colorUIList.Add(boatColorUI);
-                }
+                if (prevBoatButton != null) prevBoatButton.SetInteractable(false);
+                if (nextBoatButton != null) nextBoatButton.SetInteractable(false);
+                return;
             }
 
-            //Show the Previous Selected Boat Skin
-            int boatIndex = GameController.GetInstance.SkinController.GetSavedBoatIndex();
-            UpdateSelectedBoat(boatIndex);
+            int boatCount = database.BoatSkins.Length;
+            if (prevBoatButton != null)
+            {
+                prevBoatButton.SetInteractable(selectedBoatIndex > 0);
+            }
+            if (nextBoatButton != null)
+            {
+                nextBoatButton.SetInteractable(selectedBoatIndex < boatCount - 1);
+            }
         }
         #endregion
 
+        #region Camera Logic
         private void ApplyCameraTransform()
         {
+            if (customisationCamera == null) return;
+
             var target = GameController.GetInstance.LevelController.PlayerTransform;
-            Vector3 rotatedOffset = target.rotation * camPositionOffset;
-            customisationCamera.transform.position = target.position + rotatedOffset;
-            customisationCamera.transform.rotation = target.rotation * Quaternion.Euler(camRotationOffset);
-        }
-
-        private void HighlightSelectedBoat()
-        {
-            GameController.GetInstance.LevelController.UpdateBoat(selectedBoatIndex, selectedColorIndex);
-            ApplyCameraTransform();
-
-            //Set Boat in Detail Panel
-            var boatSkinSO = GameController.GetInstance.SkinController.GetBoatSkinByIndex(selectedBoatIndex);
-            speedBar.value = boatSkinSO.SpeedMeter;
-            boatNameText.text = boatSkinSO.Name;
-        }
-
-        private void UpdatePurchaseButton()
-        {
-            bool isBoatUnlocked = GameController.GetInstance.SkinController.IsBoatSkinUnlocked(selectedBoatIndex);
-
-            if (!isBoatUnlocked)
+            if (target != null)
             {
-                boatSelectionAction = BoatSelectionAction.PurchaseSkin;
-                purchaseBtnText.text = "BUY";
-                purchaseButton.interactable = true;
-                purchaseButton.gameObject.SetActive(true);
-                bool isBoatColorUnlocked = GameController.GetInstance.SkinController.IsBoatSkinColorUnlocked(selectedBoatIndex, selectedColorIndex);
-                if (isBoatColorUnlocked)
-                {
-                    purchaseButton.interactable = false;
-                    purchaseButton.gameObject.SetActive(false);
-                }
+                Vector3 rotatedOffset = target.rotation * camPositionOffset;
+                customisationCamera.transform.position = target.position + rotatedOffset;
+                customisationCamera.transform.rotation = target.rotation * Quaternion.Euler(camRotationOffset);
             }
-            else
+        }
+        #endregion
+
+        #region Setup/Init Boat
+        private void SetupCustomisation()
+        {
+            // Start from currently equipped boat
+            selectedBoatIndex = GameController.GetInstance.SkinController.GetSavedBoatIndex();
+            UpdateSelectedBoat(selectedBoatIndex);
+            ApplyCameraTransform();
+        }
+
+        private void ChangeBoat(int direction)
+        {
+            var database = GameController.GetInstance.SkinController.BoatSkinsDatabase;
+            if (database == null || database.BoatSkins == null || database.BoatSkins.Length == 0)
             {
-                bool isBoatColorUnlocked = GameController.GetInstance.SkinController.IsBoatSkinColorUnlocked(selectedBoatIndex, selectedColorIndex);
-                if (!isBoatColorUnlocked)
-                {
-                    boatSelectionAction = BoatSelectionAction.PurchaseSkinColor;
-                    purchaseBtnText.text = "BUY";
-                    purchaseButton.interactable = true;
-                    purchaseButton.gameObject.SetActive(true);
-                }
-                else
-                {
-                    boatSelectionAction = BoatSelectionAction.SelectSkin;
-                    if (selectedColorIndex == GameController.GetInstance.SkinController.GetSavedBoatColorIndex(selectedBoatIndex) &&
-                        selectedBoatIndex == GameController.GetInstance.SkinController.GetSavedBoatIndex())
-                    {
-                        purchaseBtnText.text = "SELECT";
-                        purchaseButton.interactable = false;
-                        purchaseButton.gameObject.SetActive(false);
-                    }
-                    else
-                    {
-                        // If the color is not selected, allow selection
-                        purchaseBtnText.text = "SELECT";
-                        purchaseButton.interactable = true;
-                        purchaseButton.gameObject.SetActive(true);
-                    }
-                }
+                return;
+            }
+
+            int boatCount = database.BoatSkins.Length;
+            int newIndex = selectedBoatIndex + direction;
+            if (newIndex >= 0 && newIndex < boatCount)
+            {
+                UpdateSelectedBoat(newIndex);
             }
         }
 
@@ -223,10 +184,33 @@ namespace BeachHero
         {
             selectedBoatIndex = index;
             selectedColorIndex = GameController.GetInstance.SkinController.GetSavedBoatColorIndex(selectedBoatIndex);
+
             HighlightSelectedBoat();
             ShowAvailableColors();
             UpdatePurchaseButton();
+            UpdateNavigationButtons();
         }
+
+        private void HighlightSelectedBoat()
+        {
+            GameController.GetInstance.LevelController.UpdateBoat(selectedBoatIndex, selectedColorIndex);
+            // ApplyCameraTransform();
+
+            // Set boat stats in UI panel
+            var boatSkinSO = GameController.GetInstance.SkinController.GetBoatSkinByIndex(selectedBoatIndex);
+            if (boatSkinSO != null)
+            {
+                if (boatNameText != null)
+                {
+                    boatNameText.text = boatSkinSO.Name;
+                }
+                if (speedBarFill != null)
+                {
+                    speedBarFill.fillAmount = boatSkinSO.SpeedMeter;
+                }
+            }
+        }
+        #endregion
 
         #region Boat Colors
         private void ShowAvailableColors()
@@ -234,69 +218,234 @@ namespace BeachHero
             // Deactivate all existing color UIs
             foreach (var boatColorUI in colorUIList)
             {
-                boatColorUI.gameObject.SetActive(false);
+                if (boatColorUI != null)
+                {
+                    boatColorUI.gameObject.SetActive(false);
+                }
             }
 
-            // Activate and initialize the boat colors for the current boat
             var boatSkin = GameController.GetInstance.SkinController.GetBoatSkinByIndex(selectedBoatIndex);
+            if (boatSkin == null || boatSkin.SkinColors == null) return;
+
             for (int i = 0; i < boatSkin.SkinColors.Length; i++)
             {
                 var skinColorData = boatSkin.SkinColors[i];
-                var boatSkinColorUI = GetReusableColorUI();
-                int index = i;
-                boatSkinColorUI.InitSkinColor(this, skinColorData, index, selectedColorIndex == index);
+                var boatSkinColorUI = GetReusableColorUI(i);
+                boatSkinColorUI.InitSkinColor(this, skinColorData, i, selectedColorIndex == i);
                 boatSkinColorUI.gameObject.SetActive(true);
             }
         }
+
         public void ApplyBoatColor(int colorIndex)
         {
             selectedColorIndex = colorIndex;
-            // Deactivate all existing color UIs
-            foreach (var boatColorUI in colorUIList)
+
+            // Update color swatch selection visual
+            for (int i = 0; i < colorUIList.Count; i++)
             {
-                boatColorUI.UnSelect();
+                if (colorUIList[i] != null && colorUIList[i].gameObject.activeSelf)
+                {
+                    if (i == selectedColorIndex)
+                    {
+                        colorUIList[i].Select();
+                    }
+                    else
+                    {
+                        colorUIList[i].UnSelect();
+                    }
+                }
             }
-            //  selectedBoatImage.sprite = GameController.GetInstance.SkinController.GetBoatSkinByIndex(selectedBoatIndex).SkinColors[selectedColorIndex].sprite;
-            colorUIList[selectedColorIndex].Select();
+
             HighlightSelectedBoat();
             UpdatePurchaseButton();
         }
-        private BoatSkinColorUI GetReusableColorUI()
+
+        private BoatSkinColorUI GetReusableColorUI(int index)
         {
-            foreach (var boatSkinColorUI in colorUIList)
+            if (index < colorUIList.Count && colorUIList[index] != null)
             {
-                if (!boatSkinColorUI.gameObject.activeSelf)
-                {
-                    return boatSkinColorUI;
-                }
+                return colorUIList[index];
             }
-            var boatSkinColorObj = Instantiate(boatSkinColorUIPrefab, boatColorListContainer);
-            colorUIList.Add(boatSkinColorObj);
-            return boatSkinColorObj;
+
+            var newColorUI = Instantiate(boatSkinColorUIPrefab, boatColorListContainer);
+            colorUIList.Add(newColorUI);
+            return newColorUI;
         }
         #endregion
 
-        #region Purchase
+        #region Purchase & Equip Logic
+        private void UpdatePurchaseButton()
+        {
+            var skinController = GameController.GetInstance.SkinController;
+            var boatSkin = skinController.GetBoatSkinByIndex(selectedBoatIndex);
+
+            bool isBoatUnlocked = skinController.IsBoatSkinUnlocked(selectedBoatIndex);
+            int savedBoat = skinController.GetSavedBoatIndex();
+            int savedColor = skinController.GetSavedBoatColorIndex(selectedBoatIndex);
+
+            bool isCurrentlyEquipped = (selectedBoatIndex == savedBoat && selectedColorIndex == savedColor);
+
+            // 1. Purchase Button Logic
+            if (purchaseButton != null)
+            {
+                if (!isBoatUnlocked)
+                {
+                    boatSelectionAction = BoatSelectionAction.PurchaseSkin;
+                    purchaseButton.gameObject.SetActive(true);
+                    if (purchaseBtnText != null)
+                    {
+                        int cost = boatSkin != null ? boatSkin.CoinCost : 0;
+                        purchaseBtnText.text = $"{cost}";
+                    }
+                }
+                else
+                {
+                    // Already purchased -> set purchase button inactive
+                    purchaseButton.gameObject.SetActive(false);
+                }
+            }
+
+            // 2. Equip Button Logic
+            if (equipButton != null)
+            {
+                if (!isBoatUnlocked)
+                {
+                    // Locked boat -> hide equip button
+                    equipButton.gameObject.SetActive(false);
+                }
+                else
+                {
+                    boatSelectionAction = BoatSelectionAction.SelectSkin;
+                    equipButton.gameObject.SetActive(true);
+
+                    if (isCurrentlyEquipped)
+                    {
+                        // Already equipped -> disabled
+                        equipButton.SetInteractable(false);
+                        if (equipBtnText != null)
+                        {
+                            equipBtnText.text = "EQUIPPED";
+                        }
+                    }
+                    else
+                    {
+                        // Unlocked but not currently equipped -> interactable
+                        equipButton.SetInteractable(true);
+                        if (equipBtnText != null)
+                        {
+                            equipBtnText.text = "EQUIP";
+                        }
+                    }
+                }
+            }
+        }
+
+        private void OnPurchasePressed()
+        {
+            var skinController = GameController.GetInstance.SkinController;
+            var storeController = GameController.GetInstance.StoreController;
+
+            switch (boatSelectionAction)
+            {
+                case BoatSelectionAction.SelectSkin:
+                    skinController.SetSavedBoatIndex(selectedBoatIndex, selectedColorIndex);
+                    UpdatePurchaseButton();
+                    break;
+
+                case BoatSelectionAction.PurchaseSkin:
+                    storeController.BuyBoatWithCoins(selectedBoatIndex);
+                    UpdateSelectedBoat(selectedBoatIndex);
+                    break;
+
+                case BoatSelectionAction.PurchaseSkinColor:
+                    storeController.BuyBoatColorWithCoins(selectedBoatIndex, selectedColorIndex);
+                    UpdateSelectedBoat(selectedBoatIndex);
+                    break;
+            }
+        }
+
+        private void BoatSkinPurchased(int index)
+        {
+            UpdateSelectedBoat(index);
+        }
+
         private void BoatSkinColorPurchased(int boatIndex, int colorIndex)
         {
-            //  purchasePanel.Close();
-            UIController.GetInstance.ScreenEvent(ScreenType.Purchase, UIScreenEvent.Push, ScreenTabType.PurchasSuccess);
             selectedBoatIndex = boatIndex;
             ApplyBoatColor(colorIndex);
         }
-        private void BoatSkinPurchased(int index)
-        {
-            //  purchasePanel.Close();
-            selectedBoatIndex = index;
-            //  boatSkinMap[selectedBoatIndex].UpdateLockState();
-            ApplyBoatColor(0); // Default to the first color after purchase
-            UIController.GetInstance.ScreenEvent(ScreenType.Purchase, UIScreenEvent.Push, ScreenTabType.PurchasSuccess);
-        }
-        private void BoatSkinPurchasedFail()
-        {
-            //   purchasePanel.Close();
-            UIController.GetInstance.ScreenEvent(ScreenType.Purchase, UIScreenEvent.Push, ScreenTabType.PurchasFail);
-        }
         #endregion
+
+        #region Save Boat Image
+        //#if UNITY_EDITOR
+        //        [SerializeField] private RenderTexture renderTexture1;
+        //        public bool onValiate;
+        //        private void OnValidate()
+        //        {
+        //            if (onValiate)
+        //            {
+        //                SaveRenderTextureAsSprite(renderTexture1, "Boat");
+        //            }
+        //        }
+
+        //        public Sprite SaveRenderTextureAsSprite(RenderTexture renderTexture, string fileName)
+        //        {
+        //            RenderTexture previous = RenderTexture.active;
+        //            RenderTexture.active = renderTexture;
+
+        //            Texture2D texture = new Texture2D(
+        //                renderTexture.width,
+        //                renderTexture.height,
+        //                TextureFormat.RGBA32,
+        //                false
+        //            );
+
+        //            texture.ReadPixels(
+        //                new Rect(0, 0, renderTexture.width, renderTexture.height),
+        //                0,
+        //                0
+        //            );
+
+        //            texture.Apply();
+
+        //            RenderTexture.active = previous;
+
+        //            string folderPath = "Assets/Sprites";
+
+        //            if (!AssetDatabase.IsValidFolder(folderPath))
+        //            {
+        //                AssetDatabase.CreateFolder("Assets", "Sprites");
+        //            }
+
+        //            string assetPath = $"{folderPath}/{fileName}.png";
+
+        //            byte[] pngData = texture.EncodeToPNG();
+        //            File.WriteAllBytes(assetPath, pngData);
+
+        //            AssetDatabase.Refresh();
+
+        //            // Get the imported texture
+        //            Texture2D savedTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath);
+
+        //            // Make sure Unity imports it as a Sprite
+        //            TextureImporter importer =
+        //                AssetImporter.GetAtPath(assetPath) as TextureImporter;
+
+        //            if (importer != null)
+        //            {
+        //                importer.textureType = TextureImporterType.Sprite;
+        //                importer.spriteImportMode = SpriteImportMode.Single;
+
+        //                AssetDatabase.ImportAsset(
+        //                    assetPath, ImportAssetOptions.ForceUpdate);
+        //            }
+
+        //            Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPath);
+        //            Object.DestroyImmediate(texture);
+        //            return sprite;
+        //        }
+        //#endif
+        #endregion
+
     }
 }

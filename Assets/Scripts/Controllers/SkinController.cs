@@ -9,7 +9,7 @@ namespace BeachHero
 
         public event Action<int> OnSkinPurchased;
         public event Action<int, int> OnSkinColorPurchased;
-
+        public event Action<bool> OnBoatCustomisationPanelOpen;
         public BoatSkinDatabaseSO BoatSkinsDatabase
         {
             get => boatSkinsDatabase;
@@ -19,78 +19,102 @@ namespace BeachHero
         public bool IsBoatSkinUnlocked(int boatIndex)
         {
             BoatSkinSO boatSkin = GetBoatSkinByIndex(boatIndex);
-            if (boatSkin.IsDefaultBoat)
+            if (boatSkin == null || boatSkin.IsDefaultBoat || boatIndex == IntUtils.DEFAULT_BOAT_INDEX)
             {
                 return true; // Default boats are always unlocked
             }
-            if (SaveSystem.LoadBool(StringUtils.BOAT_SKIN_UNLOCKED + boatIndex, false))
-            {
-                return true;
-            }
-            return false;
+
+            return SaveSystem.CurrentData != null && SaveSystem.CurrentData.IsBoatUnlocked(boatIndex);
         }
 
         public bool IsBoatSkinColorUnlocked(int boatIndex, int colorIndex)
         {
+            if (colorIndex == 0)
+            {
+                return true; // Default color is always unlocked
+            }
+
             BoatSkinSO boatSkin = GetBoatSkinByIndex(boatIndex);
-            if (boatSkin.SkinColors[colorIndex].isUnlocked)
+            if (boatSkin != null && colorIndex >= 0 && colorIndex < boatSkin.SkinColors.Length)
             {
-                return true;
+                if (boatSkin.SkinColors[colorIndex].isUnlocked)
+                {
+                    return true;
+                }
             }
-            if (SaveSystem.LoadBool($"{StringUtils.BOAT_SKIN_COLOR_UNLOCK}{boatIndex}_{colorIndex}", false))
-            {
-                return true;
-            }
-            return false;
+
+            return SaveSystem.CurrentData != null && SaveSystem.CurrentData.IsBoatColorUnlocked(boatIndex, colorIndex);
         }
 
         public BoatSkinSO GetBoatSkinByIndex(int index)
         {
-            //foreach
+            if (boatSkinsDatabase == null || boatSkinsDatabase.BoatSkins == null)
+            {
+                DebugUtils.LogError("BoatSkinsDatabase is null.");
+                return null;
+            }
+
             foreach (var skin in boatSkinsDatabase.BoatSkins)
             {
-                if (skin.Index == index)
+                if (skin != null && skin.Index == index)
                     return skin;
             }
 
-            DebugUtils.LogError("BoatSkinsDatabase is null or index is out of range.");
+            DebugUtils.LogError($"BoatSkin with index {index} not found in database.");
             return null;
         }
+
         public BoatSkinSO GetBoatSkinByID(string id)
         {
+            if (boatSkinsDatabase == null || boatSkinsDatabase.BoatSkins == null)
+            {
+                DebugUtils.LogError("BoatSkinsDatabase is null.");
+                return null;
+            }
+
             foreach (var skin in boatSkinsDatabase.BoatSkins)
             {
-                if (skin.ID == id)
+                if (skin != null && skin.ID == id)
                     return skin;
             }
+
             DebugUtils.LogError($"BoatSkin with ID {id} not found in the database.");
             return null;
         }
+
         public float GetSelectedBoatSpeed(int currentBoatIndex)
         {
-            return GetBoatSkinByIndex(currentBoatIndex).Speed;
+            var boat = GetBoatSkinByIndex(currentBoatIndex);
+            return boat != null ? boat.Speed : 0f;
         }
+
         public float GetSelectedBoatBoostSpeed()
         {
             int currentBoatIndex = GetSavedBoatIndex();
-            return GetBoatSkinByIndex(currentBoatIndex).BoostSpeed;
+            var boat = GetBoatSkinByIndex(currentBoatIndex);
+            return boat != null ? boat.BoostSpeed : 0f;
         }
+
         public GameObject GetSelectedBoatPrefab(int currentBoatIndex)
         {
-            return GetBoatSkinByIndex(currentBoatIndex).BoatPrefab;
+            var boat = GetBoatSkinByIndex(currentBoatIndex);
+            return boat != null ? boat.BoatPrefab : null;
         }
+
         public int GetSavedBoatIndex()
         {
-            return SaveSystem.LoadInt(StringUtils.CURRENT_BOAT_INDEX, IntUtils.DEFAULT_BOAT_INDEX);
+            return SaveSystem.CurrentData != null ? SaveSystem.CurrentData.currentSelectedBoatIndex : IntUtils.DEFAULT_BOAT_INDEX;
         }
+
         public int GetSavedBoatColorIndex(int boatIndex)
         {
-            return SaveSystem.LoadInt(StringUtils.CURRENT_BOAT_COLOR_INDEX + boatIndex, IntUtils.DEFAULT_BOAT_COLOR_INDEX);
+            return SaveSystem.CurrentData != null ? SaveSystem.CurrentData.GetSelectedBoatColorIndex(boatIndex) : IntUtils.DEFAULT_BOAT_COLOR_INDEX;
         }
+
         public Color[] GetBoatPartColors(int currentBoatIndex, int currentColorIndex)
         {
             BoatSkinSO boatSkin = GetBoatSkinByIndex(currentBoatIndex);
-            if (boatSkin != null && boatSkin.SkinColors.Length > currentColorIndex)
+            if (boatSkin != null && boatSkin.SkinColors != null && boatSkin.SkinColors.Length > currentColorIndex && currentColorIndex >= 0)
             {
                 return boatSkin.SkinColors[currentColorIndex].ShaderColors;
             }
@@ -102,20 +126,37 @@ namespace BeachHero
         #region Set Methods
         public void SetSavedBoatIndex(int boatIndex, int colorIndex = 0)
         {
-            SaveSystem.SaveInt(StringUtils.CURRENT_BOAT_INDEX, boatIndex);
-            SaveSystem.SaveInt(StringUtils.CURRENT_BOAT_COLOR_INDEX + boatIndex, colorIndex);
+            if (SaveSystem.CurrentData != null)
+            {
+                SaveSystem.CurrentData.SetSelectedBoat(boatIndex, colorIndex);
+                SaveSystem.SaveGameData();
+                PlayGamesController.GetInstance.SaveDataInCloud();
+            }
         }
+
+        public void BoatCustomisationScreenActive(bool val)
+        {
+            OnBoatCustomisationPanelOpen?.Invoke(val);
+        }
+
         public void UnlockBoatSkin(int index)
         {
-            SaveSystem.SaveBool(StringUtils.BOAT_SKIN_UNLOCKED + index, true);
-            SetSavedBoatIndex(index, 0); // Default color index is 0
+            if (SaveSystem.CurrentData != null)
+            {
+                SaveSystem.CurrentData.UnlockBoat(index);
+                SetSavedBoatIndex(index, 0); // Default color index is 0
+            }
             OnSkinPurchased?.Invoke(index);
         }
-        public void UnlockBoatSkinColor(int boatindex, int colorIndex)
+
+        public void UnlockBoatSkinColor(int boatIndex, int colorIndex)
         {
-            SaveSystem.SaveBool($"{StringUtils.BOAT_SKIN_COLOR_UNLOCK}{boatindex}_{colorIndex}", true);
-            SetSavedBoatIndex(boatindex, colorIndex);
-            OnSkinColorPurchased?.Invoke(boatindex, colorIndex);
+            if (SaveSystem.CurrentData != null)
+            {
+                SaveSystem.CurrentData.UnlockBoatColor(boatIndex, colorIndex);
+                SetSavedBoatIndex(boatIndex, colorIndex);
+            }
+            OnSkinColorPurchased?.Invoke(boatIndex, colorIndex);
         }
         #endregion
     }

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Purchasing;
 
 namespace BeachHero
 {
@@ -15,11 +14,7 @@ namespace BeachHero
         [SerializeField] private float boostSpeed;
         [Range(0f, 1f), SerializeField] private float speedMeter;
         [SerializeField] private bool isUnlocked;
-        [Hide("isDefault"), SerializeField] private bool isCoin;
-        [Hide("isDefault"), SerializeField] private bool isRealMoney;
-        [Show("isGameCurrency"), SerializeField] private int coinCost;
-        [Show("isRealMoney"), SerializeField] private ProductType productType;
-        [Show("isRealMoney"), SerializeField] private string realMoneyCost;
+        [SerializeField] private int coinCost;
         [SerializeField] private BoatSkinColorData[] skinColors;
         #endregion
 
@@ -33,33 +28,21 @@ namespace BeachHero
         public float BoostSpeed => boostSpeed;
         public BoatSkinColorData[] SkinColors => skinColors;
         public bool IsDefaultBoat => isUnlocked;
-        public bool IsGameCurrency => isCoin;
-        public bool IsRealMoney => isRealMoney;
         public int CoinCost => coinCost;
-        public string RealMoneyCost => realMoneyCost;
         public GameObject BoatPrefab => boatPrefab;
-        public ProductType ProductType => productType;
         #endregion
 
         //public void Initialize()
         //{
         //    Hash = id.GetHashCode();
         //}
-
-        public void SetRealMoneyCost(string _realMoneyCost)
-        {
-            realMoneyCost = _realMoneyCost;
-        }
     }
     [System.Serializable]
     public struct BoatSkinColorData
     {
         public Color[] ShaderColors;
         public Color previewColor;
-        //  [SkinPreview] public Sprite sprite;
         public bool isUnlocked;
-        [Hide("isDefault")] public bool isGameCurrency;
-        [Hide("isDefault")] public bool isAds;
-        [Show("isGameCurrency")] public int coinCost;
+        public int coinCost;
     }
 }

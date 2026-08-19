@@ -52,13 +52,15 @@ namespace BeachHero
         private void OnEnable()
         {
             GameController.GetInstance.PowerupController.OnActivatePowerup += ActivePowerup;
+            GameController.GetInstance.SkinController.OnBoatCustomisationPanelOpen += BoatCustomisationScreenOpened;
         }
 
         private void OnDisable()
         {
-            if (GameController.GetInstance != null && GameController.GetInstance.PowerupController != null)
+            if (GameController.GetInstance != null)
             {
                 GameController.GetInstance.PowerupController.OnActivatePowerup -= ActivePowerup;
+                GameController.GetInstance.SkinController.OnBoatCustomisationPanelOpen -= BoatCustomisationScreenOpened;
             }
         }
 
@@ -177,6 +179,16 @@ namespace BeachHero
         #endregion
 
         #region Boat
+        private void BoatCustomisationScreenOpened(bool val)
+        {
+            boatAnimator.enabled = !val;
+            Vector3 pos = boatAnimator.transform.position;
+            if (val)
+            {
+                pos.y = -0.15f;
+                boatAnimator.transform.position = pos; 
+            }
+        }
         private void OnBoatCollided()
         {
             boatAnimator.SetTrigger(sinkingAnimHash);
@@ -215,7 +227,7 @@ namespace BeachHero
             currentBoat.SetBoatInit(boatIndex, boatColorIndex);
         }
         #endregion
-      
+
         #region Animation
         public async void PlayVictoryAnimation()
         {

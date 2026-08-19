@@ -13,6 +13,17 @@ namespace BeachHero
         }
 
         #region GameData Management
+        public static void DeleteGameData()
+        {
+            // 1. Delete the specific GameData key from ES3
+            if (ES3.KeyExists(StringUtils.GAME_DATA))
+            {
+                ES3.DeleteKey(StringUtils.GAME_DATA);
+            }
+            // 2. Clear the in-memory cached instance
+            CurrentData = null;
+            DebugUtils.Log("[SaveSystem] GameData cleared successfully.");
+        }
         public static GameData LoadGameData()
         {
             if (CurrentData != null)

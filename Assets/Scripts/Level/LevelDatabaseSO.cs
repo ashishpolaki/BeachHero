@@ -105,10 +105,7 @@ namespace BeachHero
                 levelDatas[i].SetState(LevelVisualState.Locked);
                 levelDatas[i].StarsEarned = 0;
                 levelDatas[i].Score = 0;
-                SaveSystem.CurrentData.SetLevelProgress(i, 0, 0);
             }
-            SaveSystem.CurrentData.totalScore = 0;
-            SaveSystem.SaveGameData();
         }
         private void OnValidate()
         {

@@ -20,12 +20,8 @@ MonoBehaviour:
   speed: 7
   boostSpeed: 8.6
   speedMeter: 0.595
-  isUnlocked: 1
-  isGameCurrency: 1
-  isRealMoney: 0
-  gameCurrencyCost: 500
-  productType: 1
-  realMoneyCost: $ 10
+  isUnlocked: 0
+  coinCost: 500
   skinColors:
   - ShaderColors:
     - {r: 0.9607844, g: 0.8313726, b: 0.67058825, a: 1}
@@ -34,9 +30,7 @@ MonoBehaviour:
     - {r: 0.007843138, g: 0.33333334, b: 0.45098042, a: 1}
     previewColor: {r: 0.9607844, g: 0.8313726, b: 0.67058825, a: 1}
     isUnlocked: 1
-    isGameCurrency: 0
-    isAds: 0
-    inGameCurrencyCost: 10
+    coinCost: 0
   - ShaderColors:
     - {r: 1, g: 1, b: 1, a: 1}
     - {r: 0.007843138, g: 0.33333334, b: 0.45098042, a: 1}
@@ -44,9 +38,7 @@ MonoBehaviour:
     - {r: 0.1254902, g: 0.07058824, b: 0.0627451, a: 1}
     previewColor: {r: 1, g: 1, b: 1, a: 1}
     isUnlocked: 1
-    isGameCurrency: 1
-    isAds: 1
-    inGameCurrencyCost: 50
+    coinCost: 0
   - ShaderColors:
     - {r: 0.654902, g: 0.91372555, b: 0.9450981, a: 1}
     - {r: 0.10196079, g: 0.2392157, b: 0.36078432, a: 1}
@@ -54,6 +46,4 @@ MonoBehaviour:
     - {r: 1, g: 1, b: 1, a: 1}
     previewColor: {r: 0.654902, g: 0.91372555, b: 0.9450981, a: 1}
     isUnlocked: 1
-    isGameCurrency: 1
-    isAds: 0
-    inGameCurrencyCost: 50
+    coinCost: 0
