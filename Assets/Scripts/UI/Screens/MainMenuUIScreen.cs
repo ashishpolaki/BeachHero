@@ -35,6 +35,7 @@ namespace BeachHero
             base.Open(screenTabType);
             AddListeners();
             EnableGPGSButton();
+            EnableNoAdsButton();
             for (int i = 0; i < buttonsShineEffect.Length; i++)
             {
                 int index = i;
@@ -144,6 +145,15 @@ namespace BeachHero
             }
         }
 
+        private void EnableNoAdsButton()
+        {
+            if (noAdsButton != null)
+            {
+                bool isNoAdsPurchased = AdController.GetInstance.NoAdsPurchased();
+                noAdsButton.SetInteractable(!isNoAdsPurchased);
+            }
+        }
+
         private void OnGPGSSignInClicked()
         {
             if (!NetworkController.IsInternetAvailable)
@@ -158,7 +168,6 @@ namespace BeachHero
                 if (success)
                 {
                     EnableGPGSButton();
-                    Close();
                 }
             });
         }

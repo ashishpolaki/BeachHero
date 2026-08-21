@@ -1951,6 +1951,7 @@ GameObject:
   - component: {fileID: 1648413691737729332}
   - component: {fileID: 8740369399590210878}
   - component: {fileID: 8282751075820152641}
+  - component: {fileID: 2272993449527014713}
   m_Layer: 5
   m_Name: RightButton
   m_TagString: Untagged
@@ -2072,12 +2073,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 2272993449527014713}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
   tweenDuration: 0.15
   pressEase: 26
   releaseEase: 26
+--- !u!225 &2272993449527014713
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4059904887894784431}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4545554030530123248
 GameObject:
   m_ObjectHideFlags: 0
@@ -2503,6 +2517,7 @@ GameObject:
   - component: {fileID: 7634900847555975837}
   - component: {fileID: 7621873948034781150}
   - component: {fileID: 1494530285052099962}
+  - component: {fileID: 3816931427628081251}
   m_Layer: 5
   m_Name: PurchaseBtn (1)
   m_TagString: Untagged
@@ -2581,12 +2596,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 3816931427628081251}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
   tweenDuration: 0.15
   pressEase: 26
   releaseEase: 26
+--- !u!225 &3816931427628081251
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5501605603935748380}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &5720255848133124245
 GameObject:
   m_ObjectHideFlags: 0
@@ -2722,6 +2750,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 0}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
@@ -2740,6 +2769,7 @@ GameObject:
   - component: {fileID: 1550189619836397033}
   - component: {fileID: 6632067991913093952}
   - component: {fileID: 9152719013929043258}
+  - component: {fileID: 718106545424289090}
   m_Layer: 5
   m_Name: EquipButton
   m_TagString: Untagged
@@ -2818,12 +2848,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 718106545424289090}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
   tweenDuration: 0.15
   pressEase: 26
   releaseEase: 26
+--- !u!225 &718106545424289090
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5727133989143238791}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &5917221099089569159
 GameObject:
   m_ObjectHideFlags: 0
@@ -4147,6 +4190,7 @@ GameObject:
   - component: {fileID: 4250696566957908093}
   - component: {fileID: 5010387286955176349}
   - component: {fileID: 1744632709306379418}
+  - component: {fileID: 9144375066154374925}
   m_Layer: 5
   m_Name: LeftButton
   m_TagString: Untagged
@@ -4268,12 +4312,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 9144375066154374925}
   enableHover: 0
   _originalScale: {x: -1, y: 1, z: 1}
   pressedScale: {x: -0.9, y: 0.9, z: 0.9}
   tweenDuration: 0.15
   pressEase: 26
   releaseEase: 26
+--- !u!225 &9144375066154374925
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8344741609902759462}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8409989219776752811
 GameObject:
   m_ObjectHideFlags: 0

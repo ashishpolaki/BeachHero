@@ -11,6 +11,7 @@ namespace BeachHero
         [SerializeField] private AudioType buttonAudioType;
 
         [Header("Interaction")]
+        [SerializeField] private CanvasGroup canvasGroup;
         [SerializeField] private bool enableHover = false;
 
         [Header("Scale Animation")]
@@ -27,7 +28,6 @@ namespace BeachHero
         public event System.Action OnButtonPressed;
 
         private bool isInteractable = true;
-        private static readonly Color DisabledColor = new Color(0.7843137f, 0.7843137f, 0.7843137f, 0.5019608f);
 
         #region Unity Methods
         private void Awake()
@@ -140,9 +140,11 @@ namespace BeachHero
         public void SetInteractable(bool state)
         {
             isInteractable = state;
-            if (TryGetComponent(out Image image))
+            if (canvasGroup != null)
             {
-                image.color = isInteractable ? Color.white : DisabledColor;
+                canvasGroup.alpha = isInteractable ? 1f : 0.4f;
+                canvasGroup.blocksRaycasts = isInteractable;
+                canvasGroup.interactable = isInteractable;
             }
         }
         #endregion

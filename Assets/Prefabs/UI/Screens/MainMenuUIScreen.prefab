@@ -212,6 +212,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 0}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
@@ -306,6 +307,7 @@ GameObject:
   - component: {fileID: 194881662846132405}
   - component: {fileID: 4562616906872971365}
   - component: {fileID: 869305587642893868}
+  - component: {fileID: 1888309829185958456}
   m_Layer: 5
   m_Name: LeaderboardBtn
   m_TagString: Untagged
@@ -429,12 +431,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 0}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
   tweenDuration: 0.15
   pressEase: 26
   releaseEase: 26
+--- !u!225 &1888309829185958456
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1320813138872560656}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1471384270309449651
 GameObject:
   m_ObjectHideFlags: 0
@@ -711,6 +726,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 0}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
@@ -1235,6 +1251,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 0}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
@@ -1883,6 +1900,7 @@ GameObject:
   - component: {fileID: 3124474705223618393}
   - component: {fileID: 5943553242421759411}
   - component: {fileID: 4284996757027870282}
+  - component: {fileID: 6532592266322577665}
   m_Layer: 5
   m_Name: NoAdsBar
   m_TagString: Untagged
@@ -1962,6 +1980,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 6532592266322577665}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
@@ -1987,6 +2006,18 @@ MonoBehaviour:
   ease: 0
   duration: 3
   loop: 1
+--- !u!225 &6532592266322577665
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4130976297580587677}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4226882308915024154
 GameObject:
   m_ObjectHideFlags: 0
@@ -2000,6 +2031,7 @@ GameObject:
   - component: {fileID: 593646778685592971}
   - component: {fileID: 1912097839565245941}
   - component: {fileID: 6322372489443337081}
+  - component: {fileID: 2489218071784297498}
   m_Layer: 5
   m_Name: GooglePlayGames
   m_TagString: Untagged
@@ -2079,6 +2111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 2489218071784297498}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
@@ -2104,6 +2137,18 @@ MonoBehaviour:
   ease: 0
   duration: 3
   loop: 1
+--- !u!225 &2489218071784297498
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4226882308915024154}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4476972118418033508
 GameObject:
   m_ObjectHideFlags: 0
@@ -2728,6 +2773,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 0}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
@@ -3083,6 +3129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 0}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
@@ -3513,6 +3560,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 0}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}

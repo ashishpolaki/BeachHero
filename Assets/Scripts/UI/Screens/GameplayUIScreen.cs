@@ -84,6 +84,7 @@ namespace BeachHero
             EnvironmentController.GetInstance.Initialize();
             starsPanelUI.Open();
             ResetTopButtons();
+            EnableNoAdsButton();
 
             //Powerups
             speedBoostPowerupButton.Init(PowerupType.SpeedBoost);
@@ -224,7 +225,14 @@ namespace BeachHero
         #endregion
 
         #region Handle Button Listener
-
+        private void EnableNoAdsButton()
+        {
+            if (noAdsBtn != null)
+            {
+                bool isNoAdsPurchased = AdController.GetInstance.NoAdsPurchased();
+                noAdsBtn.SetInteractable(!isNoAdsPurchased);
+            }
+        }
         private void HandlePowerupBalance(PowerupType powerupType)
         {
             switch (powerupType)

@@ -414,6 +414,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 0}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
@@ -1097,6 +1098,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 0}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
@@ -1441,6 +1443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 0}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
@@ -1582,6 +1585,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 15
+  canvasGroup: {fileID: 0}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
@@ -1797,6 +1801,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 0}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
@@ -1937,6 +1942,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 0}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
@@ -2125,6 +2131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 0}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
@@ -2565,6 +2572,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 0}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
@@ -2931,6 +2939,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 0}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
@@ -3842,6 +3851,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 0}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
@@ -4178,6 +4188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 0}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
@@ -4323,6 +4334,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 0}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
@@ -4627,6 +4639,7 @@ GameObject:
   - component: {fileID: 5101478835575604919}
   - component: {fileID: 7144739230146933896}
   - component: {fileID: 1684634957774939956}
+  - component: {fileID: 6987521327990687539}
   m_Layer: 5
   m_Name: NoAdsBtn
   m_TagString: Untagged
@@ -4749,12 +4762,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 6987521327990687539}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
   tweenDuration: 0.15
   pressEase: 26
   releaseEase: 26
+--- !u!225 &6987521327990687539
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8567686090327533464}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8620222611024817788
 GameObject:
   m_ObjectHideFlags: 0
@@ -4890,6 +4916,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonAudioType: 1
+  canvasGroup: {fileID: 0}
   enableHover: 0
   _originalScale: {x: 1, y: 1, z: 1}
   pressedScale: {x: 0.9, y: 0.9, z: 0.9}
