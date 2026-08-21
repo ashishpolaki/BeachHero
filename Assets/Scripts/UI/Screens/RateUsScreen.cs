@@ -12,6 +12,16 @@ namespace BeachHero
         [SerializeField] private UIButton submitRatingButton;
 
         private int currentRating;
+        private System.Action[] starButtonActions;
+
+        private void Awake()
+        {
+            for (int i = 0; i < starButtons.Length; i++)
+            {
+                int index = i;
+                starButtons[index].OnButtonReleased += () => HandleStarButton(index);
+            }
+        }
 
         public override void Open(ScreenTabType screenTabType)
         {
@@ -25,22 +35,13 @@ namespace BeachHero
             {
                 starImages[i].sprite = inactiveStarSprite;
             }
-            for (int i = 0; i < starButtons.Length; i++)
-            {
-                int index = i;
-                starButtons[index].OnButtonReleased += () => HandleStarButton(index);
-            }
             submitRatingButton.OnButtonReleased += HandleSubmitButton;
         }
 
         public override void Close()
         {
             base.Close();
-            for (int i = 0; i < starButtons.Length; i++)
-            {
-                int index = i;
-                starButtons[index].OnButtonReleased -= () => HandleStarButton(index);
-            }
+            submitRatingButton.OnButtonReleased -= HandleSubmitButton;
         }
 
         private void HandleSubmitButton()

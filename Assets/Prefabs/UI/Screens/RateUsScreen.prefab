@@ -37,6 +37,7 @@ RectTransform:
   - {fileID: 6600501160966077683}
   - {fileID: 5273814740935201477}
   - {fileID: 2029171206959940121}
+  - {fileID: 3258115713087239726}
   m_Father: {fileID: 4140447914033106043}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -108,12 +109,12 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 666379322931049343}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2988561992472965837}
-  m_Father: {fileID: 4140447914033106043}
+  m_Father: {fileID: 2615626404571943143}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1403,9 +1404,9 @@ GameObject:
   - component: {fileID: 4140447914033106043}
   - component: {fileID: 3713088064168986682}
   - component: {fileID: 8930823364070384409}
-  - component: {fileID: 448504412070640082}
-  - component: {fileID: 8199847243934950868}
   - component: {fileID: 5425872609837354148}
+  - component: {fileID: 1767645950063469400}
+  - component: {fileID: 4611478586960835535}
   m_Layer: 5
   m_Name: RateUsScreen
   m_TagString: Untagged
@@ -1427,7 +1428,6 @@ RectTransform:
   m_Children:
   - {fileID: 7119598138698741730}
   - {fileID: 2615626404571943143}
-  - {fileID: 3258115713087239726}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1473,73 +1473,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &448504412070640082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8061810573780119287}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b2f9017c8115d648b2e0ec1ef03c5b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clips:
-  - rid: 1386082405303713938
-  triggerEvents: []
-  delayFrames: 0
-  timelineDuration: 0.25
-  IsLoop: 0
-  references:
-    version: 2
-    RefIds:
-    - rid: 1386082405303713938
-      type: {class: ScaleClip, ns: BeachHero, asm: BeachHero}
-      data:
-        clipType: 1
-        startTime: 0
-        duration: 0.25
-        ease: 29
-        fromScale: {x: 0.6, y: 0.6, z: 1}
-        toScale: {x: 1, y: 1, z: 1}
-        target: {fileID: 4140447914033106043}
-        scaleAxis: 4
---- !u!114 &8199847243934950868
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8061810573780119287}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9a8424de07cee346ab5e36f2d520ccc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rect: {fileID: 0}
-  notchSafeArea: {fileID: 0}
-  screenType: 12
-  defaultOpenTab: 0
-  tabs: []
-  openAnimator: {fileID: 448504412070640082}
-  uiScreenTextStyler: {fileID: 5425872609837354148}
-  inactiveStarSprite: {fileID: 1336243601, guid: 473b1cde6afdb3d40a022a50ba420bfa,
-    type: 3}
-  activeStarSprite: {fileID: 1961523584, guid: 473b1cde6afdb3d40a022a50ba420bfa, type: 3}
-  starImages:
-  - {fileID: 2540149225171246404}
-  - {fileID: 3799865971367316561}
-  - {fileID: 7823725430201406870}
-  - {fileID: 5548680473780257633}
-  - {fileID: 5817013084068766224}
-  starButtons:
-  - {fileID: 5422219963357088363}
-  - {fileID: 2323453782922881943}
-  - {fileID: 8101190811946555243}
-  - {fileID: 5716903371606434941}
-  - {fileID: 3319611792863689520}
-  submitRatingButton: {fileID: 5750148378535475035}
 --- !u!114 &5425872609837354148
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1575,6 +1508,73 @@ MonoBehaviour:
     underlayOffsetY: 0
     underlayThickness: 0
     underlaySoftness: 0
+--- !u!114 &1767645950063469400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8061810573780119287}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b2f9017c8115d648b2e0ec1ef03c5b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clips:
+  - rid: 339690211340189811
+  triggerEvents: []
+  delayFrames: 0
+  timelineDuration: 0.25
+  IsLoop: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 339690211340189811
+      type: {class: ScaleClip, ns: BeachHero, asm: BeachHero}
+      data:
+        clipType: 1
+        startTime: 0
+        duration: 0.25
+        ease: 29
+        fromScale: {x: 0.6, y: 0.6, z: 0}
+        toScale: {x: 1, y: 1, z: 1}
+        target: {fileID: 2615626404571943143}
+        scaleAxis: 4
+--- !u!114 &4611478586960835535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8061810573780119287}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9a8424de07cee346ab5e36f2d520ccc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rect: {fileID: 0}
+  notchSafeArea: {fileID: 0}
+  screenType: 12
+  defaultOpenTab: 0
+  tabs: []
+  openAnimator: {fileID: 1767645950063469400}
+  uiScreenTextStyler: {fileID: 5425872609837354148}
+  inactiveStarSprite: {fileID: 1336243601, guid: 473b1cde6afdb3d40a022a50ba420bfa,
+    type: 3}
+  activeStarSprite: {fileID: 1961523584, guid: 473b1cde6afdb3d40a022a50ba420bfa, type: 3}
+  starImages:
+  - {fileID: 2540149225171246404}
+  - {fileID: 3799865971367316561}
+  - {fileID: 7823725430201406870}
+  - {fileID: 5548680473780257633}
+  - {fileID: 5817013084068766224}
+  starButtons:
+  - {fileID: 5422219963357088363}
+  - {fileID: 2323453782922881943}
+  - {fileID: 8101190811946555243}
+  - {fileID: 5716903371606434941}
+  - {fileID: 3319611792863689520}
+  submitRatingButton: {fileID: 5750148378535475035}
 --- !u!1 &8579560027824090542
 GameObject:
   m_ObjectHideFlags: 0

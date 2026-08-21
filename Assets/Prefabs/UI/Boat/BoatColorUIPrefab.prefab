@@ -98,7 +98,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -135,10 +135,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e9392ba1d3fc9d469f1abc65444b2a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backgroundImage: {fileID: 1289134449561210772}
   iconImage: {fileID: 4209653195943427133}
-  selectButton: {fileID: 1626599407424933228}
-  unSelectedFadeAlpha: 0.25
+  selectButton: {fileID: 6753825531057767847}
 --- !u!114 &6753825531057767847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,18 +149,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de1a930ef60763b46aa4e0c7c16d6667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openingAnimation:
-    Type: 0
-    Ease: 0
-    Duration: 0
-    Strength: 0
-    Delay: 0
-    Vibration: 0
-    Offset: 0
-    Elasticity: 0
-  buttonAudioType: 8
-  button: {fileID: 1626599407424933228}
-  rect: {fileID: 0}
+  buttonAudioType: 1
+  enableHover: 0
+  _originalScale: {x: 1, y: 1, z: 1}
+  pressedScale: {x: 0.9, y: 0.9, z: 0.9}
+  tweenDuration: 0.15
+  pressEase: 26
+  releaseEase: 26
 --- !u!1 &5935137992374925809
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,10 +188,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6214727840100912829}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 75, y: 75}
+  m_SizeDelta: {x: -10, y: -10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7191371020264566126
 CanvasRenderer:

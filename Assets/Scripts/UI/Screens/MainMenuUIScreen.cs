@@ -18,6 +18,7 @@ namespace BeachHero
         [SerializeField] private UIButton settingsButton;
         [SerializeField] private UIButton leaderBoardButton;
         [SerializeField] private UIButton gpgsSignInButton;
+        [SerializeField] private UIButton rateUsButton;
         [SerializeField] private UIButton shareGameButton;
         [SerializeField] private UIButton noAdsButton;
         [SerializeField] private TextMeshProUGUI levelNumberText;
@@ -26,11 +27,14 @@ namespace BeachHero
         [SerializeField] private Vector3 tutorialCharacterPosition;
         [SerializeField] private Vector3 speechBubblePosition;
 
+        [Header("Loading Spinner")]
+        [SerializeField] private SimpleSpinner simpleSpinner;
+
         public override void Open(ScreenTabType screenTabType)
         {
             base.Open(screenTabType);
-            SetLevelNumber();
             AddListeners();
+            EnableGPGSButton();
             for (int i = 0; i < buttonsShineEffect.Length; i++)
             {
                 int index = i;
@@ -68,10 +72,6 @@ namespace BeachHero
 
                 // Move the tutorial character and show welcome message.
                 tc.TutorialCharacter.PlayAnimation(TutorialCharacterState.WaveHand, tutorialCharacterPosition);
-                //, () =>
-                //{
-                //    tc.TutorialSpeechBubble.Show(StringUtils.TUTORIAL_WELCOME_MESSAGE, speechBubblePosition);
-                //});
                 UIController.GetInstance.EndTransition();
             }
             else
@@ -82,26 +82,28 @@ namespace BeachHero
 
         private void AddListeners()
         {
-            boatCustomisationButton.OnButtonReleased += (OnBoatCustomisationButtonClicked);
-            playButton.OnButtonReleased += OnPlayButtonClicked;
-            storeButton.OnButtonReleased += (OnStoreButtonClicked);
-            settingsButton.OnButtonReleased += (OnSettingsButtonClick);
-            leaderBoardButton.OnButtonReleased += OpenLeaderboards;
+            if (boatCustomisationButton != null) boatCustomisationButton.OnButtonReleased += (OnBoatCustomisationButtonClicked);
+            if (playButton != null) playButton.OnButtonReleased += OnPlayButtonClicked;
+            if (storeButton != null) storeButton.OnButtonReleased += (OnStoreButtonClicked);
+            if (settingsButton != null) settingsButton.OnButtonReleased += (OnSettingsButtonClick);
+            if (leaderBoardButton != null) leaderBoardButton.OnButtonReleased += OpenLeaderboards;
+            if (rateUsButton != null) rateUsButton.OnButtonReleased += OnRateUsClick;
             if (gpgsSignInButton != null) gpgsSignInButton.OnButtonReleased += OnGPGSSignInClicked;
-            shareGameButton.OnButtonReleased += ShareClicked;
-            noAdsButton.OnButtonReleased += NoAdsButtonClicked;
+            if (shareGameButton != null) shareGameButton.OnButtonReleased += ShareClicked;
+            if (noAdsButton != null) noAdsButton.OnButtonReleased += NoAdsButtonClicked;
         }
 
         private void RemoveListeners()
         {
-            boatCustomisationButton.OnButtonReleased -= (OnBoatCustomisationButtonClicked);
-            playButton.OnButtonReleased -= OnPlayButtonClicked;
-            storeButton.OnButtonReleased -= (OnStoreButtonClicked);
-            settingsButton.OnButtonReleased -= (OnSettingsButtonClick);
-            leaderBoardButton.OnButtonReleased -= OpenLeaderboards;
+            if (boatCustomisationButton != null) boatCustomisationButton.OnButtonReleased -= (OnBoatCustomisationButtonClicked);
+            if (playButton != null) playButton.OnButtonReleased -= OnPlayButtonClicked;
+            if (storeButton != null) storeButton.OnButtonReleased -= (OnStoreButtonClicked);
+            if (settingsButton != null) settingsButton.OnButtonReleased -= (OnSettingsButtonClick);
+            if (leaderBoardButton != null) leaderBoardButton.OnButtonReleased -= OpenLeaderboards;
+            if (rateUsButton != null) rateUsButton.OnButtonReleased -= OnRateUsClick;
             if (gpgsSignInButton != null) gpgsSignInButton.OnButtonReleased -= OnGPGSSignInClicked;
-            shareGameButton.OnButtonReleased -= ShareClicked;
-            noAdsButton.OnButtonReleased -= NoAdsButtonClicked;
+            if (shareGameButton != null) shareGameButton.OnButtonReleased -= ShareClicked;
+            if (noAdsButton != null) noAdsButton.OnButtonReleased -= NoAdsButtonClicked;
         }
 
         private void ShareClicked()
@@ -133,9 +135,37 @@ namespace BeachHero
             PlayGamesController.GetInstance.ShowLeaderboardUI();
         }
 
+        private void EnableGPGSButton()
+        {
+            bool isSignedIn = PlayGamesController.GetInstance.IsAuthenticated;
+            if (gpgsSignInButton != null)
+            {
+                gpgsSignInButton.SetInteractable(!isSignedIn);
+            }
+        }
+
         private void OnGPGSSignInClicked()
         {
-            //  PlayGamesController.GetInstance.si();
+            if (!NetworkController.IsInternetAvailable)
+            {
+                return;
+            }
+
+            if (simpleSpinner != null) simpleSpinner.StartSpinning();
+            PlayGamesController.GetInstance.SignInASync(success =>
+            {
+                if (simpleSpinner != null) simpleSpinner.StopSpinning();
+                if (success)
+                {
+                    EnableGPGSButton();
+                    Close();
+                }
+            });
+        }
+
+        private void OnRateUsClick()
+        {
+            UIController.GetInstance.ScreenEvent(ScreenType.RateUs, UIScreenEvent.Push);
         }
 
         private void OnSettingsButtonClick()
@@ -167,12 +197,6 @@ namespace BeachHero
         private void OnStoreButtonClicked()
         {
             UIController.GetInstance.ScreenEvent(ScreenType.Store, UIScreenEvent.Push);
-        }
-
-        private void SetLevelNumber()
-        {
-            //int currentLevelNumber = GameController.GetInstance.CurrentLevelIndex + 1;
-            //levelNumberText.text = $"{currentLevelNumber}";
         }
     }
 }
