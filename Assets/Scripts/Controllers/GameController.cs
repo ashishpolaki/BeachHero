@@ -93,7 +93,7 @@ namespace BeachHero
         private void InitializeLevel(int levelIndex)
         {
             SetGameState(GameState.NotStarted);
-            CameraController.GetInstance.SetActiveCamera(GameCameraType.GameView);
+            CameraController.GetInstance.SetActiveGameCamera(GameCameraType.GameView);
             levelController.StartState(levelDatabaseSO.GetLevelByIndex(levelIndex),levelIndex );
             levelDatabaseSO.Init();
         }
@@ -103,7 +103,7 @@ namespace BeachHero
         public void StartGameplay()
         {
             SetGameState(GameState.Playing);
-            CameraController.GetInstance.SetActiveCamera(GameCameraType.GameView);
+            CameraController.GetInstance.SetActiveGameCamera(GameCameraType.GameView);
             bool isFTUE = TutorialController.GetInstance.IsTutorial(levelController.CurrentLevelIndex + 1);
             ScreenTabType screenTabType = isFTUE ? ScreenTabType.LevelTutorial : ScreenTabType.None;
             levelController.InitializePlayerData(isFTUE);

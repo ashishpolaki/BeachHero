@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System.IO;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,8 +16,10 @@ namespace BeachHero
     {
         #region Inspector Variables
         // References
+        [SerializeField] private BoatSkinDatabaseSO boatSkinsDatabase;
         [SerializeField] private BoatSkinColorUI boatSkinColorUIPrefab;
         [SerializeField] private Transform boatColorListContainer;
+        [SerializeField] private Transform previewBoatParent;
 
         //UI
         [SerializeField] private UIButton backButton;
@@ -33,7 +33,7 @@ namespace BeachHero
         [SerializeField] private Image speedBarFill;
 
         [Header("Camera Settings")]
-        [SerializeField] private Camera customisationCamera;
+        [SerializeField] private Vector3 previewBoatPositionOffset = new Vector3(50f, 0f, 0f);
         [SerializeField] private Vector3 camPositionOffset = new Vector3(2.55f, 2.82f, 4.87f);
         [SerializeField] private Vector3 camRotationOffset = new Vector3(17.191f, 205.917f, 357.561f);
         #endregion
@@ -43,16 +43,14 @@ namespace BeachHero
         private int selectedBoatIndex = -1;
         private int selectedColorIndex = 0;
         private List<BoatSkinColorUI> colorUIList = new List<BoatSkinColorUI>();
+        private Dictionary<int, Boat> previewBoatsCache = new Dictionary<int, Boat>();
+        private Boat currentPreviewBoat;
         #endregion
 
         #region Override Methods
         public override void Open(ScreenTabType screenTabType)
         {
             base.Open(screenTabType);
-            if (customisationCamera != null)
-            {
-                customisationCamera.gameObject.SetActive(true);
-            }
             AddListeners();
             SetupCustomisation();
         }
@@ -60,9 +58,13 @@ namespace BeachHero
         public override void Close()
         {
             base.Close();
-            if (customisationCamera != null)
+            if (CameraController.GetInstance != null)
             {
-                customisationCamera.gameObject.SetActive(false);
+                CameraController.GetInstance.SetPreviewCameraEnabled(PreviewCameraType.BoatCustomisation, false);
+            }
+            if (currentPreviewBoat != null)
+            {
+                currentPreviewBoat.gameObject.SetActive(false);
             }
             RemoveListeners();
         }
@@ -143,15 +145,8 @@ namespace BeachHero
         #region Camera Logic
         private void ApplyCameraTransform()
         {
-            if (customisationCamera == null) return;
-
-            var target = GameController.GetInstance.LevelController.PlayerTransform;
-            if (target != null)
-            {
-                Vector3 rotatedOffset = target.rotation * camPositionOffset;
-                customisationCamera.transform.position = target.position + rotatedOffset;
-                customisationCamera.transform.rotation = target.rotation * Quaternion.Euler(camRotationOffset);
-            }
+            if (currentPreviewBoat == null) return;
+            CameraController.GetInstance.SetPreviewCameraEnabled(PreviewCameraType.BoatCustomisation, true, currentPreviewBoat.transform, camPositionOffset, camRotationOffset);
         }
         #endregion
 
@@ -193,8 +188,7 @@ namespace BeachHero
 
         private void HighlightSelectedBoat()
         {
-            GameController.GetInstance.LevelController.UpdateBoat(selectedBoatIndex, selectedColorIndex);
-            // ApplyCameraTransform();
+            UpdatePreviewBoat();
 
             // Set boat stats in UI panel
             var boatSkinSO = GameController.GetInstance.SkinController.GetBoatSkinByIndex(selectedBoatIndex);
@@ -208,6 +202,43 @@ namespace BeachHero
                 {
                     speedBarFill.fillAmount = boatSkinSO.SpeedMeter;
                 }
+            }
+        }
+
+        private void UpdatePreviewBoat()
+        {
+            // Turn off currently active preview boat
+            if (currentPreviewBoat != null)
+            {
+                currentPreviewBoat.gameObject.SetActive(false);
+            }
+
+            if (previewBoatsCache.TryGetValue(selectedBoatIndex, out Boat cachedBoat) && cachedBoat != null)
+            {
+                currentPreviewBoat = cachedBoat;
+                currentPreviewBoat.gameObject.SetActive(true);
+            }
+            else
+            {
+                var boatSkinSO = GameController.GetInstance.SkinController.GetBoatSkinByIndex(selectedBoatIndex);
+                if (boatSkinSO != null && boatSkinSO.BoatPrefab != null)
+                {
+                    GameObject newBoatObj = Instantiate(boatSkinSO.BoatPrefab);
+                    newBoatObj.transform.position = previewBoatPositionOffset;
+                    newBoatObj.transform.localRotation = Quaternion.identity;
+                    newBoatObj.transform.parent = previewBoatParent;
+
+                    currentPreviewBoat = newBoatObj.GetComponent<Boat>();
+                    if (currentPreviewBoat != null)
+                    {
+                        previewBoatsCache[selectedBoatIndex] = currentPreviewBoat;
+                    }
+                }
+            }
+
+            if (currentPreviewBoat != null)
+            {
+                currentPreviewBoat.SetBoatInit(selectedBoatIndex, selectedColorIndex);
             }
         }
         #endregion
@@ -349,6 +380,7 @@ namespace BeachHero
             {
                 case BoatSelectionAction.SelectSkin:
                     skinController.SetSavedBoatIndex(selectedBoatIndex, selectedColorIndex);
+                    GameController.GetInstance.LevelController?.UpdateBoat(selectedBoatIndex, selectedColorIndex);
                     UpdatePurchaseButton();
                     break;
 

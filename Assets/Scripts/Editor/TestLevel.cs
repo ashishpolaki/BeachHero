@@ -30,7 +30,7 @@ namespace BeachHero
             GameController.GetInstance.SpawnLevel();
             await UIController.GetInstance.LoadingUI.DisableLoadingScreen();
             UIController.GetInstance.ScreenEvent(ScreenType.MainMenu, UIScreenEvent.Close);
-            CameraController.GetInstance.SetActiveCamera(GameCameraType.GameView);
+            CameraController.GetInstance.SetActiveGameCamera(GameCameraType.GameView);
             GameController.GetInstance.SetGameState(GameState.Playing);
             GameController.GetInstance.LevelController.InitializePlayerData(false);
             UIController.GetInstance.ScreenEvent(ScreenType.Gameplay, UIScreenEvent.Open);

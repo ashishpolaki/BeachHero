@@ -14,7 +14,7 @@ namespace BeachHero
             base.Open(screenTabType);
             var particle = confettiParticleSystem.main;
             particle.startDelay = confettiDelay;
-            CameraController.GetInstance.SetActiveCamera(GameCameraType.Map);
+            CameraController.GetInstance.SetActiveGameCamera(GameCameraType.Map);
             MapController.GetInstance.InitializeMapVisuals();
 
             //RegisterEvents

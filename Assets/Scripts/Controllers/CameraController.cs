@@ -9,6 +9,7 @@ namespace BeachHero
     {
         [SerializeField] private Camera mainCamera;
         [SerializeField] private GameCameraConfig[] cameraConfigs;
+        [SerializeField] private PreviewCameraConfig[] previewConfigs;
         [SerializeField] private int activePriority = 1;
         [SerializeField] private int inactivePriority = 0;
 
@@ -16,14 +17,20 @@ namespace BeachHero
         [SerializeField] private float shakeDuration = 0.5f;
         [SerializeField] private float shakeAmplitude = 1f;
 
+        // Game Camera Management
         private GameCameraType currentCameraType = GameCameraType.None;
         private GameCameraType previousCameraType = GameCameraType.None;
         private Dictionary<GameCameraType, GameCameraConfig> cameraDictionary = new Dictionary<GameCameraType, GameCameraConfig>();
+
+        // Preview Camera Management
+        private Dictionary<PreviewCameraType, PreviewCameraConfig> previewCameraDictionary = new Dictionary<PreviewCameraType, PreviewCameraConfig>();
+        private PreviewCameraType currentPreviewCameraType = PreviewCameraType.None;
         public Camera GetMainCamera => mainCamera;
+
         #region Initialization
         public void Init()
         {
-            SetActiveCamera(GameCameraType.GameView);
+            SetActiveGameCamera(GameCameraType.GameView);
             foreach (var config in cameraConfigs)
             {
                 if (!cameraDictionary.ContainsKey(config.cameraType))
@@ -31,11 +38,18 @@ namespace BeachHero
                     cameraDictionary.Add(config.cameraType, config);
                 }
             }
+            foreach (var config in previewConfigs)
+            {
+                if (!previewCameraDictionary.ContainsKey(config.cameraType))
+                {
+                    previewCameraDictionary.Add(config.cameraType, config);
+                }
+            }
         }
         #endregion
 
-        #region Camera Modifications
-        public void SetActiveCamera(GameCameraType type)
+        #region Game Camera Methods
+        public void SetActiveGameCamera(GameCameraType type)
         {
             if (currentCameraType == type)
             {
@@ -55,7 +69,7 @@ namespace BeachHero
                 previousConfig.camera.Priority = inactivePriority;
             }
         }
-        public void SetCameraPosition(Vector3 pos, bool setZ = true)
+        public void SetActiveCameraPosition(Vector3 pos, bool setZ = true)
         {
             if (cameraDictionary.TryGetValue(currentCameraType, out GameCameraConfig currentConfig))
             {
@@ -68,7 +82,7 @@ namespace BeachHero
         {
             if (cameraDictionary.TryGetValue(gameCameraType, out GameCameraConfig currentConfig))
             {
-              currentConfig.camera.Lens.OrthographicSize = size;
+                currentConfig.camera.Lens.OrthographicSize = size;
             }
         }
         public void SetCameraFollow(Transform target, GameCameraType cameraType)
@@ -127,6 +141,32 @@ namespace BeachHero
             }
         }
         #endregion
+
+        #region Preview Camera Methods
+        public void SetPreviewCameraEnabled(PreviewCameraType type, bool isEnabled,
+            Transform target = null, Vector3 posOffset = default, Vector3 rotOffset = default)
+        {
+            if (currentPreviewCameraType == type)
+            {
+                return;
+            }
+            currentPreviewCameraType = type;
+            foreach (var config in previewCameraDictionary.Values)
+            {
+                config.camera.gameObject.SetActive(false);
+            }
+            if (previewCameraDictionary.TryGetValue(type, out PreviewCameraConfig currentConfig))
+            {
+                currentConfig.camera.gameObject.SetActive(isEnabled);
+                if (isEnabled && target != null)
+                {
+                    Vector3 rotatedOffset = target.rotation * posOffset;
+                    currentConfig.camera.transform.position = target.position + rotatedOffset;
+                    currentConfig.camera.transform.rotation = target.rotation * Quaternion.Euler(rotOffset);
+                }
+            }
+        }
+        #endregion
     }
     public enum GameCameraType
     {
@@ -143,5 +183,18 @@ namespace BeachHero
         public GameCameraType cameraType;
         public CinemachineCamera camera;
         public LayerMask cullingMask;
+    }
+
+    public enum PreviewCameraType
+    {
+        None = -1,
+        BoatCustomisation = 0,
+    }
+
+    [System.Serializable]
+    public struct PreviewCameraConfig
+    {
+        public PreviewCameraType cameraType;
+        public Camera camera;
     }
 }

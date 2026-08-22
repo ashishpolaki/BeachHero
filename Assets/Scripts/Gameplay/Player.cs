@@ -233,7 +233,7 @@ namespace BeachHero
         {
             currentBoat.PlayVictoryAnimation();
             CameraController.GetInstance.SetCameraFollow(this.transform, GameCameraType.VictoryClose);
-            CameraController.GetInstance.SetActiveCamera(GameCameraType.VictoryClose);
+            CameraController.GetInstance.SetActiveGameCamera(GameCameraType.VictoryClose);
             var cameraPos = CameraController.GetInstance.GetCameraPosition(GameCameraType.VictoryClose);
             GameController.GetInstance.LevelController.DisableStaticObstaclesNearCamera(cameraPos, victoryObstacleClearRadius);
             AudioController.GetInstance.PlaySound(AudioType.PlayerCelebrate);

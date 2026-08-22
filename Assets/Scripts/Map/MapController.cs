@@ -238,7 +238,7 @@ namespace BeachHero
         {
             Vector3 pos = CameraController.GetInstance.GetCameraPosition(GameCameraType.Map);
             pos.y = currentScrollY;
-            CameraController.GetInstance.SetCameraPosition(pos);
+            CameraController.GetInstance.SetActiveCameraPosition(pos);
         }
 
         void CenterCameraToCurrentLevel()
