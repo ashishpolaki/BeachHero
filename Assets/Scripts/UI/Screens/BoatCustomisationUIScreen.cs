@@ -238,7 +238,7 @@ namespace BeachHero
 
             if (currentPreviewBoat != null)
             {
-                currentPreviewBoat.SetBoatInit(selectedBoatIndex, selectedColorIndex);
+                currentPreviewBoat.SetBoatInCustomisationScreen(selectedBoatIndex, selectedColorIndex);
             }
         }
         #endregion

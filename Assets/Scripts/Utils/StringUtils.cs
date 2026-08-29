@@ -43,6 +43,7 @@ namespace BeachHero
         //Animations
         public const string SINKING_ANIM = "Sinking";
         public const string IDLE_ANIM = "Idle";
+        public const string STATIC_IDLE_ANIM = "Idle_Static";
         public const string VICTORY_ANIM = "Victory";
         public const string DROWN_ANIM = "Drown";
 
