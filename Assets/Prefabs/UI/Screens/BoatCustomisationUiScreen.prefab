@@ -277,12 +277,13 @@ MonoBehaviour:
   tabs: []
   openAnimator: {fileID: 5832238774042181361}
   uiScreenTextStyler: {fileID: 0}
-  boatSkinsDatabase: {fileID: 11400000, guid: c40b3b52de16db6439f9702261e55ff2, type: 2}
   boatSkinColorUIPrefab: {fileID: 2197957893336026270, guid: ae17426f3887ebd43806b789e260fcfc,
     type: 3}
   boatColorListContainer: {fileID: 6229853378310692231}
   previewBoatParent: {fileID: 4133801291685094401}
-  lockObject: {fileID: 3936559532302670097}
+  previewBoatPositionOffset: {x: 50, y: 0, z: 0}
+  camPositionOffset: {x: 2.55, y: 2.5, z: 4.87}
+  camRotationOffset: {x: 17.191, y: 205.917, z: 357.561}
   backButton: {fileID: 3328868076881002143}
   purchaseButton: {fileID: 1494530285052099962}
   equipButton: {fileID: 9152719013929043258}
@@ -291,13 +292,11 @@ MonoBehaviour:
   purchaseBtnText: {fileID: 5113067809937347063}
   equipBtnText: {fileID: 6746457975223214875}
   boatNameText: {fileID: 107028116429510096}
+  lockObject: {fileID: 3936559532302670097}
   speedBarFill: {fileID: 4106444339855325053}
   speedNeedleTransform: {fileID: 469275712054739482}
   speedNeedleMinAngle: 100
   speedNeedleMaxAngle: -100
-  previewBoatPositionOffset: {x: 50, y: 0, z: 0}
-  camPositionOffset: {x: 2.55, y: 2.5, z: 4.87}
-  camRotationOffset: {x: 17.191, y: 205.917, z: 357.561}
 --- !u!114 &5832238774042181361
 MonoBehaviour:
   m_ObjectHideFlags: 0

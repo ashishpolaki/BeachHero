@@ -15,14 +15,17 @@ namespace BeachHero
     public class BoatCustomisationUIScreen : BaseScreen
     {
         #region Inspector Variables
-        // References
-        [SerializeField] private BoatSkinDatabaseSO boatSkinsDatabase;
+        [Header("Color Swatches")]
         [SerializeField] private BoatSkinColorUI boatSkinColorUIPrefab;
         [SerializeField] private Transform boatColorListContainer;
-        [SerializeField] private Transform previewBoatParent;
-        [SerializeField] private GameObject lockObject;
 
-        //UI
+        [Header("Preview Settings")]
+        [SerializeField] private Transform previewBoatParent;
+        [SerializeField] private Vector3 previewBoatPositionOffset = new Vector3(50f, 0f, 0f);
+        [SerializeField] private Vector3 camPositionOffset = new Vector3(2.55f, 2.82f, 4.87f);
+        [SerializeField] private Vector3 camRotationOffset = new Vector3(17.191f, 205.917f, 357.561f);
+
+        [Header("UI Controls")]
         [SerializeField] private UIButton backButton;
         [SerializeField] private UIButton purchaseButton;
         [SerializeField] private UIButton equipButton;
@@ -31,26 +34,28 @@ namespace BeachHero
         [SerializeField] private TextMeshProUGUI purchaseBtnText;
         [SerializeField] private TextMeshProUGUI equipBtnText;
         [SerializeField] private TextMeshProUGUI boatNameText;
+        [SerializeField] private GameObject lockObject;
 
         [Header("Speed Gauge Settings")]
         [SerializeField] private Image speedBarFill;
         [SerializeField] private Transform speedNeedleTransform;
         [SerializeField] private float speedNeedleMinAngle = 100f;
         [SerializeField] private float speedNeedleMaxAngle = -100f;
-
-        [Header("Camera Settings")]
-        [SerializeField] private Vector3 previewBoatPositionOffset = new Vector3(50f, 0f, 0f);
-        [SerializeField] private Vector3 camPositionOffset = new Vector3(2.55f, 2.82f, 4.87f);
-        [SerializeField] private Vector3 camRotationOffset = new Vector3(17.191f, 205.917f, 357.561f);
         #endregion
 
         #region Private Variables
-        private BoatSelectionAction boatSelectionAction = BoatSelectionAction.SelectSkin;
+        private BoatSelectionAction currentAction = BoatSelectionAction.SelectSkin;
         private int selectedBoatIndex = -1;
         private int selectedColorIndex = 0;
         private List<BoatSkinColorUI> colorUIList = new List<BoatSkinColorUI>();
         private Dictionary<int, Boat> previewBoatsCache = new Dictionary<int, Boat>();
         private Boat currentPreviewBoat;
+        #endregion
+
+        #region Controller Properties
+        private SkinController SkinController => GameController.GetInstance.SkinController;
+        private StoreManager StoreController => GameController.GetInstance.StoreController;
+        private LevelController LevelController => GameController.GetInstance.LevelController;
         #endregion
 
         #region Override Methods
@@ -79,35 +84,33 @@ namespace BeachHero
         #region Button & Event Listeners
         private void AddListeners()
         {
-            if (backButton != null) backButton.OnButtonReleased += (OnBackOrHomePressed);
-            if (purchaseButton != null) purchaseButton.OnButtonReleased += (OnPurchasePressed);
-            if (equipButton != null) equipButton.OnButtonReleased += (OnPurchasePressed);
-            if (nextBoatButton != null) nextBoatButton.OnButtonReleased += (OnNextBoatPressed);
-            if (prevBoatButton != null) prevBoatButton.OnButtonReleased += (OnPrevBoatPressed);
+            if (backButton != null) backButton.OnButtonReleased += OnBackOrHomePressed;
+            if (purchaseButton != null) purchaseButton.OnButtonReleased += OnActionPressed;
+            if (equipButton != null) equipButton.OnButtonReleased += OnActionPressed;
+            if (nextBoatButton != null) nextBoatButton.OnButtonReleased += OnNextBoatPressed;
+            if (prevBoatButton != null) prevBoatButton.OnButtonReleased += OnPrevBoatPressed;
 
-            var skinController = GameController.GetInstance.SkinController;
-            if (skinController != null)
+            if (SkinController != null)
             {
-                skinController.BoatCustomisationScreenActive(true);
-                skinController.OnSkinPurchased += BoatSkinPurchased;
-                skinController.OnSkinColorPurchased += BoatSkinColorPurchased;
+                SkinController.BoatCustomisationScreenActive(true);
+                SkinController.OnSkinPurchased += OnBoatSkinPurchased;
+                SkinController.OnSkinColorPurchased += OnBoatSkinColorPurchased;
             }
         }
 
         private void RemoveListeners()
         {
-            if (backButton != null) backButton.OnButtonReleased -= (OnBackOrHomePressed);
-            if (purchaseButton != null) purchaseButton.OnButtonReleased -= (OnPurchasePressed);
-            if (equipButton != null) equipButton.OnButtonReleased -= (OnPurchasePressed);
-            if (nextBoatButton != null) nextBoatButton.OnButtonReleased -= (OnNextBoatPressed);
-            if (prevBoatButton != null) prevBoatButton.OnButtonReleased -= (OnPrevBoatPressed);
+            if (backButton != null) backButton.OnButtonReleased -= OnBackOrHomePressed;
+            if (purchaseButton != null) purchaseButton.OnButtonReleased -= OnActionPressed;
+            if (equipButton != null) equipButton.OnButtonReleased -= OnActionPressed;
+            if (nextBoatButton != null) nextBoatButton.OnButtonReleased -= OnNextBoatPressed;
+            if (prevBoatButton != null) prevBoatButton.OnButtonReleased -= OnPrevBoatPressed;
 
-            var skinController = GameController.GetInstance.SkinController;
-            if (skinController != null)
+            if (SkinController != null)
             {
-                skinController.BoatCustomisationScreenActive(false);
-                skinController.OnSkinPurchased -= BoatSkinPurchased;
-                skinController.OnSkinColorPurchased -= BoatSkinColorPurchased;
+                SkinController.BoatCustomisationScreenActive(false);
+                SkinController.OnSkinPurchased -= OnBoatSkinPurchased;
+                SkinController.OnSkinColorPurchased -= OnBoatSkinColorPurchased;
             }
         }
 
@@ -126,48 +129,19 @@ namespace BeachHero
             GameController.GetInstance.SetPreviousGameState();
             Close();
         }
-        private void UpdateNavigationButtons()
-        {
-            var database = GameController.GetInstance.SkinController.BoatSkinsDatabase;
-            if (database == null || database.BoatSkins == null || database.BoatSkins.Length == 0)
-            {
-                if (prevBoatButton != null) prevBoatButton.SetInteractable(false);
-                if (nextBoatButton != null) nextBoatButton.SetInteractable(false);
-                return;
-            }
-
-            int boatCount = database.BoatSkins.Length;
-            if (prevBoatButton != null)
-            {
-                prevBoatButton.SetInteractable(selectedBoatIndex > 0);
-            }
-            if (nextBoatButton != null)
-            {
-                nextBoatButton.SetInteractable(selectedBoatIndex < boatCount - 1);
-            }
-        }
         #endregion
 
-        #region Camera Logic
-        private void ApplyCameraTransform()
-        {
-            if (currentPreviewBoat == null) return;
-            CameraController.GetInstance.SetPreviewCameraEnabled(PreviewCameraType.BoatCustomisation, true, currentPreviewBoat.transform, camPositionOffset, camRotationOffset);
-        }
-        #endregion
-
-        #region Setup/Init Boat
+        #region Setup & Navigation
         private void SetupCustomisation()
         {
-            // Start from currently equipped boat
-            selectedBoatIndex = GameController.GetInstance.SkinController.GetSavedBoatIndex();
+            selectedBoatIndex = SkinController.GetSavedBoatIndex();
             UpdateSelectedBoat(selectedBoatIndex);
             ApplyCameraTransform();
         }
 
         private void ChangeBoat(int direction)
         {
-            var database = GameController.GetInstance.SkinController.BoatSkinsDatabase;
+            var database = SkinController.BoatSkinsDatabase;
             if (database == null || database.BoatSkins == null || database.BoatSkins.Length == 0)
             {
                 return;
@@ -184,44 +158,23 @@ namespace BeachHero
         public void UpdateSelectedBoat(int index)
         {
             selectedBoatIndex = index;
-            selectedColorIndex = 0; // Reset color index when changing boats
-            if (GameController.GetInstance.SkinController.GetSavedBoatIndex() == selectedBoatIndex)
+            selectedColorIndex = 0;
+            if (SkinController.GetSavedBoatIndex() == selectedBoatIndex)
             {
-                selectedColorIndex = GameController.GetInstance.SkinController.GetSavedBoatColorIndex(selectedBoatIndex);
+                selectedColorIndex = SkinController.GetSavedBoatColorIndex(selectedBoatIndex);
             }
-            HighlightSelectedBoat();
-            ShowAvailableColors();
-            UpdateSelectionState();
+
+            UpdatePreviewBoatModel();
+            UpdateBoatStatsUI();
+            RefreshColorSwatches();
+            UpdateActionButtonState();
             UpdateNavigationButtons();
         }
+        #endregion
 
-        private void HighlightSelectedBoat()
+        #region Preview & Stats UI
+        private void UpdatePreviewBoatModel()
         {
-            UpdatePreviewBoat();
-
-            // Set boat stats in UI panel
-            var boatSkinSO = GameController.GetInstance.SkinController.GetBoatSkinByIndex(selectedBoatIndex);
-            if (boatSkinSO != null)
-            {
-                if (boatNameText != null)
-                {
-                    boatNameText.text = boatSkinSO.Name;
-                }
-                if (speedBarFill != null)
-                {
-                    speedBarFill.fillAmount = boatSkinSO.SpeedMeter;
-                }
-                if(speedNeedleTransform != null)
-                {
-                    float needleAngle = Mathf.Lerp(speedNeedleMinAngle, speedNeedleMaxAngle, boatSkinSO.SpeedMeter);
-                    speedNeedleTransform.localRotation = Quaternion.Euler(0f, 0f, needleAngle);
-                }
-            }
-        }
-
-        private void UpdatePreviewBoat()
-        {
-            // Turn off currently active preview boat
             if (currentPreviewBoat != null)
             {
                 currentPreviewBoat.gameObject.SetActive(false);
@@ -234,7 +187,7 @@ namespace BeachHero
             }
             else
             {
-                var boatSkinSO = GameController.GetInstance.SkinController.GetBoatSkinByIndex(selectedBoatIndex);
+                var boatSkinSO = SkinController.GetBoatSkinByIndex(selectedBoatIndex);
                 if (boatSkinSO != null && boatSkinSO.BoatPrefab != null)
                 {
                     GameObject newBoatObj = Instantiate(boatSkinSO.BoatPrefab);
@@ -252,15 +205,37 @@ namespace BeachHero
 
             if (currentPreviewBoat != null)
             {
-                currentPreviewBoat.SetBoatInCustomisationScreen(selectedBoatIndex, selectedColorIndex);
+                int previewColor = selectedColorIndex != -1
+                    ? selectedColorIndex
+                    : SkinController.GetSavedBoatColorIndex(selectedBoatIndex);
+                currentPreviewBoat.SetBoatInCustomisationScreen(selectedBoatIndex, previewColor);
+            }
+        }
+
+        private void UpdateBoatStatsUI()
+        {
+            var boatSkinSO = SkinController.GetBoatSkinByIndex(selectedBoatIndex);
+            if (boatSkinSO == null) return;
+
+            if (boatNameText != null)
+            {
+                boatNameText.text = boatSkinSO.Name;
+            }
+            if (speedBarFill != null)
+            {
+                speedBarFill.fillAmount = boatSkinSO.SpeedMeter;
+            }
+            if (speedNeedleTransform != null)
+            {
+                float needleAngle = Mathf.Lerp(speedNeedleMinAngle, speedNeedleMaxAngle, boatSkinSO.SpeedMeter);
+                speedNeedleTransform.localRotation = Quaternion.Euler(0f, 0f, needleAngle);
             }
         }
         #endregion
 
-        #region Boat Colors
-        private void ShowAvailableColors()
+        #region Color Swatches
+        private void RefreshColorSwatches()
         {
-            // Deactivate all existing color UIs
             foreach (var boatColorUI in colorUIList)
             {
                 if (boatColorUI != null)
@@ -269,15 +244,14 @@ namespace BeachHero
                 }
             }
 
-            var skinController = GameController.GetInstance.SkinController;
-            var boatSkin = skinController.GetBoatSkinByIndex(selectedBoatIndex);
+            var boatSkin = SkinController.GetBoatSkinByIndex(selectedBoatIndex);
             if (boatSkin == null || boatSkin.SkinColors == null) return;
 
             for (int i = 0; i < boatSkin.SkinColors.Length; i++)
             {
                 var skinColorData = boatSkin.SkinColors[i];
                 var boatSkinColorUI = GetReusableColorUI(i);
-                bool isUnlocked = skinController.IsBoatSkinColorUnlocked(selectedBoatIndex, i);
+                bool isUnlocked = SkinController.IsBoatSkinColorUnlocked(selectedBoatIndex, i);
                 boatSkinColorUI.InitSkinColor(this, skinColorData, i, isUnlocked, selectedColorIndex == i);
                 boatSkinColorUI.gameObject.SetActive(true);
             }
@@ -287,7 +261,6 @@ namespace BeachHero
         {
             selectedColorIndex = colorIndex;
 
-            // Update color swatch selection visual
             for (int i = 0; i < colorUIList.Count; i++)
             {
                 if (colorUIList[i] != null && colorUIList[i].gameObject.activeSelf)
@@ -303,8 +276,8 @@ namespace BeachHero
                 }
             }
 
-            HighlightSelectedBoat();
-            UpdateSelectionState();
+            UpdatePreviewBoatModel();
+            UpdateActionButtonState();
         }
 
         private BoatSkinColorUI GetReusableColorUI(int index)
@@ -320,18 +293,22 @@ namespace BeachHero
         }
         #endregion
 
-        #region Purchase & Equip Logic
-        private void UpdateSelectionState()
+        #region Action & Navigation Buttons
+        private void UpdateActionButtonState()
         {
-            var skinController = GameController.GetInstance.SkinController;
-            var boatSkin = skinController.GetBoatSkinByIndex(selectedBoatIndex);
+            var boatSkin = SkinController.GetBoatSkinByIndex(selectedBoatIndex);
 
-            bool isBoatUnlocked = skinController.IsBoatSkinUnlocked(selectedBoatIndex);
-            bool isColorUnlocked = skinController.IsBoatSkinColorUnlocked(selectedBoatIndex, selectedColorIndex);
-            int savedBoat = skinController.GetSavedBoatIndex();
-            int savedColor = skinController.GetSavedBoatColorIndex(selectedBoatIndex);
+            bool isBoatUnlocked = SkinController.IsBoatSkinUnlocked(selectedBoatIndex);
+            int savedBoat = SkinController.GetSavedBoatIndex();
+            int savedColor = SkinController.GetSavedBoatColorIndex(selectedBoatIndex);
 
-            bool isCurrentlyEquipped = (selectedBoatIndex == savedBoat && selectedColorIndex == savedColor);
+            bool isColorSelected = selectedColorIndex != -1;
+            int activeColor = isColorSelected ? selectedColorIndex : savedColor;
+            bool isColorUnlocked = isColorSelected
+                ? SkinController.IsBoatSkinColorUnlocked(selectedBoatIndex, selectedColorIndex)
+                : true;
+
+            bool isCurrentlyEquipped = (selectedBoatIndex == savedBoat && activeColor == savedColor);
 
             if (lockObject != null)
             {
@@ -340,8 +317,7 @@ namespace BeachHero
 
             if (!isBoatUnlocked)
             {
-                // 1. Boat is locked -> Show Buy Boat Button, Hide Equip Button
-                boatSelectionAction = BoatSelectionAction.PurchaseSkin;
+                currentAction = BoatSelectionAction.PurchaseSkin;
 
                 if (purchaseButton != null)
                 {
@@ -358,10 +334,9 @@ namespace BeachHero
                     equipButton.gameObject.SetActive(false);
                 }
             }
-            else if (!isColorUnlocked)
+            else if (isColorSelected && !isColorUnlocked)
             {
-                // 2. Boat is unlocked, but selected color is locked -> Show Buy Color Button, Hide Equip Button
-                boatSelectionAction = BoatSelectionAction.PurchaseSkinColor;
+                currentAction = BoatSelectionAction.PurchaseSkinColor;
 
                 if (purchaseButton != null)
                 {
@@ -382,8 +357,7 @@ namespace BeachHero
             }
             else
             {
-                // 3. Both boat and selected color are unlocked -> Hide Purchase Button, Show Equip Button
-                boatSelectionAction = BoatSelectionAction.SelectSkin;
+                currentAction = BoatSelectionAction.SelectSkin;
 
                 if (purchaseButton != null)
                 {
@@ -396,7 +370,6 @@ namespace BeachHero
 
                     if (isCurrentlyEquipped)
                     {
-                        // Already equipped -> disabled
                         equipButton.SetInteractable(false);
                         if (equipBtnText != null)
                         {
@@ -405,7 +378,6 @@ namespace BeachHero
                     }
                     else
                     {
-                        // Unlocked but not currently equipped -> interactable
                         equipButton.SetInteractable(true);
                         if (equipBtnText != null)
                         {
@@ -416,117 +388,74 @@ namespace BeachHero
             }
         }
 
-        private void OnPurchasePressed()
+        private void UpdateNavigationButtons()
         {
-            var skinController = GameController.GetInstance.SkinController;
-            var storeController = GameController.GetInstance.StoreController;
+            var database = SkinController.BoatSkinsDatabase;
+            if (database == null || database.BoatSkins == null || database.BoatSkins.Length == 0)
+            {
+                if (prevBoatButton != null) prevBoatButton.SetInteractable(false);
+                if (nextBoatButton != null) nextBoatButton.SetInteractable(false);
+                return;
+            }
 
-            switch (boatSelectionAction)
+            int boatCount = database.BoatSkins.Length;
+            if (prevBoatButton != null)
+            {
+                prevBoatButton.SetInteractable(selectedBoatIndex > 0);
+            }
+            if (nextBoatButton != null)
+            {
+                nextBoatButton.SetInteractable(selectedBoatIndex < boatCount - 1);
+            }
+        }
+
+        private void OnActionPressed()
+        {
+            switch (currentAction)
             {
                 case BoatSelectionAction.SelectSkin:
-                    skinController.SetSavedBoatIndex(selectedBoatIndex, selectedColorIndex);
-                    GameController.GetInstance.LevelController?.UpdateBoat(selectedBoatIndex, selectedColorIndex);
-                    UpdateSelectionState();
+                    int colorToEquip = selectedColorIndex != -1 ? selectedColorIndex : SkinController.GetSavedBoatColorIndex(selectedBoatIndex);
+                    SkinController.SetSavedBoatIndex(selectedBoatIndex, colorToEquip);
+                    LevelController?.UpdateBoat(selectedBoatIndex, colorToEquip);
+                    UpdateActionButtonState();
                     break;
 
                 case BoatSelectionAction.PurchaseSkin:
-                    storeController.BuyBoatWithCoins(selectedBoatIndex);
-                    UpdateSelectedBoat(selectedBoatIndex);
+                    StoreController.BuyBoatWithCoins(selectedBoatIndex);
                     break;
 
                 case BoatSelectionAction.PurchaseSkinColor:
-                    storeController.BuyBoatColorWithCoins(selectedBoatIndex, selectedColorIndex);
-                    UpdateSelectedBoat(selectedBoatIndex);
+                    StoreController.BuyBoatColorWithCoins(selectedBoatIndex, selectedColorIndex);
                     break;
             }
         }
 
-        private void BoatSkinPurchased(int index)
+        private void OnBoatSkinPurchased(int index)
         {
-            selectedBoatIndex = index;
-            selectedColorIndex = 0;
             UpdateSelectedBoat(index);
+            LevelController.UpdateBoat(index, 0);
         }
 
-        private void BoatSkinColorPurchased(int boatIndex, int colorIndex)
+        private void OnBoatSkinColorPurchased(int boatIndex, int colorIndex)
         {
-            selectedBoatIndex = boatIndex;
             selectedColorIndex = colorIndex;
-            ShowAvailableColors();
-            ApplyBoatColor(colorIndex);
+            UpdateSelectedBoat(boatIndex);
+            LevelController.UpdateBoat(boatIndex, colorIndex);
         }
         #endregion
 
-        #region Save Boat Image
-        //#if UNITY_EDITOR
-        //        [SerializeField] private RenderTexture renderTexture1;
-        //        public bool onValiate;
-        //        private void OnValidate()
-        //        {
-        //            if (onValiate)
-        //            {
-        //                SaveRenderTextureAsSprite(renderTexture1, "Boat");
-        //            }
-        //        }
-
-        //        public Sprite SaveRenderTextureAsSprite(RenderTexture renderTexture, string fileName)
-        //        {
-        //            RenderTexture previous = RenderTexture.active;
-        //            RenderTexture.active = renderTexture;
-
-        //            Texture2D texture = new Texture2D(
-        //                renderTexture.width,
-        //                renderTexture.height,
-        //                TextureFormat.RGBA32,
-        //                false
-        //            );
-
-        //            texture.ReadPixels(
-        //                new Rect(0, 0, renderTexture.width, renderTexture.height),
-        //                0,
-        //                0
-        //            );
-
-        //            texture.Apply();
-
-        //            RenderTexture.active = previous;
-
-        //            string folderPath = "Assets/Sprites";
-
-        //            if (!AssetDatabase.IsValidFolder(folderPath))
-        //            {
-        //                AssetDatabase.CreateFolder("Assets", "Sprites");
-        //            }
-
-        //            string assetPath = $"{folderPath}/{fileName}.png";
-
-        //            byte[] pngData = texture.EncodeToPNG();
-        //            File.WriteAllBytes(assetPath, pngData);
-
-        //            AssetDatabase.Refresh();
-
-        //            // Get the imported texture
-        //            Texture2D savedTexture = AssetDatabase.LoadAssetAtPath<Texture2D>(assetPath);
-
-        //            // Make sure Unity imports it as a Sprite
-        //            TextureImporter importer =
-        //                AssetImporter.GetAtPath(assetPath) as TextureImporter;
-
-        //            if (importer != null)
-        //            {
-        //                importer.textureType = TextureImporterType.Sprite;
-        //                importer.spriteImportMode = SpriteImportMode.Single;
-
-        //                AssetDatabase.ImportAsset(
-        //                    assetPath, ImportAssetOptions.ForceUpdate);
-        //            }
-
-        //            Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPath);
-        //            Object.DestroyImmediate(texture);
-        //            return sprite;
-        //        }
-        //#endif
+        #region Camera Logic
+        private void ApplyCameraTransform()
+        {
+            if (currentPreviewBoat == null) return;
+            CameraController.GetInstance.SetPreviewCameraEnabled(
+                PreviewCameraType.BoatCustomisation,
+                true,
+                currentPreviewBoat.transform,
+                camPositionOffset,
+                camRotationOffset
+            );
+        }
         #endregion
-
     }
 }

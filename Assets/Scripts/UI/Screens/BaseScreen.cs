@@ -46,6 +46,7 @@ namespace BeachHero
     public class BaseScreen : MonoBehaviour, IScreen
     {
         #region Inspector Variables
+        [Header("Base Screen Settings")]
         [SerializeField] private RectTransform rect;
         [SerializeField] private RectTransform notchSafeArea;
         [SerializeField] private ScreenType screenType;
