@@ -7,7 +7,7 @@ namespace BeachHero
     public class UIScreenManager
     {
         [SerializeField] private ScreenConfigSO screenConfig;
-        [SerializeField] private CanvasGroup canvasGroup;
+        [SerializeField] private CanvasGroup[] canvasGroups;
 
         [Header("Canvas Holders")]
         [SerializeField] private Transform widthCanvasHolder;
@@ -173,7 +173,10 @@ namespace BeachHero
         public void EnableCanvasGroup(bool enable)
         {
             //canvasGroup.interactable = enable;
-            canvasGroup.blocksRaycasts = enable;
+            foreach (var canvasGroup in canvasGroups)
+            {
+                canvasGroup.blocksRaycasts = enable;
+            }
         }
         private Transform GetCanvasHolder(ScreenCanvasType canvasType)
         {

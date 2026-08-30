@@ -66,7 +66,7 @@ namespace BeachHero
         public void BlockInput(bool block)
         {
             IsInputBlocked = block;
-            //  screenManager.EnableCanvasGroup(!block);
+          //  screenManager.EnableCanvasGroup(!block);
         }
         #endregion
     }

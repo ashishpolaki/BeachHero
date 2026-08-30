@@ -128,12 +128,14 @@ MonoBehaviour:
   canvas: {fileID: 5395178095304450007}
   screenManager:
     screenConfig: {fileID: 11400000, guid: b46d68ad495a5bd43849ee648a8c0fe2, type: 2}
-    canvasGroup: {fileID: 3326294676655026714}
+    canvasGroups:
+    - {fileID: 3326294676655026714}
+    - {fileID: 5660752220225149614}
     widthCanvasHolder: {fileID: 7725578108729284783}
     heightCanvasHolder: {fileID: 5512567706421381285}
     middleCanvasHolder: {fileID: 0}
-    widthCanvas: {fileID: 0}
-    heightCanvas: {fileID: 0}
+    widthCanvas: {fileID: 5395178095304450007}
+    heightCanvas: {fileID: 43521505286433343}
     middleCanvas: {fileID: 0}
   fadeUI:
     fadeAnimator: {fileID: 4544963260863518255}
@@ -984,7 +986,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 1125, y: 2346}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
