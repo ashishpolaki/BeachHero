@@ -20,6 +20,7 @@ namespace BeachHero
         [SerializeField] private BoatSkinColorUI boatSkinColorUIPrefab;
         [SerializeField] private Transform boatColorListContainer;
         [SerializeField] private Transform previewBoatParent;
+        [SerializeField] private GameObject lockObject;
 
         //UI
         [SerializeField] private UIButton backButton;
@@ -30,8 +31,12 @@ namespace BeachHero
         [SerializeField] private TextMeshProUGUI purchaseBtnText;
         [SerializeField] private TextMeshProUGUI equipBtnText;
         [SerializeField] private TextMeshProUGUI boatNameText;
+
+        [Header("Speed Gauge Settings")]
         [SerializeField] private Image speedBarFill;
-        [SerializeField] private GameObject lockObject;
+        [SerializeField] private Transform speedNeedleTransform;
+        [SerializeField] private float speedNeedleMinAngle = 100f;
+        [SerializeField] private float speedNeedleMaxAngle = -100f;
 
         [Header("Camera Settings")]
         [SerializeField] private Vector3 previewBoatPositionOffset = new Vector3(50f, 0f, 0f);
@@ -179,8 +184,11 @@ namespace BeachHero
         public void UpdateSelectedBoat(int index)
         {
             selectedBoatIndex = index;
-            selectedColorIndex = GameController.GetInstance.SkinController.GetSavedBoatColorIndex(selectedBoatIndex);
-
+            selectedColorIndex = 0; // Reset color index when changing boats
+            if (GameController.GetInstance.SkinController.GetSavedBoatIndex() == selectedBoatIndex)
+            {
+                selectedColorIndex = GameController.GetInstance.SkinController.GetSavedBoatColorIndex(selectedBoatIndex);
+            }
             HighlightSelectedBoat();
             ShowAvailableColors();
             UpdateSelectionState();
@@ -202,6 +210,11 @@ namespace BeachHero
                 if (speedBarFill != null)
                 {
                     speedBarFill.fillAmount = boatSkinSO.SpeedMeter;
+                }
+                if(speedNeedleTransform != null)
+                {
+                    float needleAngle = Mathf.Lerp(speedNeedleMinAngle, speedNeedleMaxAngle, boatSkinSO.SpeedMeter);
+                    speedNeedleTransform.localRotation = Quaternion.Euler(0f, 0f, needleAngle);
                 }
             }
         }
