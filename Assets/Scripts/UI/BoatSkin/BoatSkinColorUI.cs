@@ -7,6 +7,7 @@ namespace BeachHero
     {
         [SerializeField] private Image iconImage;
         [SerializeField] private UIButton selectButton;
+        [SerializeField] private GameObject lockObject;
 
         private BoatCustomisationUIScreen boatCustomisationUIScreen;
         private int colorIndex;
@@ -22,12 +23,17 @@ namespace BeachHero
         {
             selectButton.OnButtonReleased -= (OnSelectButtonClicked);
         }
-        public void InitSkinColor(BoatCustomisationUIScreen _boatCustomisationUIScreen, BoatSkinColorData skinColorData, int _index, bool _isSelected = false)
+        public void InitSkinColor(BoatCustomisationUIScreen _boatCustomisationUIScreen, BoatSkinColorData skinColorData,
+            int _index, bool _isUnlocked, bool _isSelected = false)
         {
             colorIndex = _index;
             if (iconImage != null)
             {
                 iconImage.color = skinColorData.previewColor;
+            }
+            if (lockObject != null)
+            {
+                lockObject.SetActive(!_isUnlocked);
             }
             boatCustomisationUIScreen = _boatCustomisationUIScreen;
             

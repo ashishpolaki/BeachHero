@@ -274,8 +274,7 @@ namespace BeachHero
         {
             playerMode = isFTUE ? PlayerMode.FTUE : PlayerMode.Normal;
             levelPhase = LevelPhase.DrawingPath;
-            //int boatIndex = GameController.GetInstance.SkinController.GetSavedBoatIndex();
-            int boatIndex = levelDatabaseSO.GetLevelByIndex(currentLevelIndex).BoatIndex;
+            int boatIndex = GameController.GetInstance.SkinController.GetSavedBoatIndex();
             int boatColorIndex = GameController.GetInstance.SkinController.GetSavedBoatColorIndex(boatIndex);
             float speed = GameController.GetInstance.SkinController.GetSelectedBoatSpeed(boatIndex);
             GameObject boatPRefab = GameController.GetInstance.SkinController.GetSelectedBoatPrefab(boatIndex);

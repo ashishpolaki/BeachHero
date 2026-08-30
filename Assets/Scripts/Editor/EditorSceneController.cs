@@ -104,7 +104,8 @@ public class EditorSceneController : MonoBehaviour
     {
         currentLevel = _levelSO;
         DisableScenePicking();
-        SpawnStartPoint(_levelSO.BoatIndex, boatSkinDatabase.GetBoatSkinByIndex(_levelSO.BoatIndex).Speed);
+        int boatIndex = GameController.GetInstance.SkinController.GetSavedBoatIndex();
+        SpawnStartPoint(boatIndex, boatSkinDatabase.GetBoatSkinByIndex(boatIndex).Speed);
         SpawnMovingObstacles();
         SpawnStaticObstacles();
         SpawnWhirlpoolObstacle();

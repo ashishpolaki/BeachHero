@@ -19,28 +19,15 @@ namespace BeachHero
         public bool IsBoatSkinUnlocked(int boatIndex)
         {
             BoatSkinSO boatSkin = GetBoatSkinByIndex(boatIndex);
-            if (boatSkin == null || boatSkin.IsDefaultBoat || boatIndex == IntUtils.DEFAULT_BOAT_INDEX)
-            {
-                return true; // Default boats are always unlocked
-            }
-
             return SaveSystem.CurrentData != null && SaveSystem.CurrentData.IsBoatUnlocked(boatIndex);
         }
+
 
         public bool IsBoatSkinColorUnlocked(int boatIndex, int colorIndex)
         {
             if (colorIndex == 0)
             {
                 return true; // Default color is always unlocked
-            }
-
-            BoatSkinSO boatSkin = GetBoatSkinByIndex(boatIndex);
-            if (boatSkin != null && colorIndex >= 0 && colorIndex < boatSkin.SkinColors.Length)
-            {
-                if (boatSkin.SkinColors[colorIndex].isUnlocked)
-                {
-                    return true;
-                }
             }
 
             return SaveSystem.CurrentData != null && SaveSystem.CurrentData.IsBoatColorUnlocked(boatIndex, colorIndex);
@@ -144,6 +131,7 @@ namespace BeachHero
             if (SaveSystem.CurrentData != null)
             {
                 SaveSystem.CurrentData.UnlockBoat(index);
+                SaveSystem.CurrentData.UnlockBoatColor(index, 0);
                 SetSavedBoatIndex(index, 0); // Default color index is 0
             }
             OnSkinPurchased?.Invoke(index);

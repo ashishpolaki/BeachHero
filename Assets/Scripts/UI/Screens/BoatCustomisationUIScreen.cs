@@ -31,6 +31,7 @@ namespace BeachHero
         [SerializeField] private TextMeshProUGUI equipBtnText;
         [SerializeField] private TextMeshProUGUI boatNameText;
         [SerializeField] private Image speedBarFill;
+        [SerializeField] private GameObject lockObject;
 
         [Header("Camera Settings")]
         [SerializeField] private Vector3 previewBoatPositionOffset = new Vector3(50f, 0f, 0f);
@@ -182,7 +183,7 @@ namespace BeachHero
 
             HighlightSelectedBoat();
             ShowAvailableColors();
-            UpdatePurchaseButton();
+            UpdateSelectionState();
             UpdateNavigationButtons();
         }
 
@@ -255,14 +256,16 @@ namespace BeachHero
                 }
             }
 
-            var boatSkin = GameController.GetInstance.SkinController.GetBoatSkinByIndex(selectedBoatIndex);
+            var skinController = GameController.GetInstance.SkinController;
+            var boatSkin = skinController.GetBoatSkinByIndex(selectedBoatIndex);
             if (boatSkin == null || boatSkin.SkinColors == null) return;
 
             for (int i = 0; i < boatSkin.SkinColors.Length; i++)
             {
                 var skinColorData = boatSkin.SkinColors[i];
                 var boatSkinColorUI = GetReusableColorUI(i);
-                boatSkinColorUI.InitSkinColor(this, skinColorData, i, selectedColorIndex == i);
+                bool isUnlocked = skinController.IsBoatSkinColorUnlocked(selectedBoatIndex, i);
+                boatSkinColorUI.InitSkinColor(this, skinColorData, i, isUnlocked, selectedColorIndex == i);
                 boatSkinColorUI.gameObject.SetActive(true);
             }
         }
@@ -288,7 +291,7 @@ namespace BeachHero
             }
 
             HighlightSelectedBoat();
-            UpdatePurchaseButton();
+            UpdateSelectionState();
         }
 
         private BoatSkinColorUI GetReusableColorUI(int index)
@@ -305,23 +308,30 @@ namespace BeachHero
         #endregion
 
         #region Purchase & Equip Logic
-        private void UpdatePurchaseButton()
+        private void UpdateSelectionState()
         {
             var skinController = GameController.GetInstance.SkinController;
             var boatSkin = skinController.GetBoatSkinByIndex(selectedBoatIndex);
 
             bool isBoatUnlocked = skinController.IsBoatSkinUnlocked(selectedBoatIndex);
+            bool isColorUnlocked = skinController.IsBoatSkinColorUnlocked(selectedBoatIndex, selectedColorIndex);
             int savedBoat = skinController.GetSavedBoatIndex();
             int savedColor = skinController.GetSavedBoatColorIndex(selectedBoatIndex);
 
             bool isCurrentlyEquipped = (selectedBoatIndex == savedBoat && selectedColorIndex == savedColor);
 
-            // 1. Purchase Button Logic
-            if (purchaseButton != null)
+            if (lockObject != null)
             {
-                if (!isBoatUnlocked)
+                lockObject.SetActive(!isBoatUnlocked);
+            }
+
+            if (!isBoatUnlocked)
+            {
+                // 1. Boat is locked -> Show Buy Boat Button, Hide Equip Button
+                boatSelectionAction = BoatSelectionAction.PurchaseSkin;
+
+                if (purchaseButton != null)
                 {
-                    boatSelectionAction = BoatSelectionAction.PurchaseSkin;
                     purchaseButton.gameObject.SetActive(true);
                     if (purchaseBtnText != null)
                     {
@@ -329,24 +339,46 @@ namespace BeachHero
                         purchaseBtnText.text = $"{cost}";
                     }
                 }
-                else
-                {
-                    // Already purchased -> set purchase button inactive
-                    purchaseButton.gameObject.SetActive(false);
-                }
-            }
 
-            // 2. Equip Button Logic
-            if (equipButton != null)
-            {
-                if (!isBoatUnlocked)
+                if (equipButton != null)
                 {
-                    // Locked boat -> hide equip button
                     equipButton.gameObject.SetActive(false);
                 }
-                else
+            }
+            else if (!isColorUnlocked)
+            {
+                // 2. Boat is unlocked, but selected color is locked -> Show Buy Color Button, Hide Equip Button
+                boatSelectionAction = BoatSelectionAction.PurchaseSkinColor;
+
+                if (purchaseButton != null)
                 {
-                    boatSelectionAction = BoatSelectionAction.SelectSkin;
+                    purchaseButton.gameObject.SetActive(true);
+                    if (purchaseBtnText != null)
+                    {
+                        int cost = (boatSkin != null && selectedColorIndex >= 0 && selectedColorIndex < boatSkin.SkinColors.Length)
+                            ? boatSkin.SkinColors[selectedColorIndex].coinCost
+                            : 0;
+                        purchaseBtnText.text = $"{cost}";
+                    }
+                }
+
+                if (equipButton != null)
+                {
+                    equipButton.gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                // 3. Both boat and selected color are unlocked -> Hide Purchase Button, Show Equip Button
+                boatSelectionAction = BoatSelectionAction.SelectSkin;
+
+                if (purchaseButton != null)
+                {
+                    purchaseButton.gameObject.SetActive(false);
+                }
+
+                if (equipButton != null)
+                {
                     equipButton.gameObject.SetActive(true);
 
                     if (isCurrentlyEquipped)
@@ -381,7 +413,7 @@ namespace BeachHero
                 case BoatSelectionAction.SelectSkin:
                     skinController.SetSavedBoatIndex(selectedBoatIndex, selectedColorIndex);
                     GameController.GetInstance.LevelController?.UpdateBoat(selectedBoatIndex, selectedColorIndex);
-                    UpdatePurchaseButton();
+                    UpdateSelectionState();
                     break;
 
                 case BoatSelectionAction.PurchaseSkin:
@@ -398,12 +430,16 @@ namespace BeachHero
 
         private void BoatSkinPurchased(int index)
         {
+            selectedBoatIndex = index;
+            selectedColorIndex = 0;
             UpdateSelectedBoat(index);
         }
 
         private void BoatSkinColorPurchased(int boatIndex, int colorIndex)
         {
             selectedBoatIndex = boatIndex;
+            selectedColorIndex = colorIndex;
+            ShowAvailableColors();
             ApplyBoatColor(colorIndex);
         }
         #endregion

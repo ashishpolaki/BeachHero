@@ -13,7 +13,6 @@ namespace BeachHero
         [SerializeField] private float speed;
         [SerializeField] private float boostSpeed;
         [Range(0f, 1f), SerializeField] private float speedMeter;
-        [SerializeField] private bool isUnlocked;
         [SerializeField] private int coinCost;
         [SerializeField] private BoatSkinColorData[] skinColors;
         #endregion
@@ -27,7 +26,6 @@ namespace BeachHero
         public float SpeedMeter => speedMeter;
         public float BoostSpeed => boostSpeed;
         public BoatSkinColorData[] SkinColors => skinColors;
-        public bool IsDefaultBoat => isUnlocked;
         public int CoinCost => coinCost;
         public GameObject BoatPrefab => boatPrefab;
         #endregion
@@ -42,7 +40,6 @@ namespace BeachHero
     {
         public Color[] ShaderColors;
         public Color previewColor;
-        public bool isUnlocked;
         public int coinCost;
     }
 }
