@@ -20,10 +20,18 @@ namespace BeachHero
         RateUs,
         Login
     }
+    public enum ScreenCanvasType
+    {
+        Width,
+        Height,
+        Middle
+    }
+
     public interface IScreen
     {
         public List<BaseScreenTab> Tabs { get; }
         public ScreenType ScreenType { get; }
+        public ScreenCanvasType ScreenCanvasType { get; }
         public ScreenTabType DefaultOpenTab { get; }
         public ScreenTabType CurrentOpenTab { get; }
         public bool IsScreenOpen { get; }
@@ -41,6 +49,7 @@ namespace BeachHero
         [SerializeField] private RectTransform rect;
         [SerializeField] private RectTransform notchSafeArea;
         [SerializeField] private ScreenType screenType;
+        [SerializeField] private ScreenCanvasType screenCanvasType = ScreenCanvasType.Width;
         [SerializeField] private ScreenTabType defaultOpenTab;
         [SerializeField] private List<BaseScreenTab> tabs;
         [SerializeField] private TweenAnimator openAnimator;
@@ -54,6 +63,7 @@ namespace BeachHero
         #region Properties 
         public TweenAnimator OpenAnimator => openAnimator;
         public ScreenType ScreenType => screenType;
+        public ScreenCanvasType ScreenCanvasType => screenCanvasType;
         public List<BaseScreenTab> Tabs { get => tabs; }
         public ScreenTabType DefaultOpenTab { get => defaultOpenTab; }
         public ScreenTabType CurrentOpenTab { get => currentOpenTab; }

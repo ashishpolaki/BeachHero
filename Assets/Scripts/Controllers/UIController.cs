@@ -37,6 +37,10 @@ namespace BeachHero
         #endregion
 
         #region Public Methods
+        public void Init()
+        {
+            screenManager.InitializeCanvasOrderList();
+        }
         public void ScreenEvent(ScreenType screenType, UIScreenEvent uIScreenEvent, ScreenTabType screenTabType = ScreenTabType.None)
         {
             screenManager.ScreenEvent(screenType, uIScreenEvent, screenTabType);

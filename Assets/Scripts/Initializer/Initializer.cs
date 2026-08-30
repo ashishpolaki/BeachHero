@@ -64,6 +64,7 @@ namespace BeachHero
             // small delay so the first frame renders smoothly
             await Task.Yield();
             GameController.GetInstance.Init();
+            UIController.GetInstance.Init();
             AudioController.GetInstance.Init();
             CameraController.GetInstance.Init();
             TutorialController.GetInstance.Init();
