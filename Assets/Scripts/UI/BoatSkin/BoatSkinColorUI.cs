@@ -3,11 +3,11 @@ using UnityEngine.UI;
 
 namespace BeachHero
 {
-    public class BoatSkinColorUI : MonoBehaviour
+    public class BoatSkinColorUI : UIButton
     {
         [SerializeField] private Image iconImage;
-        [SerializeField] private UIButton selectButton;
         [SerializeField] private GameObject lockObject;
+        [SerializeField] private GameObject selectedObject;
 
         private BoatCustomisationUIScreen boatCustomisationUIScreen;
         private int colorIndex;
@@ -17,12 +17,13 @@ namespace BeachHero
 
         private void OnEnable()
         {
-            selectButton.OnButtonReleased += (OnSelectButtonClicked);
+            OnButtonReleased += (OnSelectButtonClicked);
         }
         private void OnDisable()
         {
-            selectButton.OnButtonReleased -= (OnSelectButtonClicked);
+            OnButtonReleased -= (OnSelectButtonClicked);
         }
+
         public void InitSkinColor(BoatCustomisationUIScreen _boatCustomisationUIScreen, BoatSkinColorData skinColorData,
             int _index, bool _isUnlocked, bool _isSelected = false)
         {
@@ -36,7 +37,7 @@ namespace BeachHero
                 lockObject.SetActive(!_isUnlocked);
             }
             boatCustomisationUIScreen = _boatCustomisationUIScreen;
-            
+
             if (_isSelected)
             {
                 Select();
@@ -55,19 +56,20 @@ namespace BeachHero
         public void Select()
         {
             isSelected = true;
-            if (selectButton != null)
-            {
-                selectButton.SetInteractable(false);
-            }
+            SetInteractable(false);
+            selectedObject.SetActive(true);
         }
 
         public void UnSelect()
         {
             isSelected = false;
-            if (selectButton != null)
-            {
-                selectButton.SetInteractable(true);
-            }
+            SetInteractable(true);
+            selectedObject.SetActive(false);
+        }
+
+        public override void SetInteractable(bool state)
+        {
+            base.SetInteractable(state);
         }
     }
 }

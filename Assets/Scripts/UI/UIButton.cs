@@ -137,7 +137,7 @@ namespace BeachHero
         #endregion
 
         #region Interactability
-        public void SetInteractable(bool state)
+        public virtual void SetInteractable(bool state)
         {
             isInteractable = state;
             if (canvasGroup != null)

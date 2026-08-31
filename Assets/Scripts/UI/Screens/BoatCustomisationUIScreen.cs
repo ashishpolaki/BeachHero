@@ -25,19 +25,27 @@ namespace BeachHero
         [SerializeField] private Vector3 camPositionOffset = new Vector3(2.55f, 2.82f, 4.87f);
         [SerializeField] private Vector3 camRotationOffset = new Vector3(17.191f, 205.917f, 357.561f);
 
-        [Header("UI Controls")]
+        [Header("Navigation Controls")]
         [SerializeField] private UIButton backButton;
-        [SerializeField] private UIButton purchaseButton;
-        [SerializeField] private UIButton equipButton;
         [SerializeField] private UIButton nextBoatButton;
         [SerializeField] private UIButton prevBoatButton;
-        [SerializeField] private TextMeshProUGUI purchaseBtnText;
-        [SerializeField] private TextMeshProUGUI equipBtnText;
+
+        [Header("Boat Info & Status")]
         [SerializeField] private TextMeshProUGUI boatNameText;
         [SerializeField] private GameObject lockObject;
 
+        [Header("Purchase Settings")]
+        [SerializeField] private UIButton equipButton;
+        [SerializeField] private UIButton purchaseButton;
+        [SerializeField] private GameObject purchaseButtonContainer;
+        [SerializeField] private TextMeshProUGUI purchaseBtnText;
+        [SerializeField] private TextMeshProUGUI equipBtnText;
+        [SerializeField] private TweenAnimator purchaseButtonAnimator;
+
         [Header("Speed Gauge Settings")]
-        [SerializeField] private Image speedBarFill;
+        [SerializeField] private Image[] speedBarImages;
+        [SerializeField] private Sprite speedBarFillSprite;
+        [SerializeField] private Sprite speedBarUnfilledSprite;
         [SerializeField] private Transform speedNeedleTransform;
         [SerializeField] private float speedNeedleMinAngle = 100f;
         [SerializeField] private float speedNeedleMaxAngle = -100f;
@@ -64,6 +72,12 @@ namespace BeachHero
             base.Open(screenTabType);
             AddListeners();
             SetupCustomisation();
+
+            //purchase button animation setup
+            if (purchaseButtonAnimator != null)
+            {
+                purchaseButtonAnimator.BuildSequence();
+            }
         }
 
         public override void Close()
@@ -78,6 +92,12 @@ namespace BeachHero
                 currentPreviewBoat.gameObject.SetActive(false);
             }
             RemoveListeners();
+
+            //purchase button animation cleanup
+            if (purchaseButtonAnimator != null)
+            {
+                purchaseButtonAnimator.Kill();
+            }
         }
         #endregion
 
@@ -221,9 +241,15 @@ namespace BeachHero
             {
                 boatNameText.text = boatSkinSO.Name;
             }
-            if (speedBarFill != null)
+            if (speedBarImages != null && speedBarImages.Length > 0)
             {
-                speedBarFill.fillAmount = boatSkinSO.SpeedMeter;
+                for (int i = 0; i < speedBarImages.Length; i++)
+                {
+                    if (speedBarImages[i] != null)
+                    {
+                        speedBarImages[i].sprite = (i < boatSkinSO.SpeedBarFillAmount) ? speedBarFillSprite : speedBarUnfilledSprite;
+                    }
+                }
             }
             if (speedNeedleTransform != null)
             {
@@ -318,16 +344,8 @@ namespace BeachHero
             if (!isBoatUnlocked)
             {
                 currentAction = BoatSelectionAction.PurchaseSkin;
-
-                if (purchaseButton != null)
-                {
-                    purchaseButton.gameObject.SetActive(true);
-                    if (purchaseBtnText != null)
-                    {
-                        int cost = boatSkin != null ? boatSkin.CoinCost : 0;
-                        purchaseBtnText.text = $"{cost}";
-                    }
-                }
+                int cost = boatSkin != null ? boatSkin.CoinCost : 0;
+                SetPurchaseButtonState(true, cost);
 
                 if (equipButton != null)
                 {
@@ -337,18 +355,10 @@ namespace BeachHero
             else if (isColorSelected && !isColorUnlocked)
             {
                 currentAction = BoatSelectionAction.PurchaseSkinColor;
-
-                if (purchaseButton != null)
-                {
-                    purchaseButton.gameObject.SetActive(true);
-                    if (purchaseBtnText != null)
-                    {
-                        int cost = (boatSkin != null && selectedColorIndex >= 0 && selectedColorIndex < boatSkin.SkinColors.Length)
-                            ? boatSkin.SkinColors[selectedColorIndex].coinCost
-                            : 0;
-                        purchaseBtnText.text = $"{cost}";
-                    }
-                }
+                int cost = (boatSkin != null && selectedColorIndex >= 0 && selectedColorIndex < boatSkin.SkinColors.Length)
+                    ? boatSkin.SkinColors[selectedColorIndex].coinCost
+                    : 0;
+                SetPurchaseButtonState(true, cost);
 
                 if (equipButton != null)
                 {
@@ -358,11 +368,7 @@ namespace BeachHero
             else
             {
                 currentAction = BoatSelectionAction.SelectSkin;
-
-                if (purchaseButton != null)
-                {
-                    purchaseButton.gameObject.SetActive(false);
-                }
+                SetPurchaseButtonState(false);
 
                 if (equipButton != null)
                 {
@@ -386,6 +392,27 @@ namespace BeachHero
                     }
                 }
             }
+        }
+
+        private void SetPurchaseButtonState(bool isActive, int cost = 0)
+        {
+            if (purchaseButtonContainer != null)
+            {
+                purchaseButtonContainer.SetActive(isActive);
+                if (isActive && purchaseBtnText != null)
+                {
+                    purchaseBtnText.text = $"{cost}";
+                    if (purchaseButtonAnimator != null)
+                    {
+                        purchaseButtonAnimator.Play();
+                    }
+                }
+            }
+        }
+
+        public void PlayPurchaseRevealSound()
+        {
+            AudioController.GetInstance.PlaySound(AudioType.Swoosh);
         }
 
         private void UpdateNavigationButtons()

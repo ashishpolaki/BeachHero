@@ -13,21 +13,23 @@ namespace BeachHero
         [SerializeField] private float speed;
         [SerializeField] private float boostSpeed;
         [Range(0f, 1f), SerializeField] private float speedMeter;
+        [Range(1, 8), SerializeField] private int speedBarFillAmount;
         [SerializeField] private int coinCost;
         [SerializeField] private BoatSkinColorData[] skinColors;
         #endregion
 
         #region Properties
         public string ID => id;
-        public int Hash { get; private set; }
         public int Index => index;
         public string Name => boatName;
         public float Speed => speed;
         public float SpeedMeter => speedMeter;
+        public int SpeedBarFillAmount => speedBarFillAmount;
         public float BoostSpeed => boostSpeed;
         public BoatSkinColorData[] SkinColors => skinColors;
         public int CoinCost => coinCost;
         public GameObject BoatPrefab => boatPrefab;
+        //public int Hash { get; private set; }
         #endregion
 
         //public void Initialize()
