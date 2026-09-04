@@ -9,6 +9,7 @@ namespace BeachHero
     {
         [SerializeField] private Slider loadingFillSlider;
         [SerializeField] private GameObject backgroundPanel;
+        [SerializeField] private GameObject loadingBar;
         [SerializeField] private UiScreenTextStyler uiScreenTextStyler;
         [SerializeField] private float minimumLoadingDuration = 1;
         [SerializeField] private float loadDuration = 0.5f;
@@ -16,6 +17,7 @@ namespace BeachHero
         private void SetActiveLoadingScreen(bool enable)
         {
             backgroundPanel.SetActive(enable);
+            loadingBar.SetActive(enable);
         }
 
         //  [SerializeField] private Vector2 referenceCharacterSize = new Vector2(820, 820);

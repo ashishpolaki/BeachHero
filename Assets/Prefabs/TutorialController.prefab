@@ -156,8 +156,8 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1125, y: 2346}
-  m_ScreenMatchMode: 0
+  m_ReferenceResolution: {x: 720, y: 1280}
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -323,7 +323,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: SAVE THE PEOPLE BEFORE\nTHEY DROWN TO\nCOMPLETE THIS LEVEL.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a1f88a85ca911344db1847b7c4c92a87, type: 2}
   m_sharedMaterial: {fileID: -9219548683257091789, guid: a1f88a85ca911344db1847b7c4c92a87,
@@ -351,8 +351,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48
-  m_fontSizeBase: 48
+  m_fontSize: 31.5
+  m_fontSizeBase: 31.5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -807,7 +807,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2180180204365169815}
-  m_LocalRotation: {x: 0, y: 0, z: 0.9396927, w: -0.34202015}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.85, y: 0.85, z: 0.85}
   m_ConstrainProportionsScale: 0
@@ -845,7 +845,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7849535137079502813
 RectTransform:
   m_ObjectHideFlags: 0
@@ -863,7 +863,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 167, y: 514.49805}
+  m_AnchoredPosition: {x: 94, y: 70}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &5721860691256169649
@@ -1200,10 +1200,10 @@ RectTransform:
   - {fileID: 8658934249259235172}
   m_Father: {fileID: 1939395022529524311}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -360, y: 307.40002}
+  m_SizeDelta: {x: 720, y: 618.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6891211717638744182
 GameObject:
@@ -1435,8 +1435,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 20, y: -103.7}
-  m_SizeDelta: {x: 150.3, y: 207.4}
+  m_AnchoredPosition: {x: 27.62, y: -96.84}
+  m_SizeDelta: {x: 96.45, y: 128.44}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3379663653802564272
 CanvasRenderer:
@@ -1665,7 +1665,7 @@ PrefabInstance:
     - target: {fileID: 2591735641059565547, guid: 7702060a0f1fefe4b85fba0f45f15022,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2799892281709853907, guid: 7702060a0f1fefe4b85fba0f45f15022,
         type: 3}
@@ -1865,27 +1865,27 @@ PrefabInstance:
     - target: {fileID: 6869024189025179628, guid: 7702060a0f1fefe4b85fba0f45f15022,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 82.91
+      value: 65.69
       objectReference: {fileID: 0}
     - target: {fileID: 6869024189025179628, guid: 7702060a0f1fefe4b85fba0f45f15022,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 82.91
+      value: 65.69
       objectReference: {fileID: 0}
     - target: {fileID: 6869024189025179628, guid: 7702060a0f1fefe4b85fba0f45f15022,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 82.91
+      value: 65.69
       objectReference: {fileID: 0}
     - target: {fileID: 6869024189025179628, guid: 7702060a0f1fefe4b85fba0f45f15022,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 355
+      value: 225
       objectReference: {fileID: 0}
     - target: {fileID: 6869024189025179628, guid: 7702060a0f1fefe4b85fba0f45f15022,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -11
+      value: -310
       objectReference: {fileID: 0}
     - target: {fileID: 6869024189025179628, guid: 7702060a0f1fefe4b85fba0f45f15022,
         type: 3}

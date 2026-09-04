@@ -7,21 +7,11 @@ namespace BeachHero
     public class UIScreenManager
     {
         [SerializeField] private ScreenConfigSO screenConfig;
-        [SerializeField] private CanvasGroup[] canvasGroups;
-
-        [Header("Canvas Holders")]
-        [SerializeField] private Transform widthCanvasHolder;
-        [SerializeField] private Transform heightCanvasHolder;
-        [SerializeField] private Transform middleCanvasHolder;
-
-        [Header("Canvas")]
-        [SerializeField] private Canvas widthCanvas;
-        [SerializeField] private Canvas heightCanvas;
-        [SerializeField] private Canvas middleCanvas;
+        [SerializeField] private CanvasGroup canvasGroup;
+        [SerializeField] private Transform canvasHolder;
 
         private Dictionary<ScreenType, BaseScreen> screenCache = new Dictionary<ScreenType, BaseScreen>();
         private Stack<BaseScreen> screenStack = new Stack<BaseScreen>();
-        private List<Canvas> canvasOrderList = new List<Canvas>();
 
         #region Screen Methods
         public T GetScreen<T>(ScreenType screenType) where T : BaseScreen
@@ -78,10 +68,8 @@ namespace BeachHero
                 {
                     if (config.ScreenType == screenType)
                     {
-                        Transform parentHolder = GetCanvasHolder(config.ScreenCanvasType);
-                        var instance = GameObject.Instantiate(config, parentHolder);
+                        var instance = GameObject.Instantiate(config, canvasHolder);
                         screenCache[screenType] = instance;
-                        SetCanvasOrder(instance.ScreenCanvasType);
                         return instance;
                     }
                 }
@@ -89,10 +77,6 @@ namespace BeachHero
                 DebugUtils.LogError($"Screen not found for type: {screenType}");
                 return null;
             }
-
-            // Ensure the canvas order is initialized
-            SetCanvasOrder(screenCache[screenType].ScreenCanvasType);
-
             return screenCache[screenType];
         }
         #endregion
@@ -151,58 +135,10 @@ namespace BeachHero
         #endregion
 
         #region Canvas
-        private void SetCanvasOrder(ScreenCanvasType screenCanvasType)
-        {
-            var canvas = GetCanvas(screenCanvasType);
-            var otherCanvas = GetCanvas(screenCanvasType == ScreenCanvasType.Height ? ScreenCanvasType.Width : ScreenCanvasType.Height);
-            if (canvas != null)
-            {
-                canvas.sortingOrder = 1;
-                otherCanvas.sortingOrder = 0;
-            }
-        }
-        public void InitializeCanvasOrderList()
-        {
-            if (canvasOrderList.Count == 0)
-            {
-                if (heightCanvas != null) canvasOrderList.Add(heightCanvas);
-                if (middleCanvas != null) canvasOrderList.Add(middleCanvas);
-                if (widthCanvas != null) canvasOrderList.Add(widthCanvas);
-            }
-        }
         public void EnableCanvasGroup(bool enable)
         {
             //canvasGroup.interactable = enable;
-            foreach (var canvasGroup in canvasGroups)
-            {
-                canvasGroup.blocksRaycasts = enable;
-            }
-        }
-        private Transform GetCanvasHolder(ScreenCanvasType canvasType)
-        {
-            switch (canvasType)
-            {
-                case ScreenCanvasType.Height:
-                    return heightCanvasHolder != null ? heightCanvasHolder : widthCanvasHolder;
-                case ScreenCanvasType.Middle:
-                    return middleCanvasHolder != null ? middleCanvasHolder : widthCanvasHolder;
-                case ScreenCanvasType.Width:
-                default:
-                    return widthCanvasHolder != null ? widthCanvasHolder : middleCanvasHolder;
-            }
-        }
-        private Canvas GetCanvas(ScreenCanvasType canvasType)
-        {
-            switch (canvasType)
-            {
-                case ScreenCanvasType.Height:
-                    return heightCanvas != null ? heightCanvas : widthCanvas;
-                case ScreenCanvasType.Middle:
-                    return middleCanvas != null ? middleCanvas : widthCanvas;
-                case ScreenCanvasType.Width:
-                default:
-                    return widthCanvas != null ? widthCanvas : middleCanvas;
-            }
+            canvasGroup.blocksRaycasts = enable;
         }
         #endregion
     }
