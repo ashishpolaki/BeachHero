@@ -14,10 +14,13 @@ namespace BeachHero
         [SerializeField] private float minimumLoadingDuration = 1;
         [SerializeField] private float loadDuration = 0.5f;
 
+        public bool IsLoading { get; private set; } = false;
+
         private void SetActiveLoadingScreen(bool enable)
         {
             backgroundPanel.SetActive(enable);
             loadingBar.SetActive(enable);
+            IsLoading = enable;
         }
 
         //  [SerializeField] private Vector2 referenceCharacterSize = new Vector2(820, 820);
@@ -38,7 +41,7 @@ namespace BeachHero
                 loadingFillSlider.value = progress;
                 await Task.Yield();
             }
-             loadingFillSlider.value = 1; // Ensure the bar is full
+            loadingFillSlider.value = 1; // Ensure the bar is full
         }
 
         public async Task LoadSceneAsync(string sceneName)

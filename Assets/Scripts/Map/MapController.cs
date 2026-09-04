@@ -273,7 +273,8 @@ namespace BeachHero
 
         public void HandleMapClick(Vector2 mousePos)
         {
-            if (GameController.GetInstance.GameState == GameState.Map)
+            if (GameController.GetInstance.GameState == GameState.Map &&
+                !UIController.GetInstance.IsLoadingScreenActive)
             {
                 var ray = Camera.main.ScreenPointToRay(InputManager.MousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit, 100f, LayerMask.GetMask("Map")))

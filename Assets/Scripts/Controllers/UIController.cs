@@ -30,6 +30,7 @@ namespace BeachHero
         #region Properties
         public bool IsScreenTransitioning { get; private set; }
         public bool IsInputBlocked { get; private set; }
+        public bool IsLoadingScreenActive => loadingUI.IsLoading;
         public NotchSafeArea NotchSafeArea => notchSafeArea;
         public LoadingUI LoadingUI => loadingUI;
         public FadeUI FadeUI => fadeUI;
@@ -65,7 +66,7 @@ namespace BeachHero
         public void BlockInput(bool block)
         {
             IsInputBlocked = block;
-          //  screenManager.EnableCanvasGroup(!block);
+            //  screenManager.EnableCanvasGroup(!block);
         }
         #endregion
     }
