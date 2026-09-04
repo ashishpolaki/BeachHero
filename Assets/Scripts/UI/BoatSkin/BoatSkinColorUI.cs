@@ -8,6 +8,9 @@ namespace BeachHero
         [SerializeField] private Image iconImage;
         [SerializeField] private GameObject lockObject;
         [SerializeField] private GameObject selectedObject;
+        [SerializeField] private GameObject selectedBorder;
+        [SerializeField] private GameObject unSelectedBorder;
+
 
         private BoatCustomisationUIScreen boatCustomisationUIScreen;
         private int colorIndex;
@@ -58,6 +61,8 @@ namespace BeachHero
             isSelected = true;
             SetInteractable(false);
             selectedObject.SetActive(true);
+            unSelectedBorder.SetActive(false);
+            selectedBorder.SetActive(true);
         }
 
         public void UnSelect()
@@ -65,6 +70,8 @@ namespace BeachHero
             isSelected = false;
             SetInteractable(true);
             selectedObject.SetActive(false);
+            selectedBorder.SetActive(false);
+            unSelectedBorder.SetActive(true);
         }
 
         public override void SetInteractable(bool state)
