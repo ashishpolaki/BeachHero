@@ -15,6 +15,7 @@ namespace BeachHero
         [SerializeField] private UIButton pauseButton;
         [SerializeField] private UIButton retryButton;
         [SerializeField] private UIButton boatCustomisationBtn;
+        [SerializeField] private NotificationBadgeUI boatCustomisationNotificationBadgeUI;
         [SerializeField] private UIButton shopBtn;
         [SerializeField] private UIButton noAdsBtn;
 
@@ -85,6 +86,7 @@ namespace BeachHero
             starsPanelUI.Open();
             ResetTopButtons();
             EnableNoAdsButton();
+            ShowBoatCustomisationNotificationBadge();
 
             //Powerups
             speedBoostPowerupButton.Init(PowerupType.SpeedBoost);
@@ -110,6 +112,7 @@ namespace BeachHero
             starsPanelUI.Close();
             HandleShowPanels();
             EnvironmentController.GetInstance.DeInitialize();
+            HideBoatCustomisationNotificationBadge();
 
             //buttons
             pauseButton.OnButtonReleased -= OnPause;
@@ -248,8 +251,26 @@ namespace BeachHero
             }
         }
 
+        private void ShowBoatCustomisationNotificationBadge()
+        {
+            if (boatCustomisationNotificationBadgeUI != null && SaveSystem.CurrentData != null &&
+                !SaveSystem.CurrentData.isBoatNotificationShown && GameController.GetInstance.HighestCompletedLevelIndex >= IntUtils.BOAT_NOTIFICATION_SHOWN_LEVEL)
+            {
+                boatCustomisationNotificationBadgeUI.Show();
+            }
+        }
+
+        private void HideBoatCustomisationNotificationBadge()
+        {
+            if (boatCustomisationNotificationBadgeUI != null)
+            {
+                boatCustomisationNotificationBadgeUI.Hide();
+            }
+        }
+
         private void OnBoatCustomize()
         {
+            HideBoatCustomisationNotificationBadge();
             GameController.GetInstance.SetGameState(GameState.Paused);
             UIController.GetInstance.ScreenEvent(ScreenType.BoatCustomisation, UIScreenEvent.Push);
         }

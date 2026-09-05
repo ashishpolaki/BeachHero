@@ -70,6 +70,7 @@ namespace BeachHero
         public override void Open(ScreenTabType screenTabType)
         {
             base.Open(screenTabType);
+            SetBoatNotificationShown();
             AddListeners();
             SetupCustomisation();
 
@@ -77,6 +78,15 @@ namespace BeachHero
             if (purchaseButtonAnimator != null)
             {
                 purchaseButtonAnimator.BuildSequence();
+            }
+        }
+
+        private void SetBoatNotificationShown()
+        {
+            if (SaveSystem.CurrentData != null && !SaveSystem.CurrentData.isBoatNotificationShown)
+            {
+                SaveSystem.CurrentData.SetBoatNotificationShown(true);
+                SaveSystem.SaveGameData();
             }
         }
 

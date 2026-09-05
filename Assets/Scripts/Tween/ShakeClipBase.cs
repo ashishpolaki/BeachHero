@@ -67,4 +67,25 @@ namespace BeachHero
             return TweenManager.ShakeScale(target, startValue, strength, frequency, duration, dampingRatio, randomSeed, ease, null).Handle;
         }
     }
+
+    [Serializable]
+    public class ShakeRotationClip : ShakeClipBase
+    {
+        public override void ApplyFromState()
+        {
+            if (target == null)
+            {
+                return;
+            }
+            target.localEulerAngles = originalValue;
+        }
+        protected override MotionHandle CreateTweenCore()
+        {
+            if (target == null)
+            {
+                DebugUtils.LogError("Target Transform is null.");
+            }
+            return TweenManager.ShakeRotation(target, startValue, strength, frequency, duration, dampingRatio, randomSeed, ease).Handle;
+        }
+    }
 }

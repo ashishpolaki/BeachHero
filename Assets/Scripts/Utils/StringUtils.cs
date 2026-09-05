@@ -107,6 +107,7 @@ namespace BeachHero
         //Boat
         public const int DEFAULT_BOAT_INDEX = 0;
         public const int DEFAULT_BOAT_COLOR_INDEX = 0;
+        public const int BOAT_NOTIFICATION_SHOWN_LEVEL = 3;
 
         //Sorting Layers
         public const int TUTORIAL_CANVAS_LAYER = 2;

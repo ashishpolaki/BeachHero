@@ -1047,6 +1047,7 @@ namespace BeachHero
             menu.AddItem(new GUIContent("Punch/Scale"), false, () => AddClip(typeof(PunchScaleClip)));
             //Shake
             menu.AddItem(new GUIContent("Shake/Position"), false, () => AddClip(typeof(ShakePositionClip)));
+            menu.AddItem(new GUIContent("Shake/Rotation"), false, () => AddClip(typeof(ShakeRotationClip)));
             menu.AddItem(new GUIContent("Shake/Scale"), false, () => AddClip(typeof(ShakeScaleClip)));
             //Image
             menu.AddItem(new GUIContent("Image/Fade"), false, () => AddClip(typeof(ImageFadeClip)));
@@ -1077,6 +1078,7 @@ namespace BeachHero
                 //Shake
                 ShakePositionClip => "Shake Pos",
                 ShakeScaleClip => "Shake Scale",
+                ShakeRotationClip => "Shake Rotation",
                 //Image
                 ImageFadeClip => "Image Fade",
                 ImageFillAmountClip => "Image Fill",
@@ -1143,6 +1145,7 @@ namespace BeachHero
 
                 // Shake (Golds)
                 ShakePositionClip => new Color(0.95f, 0.75f, 0.10f),      // Golden Yellow
+                ShakeRotationClip => new Color(0.95f, 0.85f, 0.35f),      // Light Gold
                 ShakeScaleClip => new Color(1.00f, 0.95f, 0.55f),        // Pale Gold
 
                 // Image 

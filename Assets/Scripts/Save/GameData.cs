@@ -61,6 +61,7 @@ namespace BeachHero
         public bool noAdsPurchased;
 
         // Customization & Boats
+        public bool isBoatNotificationShown;
         public int currentSelectedBoatIndex = 0;
         public List<BoatSaveData> boats = new List<BoatSaveData>();
         #endregion
@@ -85,6 +86,7 @@ namespace BeachHero
 
                 levelProgress = new List<LevelSaveData>(),
 
+                isBoatNotificationShown = false,
                 currentSelectedBoatIndex = IntUtils.DEFAULT_BOAT_INDEX,
                 boats = new List<BoatSaveData> { defaultBoat }
             };
@@ -157,6 +159,11 @@ namespace BeachHero
         #endregion
 
         #region Boat Helper Methods
+        public void SetBoatNotificationShown(bool shown)
+        {
+            isBoatNotificationShown = shown;
+        }
+
         public BoatSaveData GetBoatData(int boatIndex)
         {
             if (boats == null)

@@ -13,6 +13,7 @@ namespace BeachHero
 
         [Header("UI References")]
         [SerializeField] private UIButton boatCustomisationButton;
+        [SerializeField] private NotificationBadgeUI boatCustomisationNotificationBadgeUI;
         [SerializeField] private UIButton playButton;
         [SerializeField] private UIButton storeButton;
         [SerializeField] private UIButton settingsButton;
@@ -36,6 +37,7 @@ namespace BeachHero
             AddListeners();
             EnableGPGSButton();
             EnableNoAdsButton();
+            ShowBoatCustomisationNotificationBadge();
             for (int i = 0; i < buttonsShineEffect.Length; i++)
             {
                 int index = i;
@@ -50,6 +52,7 @@ namespace BeachHero
             {
                 buttonsShineEffect[i].Stop();
             }
+            HideBoatCustomisationNotificationBadge();
         }
 
         public override void OnScreenOpened()
@@ -147,10 +150,27 @@ namespace BeachHero
 
         private void EnableNoAdsButton()
         {
+            bool isNoAdsPurchased = AdController.GetInstance.NoAdsPurchased();
             if (noAdsButton != null)
             {
-                bool isNoAdsPurchased = AdController.GetInstance.NoAdsPurchased();
                 noAdsButton.SetInteractable(!isNoAdsPurchased);
+            }
+        }
+
+        private void ShowBoatCustomisationNotificationBadge()
+        {
+            if (boatCustomisationNotificationBadgeUI != null && SaveSystem.CurrentData != null &&
+                !SaveSystem.CurrentData.isBoatNotificationShown && GameController.GetInstance.HighestCompletedLevelIndex >= IntUtils.BOAT_NOTIFICATION_SHOWN_LEVEL)
+            {
+                boatCustomisationNotificationBadgeUI.Show();
+            }
+        }
+
+        private void HideBoatCustomisationNotificationBadge()
+        {
+            if (boatCustomisationNotificationBadgeUI != null)
+            {
+                boatCustomisationNotificationBadgeUI.Hide();
             }
         }
 
@@ -184,6 +204,7 @@ namespace BeachHero
 
         private void OnBoatCustomisationButtonClicked()
         {
+            HideBoatCustomisationNotificationBadge();
             UIController.GetInstance.ScreenEvent(ScreenType.BoatCustomisation, UIScreenEvent.Push);
         }
 

@@ -111,5 +111,18 @@ namespace BeachHero
             return true;
         }
     }
+    [CustomPropertyDrawer(typeof(ShakeRotationClip), true)]
+    public class ShakeRotationClipDrawer : ShakeClipBaseDrawer
+    {
+        protected override string HeaderLabel()
+        {
+            return "Shake Rotation";
+        }
+        protected override bool TryGetValueFromTarget(Transform tr, out Vector3 value)
+        {
+            value = tr.localEulerAngles;
+            return true;
+        }
+    }
 }
 #endif

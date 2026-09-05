@@ -324,6 +324,30 @@ namespace BeachHero
             var handle = motion.BindToLocalScale(transform);
             return new TweenHandle(handle);
         }
+
+        public static TweenHandle ShakeRotation(Transform transform, Vector3 startValue, Vector3 strength,
+            int frequency, float duration, float dampingRatio = 0, uint randomSeed = 123,
+            Ease ease = Ease.Linear, TransformSpace transformSpace = TransformSpace.Local, System.Action onComplete = null)
+        {
+            var motion = LMotion.Shake.Create(startValue, strength, duration).WithFrequency(frequency)
+             .WithDampingRatio(dampingRatio).WithRandomSeed(randomSeed).WithEase(ease);
+            if (onComplete != null)
+            {
+                motion = motion.WithOnComplete(onComplete);
+            }
+
+            TweenHandle handle = default;
+            if (transformSpace == TransformSpace.World)
+            {
+                handle = new TweenHandle(motion.BindToEulerAngles(transform));
+            }
+            else
+            {
+                handle = new TweenHandle(motion.BindToLocalEulerAngles(transform));
+            }
+
+            return handle;
+        }
         #endregion
 
         #region Generic Value Tweens
