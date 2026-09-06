@@ -87,6 +87,7 @@ namespace BeachHero
             {
                 SaveSystem.CurrentData.SetBoatNotificationShown(true);
                 SaveSystem.SaveGameData();
+                PlayGamesController.GetInstance.SaveDataInCloud();
             }
         }
 
