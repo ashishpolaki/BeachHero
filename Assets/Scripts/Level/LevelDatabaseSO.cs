@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace BeachHero
@@ -39,9 +41,6 @@ namespace BeachHero
             if (levelsList == null || levelsList.Length == 0)
                 return;
 
-            // Store temporary names for each asset.
-            Dictionary<Object, string> tempNames = new();
-
             // ---------- PASS 1 : Rename to unique temporary names ----------
             foreach (var level in levelsList)
             {
@@ -62,8 +61,6 @@ namespace BeachHero
                     Debug.LogError($"Failed to rename '{path}' to temp name.\n{error}");
                     continue;
                 }
-
-                tempNames[level] = tempName;
             }
 
             AssetDatabase.SaveAssets();
@@ -83,15 +80,16 @@ namespace BeachHero
 
                 string finalName = $"Level_{i + 1}";
 
-                level.name = finalName;
-                EditorUtility.SetDirty(level);
-
                 string error = AssetDatabase.RenameAsset(path, finalName);
 
                 if (!string.IsNullOrEmpty(error))
                 {
                     Debug.LogError($"Failed to rename '{path}' to '{finalName}'.\n{error}");
+                    continue;
                 }
+
+                level.name = finalName;
+                EditorUtility.SetDirty(level);
             }
 
             AssetDatabase.SaveAssets();
