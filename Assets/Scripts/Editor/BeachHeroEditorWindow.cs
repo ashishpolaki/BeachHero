@@ -573,6 +573,8 @@ public class BeachHeroEditorWindow : EditorWindow
     private void TestLevel()
     {
         SaveLevel();
+        // Testing from edit mode bypasses the normal game startup initialization.
+        SaveSystem.Init();
         SaveSystem.CurrentData.highestCompletedLevel = selectedLevelIndex + 1;
         SaveSystem.SaveGameData();
         EditorSceneManager.OpenScene(TEST_SCENE_PATH);

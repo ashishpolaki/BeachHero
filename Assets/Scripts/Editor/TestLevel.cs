@@ -8,6 +8,7 @@ namespace BeachHero
     {
         private void Start()
         {
+            SaveSystem.Init();
             Application.targetFrameRate = 60;
             AsyncLazyInit();
         }
