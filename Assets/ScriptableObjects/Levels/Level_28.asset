@@ -12,149 +12,141 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41ec7b45cdb520b4fb3b55ccaac3e1fc, type: 3}
   m_Name: Level_28
   m_EditorClassIdentifier: 
-  levelTime: 11.5
+  levelTime: 9
   startPoint:
-    Position: {x: 3.17, y: 0, z: 11.01}
-    Rotation: {x: -0, y: 305.8, z: -0}
+    Position: {x: 0.02, y: 0, z: 11.84}
+    Rotation: {x: 0, y: 0, z: 0}
   obstacles:
     staticObstacles:
-    - type: 4
-      position: {x: 0.81, y: 0, z: 6.41}
-      rotation: {x: 0, y: 0, z: 0}
-      scale: {x: 1.9, y: 1.9, z: 1.9}
-    - type: 4
-      position: {x: -4.85, y: 0, z: 14.47}
-      rotation: {x: 0, y: 0, z: 0}
-      scale: {x: 1.9, y: 1.9, z: 1.9}
+    - type: 8
+      position: {x: -4.9, y: 0, z: 20.15}
+      rotation: {x: -0, y: 151.31729, z: -0}
+      scale: {x: 1, y: 1, z: 1}
+    - type: 8
+      position: {x: 5.61, y: 0, z: 20.04}
+      rotation: {x: 0, y: 218.62148, z: 0}
+      scale: {x: 1, y: 1, z: 1}
+    - type: 8
+      position: {x: 5.75, y: 0, z: 4.73}
+      rotation: {x: -0, y: 319.47662, z: 0}
+      scale: {x: 1, y: 1, z: 1}
+    - type: 8
+      position: {x: -5.6, y: 0, z: 5.02}
+      rotation: {x: -0, y: 32.534172, z: -0}
+      scale: {x: 1, y: 1, z: 1}
+    - type: 8
+      position: {x: 0.18, y: 0, z: -0.97}
+      rotation: {x: 349.19, y: -0, z: 0}
+      scale: {x: 1, y: 1, z: 1}
     movingObstacles: []
     whirlpoolObstacles: []
   drownCharacters:
-  - position: {x: 5.3, y: 0, z: 0}
-    waitTimePercentage: 0.4478261
-  - position: {x: -5.36, y: 0, z: 0}
-    waitTimePercentage: 0.2626087
-  - position: {x: -5.36, y: 0, z: 20.7}
-    waitTimePercentage: 0.99565214
-  - position: {x: 5.77, y: 0, z: 20.7}
-    waitTimePercentage: 0.8052174
+  - position: {x: 0, y: 0, z: 21.15}
+    waitTimePercentage: 0.1882353
+  - position: {x: -6.16, y: 0, z: 14.94}
+    waitTimePercentage: 0.4117647
+  - position: {x: 6.24, y: 0, z: 14.94}
+    waitTimePercentage: 0.7222222
+  - position: {x: 0.16, y: 0, z: 5.58}
+    waitTimePercentage: 1
   collectables:
   - type: 1
-    position: {x: 0.6500001, y: 0, z: 0}
+    position: {x: 0, y: 0, z: 14.73}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: 0.6500001, y: 0, z: 20.83}
+    position: {x: 0, y: 0, z: 16.82}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -1.4199998, y: 0, z: 0}
+    position: {x: 0.1, y: 0, z: 3.96}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -1.4199998, y: 0, z: 20.83}
+    position: {x: 0.1, y: 0, z: 2.18}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -3.24, y: 0, z: 0}
+    position: {x: -1.9, y: 0, z: 2.18}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -3.24, y: 0, z: 20.83}
+    position: {x: -1.92, y: 0, z: 3.79}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: 3, y: 0, z: 0}
+    position: {x: -1.92, y: 0, z: 5.41}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: 3, y: 0, z: 20.83}
+    position: {x: -1.92, y: 0, z: 6.97}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: 5.72, y: 0, z: 18.2}
+    position: {x: 6.1, y: 0, z: 10.65}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: 5.46, y: 0, z: 7.96}
+    position: {x: -6.0000005, y: 0, z: 10.65}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: 5.72, y: 0, z: 16.12}
+    position: {x: 6.1, y: 0, z: 8.48}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: 5.46, y: 0, z: 5.88}
+    position: {x: 4.13, y: 0, z: 8.48}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: 5.72, y: 0, z: 13.94}
+    position: {x: -1.9699998, y: 0, z: 8.48}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: 5.46, y: 0, z: 3.6999989}
+    position: {x: -5.91, y: 0, z: 8.48}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -4.92, y: 0, z: 18.57}
+    position: {x: 2.1, y: 0, z: 8.48}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -3.11, y: 0, z: 18.16}
+    position: {x: -3.99, y: 0, z: 8.48}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -1.7, y: 0, z: 16.96}
+    position: {x: 0, y: 0, z: 18.75}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -1.27, y: 0, z: 14.97}
+    position: {x: 0, y: 0, z: 8.48}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -1.27, y: 0, z: 13.28}
+    position: {x: 6.1, y: 0, z: 12.58}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -2.32, y: 0, z: 11.63}
+    position: {x: -6, y: 0, z: 12.58}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -1.35, y: 0, z: 9.42}
+    position: {x: -4.2, y: 0, z: 14.73}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: 0.54, y: 0, z: 10.17}
+    position: {x: 2.1000004, y: 0, z: 14.73}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -4.18, y: 0, z: 10.78}
+    position: {x: -2.16, y: 0, z: 14.73}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   - type: 1
-    position: {x: -6.22, y: 0, z: 10.78}
-    rotation: {x: 0, y: 0, z: 0}
-    count: 0
-  - type: 1
-    position: {x: -2.39, y: 0, z: 8.03}
-    rotation: {x: 0, y: 0, z: 0}
-    count: 0
-  - type: 1
-    position: {x: -3.05, y: 0, z: 6.24}
-    rotation: {x: 0, y: 0, z: 0}
-    count: 0
-  - type: 1
-    position: {x: -2.63, y: 0, z: 4.3}
-    rotation: {x: 0, y: 0, z: 0}
-    count: 0
-  - type: 1
-    position: {x: -0.65, y: 0, z: 2.9}
-    rotation: {x: 0, y: 0, z: 0}
-    count: 0
-  - type: 1
-    position: {x: 1.5, y: 0, z: 2.65}
+    position: {x: 4.14, y: 0, z: 14.73}
     rotation: {x: 0, y: 0, z: 0}
     count: 0
   medalRequirements:
-    requiredCurrencyForThreeMedals: 29
-    requiredCurrencyForTwoMedals: 23
+    requiredCurrencyForThreeMedals: 24
+    requiredCurrencyForTwoMedals: 17
     requiredCurrencyForOneMedal: 0
