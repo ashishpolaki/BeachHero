@@ -323,16 +323,19 @@ namespace BeachHero
             float coveredDistance = 0f;
 
             float maxSpeed = 3f; // tune this only
-            bool isIdle = false;
 
-            characterAnimator.CrossFade("Run", 0.01f);
             try
             {
+                // Put the character at the exact start before playing the run pose.
+                // Yield once so Unity evaluates that pose before the first movement step.
+                currentSplinePercent = start;
+                UpdateCharacterTransform(start);
+                characterAnimator.CrossFade("Run", 0.05f, 0, 0f);
+                await UniTask.Yield(PlayerLoopTiming.Update, token);
+
                 while (coveredDistance < totalDistance)
                 {
                     token.ThrowIfCancellationRequested();
-
-                    float remainingDistance = totalDistance - coveredDistance;
 
                     float t = coveredDistance / totalDistance;
 
@@ -353,18 +356,13 @@ namespace BeachHero
 
                     UpdateCharacterTransform(currentSplinePercent);
 
-                    float idleTriggerDistance = 0.05f;
-                    if (remainingDistance <= idleTriggerDistance && !isIdle)
-                    {
-                        characterAnimator.CrossFade("Idle", 0.2f);
-                        isIdle = true;
-                    }
-
                     await UniTask.Yield(PlayerLoopTiming.Update, token);
                 }
 
+                // The end animation must be triggered only after the final position is set.
                 currentSplinePercent = end;
                 UpdateCharacterTransform(end);
+                characterAnimator.CrossFade("Idle", 0.1f, 0, 0f);
                 StartGame();
             }
             catch (OperationCanceledException)
