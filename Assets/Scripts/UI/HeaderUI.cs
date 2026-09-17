@@ -24,8 +24,11 @@ namespace BeachHero
         #region Unity Methods
         private void OnEnable()
         {
-            GameController.GetInstance.PowerupController.OnBalanceChange += OnPowerupBalanceChange;
-            GameController.GetInstance.StoreController.OnCoinsBalanceChange += OnGameCurrencyBalanceChange;
+            if (GameController.GetInstance != null)
+            {
+                GameController.GetInstance.PowerupController.OnBalanceChange += OnPowerupBalanceChange;
+                GameController.GetInstance.StoreController.OnCoinsBalanceChange += OnGameCurrencyBalanceChange;
+            }
             UpdateBalances();
             uiScreenTextStyler.ApplyStyle();
         }
@@ -55,34 +58,37 @@ namespace BeachHero
                 UpdateText(gameCurrencyBalanceText, store.CoinsBalance);
             }
 
-             if (shieldBalanceObject != null)
-             {
-                 // Magnet
-                 bool isMagnetUnlocked = GameController.GetInstance.PowerupController.IsPowerupUnlocked(PowerupType.Shield);
+            if (shieldBalanceObject != null)
+            {
+                // Magnet
+                bool isMagnetUnlocked = GameController.GetInstance.PowerupController.IsPowerupUnlocked(PowerupType.Shield);
                 shieldBalanceObject.SetActive(isMagnetUnlocked);
-                 if (isMagnetUnlocked)
-                 {
-                     SetupAddButton(addShieldButton);
-                     UpdateText(shieldBalanceText, GameController.GetInstance.PowerupController.ShieldBalance);
-                 }
-             }
+                if (isMagnetUnlocked)
+                {
+                    SetupAddButton(addShieldButton);
+                    UpdateText(shieldBalanceText, GameController.GetInstance.PowerupController.ShieldBalance);
+                }
+            }
 
-             if (speedBoostBalanceObject != null)
-             {
-                 //Speed Boost
-                 bool isSpeedBoostUnlocked = GameController.GetInstance.PowerupController.IsPowerupUnlocked(PowerupType.SpeedBoost);
-                 speedBoostBalanceObject.SetActive(isSpeedBoostUnlocked);
-                 if (isSpeedBoostUnlocked)
-                 {
-                     SetupAddButton(addSpeedBoostButton);
-                     UpdateText(speedBoostBalanceText, GameController.GetInstance.PowerupController.SpeedBoostBalance);
-                 }
-             }
+            if (speedBoostBalanceObject != null)
+            {
+                //Speed Boost
+                bool isSpeedBoostUnlocked = GameController.GetInstance.PowerupController.IsPowerupUnlocked(PowerupType.SpeedBoost);
+                speedBoostBalanceObject.SetActive(isSpeedBoostUnlocked);
+                if (isSpeedBoostUnlocked)
+                {
+                    SetupAddButton(addSpeedBoostButton);
+                    UpdateText(speedBoostBalanceText, GameController.GetInstance.PowerupController.SpeedBoostBalance);
+                }
+            }
         }
 
         private void UpdateText(TextMeshProUGUI text, int _balance)
         {
-            text.text = _balance.ToString();
+            if (text != null)
+            {
+                text.text = _balance.ToString();
+            }
         }
 
         private void SetupAddButton(Button button)
@@ -108,11 +114,13 @@ namespace BeachHero
             switch (powerupType)
             {
                 case PowerupType.SpeedBoost:
-                    UpdateText(speedBoostBalanceText, GameController.GetInstance.PowerupController.SpeedBoostBalance);
+                    if (speedBoostBalanceText != null)
+                        UpdateText(speedBoostBalanceText, GameController.GetInstance.PowerupController.SpeedBoostBalance);
                     break;
 
                 case PowerupType.Shield:
-                    UpdateText(shieldBalanceText, GameController.GetInstance.PowerupController.ShieldBalance);
+                    if (shieldBalanceText != null)
+                        UpdateText(shieldBalanceText, GameController.GetInstance.PowerupController.ShieldBalance);
                     break;
 
                 default:
@@ -122,7 +130,10 @@ namespace BeachHero
         }
         private void OnGameCurrencyBalanceChange()
         {
-            UpdateText(gameCurrencyBalanceText, GameController.GetInstance.StoreController.CoinsBalance);
+            if (gameCurrencyBalanceText != null)
+            {
+                UpdateText(gameCurrencyBalanceText, GameController.GetInstance.StoreController.CoinsBalance);
+            }
         }
     }
 }
