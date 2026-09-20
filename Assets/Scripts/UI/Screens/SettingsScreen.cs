@@ -13,6 +13,7 @@ namespace BeachHero
         [SerializeField] private Button privacyPolicyButton;
         [SerializeField] private Button closePanelbutton;
         [SerializeField] private Button backButton;
+        [SerializeField] private Button creditsButton;
         [SerializeField] private float handleDisableValue = 0.175f;
 
         public override void Open(ScreenTabType screenTabType)
@@ -26,6 +27,7 @@ namespace BeachHero
             privacyPolicyButton.ButtonRegister(OnPrivacyPolicy);
             closePanelbutton.ButtonRegister(ClosePanel);
             backButton.ButtonRegister(OnBack);
+            creditsButton.ButtonRegister(OnCredits);
             LoadData();
         }
 
@@ -40,6 +42,7 @@ namespace BeachHero
             privacyPolicyButton.ButtonDeRegister(OnPrivacyPolicy);
             closePanelbutton.ButtonDeRegister(ClosePanel);
             backButton.ButtonDeRegister(OnBack);
+            creditsButton.ButtonDeRegister(OnCredits);
         }
 
         private void LoadData()
@@ -96,6 +99,10 @@ namespace BeachHero
             AudioController.GetInstance.PlaySound(AudioType.Swoosh);
             UIController.GetInstance.EndTransition();
             Close();
+        }
+        private void OnCredits()
+        {
+            UIController.GetInstance.ScreenEvent(ScreenType.Credits, UIScreenEvent.Push);
         }
     }
 }

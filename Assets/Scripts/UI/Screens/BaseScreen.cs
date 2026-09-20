@@ -18,7 +18,8 @@ namespace BeachHero
         Settings,
         Purchase,
         RateUs,
-        Login
+        Login,
+        Credits,
     }
     public interface IScreen
     {
