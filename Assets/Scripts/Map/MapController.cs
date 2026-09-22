@@ -71,6 +71,9 @@ namespace BeachHero
         private bool isInLevelTransition = false;
         private int selectedLevelIndex = -1;
 
+        private const float movementPeakSpeed = 3f;
+        private const float movementDistanceEpsilon = 0.0001f;
+
         // === Camera Scroll Variables ===
         private bool isDragging = false;
         private float lastPointerY;
@@ -319,49 +322,59 @@ namespace BeachHero
             moveCTS = new CancellationTokenSource();
             var token = moveCTS.Token;
 
-            float totalDistance = splineSystem.CalculateDistance(start, end);
-            float coveredDistance = 0f;
+            start = Mathf.Clamp01(start);
+            end = Mathf.Clamp01(end);
+            bool movingForward = end >= start;
 
-            float maxSpeed = 3f; // tune this only
+            BuildSplineDistanceLookup(start, end, out float[] splinePercents, out float[] cumulativeDistances);
+            float totalDistance = cumulativeDistances[cumulativeDistances.Length - 1];
 
             try
             {
+                if (totalDistance <= movementDistanceEpsilon)
+                {
+                    currentSplinePercent = end;
+                    UpdateCharacterTransform(end, movingForward);
+                    characterAnimator.CrossFade("Idle", 0.1f, 0, 0f);
+                    StartGame();
+                    return;
+                }
+
                 // Put the character at the exact start before playing the run pose.
                 // Yield once so Unity evaluates that pose before the first movement step.
                 currentSplinePercent = start;
-                UpdateCharacterTransform(start);
+                UpdateCharacterTransform(start, movingForward);
                 characterAnimator.CrossFade("Run", 0.05f, 0, 0f);
                 await UniTask.Yield(PlayerLoopTiming.Update, token);
 
-                while (coveredDistance < totalDistance)
+                // The normalized derivative of SmoothStep is a polynomial bell curve:
+                // 6t(1-t). A duration of 1.5 * distance / peakSpeed makes its
+                // midpoint speed equal movementPeakSpeed while keeping both ends at zero.
+                float duration = 1.5f * totalDistance / movementPeakSpeed;
+                float elapsed = 0f;
+
+                while (elapsed < duration)
                 {
                     token.ThrowIfCancellationRequested();
 
-                    float t = coveredDistance / totalDistance;
+                    elapsed = Mathf.Min(elapsed + Time.deltaTime, duration);
+                    float normalizedTime = elapsed / duration;
+                    float distanceProgress = EvaluatePolynomialBellProgress(normalizedTime);
+                    float targetDistance = totalDistance * distanceProgress;
 
-                    float speedFactor = Mathf.Sin(t * Mathf.PI);
+                    currentSplinePercent = GetSplinePercentAtDistance(
+                        targetDistance,
+                        splinePercents,
+                        cumulativeDistances);
+                    UpdateCharacterTransform(currentSplinePercent, movingForward);
 
-                    float minSpeed = 0.5f; // important
-                    float currentSpeed = Mathf.Lerp(minSpeed, maxSpeed, speedFactor);
-
-                    float deltaDistance = currentSpeed * Time.deltaTime;
-
-                    if (coveredDistance + deltaDistance > totalDistance)
-                        deltaDistance = totalDistance - coveredDistance;
-
-                    coveredDistance += deltaDistance;
-
-                    float percent = coveredDistance / totalDistance;
-                    currentSplinePercent = Mathf.Lerp(start, end, percent);
-
-                    UpdateCharacterTransform(currentSplinePercent);
-
-                    await UniTask.Yield(PlayerLoopTiming.Update, token);
+                    if (elapsed < duration)
+                        await UniTask.Yield(PlayerLoopTiming.Update, token);
                 }
 
                 // The end animation must be triggered only after the final position is set.
                 currentSplinePercent = end;
-                UpdateCharacterTransform(end);
+                UpdateCharacterTransform(end, movingForward);
                 characterAnimator.CrossFade("Idle", 0.1f, 0, 0f);
                 StartGame();
             }
@@ -375,6 +388,67 @@ namespace BeachHero
         {
             await MoveAlongSplineAsync(start, end);
         }
+
+        #region Spline Helpers
+        private void BuildSplineDistanceLookup(float start, float end, out float[] splinePercents, out float[] cumulativeDistances)
+        {
+            int sampleCount = Mathf.Max(2, splineSystem.resolution * Mathf.Max(1, splineSystem.Count - 3));
+            splinePercents = new float[sampleCount + 1];
+            cumulativeDistances = new float[sampleCount + 1];
+
+            splinePercents[0] = start;
+            Vector3 previousPoint = splineSystem.GetPoint(start);
+
+            for (int i = 1; i <= sampleCount; i++)
+            {
+                float intervalProgress = i / (float)sampleCount;
+                float splinePercent = Mathf.Lerp(start, end, intervalProgress);
+                Vector3 point = splineSystem.GetPoint(splinePercent);
+
+                splinePercents[i] = splinePercent;
+                cumulativeDistances[i] = cumulativeDistances[i - 1] + Vector3.Distance(previousPoint, point);
+                previousPoint = point;
+            }
+        }
+
+        private static float GetSplinePercentAtDistance(float targetDistance, float[] splinePercents, float[] cumulativeDistances)
+        {
+            if (targetDistance <= 0f)
+                return splinePercents[0];
+
+            int lastIndex = cumulativeDistances.Length - 1;
+            if (targetDistance >= cumulativeDistances[lastIndex])
+                return splinePercents[lastIndex];
+
+            int lower = 0;
+            int upper = lastIndex;
+            while (lower < upper)
+            {
+                int middle = lower + (upper - lower) / 2;
+                if (cumulativeDistances[middle] < targetDistance)
+                    lower = middle + 1;
+                else
+                    upper = middle;
+            }
+
+            int upperIndex = lower;
+            int lowerIndex = upperIndex - 1;
+            float segmentDistance = cumulativeDistances[upperIndex] - cumulativeDistances[lowerIndex];
+            if (segmentDistance <= movementDistanceEpsilon)
+                return splinePercents[upperIndex];
+
+            float segmentProgress = (targetDistance - cumulativeDistances[lowerIndex]) / segmentDistance;
+            return Mathf.Lerp(splinePercents[lowerIndex], splinePercents[upperIndex], segmentProgress);
+        }
+
+        private static float EvaluatePolynomialBellProgress(float normalizedTime)
+        {
+            float t = Mathf.Clamp01(normalizedTime);
+            return t * t * (3f - 2f * t);
+        }
+
+        #endregion
+
         #endregion
 
         #region Reset
