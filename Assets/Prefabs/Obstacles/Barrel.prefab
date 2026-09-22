@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 794677522813732961}
   - component: {fileID: 7011654026061505306}
   - component: {fileID: 8665005563265119526}
+  - component: {fileID: 3945724708465577775}
   m_Layer: 11
   m_Name: BarrelGraphics
   m_TagString: Untagged
@@ -86,6 +87,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3945724708465577775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2368648502736197308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ae6273822664e50839f0f74cbcb4efe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshFilter: {fileID: 7011654026061505306}
+  meshRenderer: {fileID: 8665005563265119526}
 --- !u!1 &5676641161446648442
 GameObject:
   m_ObjectHideFlags: 0
