@@ -195,7 +195,7 @@ namespace BeachHero
 
         #region Rect
         public static TweenHandle SetSizeDelta(RectTransform target, Vector2 from, Vector2 to, float duration,
-            Ease ease, Action onComplete = null, TransformAxis transformAxis = TransformAxis.XY,
+            Ease ease, Action onComplete = null, 
             int loops = 0, LoopType loopType = LoopType.Restart)
         {
             var motion = LMotion.Create(from, to, duration).WithEase(ease);
@@ -209,13 +209,7 @@ namespace BeachHero
             {
                 motion = motion.WithLoops(loops, loopType);
             }
-            switch (transformAxis)
-            {
-                case TransformAxis.XY:
-                default:
                     handle = new TweenHandle(motion.BindToSizeDelta(target));
-                    break;
-            }
             return handle;
         }
 
