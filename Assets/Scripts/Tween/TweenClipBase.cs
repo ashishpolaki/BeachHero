@@ -13,7 +13,8 @@ namespace BeachHero
         Jump,
         Blendable,
         CanvasGroup,
-        Image
+        Image,
+        SizeDelta
     }
     public enum TransformAxis
     {

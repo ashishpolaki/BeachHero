@@ -195,7 +195,8 @@ namespace BeachHero
 
         #region Rect
         public static TweenHandle SetSizeDelta(RectTransform target, Vector2 from, Vector2 to, float duration,
-            Ease ease = Ease.Linear, System.Action onComplete = null)
+            Ease ease, Action onComplete = null, TransformAxis transformAxis = TransformAxis.XY,
+            int loops = 0, LoopType loopType = LoopType.Restart)
         {
             var motion = LMotion.Create(from, to, duration).WithEase(ease);
             var handle = default(TweenHandle);
@@ -204,7 +205,43 @@ namespace BeachHero
             {
                 motion = motion.WithOnComplete(onComplete);
             }
-            handle = new TweenHandle(motion.BindToSizeDelta(target));
+            if (loops != 0)
+            {
+                motion = motion.WithLoops(loops, loopType);
+            }
+            switch (transformAxis)
+            {
+                case TransformAxis.XY:
+                default:
+                    handle = new TweenHandle(motion.BindToSizeDelta(target));
+                    break;
+            }
+            return handle;
+        }
+
+        public static TweenHandle SetSizeDeltaOnAxis(RectTransform target, float from, float to, float duration,
+            Ease ease = Ease.Linear, TransformAxis transformAxis = TransformAxis.XY,
+            int loops = 0, LoopType loopType = LoopType.Restart, Action onComplete = null)
+        {
+            var motion = LMotion.Create(from, to, duration).WithEase(ease);
+            var handle = default(TweenHandle);
+            if (onComplete != null)
+            {
+                motion = motion.WithOnComplete(onComplete);
+            }
+            if (loops != 0)
+            {
+                motion = motion.WithLoops(loops, loopType);
+            }
+            switch (transformAxis)
+            {
+                case TransformAxis.X:
+                    handle = new TweenHandle(motion.BindToSizeDeltaX(target));
+                    break;
+                case TransformAxis.Y:
+                    handle = new TweenHandle(motion.BindToSizeDeltaY(target));
+                    break;
+            }
             return handle;
         }
         public static TweenHandle MoveAnchorOnAxis(RectTransform target, float from, float to, float duration,

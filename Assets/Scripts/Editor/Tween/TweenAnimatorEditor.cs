@@ -364,7 +364,7 @@ namespace BeachHero
             if (_clipsProp == null) return;
             if (_selectedClipIndex < 0 || _selectedClipIndex >= _clipsProp.arraySize) return;
 
-            // confirm? (optional) — we perform deletion immediately
+            // confirm? (optional) - we perform deletion immediately
             Undo.RegisterCompleteObjectUndo(_animator, "Delete Clip");
 
             // Delete element (works for managedReference arrays as used)
@@ -1038,6 +1038,8 @@ namespace BeachHero
             //Move
             menu.AddItem(new GUIContent("Position/Transform Position"), false, () => AddClip(typeof(TransformPositionClip)));
             menu.AddItem(new GUIContent("Position/Anchor Position"), false, () => AddClip(typeof(AnchorPositionClip)));
+            //RectTransform
+            menu.AddItem(new GUIContent("RectTransform/Size Delta"), false, () => AddClip(typeof(SizeDeltaClip)));
             //Scale 
             menu.AddItem(new GUIContent("Scale/Scale"), false, () => AddClip(typeof(ScaleClip)));
             //Rotation
@@ -1085,6 +1087,8 @@ namespace BeachHero
                 ImageGradientColorClip => "Image Gradient",
                 //CanvasGroup
                 CanvasGroupFadeClip => "CanvasGroup Fade",
+                //SizeDelta
+                SizeDeltaClip => "Size Delta",
                 _ => "Unknown"
             };
 
@@ -1155,6 +1159,9 @@ namespace BeachHero
 
                 // CanvasGroup  
                 CanvasGroupFadeClip => new Color(0.55f, 0.85f, 0.95f), // Soft Cyan Mist
+
+                // SizeDelta (Teal/Cyan)
+                SizeDeltaClip => new Color(0.15f, 0.75f, 0.75f),
 
                 // misc
                 _ => Color.gray
