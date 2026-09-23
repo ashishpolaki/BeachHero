@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace BeachHero
 {
@@ -10,7 +11,7 @@ namespace BeachHero
     internal static class CoinSceneToolOverlay
     {
         private const float PanelWidth = 310f;
-        private const float PanelHeight = 300f;
+        private const float PanelHeight = 340f;
         private const float HeaderHeight = 24f;
 
         private static readonly Color PanelColor = new Color(0.18f, 0.18f, 0.18f, 0.96f);
@@ -27,6 +28,16 @@ namespace BeachHero
         private static float gapY = 10f;
         private static int selectedCoinPreviewIndex;
         private static readonly List<Transform> selectedCoinsInSelectionOrder = new List<Transform>();
+        private static readonly Dictionary<Transform, RotationPreviewState> rotationPreviewStates =
+            new Dictionary<Transform, RotationPreviewState>();
+        private static bool isRotationPreviewEnabled;
+        private static double rotationPreviewStartTime;
+
+        private sealed class RotationPreviewState
+        {
+            public Vector3 StartEulerAngles;
+            public float Duration;
+        }
 
         public static bool IsOpen => isOpen && controller != null;
 
@@ -67,6 +78,7 @@ namespace BeachHero
 
         public static void Close()
         {
+            StopRotationPreview();
             SceneView.duringSceneGui -= DrawSceneGUI;
             controller = null;
             isOpen = false;
@@ -148,16 +160,40 @@ namespace BeachHero
 
             EditorGUILayout.Space(6f);
             EditorGUILayout.LabelField("Rotate Selected Coins", EditorStyles.boldLabel);
-            startY = EditorGUILayout.FloatField("Start Y (deg)", startY);
-            gapY = EditorGUILayout.FloatField("Gap Y (deg)", gapY);
 
-            using (new EditorGUI.DisabledScope(coins.Count == 0))
+            using (new EditorGUI.DisabledScope(isRotationPreviewEnabled))
             {
-                if (GUILayout.Button("Apply Y Rotation", GUILayout.Height(24f)))
+                startY = EditorGUILayout.FloatField("Start Y (deg)", startY);
+                gapY = EditorGUILayout.FloatField("Gap Y (deg)", gapY);
+
+                using (new EditorGUI.DisabledScope(coins.Count == 0))
                 {
-                    RotateSelectedCoins(coins);
+                    if (GUILayout.Button("Apply Y Rotation", GUILayout.Height(24f)))
+                    {
+                        RotateSelectedCoins(coins);
+                    }
                 }
             }
+
+            bool previewRequested = GUILayout.Toggle(
+                isRotationPreviewEnabled,
+                isRotationPreviewEnabled ? "Stop All Coin Rotation Preview" : "Preview All Coin Rotations (Edit Mode)",
+                GUI.skin.button,
+                GUILayout.Height(24f));
+
+            if (previewRequested != isRotationPreviewEnabled)
+            {
+                if (previewRequested)
+                {
+                    StartRotationPreview();
+                }
+                else
+                {
+                    StopRotationPreview();
+                }
+            }
+
+            EditorGUILayout.LabelField("Previews every level coin; selection is not required.", EditorStyles.miniLabel);
 
             GUILayout.EndArea();
             Handles.EndGUI();
@@ -338,6 +374,165 @@ namespace BeachHero
             Debug.Log(
                 $"[CoinSceneTool] Applied Y rotation starting at {startY} degrees with a {gapY} degree gap to {coins.Count} coin(s).");
             controller.ReorderCollectablesFromFixedCoin(coins);
+        }
+
+        private static List<Transform> GetAllCoins()
+        {
+            var coins = new List<Transform>();
+            if (controller == null)
+            {
+                return coins;
+            }
+
+            foreach (Collectable collectable in controller.GetCollectableEditData())
+            {
+                if (collectable != null &&
+                    collectable.CollectableType == CollectableType.Coin &&
+                    !coins.Contains(collectable.transform))
+                {
+                    coins.Add(collectable.transform);
+                }
+            }
+
+            return coins;
+        }
+
+        private static void StartRotationPreview()
+        {
+            if (Application.isPlaying)
+            {
+                return;
+            }
+
+            StopRotationPreview();
+            rotationPreviewStartTime = EditorApplication.timeSinceStartup;
+
+            foreach (Transform coin in GetAllCoins())
+            {
+                AddCoinToRotationPreview(coin);
+            }
+
+            isRotationPreviewEnabled = true;
+            EditorApplication.update -= UpdateRotationPreview;
+            EditorApplication.update += UpdateRotationPreview;
+            AssemblyReloadEvents.beforeAssemblyReload -= StopRotationPreview;
+            AssemblyReloadEvents.beforeAssemblyReload += StopRotationPreview;
+            EditorApplication.playModeStateChanged -= HandlePlayModeStateChanged;
+            EditorApplication.playModeStateChanged += HandlePlayModeStateChanged;
+            EditorSceneManager.sceneClosing -= HandleSceneClosing;
+            EditorSceneManager.sceneClosing += HandleSceneClosing;
+            SceneView.RepaintAll();
+        }
+
+        private static void StopRotationPreview()
+        {
+            EditorApplication.update -= UpdateRotationPreview;
+            AssemblyReloadEvents.beforeAssemblyReload -= StopRotationPreview;
+            EditorApplication.playModeStateChanged -= HandlePlayModeStateChanged;
+            EditorSceneManager.sceneClosing -= HandleSceneClosing;
+
+            foreach (KeyValuePair<Transform, RotationPreviewState> entry in rotationPreviewStates)
+            {
+                if (entry.Key != null)
+                {
+                    entry.Key.eulerAngles = entry.Value.StartEulerAngles;
+                }
+            }
+
+            rotationPreviewStates.Clear();
+            isRotationPreviewEnabled = false;
+            SceneView.RepaintAll();
+        }
+
+        private static void UpdateRotationPreview()
+        {
+            if (!isRotationPreviewEnabled || !isOpen || controller == null || Application.isPlaying)
+            {
+                StopRotationPreview();
+                return;
+            }
+
+            List<Transform> allCoins = GetAllCoins();
+            var allCoinSet = new HashSet<Transform>(allCoins);
+            var previewedCoins = new List<Transform>(rotationPreviewStates.Keys);
+
+            foreach (Transform previewedCoin in previewedCoins)
+            {
+                if (previewedCoin == null)
+                {
+                    rotationPreviewStates.Remove(previewedCoin);
+                    continue;
+                }
+
+                if (allCoinSet.Contains(previewedCoin))
+                {
+                    continue;
+                }
+
+                previewedCoin.eulerAngles = rotationPreviewStates[previewedCoin].StartEulerAngles;
+                rotationPreviewStates.Remove(previewedCoin);
+            }
+
+            foreach (Transform coin in allCoins)
+            {
+                AddCoinToRotationPreview(coin);
+            }
+
+            double elapsedTime = EditorApplication.timeSinceStartup - rotationPreviewStartTime;
+            foreach (KeyValuePair<Transform, RotationPreviewState> entry in rotationPreviewStates)
+            {
+                if (entry.Key == null)
+                {
+                    continue;
+                }
+
+                float rotation = Mathf.Repeat((float)(elapsedTime / entry.Value.Duration) * 360f, 360f);
+                entry.Key.eulerAngles = entry.Value.StartEulerAngles + Vector3.up * rotation;
+            }
+
+            SceneView.RepaintAll();
+        }
+
+        private static void AddCoinToRotationPreview(Transform coin)
+        {
+            if (coin == null || rotationPreviewStates.ContainsKey(coin))
+            {
+                return;
+            }
+
+            float duration = 1f;
+            GameCurrencyCollectable gameCurrency = coin.GetComponentInChildren<GameCurrencyCollectable>();
+            if (gameCurrency != null)
+            {
+                var serializedCoin = new SerializedObject(gameCurrency);
+                SerializedProperty durationProperty = serializedCoin.FindProperty("rotateDuration");
+                if (durationProperty != null)
+                {
+                    duration = durationProperty.floatValue;
+                }
+            }
+
+            rotationPreviewStates.Add(coin, new RotationPreviewState
+            {
+                StartEulerAngles = coin.eulerAngles,
+                Duration = Mathf.Max(0.0001f, duration)
+            });
+        }
+
+        private static void HandlePlayModeStateChanged(PlayModeStateChange state)
+        {
+            if (state == PlayModeStateChange.ExitingEditMode)
+            {
+                StopRotationPreview();
+            }
+        }
+
+        private static void HandleSceneClosing(Scene scene, bool removingScene)
+        {
+            if (controller != null && controller.gameObject.scene == scene)
+            {
+                StopRotationPreview();
+            }
         }
 
         private static void RecordTransformChange(Transform transform)
