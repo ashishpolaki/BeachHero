@@ -1,6 +1,8 @@
 #if UNITY_EDITOR
+using System.Collections.Generic;
 using BeachHero;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class EditorSceneController : MonoBehaviour
@@ -222,8 +224,9 @@ public class EditorSceneController : MonoBehaviour
         {
             return;
         }
-        foreach (var item in currentLevel.Collectables)
+        for (int index = 0; index < currentLevel.Collectables.Length; index++)
         {
+            var item = currentLevel.Collectables[index];
             string path = item.type switch
             {
                 CollectableType.Coin => gameCurrencyPath,
@@ -233,6 +236,7 @@ public class EditorSceneController : MonoBehaviour
             };
             Collectable prefab = AssetDatabase.LoadAssetAtPath<Collectable>(path);
             GameObject go = (GameObject)PrefabUtility.InstantiatePrefab(prefab.gameObject);
+            go.name = $"{item.type}_{index + 1}";
             Collectable collectable = go.GetComponent<Collectable>();
             collectable.transform.parent = container.transform;
             collectable.Init(item);
@@ -285,6 +289,83 @@ public class EditorSceneController : MonoBehaviour
     {
         Collectable[] data = container.GetComponentsInChildren<Collectable>();
         return data;
+    }
+
+    public void ReorderCollectablesFromFixedCoin(IReadOnlyList<Transform> orderedSelectedCoins)
+    {
+        if (currentLevel == null || orderedSelectedCoins == null || orderedSelectedCoins.Count == 0)
+        {
+            Debug.LogWarning("[EditorSceneController] No active level or selected coins to reorder.");
+            return;
+        }
+
+        var allCollectables = new List<Collectable>(GetCollectableEditData());
+        var selectedCollectables = new List<Collectable>();
+
+        foreach (Transform selectedTransform in orderedSelectedCoins)
+        {
+            if (selectedTransform == null)
+            {
+                continue;
+            }
+
+            Collectable collectable = selectedTransform.GetComponentInChildren<Collectable>();
+            if (collectable != null && !selectedCollectables.Contains(collectable))
+            {
+                selectedCollectables.Add(collectable);
+            }
+        }
+
+        if (selectedCollectables.Count == 0)
+        {
+            return;
+        }
+
+        int fixedCoinIndex = allCollectables.IndexOf(selectedCollectables[0]);
+        if (fixedCoinIndex < 0)
+        {
+            Debug.LogWarning("[EditorSceneController] The fixed coin is not part of the active level.");
+            return;
+        }
+
+        allCollectables.RemoveAll(selectedCollectables.Contains);
+        fixedCoinIndex = Mathf.Clamp(fixedCoinIndex, 0, allCollectables.Count);
+        allCollectables.InsertRange(fixedCoinIndex, selectedCollectables);
+
+        int undoGroup = Undo.GetCurrentGroup();
+        Undo.SetCurrentGroupName("Reorder Level Collectables");
+        Undo.RegisterFullObjectHierarchyUndo(container, "Reorder Level Collectables");
+        Undo.RegisterCompleteObjectUndo(currentLevel, "Reorder Level Collectables");
+
+        for (int index = 0; index < allCollectables.Count; index++)
+        {
+            Collectable collectable = allCollectables[index];
+            collectable.transform.SetAsLastSibling();
+            collectable.gameObject.name = $"{collectable.CollectableType}_{index + 1}";
+        }
+
+        var serializedLevel = new SerializedObject(currentLevel);
+        SerializedProperty collectablesProperty = serializedLevel.FindProperty("collectables");
+        collectablesProperty.arraySize = allCollectables.Count;
+
+        for (int index = 0; index < allCollectables.Count; index++)
+        {
+            Collectable collectable = allCollectables[index];
+            SerializedProperty element = collectablesProperty.GetArrayElementAtIndex(index);
+            element.FindPropertyRelative("type").enumValueIndex = (int)collectable.CollectableType;
+            element.FindPropertyRelative("position").vector3Value = collectable.transform.position;
+            element.FindPropertyRelative("rotation").vector3Value = collectable.transform.eulerAngles;
+            element.FindPropertyRelative("count").intValue = Mathf.Max(1, collectable.Count);
+        }
+
+        serializedLevel.ApplyModifiedProperties();
+        EditorUtility.SetDirty(currentLevel);
+        EditorSceneManager.MarkSceneDirty(gameObject.scene);
+        AssetDatabase.SaveAssetIfDirty(currentLevel);
+        Undo.CollapseUndoOperations(undoGroup);
+
+        Debug.Log(
+            $"[EditorSceneController] Reordered {selectedCollectables.Count} selected coin(s) from Collectables element {fixedCoinIndex + 1}.");
     }
     #endregion
 }
