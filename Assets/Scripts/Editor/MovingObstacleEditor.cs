@@ -16,7 +16,6 @@ namespace BeachHero
         private float radius;
         private bool showGenerateShapeSettings = false;
         private bool showOffsetSettings = false;
-        private bool isKeyframesInitialized = false;
         public static float KeyFramePositionSize = 0.2f;
         public static float KeyFramePositionPickUpSize = 1f;
         public static float keyFrameTangetHandleSize = 0.5f;

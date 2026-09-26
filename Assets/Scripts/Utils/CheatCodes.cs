@@ -1,17 +1,23 @@
 #if CHEAT_CODE
 using QFSW.QC;
-using UnityEditor;
-using UnityEngine.UI;
 using BeachHero;
 #endif
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CheatCodes : MonoBehaviour
 {
-#if CHEAT_CODE
-    #region Tap Counter
+    // Keep serialized fields available in every build so the scene data layout
+    // remains identical when CHEAT_CODE is enabled or disabled.
     public Button tapButton;
     public int requiredTaps = 3;
+    public GameObject fpsObject;
+
+#if CHEAT_CODE
+    #region Tap Counter
     private bool activate;
     private int tapCounter;
 
@@ -53,7 +59,6 @@ public class CheatCodes : MonoBehaviour
     #endregion
 
     #region FPS
-    public GameObject fpsObject;
     [Command("enable-fps")]
     public void EnableFPSCounter(bool val = true)
     {
