@@ -1,13 +1,14 @@
 #if CHEAT_CODE
 using QFSW.QC;
-using System.Linq;
 using UnityEditor;
-using UnityEngine;
 using UnityEngine.UI;
 using BeachHero;
+#endif
+using UnityEngine;
 
 public class CheatCodes : MonoBehaviour
 {
+#if CHEAT_CODE
     #region Tap Counter
     public Button tapButton;
     public int requiredTaps = 3;
@@ -54,7 +55,7 @@ public class CheatCodes : MonoBehaviour
     #region FPS
     public GameObject fpsObject;
     [Command("enable-fps")]
-    public void EnableFPSCounter(bool val)
+    public void EnableFPSCounter(bool val = true)
     {
         fpsObject.SetActive(val);
     }
@@ -98,16 +99,21 @@ public class CheatCodes : MonoBehaviour
         GameController.GetInstance.OnLevelFailed(LevelFailDelayType.None);
     }
 
-    [Command("force-set-level")]
-    public static void SetLevel(int levelNumber)
+    [Command("force-set-level", "Sets the level. Default: 1")]
+    public static string SetLevel(int levelNumber = 1)
     {
-        SaveSystem.CurrentData.highestCompletedLevel = levelNumber;
+        if (SaveSystem.CurrentData == null)
+        {
+            SaveSystem.LoadGameData();
+        }
+
+        int targetLevel = levelNumber <= 0 ? 1 : levelNumber;
+        SaveSystem.CurrentData.highestCompletedLevel = targetLevel;
+        SaveSystem.SaveGameData();
         SaveSystem.CurrentData.isShieldUnlock = false;
         SaveSystem.CurrentData.isSpeedBoostUnlock = false;
         SaveSystem.CurrentData.shieldBalance = IntUtils.DEFAULT_SHIELD_BALANCE;
         SaveSystem.CurrentData.speedBoostBalance = IntUtils.DEFAULT_SPEEDBOOST_BALANCE;
-        GameController.GetInstance.PowerupController.UpdatePowerupBalance(PowerupType.SpeedBoost, IntUtils.DEFAULT_SPEEDBOOST_BALANCE);
-        GameController.GetInstance.PowerupController.UpdatePowerupBalance(PowerupType.Shield, IntUtils.DEFAULT_SHIELD_BALANCE);
 #if UNITY_EDITOR
         var levelDatabase = AssetDatabase.LoadAssetAtPath<LevelDatabaseSO>("Assets/ScriptableObjects/Levels/LevelsDatabase.asset");
         if (levelDatabase != null)
@@ -121,26 +127,41 @@ public class CheatCodes : MonoBehaviour
             DebugUtils.LogWarning("LevelDatabase asset not found at ");
         }
 #endif
-        GameController.GetInstance.SpawnLevel();
-        MapController.GetInstance.SetupLevels();
+        if (Application.isPlaying)
+        {
+            if (GameController.GetInstance != null && GameController.GetInstance.PowerupController != null)
+            {
+                GameController.GetInstance.PowerupController.UpdatePowerupBalance(PowerupType.SpeedBoost, IntUtils.DEFAULT_SPEEDBOOST_BALANCE);
+                GameController.GetInstance.PowerupController.UpdatePowerupBalance(PowerupType.Shield, IntUtils.DEFAULT_SHIELD_BALANCE);
+            }
+            if (GameController.GetInstance != null)
+            {
+                GameController.GetInstance.SpawnLevel();
+            }
+            if (MapController.GetInstance != null)
+            {
+                MapController.GetInstance.SetupLevels();
+            }
+        }
+        return $"Level set to {targetLevel}";
     }
 
     [Command("add-coins")]
-    public static void AddStarFish(int amount)
+    public static void AddCoins(int amount = 100)
     {
         GameController.GetInstance.StoreController.IncrementCoinsBalance(amount);
     }
 
     [Command("add-shields")]
-    public static void AddShields(int amount)
+    public static void AddShields(int amount = 2)
     {
         GameController.GetInstance.PowerupController.OnPowerupCollected(PowerupType.Shield, amount);
     }
     [Command("add-speed-boosts")]
-    public static void AddSpeedBoosts(int amount)
+    public static void AddSpeedBoosts(int amount = 2)
     {
         GameController.GetInstance.PowerupController.OnPowerupCollected(PowerupType.SpeedBoost, amount);
     }
     #endregion
-}
 #endif
+}

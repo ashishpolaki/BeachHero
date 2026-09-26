@@ -67,6 +67,15 @@ namespace BeachHero
         #endregion
 
         #region Override Methods
+        private void Awake()
+        {
+            //Create boat preview parent if not assigned
+            if (previewBoatParent == null)
+            {
+                GameObject previewParentObj = new GameObject("PreviewBoatParent");
+                previewBoatParent = previewParentObj.transform;
+            }
+        }
         public override void Open(ScreenTabType screenTabType)
         {
             base.Open(screenTabType);
