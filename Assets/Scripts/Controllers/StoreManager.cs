@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Unity.Services.Core;
 using UnityEngine;
@@ -166,13 +167,36 @@ namespace BeachHero
                     RealMoneyProduct storeProduct = GetRealMoneyProduct(item.definition.id);
                     if (storeProduct != null)
                     {
-                        storeProduct.realMoneyCost = item.metadata.localizedPriceString;
+                        string fontSafePrice = GetFontSafePrice(item.metadata);
+                        if (!string.IsNullOrEmpty(fontSafePrice))
+                        {
+                            storeProduct.realMoneyCost = fontSafePrice;
+                        }
                     }
                     //   }
                 }
             }
             DebugUtils.Log("Store initialized with products: ");
         }
+
+        private static string GetFontSafePrice(ProductMetadata metadata)
+        {
+            if (metadata == null)
+            {
+                return string.Empty;
+            }
+
+            if (string.IsNullOrWhiteSpace(metadata.isoCurrencyCode))
+            {
+                return metadata.localizedPriceString;
+            }
+
+            // Store-provided currency symbols are not guaranteed to exist in the UI font.
+            // ISO codes are ASCII and still identify the exact currency unambiguously.
+            string price = metadata.localizedPrice.ToString(CultureInfo.InvariantCulture);
+            return $"{metadata.isoCurrencyCode} {price}";
+        }
+
         private void OnProductsFetchFailed(ProductFetchFailed failure)
         {
             DebugUtils.LogError("OnProductsFetchFailed FailureReason: " + failure.FailureReason);

@@ -6,20 +6,20 @@ namespace BeachHero
     {
         public static void Log(this string message, Object context = null)
         {
-#if ENABLE_DEBUG
+#if ENABLE_DEBUG || UNITY_EDITOR
             Debug.Log(message, context);
 #endif
         }
         public static void LogWarning(this string message, Object context = null)
         {
-#if ENABLE_DEBUG
+#if ENABLE_DEBUG || UNITY_EDITOR
             Debug.LogWarning(message, context);
 #endif
         }
 
         public static void LogError(this string message, Object context = null)
         {
-#if ENABLE_DEBUG
+#if ENABLE_DEBUG || UNITY_EDITOR
             Debug.LogError(message, context);
 #endif
         }
