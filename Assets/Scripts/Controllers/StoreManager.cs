@@ -178,7 +178,6 @@ namespace BeachHero
             }
             DebugUtils.Log("Store initialized with products: ");
         }
-
         private static string GetFontSafePrice(ProductMetadata metadata)
         {
             if (metadata == null)
