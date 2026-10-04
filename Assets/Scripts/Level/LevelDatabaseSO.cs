@@ -107,6 +107,16 @@ namespace BeachHero
         }
         private void OnValidate()
         {
+            if(levelDatas.Count != levelsList.Length)
+            {
+                for (int i = 0; i < levelsList.Length; i++)
+                {
+                    if (i >= levelDatas.Count)
+                    {
+                        levelDatas.Add(new LevelData());
+                    }
+                }
+            }
             for (int i = 0; i < levelDatas.Count; i++)
             {
                 if (levelDatas[i].LevelNumber != i + 1)
