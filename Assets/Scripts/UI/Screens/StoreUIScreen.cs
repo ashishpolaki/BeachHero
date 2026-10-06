@@ -20,6 +20,7 @@ namespace BeachHero
         public override void Open(ScreenTabType screenTabType)
         {
             base.Open(screenTabType);
+            AdController.GetInstance.HideBanner();
             AdjustStoreBoardBgHeight();
             InitializeIAPItems();
             InitializeRewardedADItems();
@@ -30,6 +31,10 @@ namespace BeachHero
         public override void Close()
         {
             base.Close();
+            if (GameController.GetInstance.GameState == GameState.Paused)
+            {
+                AdController.GetInstance.ShowBanner();
+            }
             GameController.GetInstance.SetPreviousGameState();
             RemoveListener();
         }

@@ -79,10 +79,10 @@ namespace BeachHero
         public override void Open(ScreenTabType screenTabType)
         {
             base.Open(screenTabType);
+            AdController.GetInstance.HideBanner();
             SetBoatNotificationShown();
             AddListeners();
             SetupCustomisation();
-
             //purchase button animation setup
             if (purchaseButtonAnimator != null)
             {
@@ -103,6 +103,10 @@ namespace BeachHero
         public override void Close()
         {
             base.Close();
+            if (GameController.GetInstance.GameState == GameState.Paused)
+            {
+                AdController.GetInstance.ShowBanner();
+            }
             if (CameraController.GetInstance != null)
             {
                 CameraController.GetInstance.SetPreviewCameraEnabled(PreviewCameraType.BoatCustomisation, false);
